@@ -1,20 +1,16 @@
-# Introduction 
-TODO: Give a short introduction of your project. Let this section explain the objectives or the motivation behind this project. 
+Anzu Core DAM
+=====
 
-# Getting Started
-TODO: Guide users through getting your code up and running on their own system. In this section you can talk about:
-1.	Installation process
-2.	Software dependencies
-3.	Latest releases
-4.	API references
+[[_TOC_]]
 
-# Build and Test
-TODO: Describe and show how to build your code and run the tests. 
+## Installation
 
-# Contribute
-TODO: Explain how other users and developers can contribute to make your code better. 
+### 1. Clone repository
 
-If you want to learn more about creating good readme files then refer the following [guidelines](https://docs.microsoft.com/en-us/azure/devops/repos/git/create-a-readme?view=azure-devops). You can also seek inspiration from the below readme files:
-- [ASP.NET Core](https://github.com/aspnet/Home)
-- [Visual Studio Code](https://github.com/Microsoft/vscode)
-- [Chakra Core](https://github.com/Microsoft/ChakraCore)
+    git clone git@ssh.dev.azure.com:v3/petitpress/Anzu/core-dam
+
+### 3. Start docker containers
+
+See [Docker projects - installation][docker-projects-installation] docu for installation instructions
+
+[docker-projects-installation]: https://dev.azure.com/petitpress/DevOps/_wiki/wikis/DevOps.wiki/1088/Docker-projects-installation

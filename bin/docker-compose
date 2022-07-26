@@ -1,0 +1,56 @@
+#!/bin/bash
+#
+# Run this script from the project root, e.g.:
+# $ bin/docker-compose up --build -d
+#
+# You can pass docker-compose arguments, like you normally would.
+
+PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")"/.. && pwd)"
+COMPOSE_CMD=$1
+
+cd "${PROJECT_ROOT}" || exit 1
+
+# Initialize default variables
+# shellcheck disable=SC1091
+. ./bin/docker-libvariables
+# Initialize functions
+# shellcheck disable=SC1091
+. ./bin/docker-libfunctions
+
+# Setup docker for the current project
+docker_project_setup
+
+# Customize docker commands with our own added functionality
+case ${COMPOSE_CMD} in
+"up")
+    create_docker_network "${DOCKER_NETWORK_NAME}" "${DOCKER_NETWORK_SUBNET}"
+    acr_login
+    ;;
+"start")
+    acr_login
+    ;;
+"run")
+    DOCKER_CLEANUP=true
+    acr_login
+    ;;
+"down")
+    DOCKER_NETWORK_DELETE=true
+    ;;
+"build")
+    acr_login
+    ;;
+*) ;;
+esac
+
+CMD="docker compose --env-file ${ENV_DOCKER_FILE} $*"
+echo_debug "Whole command: '${CMD}'"
+eval "${CMD}"
+
+if ${DOCKER_NETWORK_DELETE}; then
+    delete_docker_network "${DOCKER_NETWORK_NAME}"
+fi
+
+# Clean up all exited container runs if needed
+if ${DOCKER_CLEANUP}; then
+    cleanup_exited_containers "${PROJECT_ROOT}"
+fi

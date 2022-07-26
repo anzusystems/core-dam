@@ -1,0 +1,65 @@
+#!/bin/bash
+
+PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")"/.. && pwd)"
+ARGS="$*"
+AUTOLOAD=true
+
+cd "${PROJECT_ROOT}" || exit 1
+
+function help() {
+    echo -en "$(printf %q "${BASH_SOURCE[0]}") [OPERATION] [OPTIONS]
+    \nBash script used to run the cache clear in docker.
+
+    Options:
+        --no-autoload Do not run dump-autoload, only clear cache folder and redis
+
+    Examples:
+        $(printf %q "${BASH_SOURCE[0]}") --no-autoload
+    \n"
+}
+
+while [ "$#" -gt 0 ]; do
+    case $1 in
+    --no-autoload)
+        AUTOLOAD=false
+        shift 1
+        continue
+        ;;
+    -h | --help)
+        help
+        exit
+        ;;
+    *)
+        echo "[WARN] Unknown command line switch: $1" >&2
+        help
+        exit
+        ;;
+    esac
+done
+
+if [ -f /.dockerenv ]; then
+    # Export all environment variables from application environment files
+    # shellcheck disable=SC1091
+    . ./bin/docker-libvariables
+    for env_file in ${ENV_APPLICATION_FILE_DIST} ${ENV_APPLICATION_FILE}; do
+        if [ -f "$env_file" ]; then
+            # shellcheck disable=SC2046
+            export $(grep -v '^\($\|#\)' "$env_file" | grep "REDIS" | xargs -0)
+        fi
+    done
+
+    echo "[INFO] Cache clear"
+    redis-cli -h "${REDIS_HOST}" -p "${REDIS_PORT}" -n "${REDIS_DB}" flushdb
+    redis-cli -h "${REDIS_CACHE_HOST}" -p "${REDIS_CACHE_PORT}" -n "${REDIS_CACHE_DB}" flushdb
+    rm -rf var/cache/*
+
+    if ${AUTOLOAD}; then
+        echo "[INFO] Dump autoload and cache clear command"
+        composer dump-autoload
+        bin/console cache:clear --env=dev
+        bin/console cache:clear --env=test
+    fi
+    exit
+fi
+
+bin/docker-compose exec core-dam bash -c \'bin/cc "${ARGS}"\'

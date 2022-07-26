@@ -1,0 +1,7 @@
+#!/bin/bash
+# Script to run redis-expire for application cache db and pattern
+set -e
+
+cpulimit -l 5 -c 1 -e redis-cli -b -q
+cpulimit -l 8 -c 1 -f -q -- redis-expire --host="${REDIS_CACHE_HOST}" --port="${REDIS_CACHE_PORT}" --database="${REDIS_CACHE_DB}" --pattern=core-books* --ttl=86400
+pkill cpulimit

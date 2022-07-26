@@ -1,0 +1,13 @@
+#!/bin/bash
+
+PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")"/.. && pwd)"
+CHECK_DIR=${1:-src}
+
+cd "${PROJECT_ROOT}" || exit 1
+
+if [ -f /.dockerenv ]; then
+    vendor/bin/ecs check --fix --config=ecs.php "${CHECK_DIR}"
+    exit
+fi
+
+bin/docker-compose exec core-dam bash -c \'bin/ecs "${CHECK_DIR}"\'
