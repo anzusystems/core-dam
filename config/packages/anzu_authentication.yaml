@@ -1,0 +1,12 @@
+anzu_authentication:
+    cookie:
+        domain: '%env(string:COOKIE_DOMAIN)%'
+        secure: '%env(bool:COOKIE_SECURE)%'
+    sso:
+        client_id: '%env(string:SSO_CLIENT_ID)%'
+        public_cert_path: '%env(resolve:string:SSO_PUBLIC_CERT_PATH)%'
+        user_info_url: '%env(string:SSO_USER_INFO_URL)%'
+    user_persistence:
+        enabled: true
+        consumer_id: weather
+        messenger_transport_dsn: '%env(MESSENGER_TRANSPORT_DSN)%'

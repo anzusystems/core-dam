@@ -1,0 +1,21 @@
+nelmio_api_doc:
+    documentation:
+        info:
+            title: Anzu CoreDam
+            description: CoreDam microservice
+            version: '%env(string:APP_VERSION)%'
+        components:
+            securitySchemes:
+                Bearer:
+                    type: http
+                    scheme: bearer
+                    bearerFormat: JWT
+        security:
+            - Bearer: []
+    areas:
+        default:
+            path_patterns:
+                - ^/api/
+        adm:
+            path_patterns:
+                - ^/api/adm/

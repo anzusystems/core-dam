@@ -1,0 +1,12 @@
+framework:
+    messenger:
+        transports:
+            core_dam_article_publish:
+                dsn: 'sync://'
+
+        buses:
+            messenger.bus.default:
+                middleware:
+                    Anzu\CommonBundle\Messenger\Middleware\ContextIdentityMiddleware
+
+        routing: ~
