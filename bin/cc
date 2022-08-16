@@ -43,8 +43,9 @@ if [ -f /.dockerenv ]; then
     . ./bin/docker-libvariables
     for env_file in ${ENV_APPLICATION_FILE_DIST} ${ENV_APPLICATION_FILE}; do
         if [ -f "$env_file" ]; then
-            # shellcheck disable=SC2046
-            export $(grep -v '^\($\|#\)' "$env_file" | grep "REDIS" | xargs -0)
+            ENV_DOCKER_VARS=()
+            while read -r line; do [[ ! ${line?} =~ ^($|#) ]] && [[ ${line?} =~ REDIS ]] && ENV_DOCKER_VARS+=("export ${line?}"); done 2>/dev/null < "$env_file"
+            for var in "${ENV_DOCKER_VARS[@]}"; do eval "$var"; done
         fi
     done
 

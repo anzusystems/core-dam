@@ -18,7 +18,7 @@ function acr_login() {
     NOW_TIMESTAMP="$(date --utc +"%s")"
     CREDS_TIMESTAMP=$((LAST_LOGIN_TIMESTAMP + 175 * 60))
     # Azure ACR token is valid only 3 hours so relogin after 2 hours and 55 minutes
-    if [[ "${NOW_TIMESTAMP}" > "${CREDS_TIMESTAMP}" ]]; then
+    if [[ "${NOW_TIMESTAMP}" > "${CREDS_TIMESTAMP}" ]] || [ "${ACR_FORCE_LOGIN}" == "true" ]; then
         echo_debug "Login to Azure Container Registry"
         if az acr login --name petitpress; then
             mkdir -p "$(dirname "${LOGIN_TIMESTAMP_CONF}")"
