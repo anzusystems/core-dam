@@ -2,7 +2,7 @@
 # Script to generate specified messenger supervisor conf files inside the container
 
 #SUPERVISOR_DEFAULT_MESSENGER_NAMES='
-#    core-dam_log
+#    core_dam_log
 #'
 
 export SUPERVISOR_MESSENGER_NAMES=${SUPERVISOR_MESSENGER_NAMES:-${SUPERVISOR_DEFAULT_MESSENGER_NAMES}}

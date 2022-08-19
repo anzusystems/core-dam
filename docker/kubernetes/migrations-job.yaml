@@ -1,0 +1,93 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: #{JOB_MIGRATIONS_NAME}#
+  labels:
+    app: #{JOB_MIGRATIONS_NAME}#
+    type: application
+spec:
+  backoffLimit: #{JOB_MIGRATIONS_BACKOFF_LIMIT}#
+  template:
+    metadata:
+      labels:
+        app: #{JOB_MIGRATIONS_NAME}#
+        type: application
+    spec:
+      restartPolicy: OnFailure
+      containers:
+        - name: #{JOB_MIGRATIONS_NAME}#
+          image: petitpress.azurecr.io/#{CRON_DOCKER_IMAGE_REPOSITORY}#:#{VERSION}#
+          imagePullPolicy: Always
+          securityContext:
+            privileged: true
+            capabilities:
+              add:
+                - SYS_ADMIN
+          args: ["/bin/bash", "-c", "su -c run-migrations user"]
+          resources:
+            limits:
+              cpu: #{JOB_MIGRATIONS_CPU_LIMIT}#
+              memory: #{JOB_MIGRATIONS_MEMORY_LIMIT}#
+            requests:
+              cpu: #{JOB_MIGRATIONS_CPU_REQUEST}#
+              memory: #{JOB_MIGRATIONS_MEMORY_REQUEST}#
+          envFrom:
+            - configMapRef:
+                name: #{APP_NAME}#
+            - secretRef:
+                name: #{APP_NAME}#
+          env:
+            - name: REDIS_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: anzu-config
+                  key: redis_host
+            - name: REDIS_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: anzu-config
+                  key: redis_port
+            - name: REDIS_CACHE_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: anzu-config
+                  key: redis_cache_host
+            - name: REDIS_CACHE_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: anzu-config
+                  key: redis_cache_port
+          volumeMounts:
+            - name: secure-credentials
+              mountPath: /var/www/html/var/secure
+              readOnly: true
+      imagePullSecrets:
+        - name: acr-regcred
+      volumes:
+        - name: secure-credentials
+          secret:
+            secretName: anzu-infra
+            items:
+              - key: central-oauth2-public-key.pem
+                path: sso/central-oauth2-public-key.pem
+              - key: central-oauth2-web-public-key.pem
+                path: sso/central-oauth2-web-public-key.pem
+              - key: dam-ro-production-storage-bucket-credentials.json
+                path: google/fallback-storage-bucket-credentials.json
+              - key: dam-storage-bucket-credentials.json
+                path: google/storage-bucket-credentials.json
+              - key: google-pubsub-credentials.json
+                path: google/pubsub-credentials.json
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: #{JOB_MIGRATIONS_NAME}#
+  labels:
+    app: #{JOB_MIGRATIONS_NAME}#
+    type: application
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app: #{JOB_MIGRATIONS_NAME}#

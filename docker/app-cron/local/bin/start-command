@@ -10,7 +10,6 @@ printenv | grep -E -v '^HOME|^TERM' >>/etc/environment
 echo "[INFO] Redirecting logs to stdout"
 tail -F \
     /var/log/cron/cron.log \
-    /var/log/newrelic/newrelic-daemon.log \
     "${PHP_ERROR_LOG}" 2>/dev/null &
 
 if ${ENABLE_AUTOMATIC_CRON_STARTUP}; then

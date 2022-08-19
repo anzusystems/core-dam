@@ -1,0 +1,17 @@
+#!/bin/bash
+# Script to run migrations inside the container
+set -e
+
+cd /var/www/html || exit 1
+
+echo "[INFO] Composer install"
+composer -n install --no-dev 2>&1
+
+echo "[INFO] Composer dump-autoload"
+composer dump-autoload --classmap-authoritative 2>&1
+
+echo "[INFO] Doctrine migrations"
+bin/console doctrine:database:create --if-not-exists
+bin/console doctrine:migrations:sync-metadata-storage --no-interaction
+bin/console doctrine:migrations:migrate --no-interaction --allow-no-migration
+bin/console doctrine:schema:update --force

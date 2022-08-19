@@ -1,0 +1,33 @@
+#!/bin/bash
+# Script to run setup inside the container
+set -e
+
+cd /var/www/html || exit 1
+
+if [ -f "${MAIN_TERMINATED_FILE}" ]; then
+    echo "[INFO] Remove terminated file for logging containers"
+    rm -f "${MAIN_TERMINATED_FILE}"
+fi
+
+echo "[INFO] Copy tail-cmd executable to sidecar logging containers shared folder"
+cp /usr/local/bin/tail-cmd var/log/tail-cmd
+
+echo "[INFO] Composer install"
+composer install --no-scripts --no-dev 2>&1
+
+echo "[INFO] Install assets"
+bin/console assets:install
+
+echo "[INFO] Composer dump-autoload"
+composer dump-autoload --classmap-authoritative 2>&1
+
+echo "[INFO] Run logrotate on the background"
+logrotate-cmd -p /var/www/html/var/log/fpm\*.log &
+logrotate-cmd -p /var/www/html/var/log/nginx\*.log &
+
+echo "[INFO] Starting supervisor"
+messenger-supervisor-conf
+set +e
+supervisord
+sleep 1
+exit 0

@@ -1,0 +1,112 @@
+# Anzu-Core-Dam project Azure Pipelines Continuous Deployment definition
+# 1. Checkout branch to build
+# 2. Build and push the anzu-core-dam image to Azure Container Registry
+# 4. Deploy to chosen environment
+
+name: $(rev:rrrr)$(ENVIRONMENT_TAG)
+
+# Disable automatic pipeline trigger
+trigger: none
+
+# Setup runtime parameters
+parameters:
+  - name: runBuild
+    displayName: Docker build
+    type: boolean
+    default: true
+  - name: runDeployment
+    displayName: Deployment
+    type: boolean
+    default: true
+  - name: environment
+    displayName: Environment
+    type: string
+    default: 'devel'
+    values:
+      - devel
+      - stage
+
+# Setup variables
+variables:
+  - group: 'core-dam-${{ parameters.environment }}'
+  # Application project name
+  - name: APP_NAME
+    value: 'core-dam'
+  # Pipeline name shortcuts
+  - ${{ if parameters.runDeployment }}:
+    - name: ENVIRONMENT_TAG
+      value: '_${{ parameters.environment }}'
+  - ${{ if not(parameters.runDeployment) }}:
+    - name: ENVIRONMENT_TAG
+      value: ''
+  # Deploy environment
+  - name: DEPLOY_ENV
+    value: '${{ parameters.environment }}'
+  # Application version
+  - name: VERSION
+    value: '$(Build.SourceBranchName)'
+  # Application container registry image repository
+  - name: APP_DOCKER_IMAGE_REPOSITORY
+    value: 'anzu-$(APP_NAME)'
+  # Cron container registry image repository
+  - name: CRON_DOCKER_IMAGE_REPOSITORY
+    value: 'anzu-$(APP_NAME)-cron'
+  # Application dockerfile location
+  - name: APP_DOCKERFILE
+    value: '$(Build.SourcesDirectory)/docker/app/kubernetes/Dockerfile'
+  # Cron dockerfile location
+  - name: CRON_DOCKERFILE
+    value: '$(Build.SourcesDirectory)/docker/app-cron/kubernetes/Dockerfile'
+  # Kubernetes migration job manifest filename
+  - name: CONFIGURATION_MANIFEST_FILE_NAME
+    value: 'configuration.yaml'
+  # Kubernetes migration job name
+  - name: JOB_MIGRATIONS_NAME
+    value: '$(APP_NAME)-migrations'
+  # Kubernetes migration job manifest filename
+  - name: JOB_MIGRATIONS_MANIFEST_FILE_NAME
+    value: 'migrations-job.yaml'
+  # Kubernetes migration job execution timeout in seconds
+  - name: JOB_EXECUTION_TIMEOUT_SECONDS
+    value: '$(JOB_MIGRATIONS_EXECUTION_TIMEOUT_SECONDS)'
+  # Kubernetes application deployment name
+  - name: APP_KUBERNETES_DEPLOYMENT_NAME
+    value: '$(APP_NAME)'
+  # Kubernetes cron deployment name
+  - name: CRON_KUBERNETES_DEPLOYMENT_NAME
+    value: '$(APP_NAME)-cron'
+  # Kubernetes service connection name
+  - name: KUBERNETES_SERVICE_CONNECTION_NAME
+    value: 'anzu-${{ parameters.environment }}'
+  # Kubernetes namespace
+  - name: KUBERNETES_NAMESPACE
+    value: 'anzu'
+
+# Checkout azure ci template repository
+resources:
+  repositories:
+    - repository: templates
+      type: git
+      name: DevOps/azure-ci-template
+
+# Pipeline definition
+extends:
+  template: composer-deploy-k8s.yaml@templates
+  parameters:
+    containerDockerImageVersion: php81
+    containerDockerImageVariant: cli-ci-node-vips-ffmpeg-xdebug
+    version: $(VERSION)
+    runBuild: ${{ parameters.runBuild }}
+    appDockerImageRepository: $(APP_DOCKER_IMAGE_REPOSITORY)
+    cronDockerImageRepository: $(CRON_DOCKER_IMAGE_REPOSITORY)
+    appDockerfile: $(APP_DOCKERFILE)
+    cronDockerfile: $(CRON_DOCKERFILE)
+    runDeployment: ${{ parameters.runDeployment }}
+    environment: ${{ parameters.environment }}
+    kubernetesConfigurationManifestFileName: $(CONFIGURATION_MANIFEST_FILE_NAME)
+    kubernetesJobManifestFileName: $(JOB_MIGRATIONS_MANIFEST_FILE_NAME)
+    appKubernetesJobName: $(JOB_MIGRATIONS_NAME)
+    appKubernetesDeploymentName: $(APP_KUBERNETES_DEPLOYMENT_NAME)
+    cronKubernetesDeploymentName: $(CRON_KUBERNETES_DEPLOYMENT_NAME)
+    kubernetesServiceConnectionName: $(KUBERNETES_SERVICE_CONNECTION_NAME)
+    kubernetesNamespace: $(KUBERNETES_NAMESPACE)
