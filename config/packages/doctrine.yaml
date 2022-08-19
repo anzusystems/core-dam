@@ -7,6 +7,8 @@ doctrine:
         auto_generate_proxy_classes: true
         naming_strategy: doctrine.orm.naming_strategy.underscore_number_aware
         auto_mapping: true
+        resolve_target_entities:
+            AnzuSystems\CoreDamBundle\Entity\DamUser: App\Entity\User
         second_level_cache:
             enabled: '%env(bool:DOCTRINE_CACHE_ENABLED)%'
             log_enabled: false

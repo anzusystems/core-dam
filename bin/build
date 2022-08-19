@@ -76,6 +76,9 @@ if [ -f /.dockerenv ]; then
     composer -n install
     composer dump-autoload
 
+    echo "[INFO] Create topics"
+    bin/console anzu:topic:create notification_server_internal
+
     if ${DB_DROP}; then
         echo "[INFO] Dropping the database"
         bin/console doctrine:database:drop --if-exists --force

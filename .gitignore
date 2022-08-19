@@ -2,6 +2,8 @@
 .idea/
 .vscode/
 
+request/http-client.private.env.json
+
 # Cache, session files, logs and secure files
 /config/secrets/prod/prod.decrypt.private.php
 /var/cache/*
@@ -49,3 +51,13 @@ xdebug.log
 .docker-sync*
 .docker-compose-host
 docker-compose.override.yml
+
+###> symfony/framework-bundle ###
+/.env.local
+/.env.local.php
+/.env.*.local
+/config/secrets/prod/prod.decrypt.private.php
+/public/bundles/
+/var/
+/vendor/
+###< symfony/framework-bundle ###

@@ -1,0 +1,3 @@
+### Fetch admin configuration
+GET {{host}}/api/adm/v1/configuration
+Content-Type: application/json

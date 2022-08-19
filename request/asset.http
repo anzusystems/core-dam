@@ -1,0 +1,14 @@
+### Create no file asset
+POST {{host}}/api/adm/v1/asset/licence/1
+Content-Type: application/json
+
+{
+  "title": "Obrazok vtaka ohnivaka",
+  "type": "image"
+}
+
+> {% client.global.set('assetId', response.body.id) %}
+
+### GEt single asset
+GET {{host}}/api/adm/v1/asset/{{assetId}}
+Content-Type: application/json

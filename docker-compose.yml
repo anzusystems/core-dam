@@ -8,7 +8,7 @@ services:
       context: .
       dockerfile: ./docker/app/local/Dockerfile
     environment:
-      - VIRTUAL_HOST=core-dam.sme.localhost
+      - VIRTUAL_HOST=core-dam.sme.localhost,image.smedata.localhost,admin-image.smedata.localhost
       - VIRTUAL_PORT=${NGINX_PORT:-8130}
       - NGINX_PORT=${NGINX_PORT:-8130}
     external_links:
@@ -46,6 +46,20 @@ services:
     networks:
       - ${DOCKER_NETWORK_NAME:-petitpress_network}
 
+###> doctrine/doctrine-bundle ###
+  database:
+    image: postgres:${POSTGRES_VERSION:-13}-alpine
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-app}
+      # You should definitely change the password in production
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-ChangeMe}
+      POSTGRES_USER: ${POSTGRES_USER:-symfony}
+    volumes:
+      - db-data:/var/lib/postgresql/data:rw
+      # You may use a bind-mounted host directory instead, so that it is harder to accidentally remove the volume and lose all your data!
+      # - ./docker/db/data:/var/lib/postgresql/data:rw
+###< doctrine/doctrine-bundle ###
+
 secrets:
   ssh_private_key:
     file: ${DOCKER_SSH_PRV_KEY_FILE:-~/.ssh/id_rsa}
@@ -53,3 +67,8 @@ secrets:
 networks:
   petitpress_network:
     external: true
+
+volumes:
+###> doctrine/doctrine-bundle ###
+  db-data:
+###< doctrine/doctrine-bundle ###

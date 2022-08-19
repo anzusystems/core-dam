@@ -1,9 +1,6 @@
 framework:
     messenger:
-        transports:
-            core_dam_article_publish:
-                dsn: 'sync://'
-
+        transports: ~
         buses:
             messenger.bus.default:
                 middleware:

@@ -1,7 +1,6 @@
 {
     "type": "project",
     "license": "proprietary",
-    "minimum-stability": "stable",
     "prefer-stable": true,
     "require": {
         "php": ">=8.1",
@@ -10,11 +9,14 @@
         "ext-redis": "^5.3",
         "anzu/authentication-bundle": "^2.3",
         "anzu/common-bundle": "^1.7",
+        "anzusystems/core-dam-bundle": "dev-main",
         "doctrine/doctrine-bundle": "^2.7",
         "doctrine/doctrine-migrations-bundle": "^3.2",
         "doctrine/orm": "^2.12",
+        "league/flysystem-google-cloud-storage": "^3.1",
         "petitpress/gps-messenger-bundle": "^1.1",
         "symfony/console": "6.1.*",
+        "symfony/debug-bundle": "6.1.*",
         "symfony/dotenv": "6.1.*",
         "symfony/flex": "^2",
         "symfony/framework-bundle": "6.1.*",
@@ -25,11 +27,15 @@
     "repositories": [
         {
             "type": "vcs",
+            "url": "git@ssh.dev.azure.com:v3/petitpress/Anzu/common-bundle"
+        },
+        {
+            "type": "vcs",
             "url": "git@ssh.dev.azure.com:v3/petitpress/Anzu/authentication-bundle"
         },
         {
             "type": "vcs",
-            "url": "git@ssh.dev.azure.com:v3/petitpress/Anzu/common-bundle"
+            "url": "git@ssh.dev.azure.com:v3/petitpress/Anzu/core-dam-bundle"
         }
     ],
     "config": {
@@ -82,6 +88,14 @@
         "symfony": {
             "allow-contrib": false,
             "require": "6.1.*"
+        },
+        "runtime": {
+            "use_putenv": true
         }
+    },
+    "require-dev": {
+        "symfony/stopwatch": "6.1.*",
+        "symfony/var-dumper": "6.1.*",
+        "symfony/web-profiler-bundle": "6.1.*"
     }
 }

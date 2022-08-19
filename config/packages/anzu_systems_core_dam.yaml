@@ -1,0 +1,49 @@
+anzu_systems_core_dam:
+  settings:
+    defaultExtSystemId: 1
+    defaultAssetLicenceId: 1
+    admin_allow_list_name: 'admin'
+  file_operations:
+    tmp_dir_path: '%kernel.project_dir%/var/mnt/data/tmp'
+    fixtures_dir_path: '%kernel.project_dir%/var/mnt/data/fixtures'
+  image_settings:
+    optimal_resizes: [ 2000, 1000, 500, 100 ]
+    enable_crop_cache: true  # todo implement
+    crop_allow_list:
+      admin:
+        domains: [ admin ]
+        quality_whitelist: [ ]
+        crops:
+          # todo enum constant
+          - { width: 1920, height: 1080, tags: ['detail'] } # admin article large photo
+          - { width: 500, height: 281, tags: ['list'] }     # admin article small preview
+          - { width: 160, height: 90, tags: ['list'] }      # admin article gallery
+          - { width: 0, height: 200, tags: ['list'] }       # admin DAM listing
+          - { width: 0, height: 600, tags: ['list'] }       # admin DAM listing image detail
+          - { width: 1920, height: 0, tags: ['detail'] }    # admin DAM image crop
+      web_cms:
+        domains: [ web_cms ]
+        quality_whitelist: [ 90 ]
+        crops:
+          - { width: 800, height: 450 }   # anzu web general
+          - { width: 350, height: 197 }   # anzu web box item photo
+  storage:
+    video: 'cms.audio'
+    image: 'cms.image'
+    document: 'cms.document'
+    audio: 'cms.audio'
+    chunk: 'cms.chunk'
+    crop: 'cms.crop'
+  ext_systems:
+    cms:
+      id: 1
+      storage:
+        video: 'cms.audio'
+        image: 'cms.image'
+        document: 'cms.document'
+        audio: 'cms.audio'
+  domains:
+    admin:
+      domain: '%env(resolve:string:DOMAIN_ADMIN_WEB)%'
+    web_cms:
+      domain: '%env(resolve:string:DOMAIN_CMS_WEB)%'

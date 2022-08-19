@@ -1,0 +1,32 @@
+flysystem:
+    storages:
+#        cms.video:
+#            adapter: 'gcloud'
+#            options:
+#                client: 'gcloud_client_service' # The service ID of the Google\Cloud\Storage\StorageClient instance
+#                bucket: 'bucket_name'
+#                prefix: 'optional/path/prefix'
+        cms.audio:
+            adapter: 'local'
+            options:
+                directory: '%kernel.project_dir%/var/mnt/data/audio'
+        cms.image:
+            adapter: 'local'
+            options:
+                directory: '%kernel.project_dir%/var/mnt/data/image'
+        cms.document:
+            adapter: 'local'
+            options:
+                directory: '%kernel.project_dir%/var/mnt/data/document'
+        cms.video:
+            adapter: 'local'
+            options:
+                directory: '%kernel.project_dir%/var/mnt/data/video'
+        cms.chunk:
+            adapter: 'local'
+            options:
+                directory: '%kernel.project_dir%/var/mnt/data/chunk'
+        cms.crop:
+            adapter: 'local'
+            options:
+                directory: '%kernel.project_dir%/var/mnt/data/crop'
