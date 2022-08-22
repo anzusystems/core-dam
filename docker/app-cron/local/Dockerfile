@@ -1,4 +1,4 @@
-FROM petitpress.azurecr.io/php81:1.14.1-cli-vips-ffmpeg-xdebug
+FROM petitpress.azurecr.io/php81:1.15.0-cli-vips-ffmpeg-xdebug
 
 LABEL maintainer="Lubomir Stanko <lubomir.stanko@petitpress.sk>"
 #
