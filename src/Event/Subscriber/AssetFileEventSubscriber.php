@@ -5,7 +5,6 @@ declare(strict_types=1);
 
 namespace App\Event\Subscriber;
 
-use Anzu\CommonBundle\AnzuSerializer\Exception\AnzuSerializerException;
 use AnzuSystems\CoreDamBundle\Event\AssetFileChangeStateEvent;
 use App\Notification\AssetFileNotificationDispatcher;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -24,9 +23,6 @@ final class AssetFileEventSubscriber implements EventSubscriberInterface
         ];
     }
 
-    /**
-     * @throws AnzuSerializerException
-     */
     public function onAssetChangeState(AssetFileChangeStateEvent $event): void
     {
         $this->dispatcher->notifyAssetFileChanged($event);

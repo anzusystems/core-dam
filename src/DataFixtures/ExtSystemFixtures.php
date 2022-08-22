@@ -5,7 +5,7 @@ declare(strict_types=1);
 
 namespace App\DataFixtures;
 
-use Anzu\CommonBundle\DataFixtures\Fixtures\AbstractFixtures;
+use AnzuSystems\CommonBundle\DataFixtures\Fixtures\AbstractFixtures;
 use AnzuSystems\CoreDamBundle\Domain\ExtSystem\ExtSystemManager;
 use AnzuSystems\CoreDamBundle\Entity\ExtSystem;
 use Generator;

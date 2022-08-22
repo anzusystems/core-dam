@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Command;
 
-use Anzu\CommonBundle\DataFixtures\FixturesLoader;
 use Google\Cloud\Core\Exception\NotFoundException;
 use Google\Cloud\PubSub\PubSubClient;
 use Symfony\Component\Console\Attribute\AsCommand;

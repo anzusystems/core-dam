@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Repository;
 
-use Anzu\CommonBundle\Repository\AbstractAnzuRepository;
+use AnzuSystems\CommonBundle\Repository\AbstractAnzuRepository;
 use App\Entity\User;
 
 /**

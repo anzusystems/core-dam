@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Command;
 
-use Anzu\CommonBundle\DataFixtures\FixturesLoader;
+use AnzuSystems\CommonBundle\DataFixtures\FixturesLoader;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;

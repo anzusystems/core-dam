@@ -4,6 +4,6 @@ framework:
         buses:
             messenger.bus.default:
                 middleware:
-                    Anzu\CommonBundle\Messenger\Middleware\ContextIdentityMiddleware
+                    AnzuSystems\CommonBundle\Messenger\Middleware\ContextIdentityMiddleware
 
         routing: ~

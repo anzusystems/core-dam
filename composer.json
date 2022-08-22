@@ -8,21 +8,12 @@
         "ext-iconv": "*",
         "ext-redis": "^5.3",
         "anzu/authentication-bundle": "^2.3",
-        "anzu/common-bundle": "^1.7",
         "anzusystems/core-dam-bundle": "dev-main",
-        "doctrine/doctrine-bundle": "^2.7",
         "doctrine/doctrine-migrations-bundle": "^3.2",
-        "doctrine/orm": "^2.12",
-        "league/flysystem-google-cloud-storage": "^3.1",
+        "jms/serializer-bundle": "^4.0",
         "petitpress/gps-messenger-bundle": "^1.1",
-        "symfony/console": "6.1.*",
-        "symfony/debug-bundle": "6.1.*",
-        "symfony/dotenv": "6.1.*",
-        "symfony/flex": "^2",
-        "symfony/framework-bundle": "6.1.*",
-        "symfony/proxy-manager-bridge": "6.1.*",
-        "symfony/runtime": "6.1.*",
-        "symfony/yaml": "6.1.*"
+        "symfony/debug-bundle": "^6.1",
+        "symfony/flex": "^2.2"
     },
     "repositories": [
         {
@@ -36,6 +27,14 @@
         {
             "type": "vcs",
             "url": "git@ssh.dev.azure.com:v3/petitpress/Anzu/core-dam-bundle"
+        },
+        {
+            "type": "vcs",
+            "url": "git@ssh.dev.azure.com:v3/petitpress/Anzu/contracts"
+        },
+        {
+            "type": "vcs",
+            "url": "git@ssh.dev.azure.com:v3/petitpress/Anzu/serializer-bundle"
         }
     ],
     "config": {
@@ -97,5 +96,6 @@
         "symfony/stopwatch": "6.1.*",
         "symfony/var-dumper": "6.1.*",
         "symfony/web-profiler-bundle": "6.1.*"
-    }
+    },
+    "minimum-stability": "dev"
 }
