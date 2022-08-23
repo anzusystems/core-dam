@@ -8,10 +8,11 @@ namespace App\Model\Domain\AssetFile;
 use AnzuSystems\CoreDamBundle\Entity\AssetFile;
 use AnzuSystems\CoreDamBundle\Model\Enum\AssetFileProcessStatus;
 use AnzuSystems\SerializerBundle\Attributes\Serialize;
+use AnzuSystems\SerializerBundle\Handler\Handlers\EntityIdHandler;
 
 final class AssetFileAdmNotificationDecorator
 {
-    #[Serialize(serializedName: 'id')]
+    #[Serialize(serializedName: 'id', handler: EntityIdHandler::class)]
     private AssetFile $assetFile;
 
     public static function getInstance(AssetFile $assetFile): self
