@@ -28,7 +28,7 @@ return static function (ContainerConfigurator $configurator): void {
         ])
         ->call('setOption', [
             Redis::OPT_PREFIX,
-            'books_' . env('string:APP_ENV') . '_',
+            'core_dam_' . env('string:APP_ENV') . '_',
         ])
     ;
 
@@ -43,7 +43,7 @@ return static function (ContainerConfigurator $configurator): void {
         ])
         ->call('setOption', [
             Redis::OPT_PREFIX,
-            'books_cache_' . env('string:APP_ENV') . '_' . env('string:APP_VERSION') . '_',
+            'core_dam_cache_' . env('string:APP_ENV') . '_' . env('string:APP_VERSION') . '_',
         ])
     ;
 

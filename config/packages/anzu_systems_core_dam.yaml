@@ -6,6 +6,14 @@ anzu_systems_core_dam:
   file_operations:
     tmp_dir_path: '%kernel.project_dir%/var/mnt/data/tmp'
     fixtures_dir_path: '%kernel.project_dir%/var/mnt/data/fixtures'
+  exif_metadata:
+    common_metadata:
+      Software: ~
+      ExifVersion: ~
+      Make: ~
+    image_metadata:
+      ColorSpace: ~
+      Flash: ~
   image_settings:
     optimal_resizes: [ 2000, 1000, 500, 100 ]
     enable_crop_cache: true  # todo implement
