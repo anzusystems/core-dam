@@ -6,6 +6,10 @@ namespace Symfony\Component\Routing\Loader\Configurator;
 
 return static function (RoutingConfigurator $routes): void {
     $routes
-        ->import('@AnzuSystemsCoreDamBundle/Resources/config/routing/annotations.php')
+        ->import('@AnzuSystemsCoreDamBundle/Controller/Api/Adm/V1', type: 'annotation')
+        ->prefix('/api/adm/v1/');
+
+    $routes
+        ->import('@AnzuSystemsCoreDamBundle/Controller/ImageController.php', type: 'annotation')
         ->prefix('/');
 };

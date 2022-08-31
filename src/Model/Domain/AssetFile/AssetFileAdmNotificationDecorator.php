@@ -7,6 +7,7 @@ namespace App\Model\Domain\AssetFile;
 
 use AnzuSystems\CoreDamBundle\Entity\AssetFile;
 use AnzuSystems\CoreDamBundle\Model\Enum\AssetFileProcessStatus;
+use AnzuSystems\CoreDamBundle\Model\Enum\AssetType;
 use AnzuSystems\SerializerBundle\Attributes\Serialize;
 use AnzuSystems\SerializerBundle\Handler\Handlers\EntityIdHandler;
 
@@ -37,5 +38,11 @@ final class AssetFileAdmNotificationDecorator
     public function getStatus(): AssetFileProcessStatus
     {
         return $this->assetFile->getAssetAttributes()->getStatus();
+    }
+
+    #[Serialize]
+    public function getAssetType(): AssetType
+    {
+        return $this->assetFile->getAsset()->getAttributes()->getAssetType();
     }
 }
