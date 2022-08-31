@@ -54,3 +54,18 @@ Content-Type: application/json
 
 ### Preview image
 GET {{host}}/image/w500-h500-c0/{{imageId}}
+
+### Bulk update
+PATCH {{host}}/api/adm/v1/asset/bulk-update
+Content-Type: application/json
+
+[
+  {
+    "id": "{{assetId}}",
+    "title": "Title",
+    "description": "Descr",
+    "described": true
+  }
+]
+
+### Bulk update

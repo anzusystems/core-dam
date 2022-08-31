@@ -1,8 +1,14 @@
 anzu_systems_core_dam:
   settings:
-    defaultExtSystemId: 1
-    defaultAssetLicenceId: 1
+    default_ext_system_id: 1
+    default_asset_licence_id: 1
+    allow_select_ext_system: false
+    allow_select_licence: false
     admin_allow_list_name: 'admin'
+    max_bulk_item_count: 10
+    image_chunk_config:
+      min_size: 1
+      max_size: 2
   file_operations:
     tmp_dir_path: '%kernel.project_dir%/var/mnt/data/tmp'
     fixtures_dir_path: '%kernel.project_dir%/var/mnt/data/fixtures'

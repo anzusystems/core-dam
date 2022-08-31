@@ -5,6 +5,7 @@ declare(strict_types=1);
 
 namespace App\Model\Domain\AssetFile;
 
+use AnzuSystems\CoreDamBundle\Entity\Asset;
 use AnzuSystems\CoreDamBundle\Entity\AssetFile;
 use AnzuSystems\CoreDamBundle\Model\Enum\AssetFileProcessStatus;
 use AnzuSystems\CoreDamBundle\Model\Enum\AssetType;
@@ -44,5 +45,18 @@ final class AssetFileAdmNotificationDecorator
     public function getAssetType(): AssetType
     {
         return $this->assetFile->getAsset()->getAttributes()->getAssetType();
+    }
+
+
+    #[Serialize(serializedName: 'asset', handler: EntityIdHandler::class)]
+    public function getAsset(): Asset
+    {
+        return $this->assetFile->getAsset();
+    }
+
+    #[Serialize(serializedName: 'originAssetFile', handler: EntityIdHandler::class)]
+    public function getOriginAsset(): ?AssetFile
+    {
+        return $this->assetFile->getOriginAsset();
     }
 }
