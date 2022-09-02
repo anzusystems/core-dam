@@ -12,7 +12,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 #[AsCommand(
-    name: 'anzu:image:demo-import',
+    name: 'anzu:image-fixtures:import',
     description: 'Import fixture images.'
 )]
 final class ImportDemoImagesCommand extends Command

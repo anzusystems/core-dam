@@ -12,7 +12,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 #[AsCommand(
-    name: 'anzu:image:demo-download',
+    name: 'anzu:image-fixtures:download',
     description: 'Download demo image data.'
 )]
 final class DownloadDemoImagesCommand extends Command
