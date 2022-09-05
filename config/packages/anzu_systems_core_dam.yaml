@@ -14,11 +14,14 @@ anzu_systems_core_dam:
     fixtures_dir_path: '%kernel.project_dir%/var/mnt/data/fixtures'
   exif_metadata:
     common_metadata:
-      Software: ~
-      ExifVersion: ~
+      Software:
+        autoFillField: 'title'
+      ExifVersion:
+        autoFillField: 'title'
       Make: ~
     image_metadata:
-      ColorSpace: ~
+      ColorSpace:
+        autoFillField: 'description'
       Flash: ~
   image_settings:
     optimal_resizes: [ 2000, 1000, 500, 100 ]
