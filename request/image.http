@@ -63,7 +63,7 @@ Content-Type: application/json
   {
     "id": "{{assetId}}",
     "title": "Title",
-    "description": "",
+    "description": "Description",
     "described": true
   }
 ]

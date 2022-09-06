@@ -1,0 +1,35 @@
+### Create assest with associated image file
+POST {{host}}/api/adm/v1/audio/licence/1
+Content-Type: application/json
+
+{
+  "mimeType": "audio/mp4",
+  "checksum": "123456"
+}
+
+> {%
+  client.global.set('audioId', response.body.id)
+  client.global.set('assetId', response.body.asset)
+%}
+
+### Upload chunk 1
+POST {{host}}/api/adm/v1/audio/{{audioId}}/chunk
+Content-Type: multipart/form-data; boundary=boundary
+
+--boundary
+Content-Disposition: form-data; name="file"; filename="filename.mp3"
+
+< ../../tests/data/chunk/audioa.mp3
+
+--boundary
+Content-Disposition: form-data; name="chunk";
+Content-Type: application/json
+
+{
+  "offset": 0,
+  "size": 52079
+}
+
+### Finish upload
+PATCH {{host}}/api/adm/v1/audio/{{audioId}}/uploaded
+Content-Type: application/json

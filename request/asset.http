@@ -12,3 +12,9 @@ Content-Type: application/json
 ### GEt single asset
 GET {{host}}/api/adm/v1/asset/{{assetId}}
 Content-Type: application/json
+
+### Search
+GET {{host}}/api/adm/v1/asset/search?offset=10&visible=true&described=false&withProcessedFile=true
+
+### Search
+GET {{host}}/api/adm/v1/asset/search?type=image
