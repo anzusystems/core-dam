@@ -9,6 +9,41 @@ Content-Type: application/json
 
 > {% client.global.set('assetId', response.body.id) %}
 
+### Create assest with associated image file
+POST {{host}}/api/adm/v1/image/asset/{{assetId}}/position/default
+Content-Type: application/json
+
+{
+  "mimeType": "image/jpeg",
+  "checksum": "123456"
+}
+
+> {%
+  client.global.set('imageId', response.body.id)
+%}
+
+### Upload chunk 1
+POST {{host}}/api/adm/v1/image/{{imageId}}/chunk
+Content-Type: multipart/form-data; boundary=boundary
+
+--boundary
+Content-Disposition: form-data; name="file"; filename="filename.jpg"
+
+< ../../tests/data/chunk/chunkaa
+
+--boundary
+Content-Disposition: form-data; name="chunk";
+Content-Type: application/json
+
+{
+  "offset": 0,
+  "size": 262144
+}
+
+### Finish upload
+PATCH {{host}}/api/adm/v1/image/{{imageId}}/uploaded
+Content-Type: application/json
+
 ### GEt single asset
 GET {{host}}/api/adm/v1/asset/{{assetId}}
 Content-Type: application/json

@@ -44,14 +44,14 @@ final class AssetFileAdmNotificationDecorator
     #[Serialize]
     public function getAssetType(): AssetType
     {
-        return $this->assetFile->getAsset()->getAttributes()->getAssetType();
+        return $this->assetFile->getAsset()->getAsset()->getAttributes()->getAssetType();
     }
 
 
     #[Serialize(serializedName: 'asset', handler: EntityIdHandler::class)]
     public function getAsset(): Asset
     {
-        return $this->assetFile->getAsset();
+        return $this->assetFile->getAsset()->getAsset();
     }
 
     #[Serialize(serializedName: 'originAssetFile', handler: EntityIdHandler::class)]

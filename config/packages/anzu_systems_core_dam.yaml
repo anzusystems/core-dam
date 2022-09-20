@@ -54,11 +54,20 @@ anzu_systems_core_dam:
   ext_systems:
     cms:
       id: 1
-      storage:
-        video: 'cms.audio'
-        image: 'cms.image'
-        document: 'cms.document'
-        audio: 'cms.audio'
+      image:
+        storage_name: 'cms.image'
+        file_versions:
+          default: default
+          versions: [ default ]
+      audio:
+        storage_name: 'cms.audio'
+        file_versions:
+          default: free
+          versions: [ free, paid ]
+      video:
+        storage_name: 'cms.video'
+      document:
+        storage_name: 'cms.document'
   domains:
     admin:
       domain: '%env(resolve:string:DOMAIN_ADMIN_WEB)%'
