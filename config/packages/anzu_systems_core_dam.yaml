@@ -19,10 +19,24 @@ anzu_systems_core_dam:
       ExifVersion:
         autoFillField: 'title'
       Make: ~
+      Artist: ~
+      Description: ~
+      Rights: ~
+      Title: ~
+      Subject: ~
+      Headline: ~
+      City: ~
+      Credit: ~
+      Source: ~
+      State: ~
+      Creator: ~
+      Country: ~
+      DateCreated: ~
     image_metadata:
       ColorSpace:
         autoFillField: 'description'
       Flash: ~
+      ImageDescription: ~
   image_settings:
     optimal_resizes: [ 2000, 1000, 500, 100 ]
     enable_crop_cache: true  # todo implement
