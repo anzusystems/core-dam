@@ -53,3 +53,4 @@ GET {{host}}/api/adm/v1/asset/search?offset=10&visible=true&described=false&with
 
 ### Search
 GET {{host}}/api/adm/v1/asset/search?type=image
+Authorization: Bearer {{auth_token}}

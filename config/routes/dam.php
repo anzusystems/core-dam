@@ -16,4 +16,8 @@ return static function (RoutingConfigurator $routes): void {
     $routes
         ->import('@AnzuSystemsCoreDamBundle/Controller/AudioController.php', type: 'annotation')
         ->prefix('/');
+
+    $routes
+        ->import( __DIR__ . '/../../src/Controller/Api', type: 'annotation')
+        ->prefix('/api/');
 };

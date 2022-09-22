@@ -83,15 +83,15 @@ if [ -f /.dockerenv ]; then
         echo "[INFO] Dropping the database"
         bin/console doctrine:database:drop --if-exists --force
         bin/console doctrine:database:create
-        bin/console doctrine:cache:clear-metadata --flush
-        bin/console doctrine:cache:clear-entity-region --all
-        bin/console doctrine:cache:clear-collection-region --all
+#        bin/console doctrine:cache:clear-metadata --flush
+#        bin/console doctrine:cache:clear-entity-region --all
+#        bin/console doctrine:cache:clear-collection-region --all
     fi
 
     echo "[INFO] Running doctrine database migrations"
+    bin/console doctrine:schema:update --force
     bin/console doctrine:migrations:sync-metadata-storage --no-interaction
     bin/console doctrine:migrations:migrate --no-interaction --allow-no-migration
-    bin/console doctrine:schema:update --force
 
     if ${FIXTURES_LOAD}; then
         echo "[INFO] Loading fixtures"

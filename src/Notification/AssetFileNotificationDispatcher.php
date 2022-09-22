@@ -8,6 +8,7 @@ namespace App\Notification;
 use AnzuSystems\CommonBundle\Traits\SerializerAwareTrait;
 use AnzuSystems\CoreDamBundle\Event\AssetFileChangeStateEvent;
 use AnzuSystems\CoreDamBundle\Event\MetadataProcessedEvent;
+use AnzuSystems\SerializerBundle\Exception\SerializerException;
 use App\Model\Domain\AssetFile\AssetFileAdmNotificationDecorator;
 use Google\Cloud\PubSub\Message;
 use Google\Cloud\PubSub\PubSubClient;
@@ -34,6 +35,11 @@ final class AssetFileNotificationDispatcher
         );
     }
 
+    /**
+     * @param list<int> $userIds
+     *
+     * @throws SerializerException
+     */
     private function notify(array $userIds, string $eventName, object $data): void
     {
         $pubSubClient = new PubSubClient();

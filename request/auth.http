@@ -1,0 +1,10 @@
+### Login admin
+POST {{host}}/api/login
+Content-Type: application/json
+
+{
+  "username": "dam_admin@anzusystems.dev",
+  "password": "admin"
+}
+
+> {% client.global.set("auth_token", response.body.access_token); %}

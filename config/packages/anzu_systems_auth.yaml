@@ -1,0 +1,9 @@
+anzu_systems_auth:
+    cookie:
+        domain: '%env(COOKIE_DOMAIN)%'
+        secure: '%env(bool:COOKIE_SECURE)%'
+    jwt:
+        audience: anz
+        algorithm: ES256
+        public_cert: '%env(base64:AUTH_JWT_PUBLIC_CERT)%'
+        private_cert: '%env(base64:AUTH_JWT_PRIVATE_CERT)%'
