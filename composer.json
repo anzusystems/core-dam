@@ -7,7 +7,7 @@
         "ext-ctype": "*",
         "ext-iconv": "*",
         "ext-redis": "^5.3",
-        "anzu/authentication-bundle": "^2.3",
+        "anzusystems/auth-bundle": "dev-main",
         "anzusystems/core-dam-bundle": "dev-acl",
         "doctrine/doctrine-migrations-bundle": "^3.2",
         "petitpress/gps-messenger-bundle": "^1.1",
@@ -23,7 +23,7 @@
         },
         {
             "type": "vcs",
-            "url": "git@ssh.dev.azure.com:v3/petitpress/Anzu/authentication-bundle"
+            "url": "git@ssh.dev.azure.com:v3/petitpress/Anzu/auth-bundle"
         },
         {
             "type": "vcs",
@@ -52,8 +52,7 @@
     },
     "autoload": {
         "psr-4": {
-            "App\\": "src/",
-            "AnzuSystems\\AuthBundle\\": "auth-bundle/"
+            "App\\": "src/"
         }
     },
     "autoload-dev": {

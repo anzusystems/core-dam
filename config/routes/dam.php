@@ -18,6 +18,14 @@ return static function (RoutingConfigurator $routes): void {
         ->prefix('/');
 
     $routes
-        ->import( __DIR__ . '/../../src/Controller/Api', type: 'annotation')
-        ->prefix('/api/');
+        ->import('@AnzuSystemsAuthBundle/Controller/Api/AuthController.php', type: 'annotation')
+        ->prefix('/api/auth/');
+
+    $routes
+        ->import(__DIR__ . '/../../src/Controller/', type: 'annotation')
+        ->prefix('/');
+
+    $routes
+        ->import(__DIR__ . '/../../src/Controller/Adm/V1', type: 'annotation')
+        ->prefix('/api/adm/v1/');
 };

@@ -3,7 +3,10 @@ anzu_systems_auth:
         domain: '%env(COOKIE_DOMAIN)%'
         secure: '%env(bool:COOKIE_SECURE)%'
     jwt:
-        audience: anz
-        algorithm: ES256
         public_cert: '%env(base64:AUTH_JWT_PUBLIC_CERT)%'
         private_cert: '%env(base64:AUTH_JWT_PRIVATE_CERT)%'
+    authorization:
+        enabled: true
+        refresh_token_storage: App\Domain\RefreshToken\RefreshTokenStorage
+        logout_redirect_default_url: '%env(AUTH_LOGOUT_REDIRECT_DEFAULT_URL)%'
+        logout_redirect_query_url_allowed_pattern: '%env(AUTH_LOGOUT_REDIRECT_QUERY_URL_ALLOWED_PATTERN)%'

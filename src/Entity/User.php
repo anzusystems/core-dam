@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use AnzuSystems\AuthBundle\Contracts\SsoUserInterface;
+use AnzuSystems\AuthBundle\Contracts\AnzuAuthUserInterface;
+use AnzuSystems\AuthBundle\Contracts\ApiTokenUserInterface;
 use AnzuSystems\Contracts\Entity\Traits\IdentityTrait;
-use AnzuSystems\Contracts\Entity\Traits\NamedResourceTrait;
 use AnzuSystems\CoreDamBundle\Entity\DamUser;
 use AnzuSystems\SerializerBundle\Attributes\Serialize;
 use AnzuSystems\SerializerBundle\Handler\Handlers\EntityIdHandler;
@@ -19,10 +19,9 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_email', fields: ['email'])]
-class User extends DamUser implements SsoUserInterface, PasswordAuthenticatedUserInterface
+class User extends DamUser implements AnzuAuthUserInterface, PasswordAuthenticatedUserInterface, ApiTokenUserInterface
 {
     use IdentityTrait;
-    use NamedResourceTrait;
 
     public const ID_ANONYMOUS = 1;
     public const ID_CONSOLE = 2;
@@ -98,7 +97,7 @@ class User extends DamUser implements SsoUserInterface, PasswordAuthenticatedUse
         return $this->apiToken;
     }
 
-    public function setApiToken(?string $apiToken): self
+    public function setApiToken(?string $apiToken): static
     {
         $this->apiToken = $apiToken;
 
@@ -147,13 +146,8 @@ class User extends DamUser implements SsoUserInterface, PasswordAuthenticatedUse
         ;
     }
 
-    public function getSsoId(): string
+    public function getAuthId(): string
     {
         return (string) $this->getId();
     }
-
-//    public function getUserIdentifier(): string
-//    {
-//        return $this->getEmail();
-//    }
 }

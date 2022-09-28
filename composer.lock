@@ -4,54 +4,45 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fc95dbe77d251d77444080da81b5a187",
+    "content-hash": "c1edb681cbf1052cd5104eaae011ef56",
     "packages": [
         {
-            "name": "anzu/authentication-bundle",
-            "version": "2.3.0",
+            "name": "anzusystems/auth-bundle",
+            "version": "dev-main",
             "source": {
                 "type": "git",
-                "url": "git@ssh.dev.azure.com:v3/petitpress/Anzu/authentication-bundle",
-                "reference": "8577c853c9eb67bbd0f76e1f18f8eec2f3a267f8"
+                "url": "git@ssh.dev.azure.com:v3/petitpress/Anzu/auth-bundle",
+                "reference": "2fca5eb2c5c0b99e560a5050e1c429fcdddc9212"
             },
             "require": {
+                "anzusystems/common-bundle": "^2.0",
+                "doctrine/common": "^3.3",
                 "ext-json": "*",
-                "ext-redis": "*",
-                "lcobucci/jwt": "^4.0",
-                "php": ">=8.0",
-                "symfony/console": "5.4.*|^6.0",
-                "symfony/http-client": "5.4.*|^6.0",
-                "symfony/messenger": "5.4.*|^6.0",
-                "symfony/security-bundle": "5.4.*|^6.0",
-                "symfony/yaml": "5.4.*|^6.0"
-            },
-            "conflict": {
-                "symfony/symfony": "*"
+                "lcobucci/jwt": "^4.2",
+                "php": ">=8.1"
             },
             "require-dev": {
-                "symfony/browser-kit": "5.4.*|^6.0",
-                "symfony/phpunit-bridge": "5.4.*|^6.0"
+                "doctrine/orm": "^2.13",
+                "nelmio/api-doc-bundle": "^4.9",
+                "slevomat/coding-standard": "^8.5",
+                "symfony/test-pack": "^1.0",
+                "symplify/easy-coding-standard": "^11.1",
+                "vimeo/psalm": "^4.27"
             },
-            "suggest": {
-                "psr/log": "For using the console logger"
-            },
+            "default-branch": true,
             "type": "symfony-bundle",
-            "extra": {
-                "symfony": {
-                    "allow-contrib": true,
-                    "require": "5.4.*|^6.0"
-                }
-            },
             "autoload": {
                 "psr-4": {
-                    "Anzu\\AuthenticationBundle\\": ""
+                    "AnzuSystems\\AuthBundle\\": "src"
                 }
             },
-            "license": [
-                "proprietary"
-            ],
-            "description": "Authentication Bundle with possibility to authorize users against SSO which supports OAuth2.",
-            "time": "2022-06-17T11:52:08+00:00"
+            "autoload-dev": {
+                "psr-4": {
+                    "AnzuSystems\\AuthBundle\\Tests\\": "tests"
+                }
+            },
+            "description": "Auth bundle.",
+            "time": "2022-09-28T13:36:27+00:00"
         },
         {
             "name": "anzusystems/common-bundle",
@@ -9474,6 +9465,7 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
+        "anzusystems/auth-bundle": 20,
         "anzusystems/core-dam-bundle": 20
     },
     "prefer-stable": true,

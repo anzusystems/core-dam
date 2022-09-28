@@ -22,27 +22,29 @@ security:
         pub:
             pattern: ^/api/pub/
             security: false
-        login:
-            pattern: ^/api/login
-            stateless: true
+        auth:
+            pattern: ^/api/auth/
             provider: app_user_provider_email
             json_login:
                 check_path: auth_login
                 success_handler: AnzuSystems\AuthBundle\Security\AuthenticationSuccessHandler
+                failure_handler: AnzuSystems\AuthBundle\Security\AuthenticationFailureHandler
+            logout:
+                path: auth_logout
         adm:
             pattern: ^/api/adm/
             stateless: true
             provider: app_user_provider_id
             custom_authenticators:
                 - AnzuSystems\AuthBundle\Security\Authentication\JwtAuthentication
-    #        sys:
-    #            pattern: ^/api/sys
-    #            stateless: true
-    #            custom_authenticators:
-    #                - App\Security\Authentication\SysAuthenticator
+        sys:
+            pattern: ^/api/sys/
+            stateless: true
+            custom_authenticators:
+                - AnzuSystems\AuthBundle\Security\Authentication\ApiTokenAuthenticator
 
     access_control:
-#        - { path: ^/api/pub, roles: PUBLIC_ACCESS }
-#        - { path: ^/api/login, roles: PUBLIC_ACCESS }
-        - { path: ^/api/adm, roles: ROLE_USER }
-#        - { path: ^/api/sys, roles: ROLE_SYS_API }
+        - { path: ^/api/pub/, roles: PUBLIC_ACCESS }
+        - { path: ^/api/auth/, roles: PUBLIC_ACCESS }
+        - { path: ^/api/adm/, roles: ROLE_USER }
+        - { path: ^/api/sys/, roles: ROLE_SYS_API }

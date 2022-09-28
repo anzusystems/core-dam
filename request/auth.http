@@ -1,5 +1,5 @@
 ### Login admin
-POST {{host}}/api/login
+POST {{host}}/api/auth/login
 Content-Type: application/json
 
 {
@@ -7,4 +7,10 @@ Content-Type: application/json
   "password": "admin"
 }
 
-> {% client.global.set("auth_token", response.body.access_token); %}
+### Refresh token admin
+POST {{host}}/api/auth/refresh-token
+Content-Type: application/json
+
+### Logout admin
+GET {{host}}/api/auth/logout?url={{host}}
+Content-Type: application/json
