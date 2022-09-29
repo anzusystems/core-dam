@@ -12,7 +12,7 @@
             "source": {
                 "type": "git",
                 "url": "git@ssh.dev.azure.com:v3/petitpress/Anzu/auth-bundle",
-                "reference": "2fca5eb2c5c0b99e560a5050e1c429fcdddc9212"
+                "reference": "6f17ae2b907847a38cfa358aefdf3b6b54aea64b"
             },
             "require": {
                 "anzusystems/common-bundle": "^2.0",
@@ -42,7 +42,7 @@
                 }
             },
             "description": "Auth bundle.",
-            "time": "2022-09-28T13:36:27+00:00"
+            "time": "2022-09-28T14:33:51+00:00"
         },
         {
             "name": "anzusystems/common-bundle",
