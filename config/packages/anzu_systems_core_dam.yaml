@@ -6,6 +6,7 @@ anzu_systems_core_dam:
     allow_select_licence: false
     admin_allow_list_name: 'admin'
     max_bulk_item_count: 10
+    acl_check_enabled: true
     image_chunk_config:
       min_size: 1
       max_size: 2

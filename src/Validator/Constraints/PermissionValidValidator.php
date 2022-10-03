@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Validator\Constraints;
 
-use App\Permission\Grants;
-use App\Permission\Permissions;
+use App\Security\Permission\Grants;
+use App\Security\Permission\DamPermissions;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
@@ -18,7 +18,7 @@ final class PermissionValidValidator extends ConstraintValidator
     public function validate(mixed $value, Constraint $constraint): void
     {
         if ($constraint->requireAll) {
-            foreach (Permissions::all() as $permission) {
+            foreach (DamPermissions::all() as $permission) {
                 if (false === array_key_exists($permission, $value)) {
                     $this->context->addViolation($constraint->messageSentNotAll);
 
@@ -28,7 +28,7 @@ final class PermissionValidValidator extends ConstraintValidator
         }
 
         /** @var array<string, array> $permissionAllowedValues */
-        $permissionAllowedValues = Permissions::permissionAllowedValues();
+        $permissionAllowedValues = DamPermissions::permissionAllowedValues();
         foreach ($this->iterateSentPermissions($value) as $sentPermissionName => $sentPermissionValue) {
             if (false === array_key_exists($sentPermissionName, $permissionAllowedValues)) {
                 $this->context->addViolation($constraint->messageIncorrectValue);

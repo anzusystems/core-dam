@@ -17,11 +17,12 @@ use AnzuSystems\CoreDamBundle\Controller\Api\AbstractApiController;
 use AnzuSystems\CoreDamBundle\Model\OpenApi\Request\OARequest;
 use AnzuSystems\SerializerBundle\Request\ParamConverter\SerializerParamConverter;
 use App\App;
+use App\Model\Domain\PermissionGroup\PermissionGroupCollectionDto;
 use App\Domain\PermissionGroup\PermissionGroupFacade;
 use App\Entity\PermissionGroup;
 use App\Model\Domain\PermissionGroup\UserCollectionDto;
-use App\Permission\Permissions;
-use App\Permission\UserPermissionResolver;
+use App\Security\Permission\DamPermissions;
+use App\Security\Permission\UserPermissionResolver;
 use App\Repository\PermissionGroupRepository;
 use Doctrine\ORM\Exception\ORMException;
 use OpenApi\Attributes as OA;
@@ -48,7 +49,7 @@ final class PermissionGroupController extends AbstractApiController
     #[OA\Response(response: Response::HTTP_OK, description: 'List of all permissions with details.')]
     public function getAll(): JsonResponse
     {
-        return new JsonResponse(Permissions::allDetail());
+        return new JsonResponse(DamPermissions::allDetail());
     }
 
     /**
@@ -58,7 +59,7 @@ final class PermissionGroupController extends AbstractApiController
     #[OAParameterPath('permissionGroup'), OAResponse(PermissionGroup::class)]
     public function getOne(PermissionGroup $permissionGroup): JsonResponse
     {
-        $this->denyAccessUnlessGranted(CorePermissions::CORE_PERMISSION_SETTING_VIEW, $permissionGroup);
+        $this->denyAccessUnlessGranted(DamPermissions::DAM_PERMISSION_GROUP_VIEW, $permissionGroup);
 
         return $this->okResponse($permissionGroup);
     }
@@ -98,7 +99,7 @@ final class PermissionGroupController extends AbstractApiController
     public function create(PermissionGroup $permissionGroup): JsonResponse
     {
         App::throwOnReadOnlyMode();
-        $this->denyAccessUnlessGranted(CorePermissions::CORE_PERMISSION_SETTING_CREATE, $permissionGroup);
+        $this->denyAccessUnlessGranted(DamPermissions::DAM_PERMISSION_GROUP_CREATE);
 
         return $this->createdResponse(
             $this->permissionGroupFacade->create($permissionGroup)
@@ -117,7 +118,7 @@ final class PermissionGroupController extends AbstractApiController
     public function update(PermissionGroup $permissionGroup, PermissionGroup $newPermissionGroup): JsonResponse
     {
         App::throwOnReadOnlyMode();
-        $this->denyAccessUnlessGranted(CorePermissions::CORE_PERMISSION_SETTING_EDIT, $permissionGroup);
+        $this->denyAccessUnlessGranted(DamPermissions::DAM_PERMISSION_GROUP_UPDATE, $permissionGroup);
 
         return $this->okResponse(
             $this->permissionGroupFacade->update($permissionGroup, $newPermissionGroup)
@@ -135,7 +136,7 @@ final class PermissionGroupController extends AbstractApiController
     public function updateUsers(PermissionGroup $permissionGroup, UserCollectionDto $userCollectionDto): JsonResponse
     {
         App::throwOnReadOnlyMode();
-        $this->denyAccessUnlessGranted(CorePermissions::CORE_PERMISSION_SETTING_EDIT, $permissionGroup);
+        $this->denyAccessUnlessGranted(DamPermissions::DAM_PERMISSION_GROUP_UPDATE, $permissionGroup);
 
         return $this->okResponse(
             $this->permissionGroupFacade->updateUsers($permissionGroup, $userCollectionDto)
@@ -152,7 +153,7 @@ final class PermissionGroupController extends AbstractApiController
     public function delete(PermissionGroup $permissionGroup): JsonResponse
     {
         App::throwOnReadOnlyMode();
-        $this->denyAccessUnlessGranted(CorePermissions::CORE_PERMISSION_SETTING_DELETE, $permissionGroup);
+        $this->denyAccessUnlessGranted(DamPermissions::DAM_PERMISSION_GROUP_DELETE, $permissionGroup);
 
         $this->permissionGroupFacade->delete($permissionGroup);
 

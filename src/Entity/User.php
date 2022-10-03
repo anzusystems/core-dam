@@ -10,7 +10,7 @@ use AnzuSystems\Contracts\Entity\Traits\IdentityTrait;
 use AnzuSystems\CoreDamBundle\Entity\DamUser;
 use AnzuSystems\SerializerBundle\Attributes\Serialize;
 use AnzuSystems\SerializerBundle\Handler\Handlers\EntityIdHandler;
-use App\Permission\UserPermissionResolver;
+use App\Security\Permission\UserPermissionResolver;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;

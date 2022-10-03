@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Permission;
+namespace App\Security\Permission;
 
 use AnzuSystems\Contracts\Entity\AnzuUser;
 use App\Entity\PermissionGroup;
@@ -17,7 +17,7 @@ final class UserPermissionResolver
     {
         // 1.If it's admin, return all permissions as granted
         if (in_array(AnzuUser::ROLE_ADMIN, $user->getRoles(), true)) {
-            return Permissions::default(Grants::GRANT_ALLOW);
+            return DamPermissions::default(Grants::GRANT_ALLOW);
         }
 
         // 2. Take system default permission values and apply permissions from belonging groups
@@ -34,7 +34,7 @@ final class UserPermissionResolver
     public static function resolveForGroups(iterable $permissionGroups): array
     {
         // 1. Take system default permission values
-        $permissions = Permissions::default();
+        $permissions = DamPermissions::default();
 
         // 2. Take permissions from user belonging permission groups and apply the highest grant
         foreach ($permissionGroups as $permissionGroup) {

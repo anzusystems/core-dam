@@ -13,7 +13,7 @@ use AnzuSystems\Contracts\Entity\Traits\TimeTrackingTrait;
 use AnzuSystems\CoreDamBundle\Entity\Traits\UserTrackingTrait;
 use AnzuSystems\SerializerBundle\Attributes\Serialize;
 use AnzuSystems\SerializerBundle\Handler\Handlers\EntityIdHandler;
-use App\Permission\Permissions;
+use App\Security\Permission\DamPermissions;
 use App\Repository\PermissionGroupRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -64,7 +64,7 @@ class PermissionGroup implements IdentifiableInterface, UserTrackingInterface, T
         $this->setTitle('');
         $this->setDescription('');
         $this->setUsers(new ArrayCollection());
-        $this->setPermissions(Permissions::default());
+        $this->setPermissions(DamPermissions::default());
     }
 
     public function getTitle(): string

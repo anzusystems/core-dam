@@ -11,6 +11,7 @@ use AnzuSystems\CommonBundle\Request\ParamConverter\ApiFilterParamConverter;
 use AnzuSystems\CoreDamBundle\Controller\Api\AbstractApiController;
 use App\Entity\User;
 use App\Repository\UserRepository;
+use App\Security\Permission\DamPermissions;
 use Doctrine\ORM\Exception\ORMException;
 use OpenApi\Attributes as OA;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -25,7 +26,6 @@ final class UserController extends AbstractApiController
     public function __construct(
         private readonly UserRepository $userRepo,
     ) {
-        
     }
     
     #[Route('/current', 'get_current', methods: [Request::METHOD_GET])]
@@ -42,7 +42,7 @@ final class UserController extends AbstractApiController
     #[OAParameterPath('user'), OAResponse(User::class)]
     public function getOne(User $user): JsonResponse
     {
-        $this->denyAccessUnlessGranted(CorePermissions::CORE_USER_VIEW, $user);
+        $this->denyAccessUnlessGranted(DamPermissions::DAM_USER_VIEW, $user);
 
         return $this->okResponse($user);
     }

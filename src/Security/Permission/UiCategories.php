@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Permission;
+namespace App\Security\Permission;
 
 final class UiCategories
 {

@@ -8,7 +8,7 @@
         "ext-iconv": "*",
         "ext-redis": "^5.3",
         "anzusystems/auth-bundle": "dev-main",
-        "anzusystems/core-dam-bundle": "dev-acl",
+        "anzusystems/core-dam-bundle": "dev-main",
         "doctrine/doctrine-migrations-bundle": "^3.2",
         "petitpress/gps-messenger-bundle": "^1.1",
         "symfony/asset": "6.1.*",
