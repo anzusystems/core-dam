@@ -1,0 +1,16 @@
+### Login admin
+POST {{host}}/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "dam_admin@anzusystems.dev",
+  "password": "admin"
+}
+
+### Refresh token admin
+POST {{host}}/api/auth/refresh-token
+Content-Type: application/json
+
+### Logout admin
+GET {{host}}/api/auth/logout?url={{host}}
+Content-Type: application/json

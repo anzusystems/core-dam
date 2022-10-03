@@ -6,6 +6,7 @@ anzu_systems_core_dam:
     allow_select_licence: false
     admin_allow_list_name: 'admin'
     max_bulk_item_count: 10
+    acl_check_enabled: true
     image_chunk_config:
       min_size: 1
       max_size: 2
@@ -47,7 +48,7 @@ anzu_systems_core_dam:
         crops:
           # todo enum constant
 #          - { width: 1920, height: 1080, tags: ['detail'] } # admin article large photo
-          - { width: 500, height: 281, tags: ['roi_example'], title: 'mobile' }     # admin article small preview
+          - { width: 500, height: 281, tags: ['roi_example'] }     # admin article small preview
 #          - { width: 160, height: 90, tags: ['list'] }      # admin article gallery
           - { width: 0, height: 200, tags: ['list', 'roi_example'] }       # admin DAM listing
 #          - { width: 0, height: 600, tags: ['list'] }       # admin DAM listing image detail

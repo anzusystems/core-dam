@@ -1,0 +1,3 @@
+### Get current user
+GET {{host}}/api/adm/v1/user/current
+Content-Type: application/json
