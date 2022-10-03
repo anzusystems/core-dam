@@ -11,6 +11,7 @@
         "anzusystems/core-dam-bundle": "dev-main",
         "doctrine/doctrine-migrations-bundle": "^3.2",
         "doctrine/orm": "2.13.1",
+        "league/flysystem-google-cloud-storage": "^3.0",
         "petitpress/gps-messenger-bundle": "^1.1",
         "symfony/asset": "6.1.*",
         "symfony/debug-bundle": "^6.1",

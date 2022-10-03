@@ -8,10 +8,10 @@ anzu_systems_core_dam:
     max_bulk_item_count: 10
     acl_check_enabled: true
     image_chunk_config:
-      min_size: 1
-      max_size: 2
+      min_size: 200000
+      max_size: 500000000
   file_operations:
-    tmp_dir_path: '%kernel.project_dir%/var/mnt/data/tmp'
+    tmp_dir_path: '/tmp'
     fixtures_dir_path: '%kernel.project_dir%/var/mnt/data/fixtures'
   exif_metadata:
     common_metadata:

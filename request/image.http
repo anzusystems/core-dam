@@ -4,7 +4,8 @@ Content-Type: application/json
 
 {
   "mimeType": "image/jpeg",
-  "checksum": "123456"
+  "checksum": "123456",
+  "size": 323386
 }
 
 > {%
@@ -51,6 +52,10 @@ Content-Type: application/json
 ### Finish upload
 PATCH {{host}}/api/adm/v1/image/{{imageId}}/uploaded
 Content-Type: application/json
+
+  {
+    "checksum": "123456"
+  }
 
 ### Preview image
 GET {{host}}/image/w500-h500-c0/{{imageId}}

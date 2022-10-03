@@ -1,11 +1,5 @@
 flysystem:
     storages:
-#        cms.video:
-#            adapter: 'gcloud'
-#            options:
-#                client: 'gcloud_client_service' # The service ID of the Google\Cloud\Storage\StorageClient instance
-#                bucket: 'bucket_name'
-#                prefix: 'optional/path/prefix'
         cms.audio:
             adapter: 'local'
             options:
