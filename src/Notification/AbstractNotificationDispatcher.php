@@ -8,7 +8,6 @@ namespace App\Notification;
 use AnzuSystems\CommonBundle\Domain\User\CurrentAnzuUserProvider;
 use AnzuSystems\CommonBundle\Traits\SerializerAwareTrait;
 use AnzuSystems\SerializerBundle\Exception\SerializerException;
-use App\Model\Domain\AssetFile\AsseFileAdmNotificationDecorator;
 use Google\Cloud\PubSub\Message;
 use Google\Cloud\PubSub\PubSubClient;
 use Symfony\Contracts\Service\Attribute\Required;
