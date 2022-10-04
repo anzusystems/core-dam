@@ -7,51 +7,55 @@ namespace App\Notification;
 
 use AnzuSystems\CommonBundle\Traits\SerializerAwareTrait;
 use AnzuSystems\CoreDamBundle\Event\AssetFileChangeStateEvent;
+use AnzuSystems\CoreDamBundle\Event\AssetFileDeleteEvent;
 use AnzuSystems\CoreDamBundle\Event\MetadataProcessedEvent;
 use AnzuSystems\SerializerBundle\Exception\SerializerException;
-use App\Model\Domain\AssetFile\AssetFileAdmNotificationDecorator;
+use App\Model\Domain\AssetFile\AsseFileAdmNotificationDecorator;
+use App\Model\Domain\AssetFile\AssetFileStatusAdmNotificationDecorator;
 use Google\Cloud\PubSub\Message;
 use Google\Cloud\PubSub\PubSubClient;
 
-final class AssetFileNotificationDispatcher
+final class AssetFileNotificationDispatcher extends AbstractNotificationDispatcher
 {
+    private const EVENT_NAME_PREFIX = 'asset_file_';
+    private const EVENT_METADATA_PROCESSED_NAME = 'asset_metadata_processed';
+    private const EVENT_ASSET_FILE_DELETED_NAME = 'asset_file_deleted';
+
     use SerializerAwareTrait;
 
-    public function notifyAssetFileChanged(AssetFileChangeStateEvent $event): void
+    /**
+     * @throws SerializerException
+     */
+    public function notifyAssetFileDeleted(AssetFileDeleteEvent $event): void
     {
         $this->notify(
-            [$event->getAsset()->getCreatedBy()->getId()],
-            'asset_' . $event->getAsset()->getAssetAttributes()->getStatus()->toString(),
-            AssetFileAdmNotificationDecorator::getInstance($event->getAsset())
-        );
-    }
-
-    public function notifyMetadataProcessed(MetadataProcessedEvent $event): void
-    {
-        $this->notify(
-            [$event->getAsset()->getCreatedBy()->getId()],
-            'asset_metadata_processed',
-            AssetFileAdmNotificationDecorator::getInstance($event->getAsset())
+            [$this->currentUserProvider->getCurrentUser()],
+            self::EVENT_ASSET_FILE_DELETED_NAME,
+            AsseFileAdmNotificationDecorator::getBaseInstance($event->getAssetId(), $event->getDeleteId())
         );
     }
 
     /**
-     * @param list<int> $userIds
-     *
      * @throws SerializerException
      */
-    private function notify(array $userIds, string $eventName, object $data): void
+    public function notifyAssetFileChanged(AssetFileChangeStateEvent $event): void
     {
-        $pubSubClient = new PubSubClient();
-        // todo move topic name to env.
-        $pubSubClient->topic('notification_server_internal')->publish(
-            new Message([
-                'attributes' => [
-                    'targetSsoUserIds' => json_encode($userIds),
-                    'eventName' => $eventName,
-                ],
-                'data' => $this->serializer->serialize($data)
-            ])
+        $this->notify(
+            [$this->currentUserProvider->getCurrentUser()],
+            self::EVENT_NAME_PREFIX . $event->getAsset()->getAssetAttributes()->getStatus()->toString(),
+            AssetFileStatusAdmNotificationDecorator::getInstance($event->getAsset())
+        );
+    }
+
+    /**
+     * @throws SerializerException
+     */
+    public function notifyMetadataProcessed(MetadataProcessedEvent $event): void
+    {
+        $this->notify(
+            [$this->currentUserProvider->getCurrentUser()],
+            self::EVENT_METADATA_PROCESSED_NAME,
+            AssetFileStatusAdmNotificationDecorator::getInstance($event->getAsset())
         );
     }
 }
