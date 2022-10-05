@@ -71,18 +71,26 @@ anzu_systems_core_dam:
       id: 1
       image:
         storage_name: 'cms.image'
+        size_limit: 104857600 # 100MB
+        roi_width: 16
+        roi_height: 9
         file_versions:
           default: default
           versions: [ default ]
       audio:
         storage_name: 'cms.audio'
+        size_limit: 104857600 # 100MB
         file_versions:
           default: free
           versions: [ free, paid ]
       video:
         storage_name: 'cms.video'
+        size_limit: 5242880000  # 5GB
+        file_versions: ~
       document:
         storage_name: 'cms.document'
+        size_limit: 1048576000 # 1GB
+        file_versions: ~
   domains:
     admin:
       domain: '%env(resolve:string:DOMAIN_ADMIN_WEB)%'
