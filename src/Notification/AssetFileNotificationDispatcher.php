@@ -29,7 +29,7 @@ final class AssetFileNotificationDispatcher extends AbstractNotificationDispatch
     public function notifyAssetFileDeleted(AssetFileDeleteEvent $event): void
     {
         $this->notify(
-            [$this->currentUserProvider->getCurrentUser()],
+            [$event->getDeletedBy()->getId()],
             self::EVENT_ASSET_FILE_DELETED_NAME,
             AsseFileAdmNotificationDecorator::getBaseInstance($event->getAssetId(), $event->getDeleteId())
         );
@@ -41,7 +41,7 @@ final class AssetFileNotificationDispatcher extends AbstractNotificationDispatch
     public function notifyAssetFileChanged(AssetFileChangeStateEvent $event): void
     {
         $this->notify(
-            [$event->getAsset()->getCreatedBy()->getId()],
+            [$event->getAsset()->getModifiedBy()->getId()],
             self::EVENT_NAME_PREFIX . $event->getAsset()->getAssetAttributes()->getStatus()->toString(),
             AssetFileStatusAdmNotificationDecorator::getInstance($event->getAsset())
         );
@@ -53,7 +53,7 @@ final class AssetFileNotificationDispatcher extends AbstractNotificationDispatch
     public function notifyMetadataProcessed(MetadataProcessedEvent $event): void
     {
         $this->notify(
-            [$event->getAsset()->getCreatedBy()->getId()],
+            [$event->getAsset()->getModifiedBy()->getId()],
             self::EVENT_METADATA_PROCESSED_NAME,
             AssetFileStatusAdmNotificationDecorator::getInstance($event->getAsset())
         );
