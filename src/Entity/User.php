@@ -6,12 +6,17 @@ namespace App\Entity;
 
 use AnzuSystems\AuthBundle\Contracts\AnzuAuthUserInterface;
 use AnzuSystems\AuthBundle\Contracts\ApiTokenUserInterface;
-use AnzuSystems\Contracts\Entity\Traits\IdentityTrait;
+use AnzuSystems\Contracts\Entity\Interfaces\TimeTrackingInterface;
+use AnzuSystems\Contracts\Entity\Interfaces\UserTrackingInterface;
+use AnzuSystems\Contracts\Entity\Traits\TimeTrackingTrait;
+use AnzuSystems\CoreDamBundle\App;
 use AnzuSystems\CoreDamBundle\Entity\DamUser;
+use AnzuSystems\CoreDamBundle\Entity\Traits\UserTrackingTrait;
 use AnzuSystems\SerializerBundle\Attributes\Serialize;
 use AnzuSystems\SerializerBundle\Handler\Handlers\EntityIdHandler;
 use App\Security\Permission\UserPermissionResolver;
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -19,13 +24,25 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_email', fields: ['email'])]
-class User extends DamUser implements AnzuAuthUserInterface, PasswordAuthenticatedUserInterface, ApiTokenUserInterface
+class User extends DamUser implements
+    AnzuAuthUserInterface,
+    PasswordAuthenticatedUserInterface,
+    ApiTokenUserInterface,
+    UserTrackingInterface,
+    TimeTrackingInterface
 {
-    use IdentityTrait;
+    use UserTrackingTrait;
+    use TimeTrackingTrait;
 
     public const ID_ANONYMOUS = 1;
     public const ID_CONSOLE = 2;
     public const ID_ADMIN = 3;
+
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
+    #[ORM\Column(type: Types::INTEGER)]
+    #[Serialize]
+    protected ?int $id = null;
 
     /**
      * Unique Email of user.
@@ -55,7 +72,7 @@ class User extends DamUser implements AnzuAuthUserInterface, PasswordAuthenticat
     #[Serialize(strategy: Serialize::KEYS_VALUES)]
     private array $permissions;
 
-    #[ORM\ManyToMany(targetEntity: PermissionGroup::class, inversedBy: 'users', indexBy: 'id')]
+    #[ORM\ManyToMany(targetEntity: PermissionGroup::class, inversedBy: 'users', fetch: App::DOCTRINE_EXTRA_LAZY, indexBy: 'id')]
     #[ORM\JoinTable]
     #[Serialize(handler: EntityIdHandler::class, type: PermissionGroup::class)]
     private Collection $permissionGroups;
@@ -66,6 +83,11 @@ class User extends DamUser implements AnzuAuthUserInterface, PasswordAuthenticat
         $this->setPassword(null);
         $this->setPermissions([]);
         $this->setApiToken(null);
+        $this->setEnabled(true);
+        $this->setRoles([self::ROLE_USER]);
+        $this->setPermissionGroups(new ArrayCollection());
+        $this->setAssetLicences(new ArrayCollection());
+        $this->setAdminToExtSystems(new ArrayCollection());
     }
 
     public function getEmail(): string

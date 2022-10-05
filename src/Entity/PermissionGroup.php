@@ -57,6 +57,7 @@ class PermissionGroup implements IdentifiableInterface, UserTrackingInterface, T
      * List of users who belongs to permission group.
      */
     #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'permissionGroups', indexBy: 'id')]
+    #[Serialize(type: EntityIdHandler::class)]
     private Collection $users;
 
     public function __construct()
@@ -106,7 +107,6 @@ class PermissionGroup implements IdentifiableInterface, UserTrackingInterface, T
     /**
      * @return Collection<int, User>
      */
-    #[Serialize(handler: EntityIdHandler::class, type: User::class)]
     public function getUsers(): Collection
     {
         return $this->users;

@@ -11,9 +11,9 @@ final class Version20221003075735 extends AbstractMigration
 {
     public function up(Schema $schema): void
     {
-        $this->addSql("INSERT INTO `user` (id, email, roles, permissions, enabled) VALUES
-            (1, 'dam_anonymous@anzusystems.dev', '[\"ROLE_USER\"]', '[]', 0),
-            (2, 'dam_console@anzusystems.dev', '[\"ROLE_USER\"]', '[]', 0)
+        $this->addSql("INSERT INTO `user` (id, email, roles, permissions, enabled, created_by_id, modified_by_id, created_at, modified_at) VALUES
+            (1, 'dam_anonymous@anzusystems.dev', '[\"ROLE_USER\"]', '[]', 0, 1, 1, NOW(), NOW()),                                                       
+            (2, 'dam_console@anzusystems.dev', '[\"ROLE_USER\"]', '[]', 0, 1, 1, NOW(), NOW())                                                       
         ");
     }
 
