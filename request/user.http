@@ -1,3 +1,24 @@
 ### Get current user
 GET {{host}}/api/adm/v1/user/current
 Content-Type: application/json
+
+### Create user
+POST {{host}}/api/adm/v1/user
+Content-Type: application/json
+
+{
+  "email": "test6@petitpress.sk",
+  "plainPassword": "Hello.456"
+}
+
+> {%
+  client.global.set('userId', response.body.id)
+%}
+
+### Update user
+PUT {{host}}/api/adm/v1/user/{{userId}}
+Content-Type: application/json
+
+{
+  "plainPassword": "Hello.4567"
+}
