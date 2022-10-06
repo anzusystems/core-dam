@@ -4,11 +4,14 @@ declare(strict_types=1);
 
 namespace App\Domain\User;
 
+use AnzuSystems\Contracts\Entity\AnzuUser;
 use AnzuSystems\CoreDamBundle\Domain\AbstractManager;
+use AnzuSystems\CoreDamBundle\Entity\ExtSystem;
 use App\Entity\User;
 use App\Model\Domain\User\AbstractUserDto;
 use App\Model\Domain\User\CreateUserDto;
 use App\Model\Domain\User\UpdateUserDto;
+use Doctrine\Common\Collections\Collection;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 /**
@@ -40,7 +43,11 @@ final class UserManager extends AbstractManager
         $user
             ->setEnabled($createUserDto->isEnabled())
             ->setEmail($createUserDto->getEmail())
+            ->setAdminToExtSystems($createUserDto->getAdminToExtSystems())
         ;
+        if ($createUserDto->isSuperAdmin()) {
+            $user->setRoles([AnzuUser::ROLE_ADMIN]);
+        }
 
         return $this->create($user, $flush);
     }
@@ -51,6 +58,19 @@ final class UserManager extends AbstractManager
         $user
             ->setEnabled($updateUserDto->isEnabled())
         ;
+        $this->colUpdate(
+            oldCollection: $user->getAdminToExtSystems(),
+            newCollection: $updateUserDto->getAdminToExtSystems(),
+            addElementFn: function (Collection $oldCollection, ExtSystem $newExtSystem) use ($user) {
+                $newExtSystem->getAdminUsers()->add($user);
+                $oldCollection->add($newExtSystem);
+            },
+            removeElementFn: function (Collection $oldCollection, ExtSystem $oldExtSystem) use ($user) {
+                $oldExtSystem->getAdminUsers()->removeElement($user);
+                $oldCollection->removeElement($oldExtSystem);
+            }
+        );
+        $user = $this->toggleSuperAdminRole($user, $updateUserDto->isSuperAdmin());
 
         return $this->update($user, $user, $flush);
     }
@@ -92,5 +112,20 @@ final class UserManager extends AbstractManager
         );
 
         return $user->setPassword($password);
+    }
+
+    private function toggleSuperAdminRole(User $user, bool $isSuperAdmin): User
+    {
+        if ($isSuperAdmin) {
+            return $user
+                ->removeRole(AnzuUser::ROLE_USER)
+                ->addRole(AnzuUser::ROLE_ADMIN)
+            ;
+        }
+
+        return $user
+            ->removeRole(AnzuUser::ROLE_ADMIN)
+            ->addRole(AnzuUser::ROLE_USER)
+         ;
     }
 }

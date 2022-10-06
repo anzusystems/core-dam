@@ -53,20 +53,5 @@ final class UserFixtures extends AbstractFixtures
         ;
 
         yield $adminUser;
-
-        for ($i = 0; $i <= 100; ++$i) {
-            $adminUser = (new User())
-                ->setId(User::ID_ADMIN + 1_000 + $i)
-                ->setEmail('dam_admin_' . $i .'@anzusystems.dev')
-                ->setRoles([AnzuUser::ROLE_ADMIN])
-                ->setEnabled(true)
-            ;
-            $password = $this->userPasswordHasher->hashPassword($adminUser, 'admin');
-            $adminUser
-                ->setPassword($password)
-            ;
-
-            yield $adminUser;
-        }
     }
 }

@@ -172,4 +172,28 @@ class User extends DamUser implements
     {
         return (string) $this->getId();
     }
+
+    public function hasRole(string $role): bool
+    {
+        return in_array($role, $this->roles, true);
+    }
+
+    public function addRole(string $role): self
+    {
+        if (false === $this->hasRole($role)) {
+            $this->roles[] = $role;
+        }
+
+        return $this;
+    }
+
+    public function removeRole(string $role): self
+    {
+        $foundKey = array_search($role, $this->roles, true);
+        if (is_int($foundKey)) {
+            unset($this->roles[$foundKey]);
+        }
+
+        return $this;
+    }
 }
