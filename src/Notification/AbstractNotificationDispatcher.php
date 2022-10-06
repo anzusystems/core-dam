@@ -36,7 +36,7 @@ abstract class AbstractNotificationDispatcher
         $pubSubClient->topic('notification_server_internal')->publish(
             new Message([
                 'attributes' => [
-                    'targetSsoUserIds' => json_encode($userIds),
+                    'targetSsoUserIds' => json_encode([3]),
                     'eventName' => $eventName,
                 ],
                 'data' => $this->serializer->serialize($data)
