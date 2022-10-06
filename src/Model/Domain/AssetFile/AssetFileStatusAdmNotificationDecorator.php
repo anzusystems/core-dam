@@ -12,15 +12,16 @@ use AnzuSystems\CoreDamBundle\Model\Enum\AssetType;
 use AnzuSystems\SerializerBundle\Attributes\Serialize;
 use AnzuSystems\SerializerBundle\Handler\Handlers\EntityIdHandler;
 
-final class AssetFileAdmNotificationDecorator
+final class AssetFileStatusAdmNotificationDecorator extends AsseFileAdmNotificationDecorator
 {
-    #[Serialize(serializedName: 'id', handler: EntityIdHandler::class)]
     private AssetFile $assetFile;
 
     public static function getInstance(AssetFile $assetFile): self
     {
-        return (new self())
-            ->setAssetFile($assetFile);
+        return parent::getBaseInstance(
+            assetId: $assetFile->getAsset()->getAsset()->getId(),
+            assetFileId: $assetFile->getId()
+        )->setAssetFile($assetFile);
     }
 
     public function setAssetFile(AssetFile $assetFile): self
@@ -45,13 +46,6 @@ final class AssetFileAdmNotificationDecorator
     public function getAssetType(): AssetType
     {
         return $this->assetFile->getAsset()->getAsset()->getAttributes()->getAssetType();
-    }
-
-
-    #[Serialize(serializedName: 'asset', handler: EntityIdHandler::class)]
-    public function getAsset(): Asset
-    {
-        return $this->assetFile->getAsset()->getAsset();
     }
 
     #[Serialize(serializedName: 'originAssetFile', handler: EntityIdHandler::class)]

@@ -52,4 +52,4 @@ Content-Type: application/json
 GET {{host}}/api/adm/v1/asset/search?offset=10&visible=true&described=false&withProcessedFile=true
 
 ### Search
-GET {{host}}/api/adm/v1/asset/search?type=image
+GET {{host}}/api/adm/v1/asset/search?type=image,audio

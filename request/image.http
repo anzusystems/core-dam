@@ -132,3 +132,6 @@ Content-Type: application/json
 
 ### Get ROI list by image
 DELETE {{host}}/api/adm/v1/roi/{{roiId}}
+
+### Get ROI list by image
+DELETE {{host}}/api/adm/v1/asset/{{assetId}}
