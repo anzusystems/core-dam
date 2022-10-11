@@ -58,13 +58,11 @@ Content-Type: application/json
 
 [
   {
-    "id": "{{assetId}}",
+    "id": "1ed48871-f2e7-60e2-ad79-7512d5eea4e3",
     "described": true,
     "customData": {
       "title": "title",
-      "description": "Description",
-      "year": 2050,
-      "keywords": ["abc", "abc", "abc"]
+      "description": "Description"
     }
   }
 ]

@@ -10,6 +10,35 @@ anzu_systems_core_dam:
     image_chunk_config:
       min_size: 200000
       max_size: 500000000
+  display_title:
+    image:
+      - 'customData:title'
+      - 'customData:headline'
+      - 'assetFileAttributes:originFileName'
+      - 'asset:id'
+      - 'assetFile:id'
+      - 'assetTexts:title'
+    audio:
+      - 'customData:title'
+      - 'customData:headline'
+      - 'assetFileAttributes:originFileName'
+      - 'asset:id'
+      - 'assetFile:id'
+      - 'assetTexts:title'
+    video:
+      - 'customData:title'
+      - 'customData:headline'
+      - 'assetFileAttributes:originFileName'
+      - 'asset:id'
+      - 'assetFile:id'
+      - 'assetTexts:title'
+    document:
+      - 'customData:title'
+      - 'customData:headline'
+      - 'assetFileAttributes:originFileName'
+      - 'asset:id'
+      - 'assetFile:id'
+      - 'assetTexts:title'
   file_operations:
     tmp_dir_path: '/tmp'
     fixtures_dir_path: '%kernel.project_dir%/var/mnt/data/fixtures'
@@ -91,6 +120,16 @@ anzu_systems_core_dam:
         storage_name: 'cms.document'
         size_limit: 1048576000 # 1GB
         file_versions: ~
+    blog:
+      id: 2
+      image:
+        storage_name: 'cms.image'
+        size_limit: 104857600 # 100MB
+        roi_width: 16
+        roi_height: 9
+        file_versions:
+          default: default
+          versions: [ default ]
   domains:
     admin:
       domain: '%env(resolve:string:DOMAIN_ADMIN_WEB)%'
