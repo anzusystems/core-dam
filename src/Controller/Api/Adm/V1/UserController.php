@@ -14,6 +14,7 @@ use AnzuSystems\CommonBundle\Request\ParamConverter\ApiFilterParamConverter;
 use AnzuSystems\Contracts\Exception\AppReadOnlyModeException;
 use AnzuSystems\CoreDamBundle\Controller\Api\AbstractApiController;
 use AnzuSystems\CoreDamBundle\Model\OpenApi\Request\OARequest;
+use AnzuSystems\SerializerBundle\Exception\SerializerException;
 use AnzuSystems\SerializerBundle\Request\ParamConverter\SerializerParamConverter;
 use App\App;
 use App\Domain\User\UserFacade;
@@ -68,6 +69,8 @@ final class UserController extends AbstractApiController
     #[OAResponse([User::class])]
     public function getList(ApiParams $apiParams): JsonResponse
     {
+        $this->denyAccessUnlessGranted(DamPermissions::DAM_USER_VIEW);
+
         return $this->okResponse(
             $this->userRepo->findByApiParamsWithInfiniteListing($apiParams),
         );
@@ -97,6 +100,7 @@ final class UserController extends AbstractApiController
      *
      * @throws AppReadOnlyModeException
      * @throws ValidationException
+     * @throws SerializerException
      */
     #[Route('/{user}', 'update', ['user' => '\d+'], methods: [Request::METHOD_PUT])]
     #[ParamConverter('updateUserDto', converter: SerializerParamConverter::class)]

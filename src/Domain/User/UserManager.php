@@ -57,6 +57,7 @@ final class UserManager extends AbstractManager
         $user = $this->setPasswordToUserFromDto($user, $updateUserDto);
         $user
             ->setEnabled($updateUserDto->isEnabled())
+            ->setPermissions($updateUserDto->getPermissions())
         ;
         $this->colUpdate(
             oldCollection: $user->getAdminToExtSystems(),

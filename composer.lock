@@ -140,7 +140,7 @@
             "source": {
                 "type": "git",
                 "url": "git@ssh.dev.azure.com:v3/petitpress/Anzu/core-dam-bundle",
-                "reference": "68e74ab1656572d9bd64e6fc2c27d39fb27cbdbc"
+                "reference": "fa08d4f8829b07c1a07f0641726bee9494707f9d"
             },
             "require": {
                 "anzusystems/common-bundle": "^2.0.1",
@@ -202,7 +202,7 @@
                 "proprietary"
             ],
             "description": "Dam core bundle",
-            "time": "2022-10-11T10:18:31+00:00"
+            "time": "2022-10-11T10:50:58+00:00"
         },
         {
             "name": "anzusystems/serializer-bundle",

@@ -38,21 +38,9 @@ final class PermissionGroupManager extends AbstractManager
         $permissionGroup->setPermissions($newPermissionGroup->getPermissions());
         $permissionGroup->setTitle($newPermissionGroup->getTitle());
         $permissionGroup->setDescription($newPermissionGroup->getDescription());
-
-        $this->flush($flush);
-
-        return $permissionGroup;
-    }
-
-    public function updateUsers(
-        PermissionGroup $permissionGroup,
-        Collection $newUsers,
-        bool $flush = true
-    ): PermissionGroup {
-        $this->trackModification($permissionGroup);
         $this->colUpdate(
             oldCollection: $permissionGroup->getUsers(),
-            newCollection: $newUsers,
+            newCollection: $newPermissionGroup->getUsers(),
             addElementFn: function (Collection $oldCollection, User $newUser) use ($permissionGroup) {
                 $newUser->getPermissionGroups()->add($permissionGroup);
                 $oldCollection->add($newUser);

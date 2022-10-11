@@ -12,8 +12,6 @@ use AnzuSystems\CoreDamBundle\Event\MetadataProcessedEvent;
 use AnzuSystems\SerializerBundle\Exception\SerializerException;
 use App\Model\Domain\AssetFile\AsseFileAdmNotificationDecorator;
 use App\Model\Domain\AssetFile\AssetFileStatusAdmNotificationDecorator;
-use Google\Cloud\PubSub\Message;
-use Google\Cloud\PubSub\PubSubClient;
 
 final class AssetFileNotificationDispatcher extends AbstractNotificationDispatcher
 {

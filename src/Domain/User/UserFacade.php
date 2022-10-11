@@ -6,9 +6,11 @@ namespace App\Domain\User;
 
 use AnzuSystems\CommonBundle\Exception\ValidationException;
 use AnzuSystems\CoreDamBundle\Validator\EntityValidator;
+use AnzuSystems\SerializerBundle\Exception\SerializerException;
 use App\Entity\User;
 use App\Model\Domain\User\CreateUserDto;
 use App\Model\Domain\User\UpdateUserDto;
+use App\Notification\UserNotificationDispatcher;
 
 /**
  * Complete User processing.
@@ -18,6 +20,7 @@ final class UserFacade
     public function __construct(
         private readonly EntityValidator $validator,
         private readonly UserManager $userManager,
+        private readonly UserNotificationDispatcher $userNotificationDispatcher,
     ) {
     }
 
@@ -50,23 +53,28 @@ final class UserFacade
      * Process updating of user from DTO.
      *
      * @throws ValidationException
+     * @throws SerializerException
      */
     public function updateFromDto(User $user, UpdateUserDto $updateUserDto): User
     {
         $this->validator->validateDto($updateUserDto);
+        $user = $this->userManager->updateFromDto($user, $updateUserDto);
+        $this->userNotificationDispatcher->notifyUserUpdated((int) $user->getId());
 
-        return $this->userManager->updateFromDto($user, $updateUserDto);
+        return $user;
     }
 
     /**
      * Process updating of user.
      *
      * @throws ValidationException
+     * @throws SerializerException
      */
     public function update(User $user, User $newUser): User
     {
         $this->validator->validate($newUser, $user);
         $this->userManager->update($user, $newUser);
+        $this->userNotificationDispatcher->notifyUserUpdated((int) $user->getId());
 
         return $user;
     }

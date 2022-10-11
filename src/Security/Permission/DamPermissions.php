@@ -239,6 +239,72 @@ final class DamPermissions extends BaseDamPermissions
                     self::UI_GROUP => UiGroups::GROUP_PERMISSION_GROUP,
                 ],
             ],
+            // AssetLicence
+            self::DAM_ASSET_LICENCE_VIEW => [
+                self::GRANTS => [Grants::GRANT_ALLOW, Grants::GRANT_DENY],
+                self::UI => [
+                    self::UI_CATEGORY => UiCategories::CATEGORY_DAM,
+                    self::UI_GROUP => UiGroups::GROUP_ASSET_LICENCE,
+                ],
+            ],
+            self::DAM_ASSET_LICENCE_CREATE => [
+                self::GRANTS => [Grants::GRANT_ALLOW, Grants::GRANT_DENY],
+                self::UI => [
+                    self::UI_CATEGORY => UiCategories::CATEGORY_DAM,
+                    self::UI_GROUP => UiGroups::GROUP_ASSET_LICENCE,
+                ],
+            ],
+            self::DAM_ASSET_LICENCE_UPDATE => [
+                self::GRANTS => [Grants::GRANT_ALLOW, Grants::GRANT_DENY],
+                self::UI => [
+                    self::UI_CATEGORY => UiCategories::CATEGORY_DAM,
+                    self::UI_GROUP => UiGroups::GROUP_ASSET_LICENCE,
+                ],
+            ],
+            // ExtSystem
+            self::DAM_EXT_SYSTEM_VIEW => [
+                self::GRANTS => [Grants::GRANT_ALLOW, Grants::GRANT_DENY],
+                self::UI => [
+                    self::UI_CATEGORY => UiCategories::CATEGORY_DAM,
+                    self::UI_GROUP => UiGroups::GROUP_EXT_SYSTEM,
+                ],
+            ],
+            self::DAM_EXT_SYSTEM_UPDATE => [
+                self::GRANTS => [Grants::GRANT_ALLOW, Grants::GRANT_DENY],
+                self::UI => [
+                    self::UI_CATEGORY => UiCategories::CATEGORY_DAM,
+                    self::UI_GROUP => UiGroups::GROUP_EXT_SYSTEM,
+                ],
+            ],
+            // UI
+            UiPermissions::DAM_ASSET_LICENCE_UI => [
+                self::GRANTS => [Grants::GRANT_ALLOW, Grants::GRANT_DENY],
+                self::UI => [
+                    self::UI_CATEGORY => UiCategories::CATEGORY_ADMIN_DAM,
+                    self::UI_GROUP => UiGroups::GROUP_SIDEBAR_DIGITAL_MEDIA,
+                ],
+            ],
+            UiPermissions::DAM_EXT_SYSTEM_UI => [
+                self::GRANTS => [Grants::GRANT_ALLOW, Grants::GRANT_DENY],
+                self::UI => [
+                    self::UI_CATEGORY => UiCategories::CATEGORY_ADMIN_DAM,
+                    self::UI_GROUP => UiGroups::GROUP_SIDEBAR_DIGITAL_MEDIA,
+                ],
+            ],
+            UiPermissions::DAM_PERMISSION_GROUP_UI => [
+                self::GRANTS => [Grants::GRANT_ALLOW, Grants::GRANT_DENY],
+                self::UI => [
+                    self::UI_CATEGORY => UiCategories::CATEGORY_ADMIN_DAM,
+                    self::UI_GROUP => UiGroups::GROUP_SIDEBAR_DIGITAL_MEDIA,
+                ],
+            ],
+            UiPermissions::DAM_USER_UI => [
+                self::GRANTS => [Grants::GRANT_ALLOW, Grants::GRANT_DENY],
+                self::UI => [
+                    self::UI_CATEGORY => UiCategories::CATEGORY_ADMIN_DAM,
+                    self::UI_GROUP => UiGroups::GROUP_SIDEBAR_DIGITAL_MEDIA,
+                ],
+            ],
         ];
     }
 
@@ -246,6 +312,7 @@ final class DamPermissions extends BaseDamPermissions
     {
         return array_merge(
             BaseDamPermissions::ALL,
+            UiPermissions::ALL,
             [
                 self::DAM_USER_VIEW,
                 self::DAM_USER_CREATE,

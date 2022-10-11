@@ -21,6 +21,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use App\Validator\Constraints as AppAssert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_email', fields: ['email'])]
@@ -37,6 +38,7 @@ class User extends DamUser implements
     public const ID_ANONYMOUS = 1;
     public const ID_CONSOLE = 2;
     public const ID_ADMIN = 3;
+    public const ID_BASIC_USER = 4;
 
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'AUTO')]
@@ -69,6 +71,7 @@ class User extends DamUser implements
      * @var array<string, int>
      */
     #[ORM\Column(type: Types::JSON)]
+    #[AppAssert\PermissionValid(requireAll: false)]
     #[Serialize(strategy: Serialize::KEYS_VALUES)]
     private array $permissions;
 

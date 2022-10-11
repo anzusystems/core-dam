@@ -7,7 +7,6 @@ namespace App\Domain\PermissionGroup;
 use AnzuSystems\CommonBundle\Exception\ValidationException;
 use AnzuSystems\CoreDamBundle\Validator\EntityValidator;
 use App\Entity\PermissionGroup;
-use App\Model\Domain\PermissionGroup\UserCollectionDto;
 
 /**
  * Complete PermissionGroup processing.
@@ -44,18 +43,6 @@ final class PermissionGroupFacade
     ): PermissionGroup {
         $this->validator->validate($newPermissionGroup, $permissionGroup);
         $this->permissionGroupManager->update($permissionGroup, $newPermissionGroup);
-
-        return $permissionGroup;
-    }
-
-    /**
-     * Process updating of PermissionGroup users.
-     */
-    public function updateUsers(
-        PermissionGroup $permissionGroup,
-        UserCollectionDto $userCollectionDto
-    ): PermissionGroup {
-        $this->permissionGroupManager->updateUsers($permissionGroup, $userCollectionDto->getUsers());
 
         return $permissionGroup;
     }

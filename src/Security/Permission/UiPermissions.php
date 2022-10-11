@@ -6,11 +6,15 @@ namespace App\Security\Permission;
 
 final class UiPermissions
 {
-    public const DAM_JOB_UI = 'dam_job_ui';
-    public const DAM_VIDEO_UI = 'dam_video_ui';
-    public const DAM_AUDIO_UI = 'dam_audio_ui';
-    public const DAM_CATEGORY_UI = 'dam_category_ui';
-    public const DAM_AUDIO_CATEGORY_UI = 'dam_audioCategory_ui';
-    public const DAM_SHOW_UI = 'dam_show_ui';
-    public const DAM_AUDIO_SHOW_UI = 'dam_audioShow_ui';
+    public const DAM_USER_UI = 'dam_user_ui';
+    public const DAM_PERMISSION_GROUP_UI = 'dam_permissionGroup_ui';
+    public const DAM_EXT_SYSTEM_UI = 'dam_extSystem_ui';
+    public const DAM_ASSET_LICENCE_UI = 'dam_assetLicence_ui';
+
+    public const ALL = [
+        self::DAM_USER_UI,
+        self::DAM_PERMISSION_GROUP_UI,
+        self::DAM_EXT_SYSTEM_UI,
+        self::DAM_ASSET_LICENCE_UI,
+    ];
 }

@@ -50,7 +50,7 @@ class PermissionGroup implements IdentifiableInterface, UserTrackingInterface, T
      */
     #[ORM\Column(type: Types::JSON)]
     #[AppAssert\PermissionValid]
-    #[Serialize]
+    #[Serialize(strategy: Serialize::KEYS_VALUES)]
     private array $permissions;
 
     /**

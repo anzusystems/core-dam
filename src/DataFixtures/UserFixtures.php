@@ -6,6 +6,7 @@ namespace App\DataFixtures;
 
 use AnzuSystems\CommonBundle\DataFixtures\Fixtures\AbstractFixtures;
 use AnzuSystems\Contracts\Entity\AnzuUser;
+use AnzuSystems\CoreDamBundle\DataFixtures\AssetLicenceFixtures;
 use App\Domain\User\UserManager;
 use App\Entity\User;
 use Symfony\Component\Console\Helper\ProgressBar;
@@ -19,6 +20,8 @@ final class UserFixtures extends AbstractFixtures
     public function __construct(
         private readonly UserManager $userManager,
         private readonly UserPasswordHasherInterface $userPasswordHasher,
+        private readonly PermissionGroupFixtures $permissionGroupFixtures,
+        private readonly AssetLicenceFixtures $assetLicenceFixtures,
     ) {
     }
 
@@ -27,9 +30,18 @@ final class UserFixtures extends AbstractFixtures
         return User::class;
     }
 
+    public static function getDependencies(): array
+    {
+        return [PermissionGroupFixtures::class, AssetLicenceFixtures::class];
+    }
+
+    public function useCustomId(): bool
+    {
+        return true;
+    }
+
     public function load(ProgressBar $progressBar): void
     {
-        $this->configureAssignedGenerator();
         foreach ($progressBar->iterate($this->getData()) as $user) {
             $user = $this->userManager->create($user);
             $this->addToRegistry($user, (int) $user->getId());
@@ -53,5 +65,30 @@ final class UserFixtures extends AbstractFixtures
         ;
 
         yield $adminUser;
+
+        $basicUser = (new User())
+            ->setId(User::ID_BASIC_USER)
+            ->setEmail('dam_basic@anzusystems.dev')
+            ->setRoles([AnzuUser::ROLE_USER])
+            ->setEnabled(true)
+        ;
+        $password = $this->userPasswordHasher->hashPassword($basicUser, 'basic');
+        $basicUser
+            ->setPassword($password)
+        ;
+        $basicUser
+            ->getPermissionGroups()
+            ->add(
+                $this->permissionGroupFixtures->getOneFromRegistry(PermissionGroupFixtures::BASIC_GROUP_TITLE)
+            )
+        ;
+        $basicUser
+            ->getAssetLicences()
+            ->add(
+                $this->assetLicenceFixtures->getOneFromRegistry(AssetLicenceFixtures::DEFAULT_LICENCE_ID)
+            )
+        ;
+
+        yield $basicUser;
     }
 }

@@ -17,13 +17,12 @@ use AnzuSystems\CoreDamBundle\Controller\Api\AbstractApiController;
 use AnzuSystems\CoreDamBundle\Model\OpenApi\Request\OARequest;
 use AnzuSystems\SerializerBundle\Request\ParamConverter\SerializerParamConverter;
 use App\App;
-use App\Model\Domain\PermissionGroup\PermissionGroupCollectionDto;
 use App\Domain\PermissionGroup\PermissionGroupFacade;
 use App\Entity\PermissionGroup;
-use App\Model\Domain\PermissionGroup\UserCollectionDto;
+use App\Model\Domain\PermissionGroup\PermissionGroupCollectionDto;
+use App\Repository\PermissionGroupRepository;
 use App\Security\Permission\DamPermissions;
 use App\Security\Permission\UserPermissionResolver;
-use App\Repository\PermissionGroupRepository;
 use Doctrine\ORM\Exception\ORMException;
 use OpenApi\Attributes as OA;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -74,6 +73,8 @@ final class PermissionGroupController extends AbstractApiController
     #[OAResponse([PermissionGroup::class])]
     public function getList(ApiParams $apiParams): JsonResponse
     {
+        $this->denyAccessUnlessGranted(DamPermissions::DAM_PERMISSION_GROUP_VIEW);
+
         return $this->okResponse(
             $this->permissionGroupRepo->findByApiParams($apiParams),
         );
@@ -122,24 +123,6 @@ final class PermissionGroupController extends AbstractApiController
 
         return $this->okResponse(
             $this->permissionGroupFacade->update($permissionGroup, $newPermissionGroup)
-        );
-    }
-
-    /**
-     * Update users.
-     *
-     * @throws AppReadOnlyModeException
-     */
-    #[Route('/permission-group/{permissionGroup}/users', 'update_users', ['permissionGroup' => '\d+'], methods: [Request::METHOD_PATCH])]
-    #[ParamConverter('userCollectionDto', converter: SerializerParamConverter::class)]
-    #[OAParameterPath('permissionGroup'), OARequest(UserCollectionDto::class), OAResponse(PermissionGroup::class), OAResponseValidation]
-    public function updateUsers(PermissionGroup $permissionGroup, UserCollectionDto $userCollectionDto): JsonResponse
-    {
-        App::throwOnReadOnlyMode();
-        $this->denyAccessUnlessGranted(DamPermissions::DAM_PERMISSION_GROUP_UPDATE, $permissionGroup);
-
-        return $this->okResponse(
-            $this->permissionGroupFacade->updateUsers($permissionGroup, $userCollectionDto)
         );
     }
 

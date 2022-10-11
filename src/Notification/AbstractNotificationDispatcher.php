@@ -29,17 +29,17 @@ abstract class AbstractNotificationDispatcher
      *
      * @throws SerializerException
      */
-    protected function notify(array $userIds, string $eventName, object $data): void
+    protected function notify(array $userIds, string $eventName, object $data = null): void
     {
         $pubSubClient = new PubSubClient();
         // todo move topic name to env.
         $pubSubClient->topic('notification_server_internal')->publish(
             new Message([
                 'attributes' => [
-                    'targetSsoUserIds' => json_encode([3]),
+                    'targetSsoUserIds' => json_encode($userIds),
                     'eventName' => $eventName,
                 ],
-                'data' => $this->serializer->serialize($data)
+                'data' => $data ? $this->serializer->serialize($data) : ''
             ])
         );
     }
