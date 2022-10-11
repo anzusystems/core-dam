@@ -14,6 +14,7 @@ anzu_systems_core_dam:
     image:
       - 'customData:title'
       - 'customData:headline'
+      - 'assetTexts:title'
       - 'assetFileAttributes:originFileName'
       - 'asset:id'
       - 'assetFile:id'
@@ -21,6 +22,7 @@ anzu_systems_core_dam:
     audio:
       - 'customData:title'
       - 'customData:headline'
+      - 'assetTexts:title'
       - 'assetFileAttributes:originFileName'
       - 'asset:id'
       - 'assetFile:id'
@@ -28,6 +30,7 @@ anzu_systems_core_dam:
     video:
       - 'customData:title'
       - 'customData:headline'
+      - 'assetTexts:title'
       - 'assetFileAttributes:originFileName'
       - 'asset:id'
       - 'assetFile:id'
@@ -35,6 +38,7 @@ anzu_systems_core_dam:
     document:
       - 'customData:title'
       - 'customData:headline'
+      - 'assetTexts:title'
       - 'assetFileAttributes:originFileName'
       - 'asset:id'
       - 'assetFile:id'
