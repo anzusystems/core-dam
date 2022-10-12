@@ -29,7 +29,7 @@ final class AssetFileNotificationDispatcher extends AbstractNotificationDispatch
         $this->notify(
             [$event->getDeletedBy()->getId()],
             self::EVENT_ASSET_FILE_DELETED_NAME,
-            AsseFileAdmNotificationDecorator::getBaseInstance($event->getAssetId(), $event->getDeleteId())
+            AsseFileAdmNotificationDecorator::getBaseInstance($event->getDeleteAssetId(), $event->getDeleteId())
         );
     }
 
@@ -38,8 +38,11 @@ final class AssetFileNotificationDispatcher extends AbstractNotificationDispatch
      */
     public function notifyAssetFileChanged(AssetFileChangeStateEvent $event): void
     {
+        if (null === $event->getAsset()->getNotifyTo()) {
+            return;
+        }
         $this->notify(
-            [$event->getAsset()->getCreatedBy()->getId()],
+            [$event->getAsset()->getNotifyTo()->getId()],
             self::EVENT_NAME_PREFIX . $event->getAsset()->getAssetAttributes()->getStatus()->toString(),
             AssetFileStatusAdmNotificationDecorator::getInstance($event->getAsset())
         );
@@ -50,8 +53,11 @@ final class AssetFileNotificationDispatcher extends AbstractNotificationDispatch
      */
     public function notifyMetadataProcessed(MetadataProcessedEvent $event): void
     {
+        if (null === $event->getAsset()->getNotifyTo()) {
+            return;
+        }
         $this->notify(
-            [$event->getAsset()->getCreatedBy()->getId()],
+            [$event->getAsset()->getNotifyTo()->getId()],
             self::EVENT_METADATA_PROCESSED_NAME,
             AssetFileStatusAdmNotificationDecorator::getInstance($event->getAsset())
         );

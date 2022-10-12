@@ -3,6 +3,7 @@
 
 SUPERVISOR_DEFAULT_MESSENGER_NAMES='
     anzu_core_asset_file_change_state
+    anzu_core_asset_change_state
     core_dam_log
     user_update
 '

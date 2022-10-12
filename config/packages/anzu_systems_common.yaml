@@ -9,6 +9,7 @@ anzu_systems_common:
             - Symfony\Bundle\FrameworkBundle\Command\AssetsInstallCommand
             - Symfony\Bundle\FrameworkBundle\Command\CacheWarmupCommand
             - Symfony\Component\Messenger\Command\ConsumeMessagesCommand
+            - Symfony\Bundle\DebugBundle\Command\ServerDumpPlaceholderCommand
     health_check:
         enabled: true
         mysql_table_name: _doctrine_migration_versions

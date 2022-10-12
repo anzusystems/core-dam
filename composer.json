@@ -98,6 +98,7 @@
     "minimum-stability": "dev",
     "require-dev": {
         "symfony/stopwatch": "6.1.*",
+        "symfony/var-dumper": "6.1.*",
         "symfony/web-profiler-bundle": "6.1.*"
     }
 }

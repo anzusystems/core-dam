@@ -78,6 +78,7 @@ if [ -f /.dockerenv ]; then
 
     echo "[INFO] Create topics"
     bin/console anzu:topic:create notification_server_internal
+    bin/console messenger:setup-transports
 
     if ${DB_DROP}; then
         echo "[INFO] Dropping the database"
