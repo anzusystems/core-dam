@@ -74,6 +74,27 @@ anzu_systems_core_dam:
   image_settings:
     optimal_resizes: [ 2000, 1000, 500, 100 ]
     enable_crop_cache: true  # todo implement
+    color_set:
+      red:
+        rgb: [238, 2, 2]
+      yellow:
+        rgb: [251, 239, 0]
+      blue:
+        rgb: [30, 21, 246]
+      orange:
+        rgb: [244, 114, 0]
+      green:
+        rgb: [46, 145, 2]
+      purple:
+        rgb: [158, 11, 246]
+      white:
+        rgb: [255, 255, 255]
+      black:
+        rgb: [0, 0, 0]
+      pink:
+        rgb: [210, 7, 151]
+      brown:
+        rgb: [154, 0, 5]
     crop_allow_list:
       admin:
         domains: [ admin ]
