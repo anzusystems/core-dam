@@ -6,6 +6,7 @@ declare(strict_types=1);
 namespace App\Event\Subscriber;
 
 use AnzuSystems\CoreDamBundle\Event\MetadataProcessedEvent;
+use AnzuSystems\SerializerBundle\Exception\SerializerException;
 use App\Notification\AssetFileNotificationDispatcher;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -23,6 +24,9 @@ final class MetadataProcessedSubscriber implements EventSubscriberInterface
         ];
     }
 
+    /**
+     * @throws SerializerException
+     */
     public function onAssetChangeState(MetadataProcessedEvent $event): void
     {
         $this->dispatcher->notifyMetadataProcessed($event);
