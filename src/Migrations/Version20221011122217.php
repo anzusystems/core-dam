@@ -7,14 +7,11 @@ namespace App\Migrations;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
-/**
- * Auto-generated Migration: Please modify to your needs!
- */
 final class Version20221011122217 extends AbstractMigration
 {
-    public function getDescription(): string
+    public function isTransactional(): bool
     {
-        return '';
+        return false;
     }
 
     public function up(Schema $schema): void

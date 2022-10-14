@@ -66,6 +66,8 @@ anzu_systems_core_dam:
       Creator: ~
       Country: ~
       DateCreated: ~
+      Keywords: ~
+      OwnerName: ~
     image_metadata:
       ColorSpace:
         autoFillField: 'description'
@@ -131,6 +133,18 @@ anzu_systems_core_dam:
         file_versions:
           default: default
           versions: [ default ]
+        keywords:
+          enabled: true
+          required: true
+          autocomplete_from_exif_metadata_tags:
+            Keywords: ','
+            Subjects: ','
+        authors:
+          enabled: true
+          required: true
+          autocomplete_from_exif_metadata_tags:
+            Owners: ','
+            OwnerName: ~
       audio:
         storage_name: 'cms.audio'
         size_limit: 104857600 # 100MB
