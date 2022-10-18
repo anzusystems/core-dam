@@ -42,6 +42,8 @@ final class UserManager extends AbstractManager
         $user = $this->setPasswordToUserFromDto($user, $createUserDto);
         $user
             ->setEnabled($createUserDto->isEnabled())
+            ->setFirstName($createUserDto->getFirstName())
+            ->setLastName($createUserDto->getLastName())
             ->setEmail($createUserDto->getEmail())
             ->setAdminToExtSystems($createUserDto->getAdminToExtSystems())
         ;
@@ -57,6 +59,8 @@ final class UserManager extends AbstractManager
         $user = $this->setPasswordToUserFromDto($user, $updateUserDto);
         $user
             ->setEnabled($updateUserDto->isEnabled())
+            ->setFirstName($updateUserDto->getFirstName())
+            ->setLastName($updateUserDto->getLastName())
             ->setPermissions($updateUserDto->getPermissions())
         ;
         $this->colUpdate(
@@ -83,6 +87,8 @@ final class UserManager extends AbstractManager
     {
         $this->trackModification($user);
         $user
+            ->setFirstName($newUser->getFirstName())
+            ->setLastName($newUser->getLastName())
             ->setRoles($newUser->getRoles())
             ->setEmail($newUser->getEmail())
             ->setPermissions($newUser->getPermissions())
