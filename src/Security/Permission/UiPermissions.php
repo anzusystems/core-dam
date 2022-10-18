@@ -10,11 +10,15 @@ final class UiPermissions
     public const DAM_PERMISSION_GROUP_UI = 'dam_permissionGroup_ui';
     public const DAM_EXT_SYSTEM_UI = 'dam_extSystem_ui';
     public const DAM_ASSET_LICENCE_UI = 'dam_assetLicence_ui';
+    public const DAM_AUTHOR_UI = 'dam_author_ui';
+    public const DAM_KEYWORD_UI = 'dam_keyword_ui';
 
     public const ALL = [
         self::DAM_USER_UI,
         self::DAM_PERMISSION_GROUP_UI,
         self::DAM_EXT_SYSTEM_UI,
         self::DAM_ASSET_LICENCE_UI,
+        self::DAM_AUTHOR_UI,
+        self::DAM_KEYWORD_UI,
     ];
 }

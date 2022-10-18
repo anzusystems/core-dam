@@ -17,5 +17,7 @@ final class UiGroups
     public const GROUP_PERMISSION_GROUP = 'permissionGroup';
     public const GROUP_ASSET_LICENCE = 'assetLicence';
     public const GROUP_EXT_SYSTEM = 'extSystem';
+    public const GROUP_AUTHOR = 'author';
+    public const GROUP_KEYWORD = 'keyword';
     public const GROUP_SIDEBAR_DIGITAL_MEDIA = 'sidebarDigitalMedia';
 }

@@ -11,6 +11,7 @@ use AnzuSystems\Contracts\Entity\Interfaces\UserTrackingInterface;
 use AnzuSystems\Contracts\Entity\Traits\TimeTrackingTrait;
 use AnzuSystems\CoreDamBundle\App;
 use AnzuSystems\CoreDamBundle\Entity\DamUser;
+use AnzuSystems\CoreDamBundle\Entity\Traits\PersonNameTrait;
 use AnzuSystems\CoreDamBundle\Entity\Traits\UserTrackingTrait;
 use AnzuSystems\SerializerBundle\Attributes\Serialize;
 use AnzuSystems\SerializerBundle\Handler\Handlers\EntityIdHandler;
@@ -34,6 +35,7 @@ class User extends DamUser implements
 {
     use UserTrackingTrait;
     use TimeTrackingTrait;
+    use PersonNameTrait;
 
     public const ID_ANONYMOUS = 1;
     public const ID_CONSOLE = 2;
