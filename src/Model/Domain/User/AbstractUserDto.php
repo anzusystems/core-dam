@@ -5,12 +5,15 @@ declare(strict_types=1);
 namespace App\Model\Domain\User;
 
 use AnzuSystems\CoreDamBundle\Entity\ExtSystem;
+use AnzuSystems\CoreDamBundle\Entity\Traits\PersonNameTrait;
 use AnzuSystems\SerializerBundle\Attributes\Serialize;
 use AnzuSystems\SerializerBundle\Handler\Handlers\EntityIdHandler;
 use Doctrine\Common\Collections\ArrayCollection;
 
 abstract class AbstractUserDto
 {
+    use PersonNameTrait;
+
     #[Serialize]
     protected string $plainPassword;
 
