@@ -48,9 +48,9 @@ final class AssetFileStatusAdmNotificationDecorator extends AsseFileAdmNotificat
         return $this->assetFile->getAsset()->getAsset()->getAttributes()->getAssetType();
     }
 
-    #[Serialize(serializedName: 'originAssetFile', handler: EntityIdHandler::class)]
-    public function getOriginAsset(): ?AssetFile
+    #[Serialize]
+    public function getOriginAssetFile(): string
     {
-        return $this->assetFile->getOriginAsset();
+        return $this->assetFile->getAssetAttributes()->getOriginAssetId();
     }
 }
