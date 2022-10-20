@@ -148,7 +148,7 @@ anzu_systems_core_dam:
             OwnerName: ~
       audio:
         storage_name: 'cms.audio'
-        size_limit: 104857600 # 100MB
+        size_limit: 1048576000 # 1GB
         file_versions:
           default: free
           versions: [ free, paid ]
@@ -158,7 +158,7 @@ anzu_systems_core_dam:
         file_versions: ~
       document:
         storage_name: 'cms.document'
-        size_limit: 1048576000 # 1GB
+        size_limit: 104857600 # 100MB
         file_versions: ~
     blog:
       id: 2
