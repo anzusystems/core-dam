@@ -10,6 +10,10 @@ return static function (RoutingConfigurator $routes): void {
         ->prefix('/api/adm/v1/');
 
     $routes
+        ->import('@AnzuSystemsCoreDamBundle/Controller/Adm', type: 'attribute')
+        ->prefix('/adm/');
+
+    $routes
         ->import('@AnzuSystemsCoreDamBundle/Controller/ImageController.php', type: 'attribute')
         ->prefix('/');
 

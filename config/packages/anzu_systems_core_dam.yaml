@@ -1,5 +1,6 @@
 anzu_systems_core_dam:
   settings:
+    api_domain: '%env(resolve:string:DOMAIN_CORE_DAM_API)%'
     default_ext_system_id: 1
     default_asset_licence_id: 1
     allow_select_ext_system: false
@@ -116,18 +117,13 @@ anzu_systems_core_dam:
         crops:
           - { width: 800, height: 450 }   # anzu web general
           - { width: 350, height: 197 }   # anzu web box item photo
-  storage:
-    video: 'cms.audio'
-    image: 'cms.image'
-    document: 'cms.document'
-    audio: 'cms.audio'
-    chunk: 'cms.chunk'
-    crop: 'cms.crop'
   ext_systems:
     cms:
       id: 1
       image:
         storage_name: 'cms.image'
+        crop_storage_name: 'cms.crop'
+        chunk_storage_name: 'cms.image'
         size_limit: 104857600 # 100MB
         roi_width: 16
         roi_height: 9
@@ -148,22 +144,27 @@ anzu_systems_core_dam:
             OwnerName: ~
       audio:
         storage_name: 'cms.audio'
+        chunk_storage_name: 'cms.audio'
         size_limit: 1048576000 # 1GB
         file_versions:
           default: free
           versions: [ free, paid ]
       video:
         storage_name: 'cms.video'
+        chunk_storage_name: 'cms.video'
         size_limit: 5242880000  # 5GB
         file_versions: ~
       document:
         storage_name: 'cms.document'
+        chunk_storage_name: 'cms.document'
         size_limit: 104857600 # 100MB
         file_versions: ~
     blog:
       id: 2
       image:
         storage_name: 'cms.image'
+        crop_storage_name: 'cms.crop'
+        chunk_storage_name: 'cms.image'
         size_limit: 104857600 # 100MB
         roi_width: 16
         roi_height: 9

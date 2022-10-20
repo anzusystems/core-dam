@@ -13,7 +13,6 @@ return [
     AnzuSystems\CommonBundle\AnzuSystemsCommonBundle::class => ['all' => true],
     AnzuSystems\AuthBundle\AnzuSystemsAuthBundle::class => ['all' => true],
     Symfony\Bundle\DebugBundle\DebugBundle::class => ['dev' => true],
-    League\FlysystemBundle\FlysystemBundle::class => ['all' => true],
     AnzuSystems\SerializerBundle\AnzuSystemsSerializerBundle::class => ['all' => true],
     Symfony\Bundle\TwigBundle\TwigBundle::class => ['all' => true],
     Symfony\Bundle\WebProfilerBundle\WebProfilerBundle::class => ['dev' => true, 'test' => true],
