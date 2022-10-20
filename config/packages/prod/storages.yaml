@@ -1,4 +1,4 @@
-flysystem:
+anzu_systems_core_dam:
     storages:
         cms.audio:
             adapter: 'gcloud'
