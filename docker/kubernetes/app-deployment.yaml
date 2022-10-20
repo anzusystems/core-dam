@@ -165,6 +165,34 @@ spec:
           volumeMounts:
             - name: logs
               mountPath: /var/www/html/var/log
+        - name: messenger-anzu-core-asset-change-state-log
+          image: busybox
+          command: [ "/bin/sh", "-c" ]
+          args: [ "/var/www/html/var/log/tail-cmd -f /var/www/html/var/log/messenger_anzu_core_asset_change_state.log" ]
+          resources:
+            limits:
+              cpu: 5m
+              memory: 10Mi
+            requests:
+              cpu: 1m
+              memory: 5Mi
+          volumeMounts:
+            - name: logs
+              mountPath: /var/www/html/var/log
+        - name: messenger-anzu-core-asset-file-change-state-log
+          image: busybox
+          command: [ "/bin/sh", "-c" ]
+          args: [ "/var/www/html/var/log/tail-cmd -f /var/www/html/var/log/messenger_anzu_core_asset_file_change_state.log" ]
+          resources:
+            limits:
+              cpu: 5m
+              memory: 10Mi
+            requests:
+              cpu: 1m
+              memory: 5Mi
+          volumeMounts:
+            - name: logs
+              mountPath: /var/www/html/var/log
         - name: nginx-access-log
           image: busybox
           command: ["/bin/sh", "-c"]
