@@ -99,6 +99,7 @@ if [ -f /.dockerenv ]; then
         bin/console anzu:fixtures:generate
         bin/console anzu:elastic:rebuild asset
         bin/console anzu:elastic:rebuild keyword
+        bin/console anzu:elastic:rebuild author
         echo ""
     fi
 
