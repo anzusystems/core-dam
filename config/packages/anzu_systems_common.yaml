@@ -35,7 +35,7 @@ anzu_systems_common:
         enabled: true
         messenger_transport:
             name: 'core_dam_log'
-            dsn: 'http://pubsub-core-dam:8538/core_dam_log'
+            dsn: '%env(MESSENGER_TRANSPORT_DSN)%/core_dam_log'
         app:
             mongo:
                 uri: '%env(ANZU_MONGODB_APP_LOG_URI)%'
