@@ -29,6 +29,7 @@ anzu_systems_common:
         exception_handlers:
             - AnzuSystems\CommonBundle\Exception\Handler\NotFoundExceptionHandler
             - AnzuSystems\CommonBundle\Exception\Handler\AppReadOnlyModeExceptionHandler
+            - AnzuSystems\CommonBundle\Exception\Handler\ValidationExceptionHandler
             - AnzuSystems\CommonBundle\Exception\Handler\AccessDeniedExceptionHandler
     logs:
         enabled: true
