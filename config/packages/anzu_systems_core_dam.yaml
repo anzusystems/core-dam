@@ -140,6 +140,7 @@ anzu_systems_core_dam:
           enabled: true
           required: true
           autocomplete_from_exif_metadata_tags:
+            Artist: ','
             Owners: ','
             OwnerName: ~
       audio:
