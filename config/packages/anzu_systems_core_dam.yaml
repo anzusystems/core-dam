@@ -9,8 +9,8 @@ anzu_systems_core_dam:
     max_bulk_item_count: 10
     acl_check_enabled: true
     image_chunk_config:
-      min_size: 200000
-      max_size: 500000000
+      min_size: '%env(byte_size:APP_SIZE_MIN_CHUNK_SIZE)%'
+      max_size: '%env(byte_size:APP_SIZE_MAX_CHUNK_SIZE)%'
   display_title:
     image:
       - 'customData:title'
@@ -124,7 +124,7 @@ anzu_systems_core_dam:
         storage_name: 'cms.image'
         crop_storage_name: 'cms.crop'
         chunk_storage_name: 'cms.image'
-        size_limit: 104857600 # 100MB
+        size_limit: '%env(byte_size:APP_CMS_IMAGE_MAX_SIZE)%'
         roi_width: 16
         roi_height: 9
         file_versions:
@@ -146,19 +146,19 @@ anzu_systems_core_dam:
       audio:
         storage_name: 'cms.audio'
         chunk_storage_name: 'cms.audio'
-        size_limit: 1048576000 # 1GB
+        size_limit: '%env(byte_size:APP_CMS_AUDIO_MAX_SIZE)%'
         file_versions:
           default: free
           versions: [ free, paid ]
       video:
         storage_name: 'cms.video'
         chunk_storage_name: 'cms.video'
-        size_limit: 5242880000  # 5GB
+        size_limit: '%env(byte_size:APP_CMS_VIDEO_MAX_SIZE)%'
         file_versions: ~
       document:
         storage_name: 'cms.document'
         chunk_storage_name: 'cms.document'
-        size_limit: 104857600 # 100MB
+        size_limit: '%env(byte_size:APP_CMS_DOCUMENT_MAX_SIZE)%'
         file_versions: ~
     blog:
       id: 2
@@ -166,7 +166,7 @@ anzu_systems_core_dam:
         storage_name: 'cms.image'
         crop_storage_name: 'cms.crop'
         chunk_storage_name: 'cms.image'
-        size_limit: 104857600 # 100MB
+        size_limit: '%env(byte_size:APP_CMS_BLOG_MAX_SIZE)%'
         roi_width: 16
         roi_height: 9
         file_versions:
