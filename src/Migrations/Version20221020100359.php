@@ -9,6 +9,11 @@ use Doctrine\Migrations\AbstractMigration;
 
 final class Version20221020100359 extends AbstractMigration
 {
+    public function isTransactional(): bool
+    {
+        return false;
+    }
+
     public function up(Schema $schema): void
     {
         $this->addSql('CREATE TABLE asset_author (asset_id CHAR(36) NOT NULL COMMENT \'(DC2Type:guid)\', author_id CHAR(36) NOT NULL COMMENT \'(DC2Type:guid)\', INDEX IDX_558257D55DA1941 (asset_id), INDEX IDX_558257D5F675F31B (author_id), PRIMARY KEY(asset_id, author_id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
