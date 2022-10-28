@@ -15,6 +15,7 @@ final class BaseVoter extends AbstractVoter
             DamPermissions::DAM_CUSTOM_FORM_CREATE,
             DamPermissions::DAM_CUSTOM_FORM_UPDATE,
             DamPermissions::DAM_CUSTOM_FORM_VIEW,
+            DamPermissions::DAM_CUSTOM_FORM_ELEMENT_VIEW,
             DamPermissions::DAM_REGION_OF_INTEREST_CREATE,
             DamPermissions::DAM_REGION_OF_INTEREST_UPDATE,
             DamPermissions::DAM_REGION_OF_INTEREST_VIEW,

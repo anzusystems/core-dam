@@ -163,6 +163,7 @@ anzu_systems_core_dam:
     blog:
       id: 2
       image:
+        custom_metadata_pinned_amount: 2
         storage_name: 'cms.image'
         crop_storage_name: 'cms.crop'
         chunk_storage_name: 'cms.image'
