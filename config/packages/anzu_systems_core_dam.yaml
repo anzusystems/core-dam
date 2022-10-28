@@ -132,13 +132,13 @@ anzu_systems_core_dam:
           versions: [ default ]
         keywords:
           enabled: true
-          required: true
+          required: false
           autocomplete_from_exif_metadata_tags:
             Keywords: ','
             Subjects: ','
         authors:
           enabled: true
-          required: true
+          required: false
           autocomplete_from_exif_metadata_tags:
             Artist: ','
             Owners: ','
