@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "72e1097e7010331bbb8a87f09fb03334",
+    "content-hash": "cd65483a10673394980e869d0b79dfd5",
     "packages": [
         {
             "name": "anzusystems/auth-bundle",
@@ -136,11 +136,11 @@
         },
         {
             "name": "anzusystems/core-dam-bundle",
-            "version": "dev-develop",
+            "version": "dev-feature/distribution",
             "source": {
                 "type": "git",
                 "url": "git@ssh.dev.azure.com:v3/petitpress/Anzu/core-dam-bundle",
-                "reference": "8e4500f07e1c2d285bfeb68057e0c6d98a73f4b0"
+                "reference": "1a2dc2a7224ba42059818b670b6a1ae28d96559b"
             },
             "require": {
                 "anzusystems/common-bundle": "^2.0.1",
@@ -202,7 +202,7 @@
                 "proprietary"
             ],
             "description": "Dam core bundle",
-            "time": "2022-10-28T13:15:26+00:00"
+            "time": "2022-11-04T06:53:08+00:00"
         },
         {
             "name": "anzusystems/serializer-bundle",
