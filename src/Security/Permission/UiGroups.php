@@ -19,5 +19,7 @@ final class UiGroups
     public const GROUP_EXT_SYSTEM = 'extSystem';
     public const GROUP_AUTHOR = 'author';
     public const GROUP_KEYWORD = 'keyword';
+    public const GROUP_DISTRIBUTION_CATEGORY = 'distributionCategory';
+    public const GROUP_DISTRIBUTION_CATEGORY_SELECT = 'distributionCategorySelect';
     public const GROUP_SIDEBAR_DIGITAL_MEDIA = 'sidebarDigitalMedia';
 }

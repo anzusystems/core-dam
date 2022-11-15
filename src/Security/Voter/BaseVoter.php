@@ -40,6 +40,12 @@ final class BaseVoter extends AbstractVoter
             DamPermissions::DAM_KEYWORD_CREATE,
             DamPermissions::DAM_KEYWORD_UPDATE,
             DamPermissions::DAM_KEYWORD_DELETE,
+            DamPermissions::DAM_DISTRIBUTION_CATEGORY_VIEW,
+            DamPermissions::DAM_DISTRIBUTION_CATEGORY_CREATE,
+            DamPermissions::DAM_DISTRIBUTION_CATEGORY_UPDATE,
+            DamPermissions::DAM_DISTRIBUTION_CATEGORY_DELETE,
+            DamPermissions::DAM_DISTRIBUTION_CATEGORY_SELECT_VIEW,
+            DamPermissions::DAM_DISTRIBUTION_CATEGORY_SELECT_UPDATE,
         ], UiPermissions::ALL);
     }
 }
