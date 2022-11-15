@@ -103,6 +103,9 @@ if [ -f /.dockerenv ]; then
         echo ""
     fi
 
+    echo "[INFO] Synchronize DistributionCategorySelect according ext systems distribution requirements."
+    bin/console anzu-dam:distribution:sync-category-select
+
     if ${MESSENGER_START}; then
         for messenger in ${SUPERVISOR_MESSENGERS}; do
             echo "[INFO] Starting ${messenger} messenger"

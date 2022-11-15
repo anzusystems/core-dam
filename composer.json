@@ -8,6 +8,7 @@
         "ext-iconv": "*",
         "ext-redis": "^5.3",
         "anzusystems/auth-bundle": "dev-main",
+        "anzusystems/common-bundle": "dev-fix_mongo_and_custom_filters as 2.0.4",
         "anzusystems/core-dam-bundle": "dev-feature/distribution",
         "doctrine/doctrine-migrations-bundle": "^3.2",
         "doctrine/orm": "2.13.1",
