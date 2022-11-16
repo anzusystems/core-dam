@@ -9,4 +9,5 @@ framework:
                 provider: CacheRedis
             core_dam_app.cache:
                 adapter: cache.adapter.filesystem
+#                provider: DamRedis
 

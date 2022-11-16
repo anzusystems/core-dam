@@ -121,6 +121,7 @@ anzu_systems_core_dam:
     cms:
       id: 1
       image:
+        custom_metadata_pinned_amount: 3
         storage_name: 'cms.image'
         crop_storage_name: 'cms.crop'
         chunk_storage_name: 'cms.image'
@@ -144,6 +145,7 @@ anzu_systems_core_dam:
             Owners: ','
             OwnerName: ~
       audio:
+        custom_metadata_pinned_amount: 3
         storage_name: 'cms.audio'
         chunk_storage_name: 'cms.audio'
         size_limit: '%env(byte_size:APP_CMS_AUDIO_MAX_SIZE)%'
@@ -151,6 +153,7 @@ anzu_systems_core_dam:
           default: free
           versions: [ free, paid ]
       video:
+        custom_metadata_pinned_amount: 3
         storage_name: 'cms.video'
         chunk_storage_name: 'cms.video'
         size_limit: '%env(byte_size:APP_CMS_VIDEO_MAX_SIZE)%'
@@ -175,11 +178,12 @@ anzu_systems_core_dam:
                 required: false
             artemis_cms:
               blocked_by: [youtube_cms_main, youtube_cms_fici, jw_cms]
+              strategy: at_least_one # none, one_from_type, wait_for_all
               category_select:
                 enabled: true
                 required: true
-              strategy: at_least_one # none, one_from_type, wait_for_all
       document:
+        custom_metadata_pinned_amount: 3
         storage_name: 'cms.document'
         chunk_storage_name: 'cms.document'
         size_limit: '%env(byte_size:APP_CMS_DOCUMENT_MAX_SIZE)%'
