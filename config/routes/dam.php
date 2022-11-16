@@ -18,6 +18,10 @@ return static function (RoutingConfigurator $routes): void {
         ->prefix('/');
 
     $routes
+        ->import('@AnzuSystemsCoreDamBundle/Controller/YoutubeController.php', type: 'attribute')
+        ->prefix('/');
+
+    $routes
         ->import('@AnzuSystemsCoreDamBundle/Controller/AudioController.php', type: 'attribute')
         ->prefix('/');
 

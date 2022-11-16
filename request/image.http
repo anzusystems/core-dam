@@ -3,7 +3,7 @@ POST {{host}}/api/adm/v1/image/licence/1
 Content-Type: application/json
 
 {
-  "mimeType": "image/jpeg",
+  "mimeType": "image/jpe",
   "checksum": "123456",
   "size": 323386
 }

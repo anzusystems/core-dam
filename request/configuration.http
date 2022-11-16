@@ -14,3 +14,7 @@ Content-Type: application/json
 ### Fetch admin configuration
 GET {{host}}/api/adm/v1/asset-custom-form/ext-system/2/type/image/element?limit=8
 Content-Type: application/json
+
+### Fetch admin configuration
+GET {{host}}/api/adm/v1/asset-custom-form/ext-system/1/type/image
+Content-Type: application/json

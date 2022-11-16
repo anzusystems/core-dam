@@ -158,6 +158,21 @@ anzu_systems_core_dam:
         chunk_storage_name: 'cms.video'
         size_limit: '%env(byte_size:APP_CMS_VIDEO_MAX_SIZE)%'
         file_versions: ~
+        distribution:
+          distribution_services: [ youtube_cms_main, youtube_cms_fici, jw_cms, artemis_cms ]
+          distribution_requirements:
+            youtube_cms_main:
+              blocked_by: []
+              strategy: none
+            youtube_cms_fici:
+              blocked_by: [ ]
+              strategy: none
+            jw_cms:
+              blocked_by: [ ]
+              strategy: none
+            artemis_cms:
+              blocked_by: [youtube_cms_main, youtube_cms_fici, jw_cms]
+              strategy: at_least_one # none, one_from_type, wait_for_all
       document:
         custom_metadata_pinned_amount: 3
         storage_name: 'cms.document'

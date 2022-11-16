@@ -1,0 +1,39 @@
+anzu_systems_core_dam:
+    distribution_services:
+        youtube_cms_main:
+            type: youtubeDistribution
+            module: AnzuSystems\CoreDamBundle\Distribution\Modules\YoutubeDistributionModule
+            options:
+                shared_login: true
+                oauth_credentials: '%env(resolve:string:DISTRIBUTION_YOUTUBE_CMS_MAIN_OAUTH_CREDENTIALS)%'
+                channel_id: '%env(resolve:string:DISTRIBUTION_YOUTUBE_CMS_MAIN_CHANNEL_ID)%'
+        youtube_cms_fici:
+            type: youtubeDistribution
+            module: AnzuSystems\CoreDamBundle\Distribution\Modules\YoutubeDistributionModule
+            options:
+                oauth_credentials: '%env(resolve:string:DISTRIBUTION_YOUTUBE_CMS_FICI_OAUTH_CREDENTIALS)%'
+                channel_id: '%env(resolve:string:DISTRIBUTION_YOUTUBE_CMS_FICI_CHANNEL_ID)%'
+        jw_cms:
+            type: jwDistribution
+            module: AnzuSystems\CoreDamBundle\Distribution\Modules\JwPlayerDistributionModule
+            options:
+                key: '%env(string:DISTRIBUTION_YOUTUBE_JW_CMS_KEY)%'
+                secret: '%env(string:DISTRIBUTION_YOUTUBE_JW_CMS_SECRET)%'
+                secret_v2: '%env(string:DISTRIBUTION_YOUTUBE_JW_CMS_SECRET_V2)%'
+        artemis_cms:
+            type: artemisDistribution
+            module: App\Distribution\Modules\ArtemisVideoDistributionModule
+            options:
+                endpoint: '%env(string:DISTRIBUTION_ARTEMIS_CMS_ENDPOINT)%'
+                api_token: '%env(string:DISTRIBUTION_ARTEMIS_CMS_API_TOKEN)%'
+                api_key_path: '%env(string:DISTRIBUTION_ARTEMIS_CMS_API_KEY_PATH)%'
+                api_cert_path: '%env(string:DISTRIBUTION_ARTEMIS_CMS_API_CERT_PATH)%'
+        custom_cms:
+            type: customDistribution
+            module: App\Distribution\Modules\ArtemisVideoDistributionModule
+            options:
+                endpoint: '%env(string:DISTRIBUTION_ARTEMIS_CMS_ENDPOINT)%'
+                api_token: '%env(string:DISTRIBUTION_ARTEMIS_CMS_API_TOKEN)%'
+                api_key_path: '%env(string:DISTRIBUTION_ARTEMIS_CMS_API_KEY_PATH)%'
+                api_cert_path: '%env(string:DISTRIBUTION_ARTEMIS_CMS_API_CERT_PATH)%'
+

@@ -1,0 +1,45 @@
+### Youtube distribute
+POST {{host}}/api/adm/v1/distribution/asset-file/aa967cf4-0ea9-499e-be2a-13bf0b63eabe/youtube
+Content-Type: application/json
+
+{
+  "publishAt": null,
+  "channelId": "string",
+  "privacy": "private",
+  "videoFile": "aa967cf4-0ea9-499e-be2a-13bf0b63eabe",
+  "texts": {
+    "title": "title",
+    "description": "description",
+    "keywords": ["aaa", "bbb"]
+  }
+}
+
+> {%
+  client.global.set('youtubeId', response.body.id)
+%}
+
+### Custom distribute
+POST {{host}}/api/adm/v1/distribution/asset-file/aa967cf4-0ea9-499e-be2a-13bf0b63eabe/jw-video
+Content-Type: application/json
+
+{
+}
+
+> {%
+  client.global.set('jwId', response.body.id)
+%}
+
+### Custom distribute
+POST {{host}}/api/adm/v1/distribution/asset-file/aa967cf4-0ea9-499e-be2a-13bf0b63eabe/custom
+Content-Type: application/json
+
+{
+  "customData": {
+    "createArticle": true
+  },
+  "blockedBy": [{{youtubeId}}, {{jwId}}]
+}
+
+> {%
+  client.global.set('jwId', response.body.id)
+%}
