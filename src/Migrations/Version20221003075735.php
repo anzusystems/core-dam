@@ -11,10 +11,16 @@ final class Version20221003075735 extends AbstractMigration
 {
     public function up(Schema $schema): void
     {
-        $this->addSql("INSERT INTO `user` (id, email, roles, permissions, enabled, created_by_id, modified_by_id, created_at, modified_at) VALUES
-            (1, 'dam_anonymous@anzusystems.dev', '[\"ROLE_USER\"]', '[]', 0, 1, 1, NOW(), NOW()),                                                       
-            (2, 'dam_console@anzusystems.dev', '[\"ROLE_USER\"]', '[]', 0, 1, 1, NOW(), NOW())                                                       
+        $this->addSql("INSERT INTO `user` (id, email, first_name, last_name, roles, permissions, enabled, created_by_id, modified_by_id, created_at, modified_at) VALUES
+            (1, 'dam_anonymous@anzusystems.dev', 'Anonymous', 'DAM', '[\"ROLE_USER\"]', '[]', 0, 1, 1, NOW(), NOW()),                                                       
+            (2, 'dam_console@anzusystems.dev', 'Console', 'DAM', '[\"ROLE_USER\"]', '[]', 0, 1, 1, NOW(), NOW())                                                       
         ");
+
+        $this->addSql(
+            'INSERT INTO `ext_system` (id, `name`, `slug`, created_by_id, modified_by_id, created_at, modified_at) VALUES
+            (1, \'CMS system\', \'cms\', 1, 1, NOW(), NOW()),
+            (2, \'Blog system\', \'blog\', 1, 1, NOW(), NOW());
+        ');
     }
 
     public function down(Schema $schema): void

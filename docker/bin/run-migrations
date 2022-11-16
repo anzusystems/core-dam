@@ -17,3 +17,6 @@ echo "[INFO] Doctrine migrations"
 bin/console doctrine:database:create --if-not-exists
 bin/console doctrine:migrations:sync-metadata-storage --no-interaction
 bin/console doctrine:migrations:migrate --no-interaction --allow-no-migration
+
+echo "[INFO] Synchronize DistributionCategorySelect according ext systems distribution requirements."
+bin/console anzu-dam:distribution:sync-category-select

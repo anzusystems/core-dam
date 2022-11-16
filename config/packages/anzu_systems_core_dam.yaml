@@ -164,15 +164,24 @@ anzu_systems_core_dam:
             youtube_cms_main:
               blocked_by: []
               strategy: none
+              category_select:
+                enabled: true
+                required: false
             youtube_cms_fici:
               blocked_by: [ ]
               strategy: none
             jw_cms:
               blocked_by: [ ]
               strategy: none
+              category_select:
+                enabled: true
+                required: false
             artemis_cms:
               blocked_by: [youtube_cms_main, youtube_cms_fici, jw_cms]
               strategy: at_least_one # none, one_from_type, wait_for_all
+              category_select:
+                enabled: true
+                required: true
       document:
         custom_metadata_pinned_amount: 3
         storage_name: 'cms.document'

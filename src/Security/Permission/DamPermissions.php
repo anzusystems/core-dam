@@ -334,6 +334,50 @@ final class DamPermissions extends BaseDamPermissions
                     self::UI_GROUP => UiGroups::GROUP_KEYWORD,
                 ],
             ],
+            // Distribution Category
+            self::DAM_DISTRIBUTION_CATEGORY_VIEW => [
+                self::GRANTS => [Grants::GRANT_ALLOW, Grants::GRANT_DENY],
+                self::UI => [
+                    self::UI_CATEGORY => UiCategories::CATEGORY_DAM,
+                    self::UI_GROUP => UiGroups::GROUP_DISTRIBUTION_CATEGORY,
+                ],
+            ],
+            self::DAM_DISTRIBUTION_CATEGORY_CREATE => [
+                self::GRANTS => [Grants::GRANT_ALLOW, Grants::GRANT_DENY],
+                self::UI => [
+                    self::UI_CATEGORY => UiCategories::CATEGORY_DAM,
+                    self::UI_GROUP => UiGroups::GROUP_DISTRIBUTION_CATEGORY,
+                ],
+            ],
+            self::DAM_DISTRIBUTION_CATEGORY_UPDATE => [
+                self::GRANTS => [Grants::GRANT_ALLOW, Grants::GRANT_DENY],
+                self::UI => [
+                    self::UI_CATEGORY => UiCategories::CATEGORY_DAM,
+                    self::UI_GROUP => UiGroups::GROUP_DISTRIBUTION_CATEGORY,
+                ],
+            ],
+            self::DAM_DISTRIBUTION_CATEGORY_DELETE => [
+                self::GRANTS => [Grants::GRANT_ALLOW, Grants::GRANT_DENY],
+                self::UI => [
+                    self::UI_CATEGORY => UiCategories::CATEGORY_DAM,
+                    self::UI_GROUP => UiGroups::GROUP_DISTRIBUTION_CATEGORY,
+                ],
+            ],
+            // Distribution Category Select
+            self::DAM_DISTRIBUTION_CATEGORY_SELECT_VIEW => [
+                self::GRANTS => [Grants::GRANT_ALLOW, Grants::GRANT_DENY],
+                self::UI => [
+                    self::UI_CATEGORY => UiCategories::CATEGORY_DAM,
+                    self::UI_GROUP => UiGroups::GROUP_DISTRIBUTION_CATEGORY_SELECT,
+                ],
+            ],
+            self::DAM_DISTRIBUTION_CATEGORY_SELECT_UPDATE => [
+                self::GRANTS => [Grants::GRANT_ALLOW, Grants::GRANT_DENY],
+                self::UI => [
+                    self::UI_CATEGORY => UiCategories::CATEGORY_DAM,
+                    self::UI_GROUP => UiGroups::GROUP_DISTRIBUTION_CATEGORY_SELECT,
+                ],
+            ],
             // UI
             UiPermissions::DAM_ASSET_LICENCE_UI => [
                 self::GRANTS => [Grants::GRANT_ALLOW, Grants::GRANT_DENY],
@@ -371,6 +415,20 @@ final class DamPermissions extends BaseDamPermissions
                 ],
             ],
             UiPermissions::DAM_KEYWORD_UI => [
+                self::GRANTS => [Grants::GRANT_ALLOW, Grants::GRANT_DENY],
+                self::UI => [
+                    self::UI_CATEGORY => UiCategories::CATEGORY_ADMIN_DAM,
+                    self::UI_GROUP => UiGroups::GROUP_SIDEBAR_DIGITAL_MEDIA,
+                ],
+            ],
+            UiPermissions::DAM_DISTRIBUTION_CATEGORY_UI => [
+                self::GRANTS => [Grants::GRANT_ALLOW, Grants::GRANT_DENY],
+                self::UI => [
+                    self::UI_CATEGORY => UiCategories::CATEGORY_ADMIN_DAM,
+                    self::UI_GROUP => UiGroups::GROUP_SIDEBAR_DIGITAL_MEDIA,
+                ],
+            ],
+            UiPermissions::DAM_DISTRIBUTION_CATEGORY_SELECT_UI => [
                 self::GRANTS => [Grants::GRANT_ALLOW, Grants::GRANT_DENY],
                 self::UI => [
                     self::UI_CATEGORY => UiCategories::CATEGORY_ADMIN_DAM,

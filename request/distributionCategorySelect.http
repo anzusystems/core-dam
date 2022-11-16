@@ -1,0 +1,42 @@
+### Create
+POST {{host}}/api/adm/v1/distribution/category-select
+Content-Type: application/json
+Authorization: Bearer {{adm_access_token}}
+
+{
+  "name": "Test",
+  "serviceSlug": "artemis_cms",
+  "extSystem": 1,
+  "options": [
+    {
+      "name": "Test 1"
+    },
+    {
+      "name": "Test 2"
+    }
+  ]
+}
+
+### Update
+PUT {{host}}/api/adm/v1/distribution/category-select/1ed5b7de-b25e-615e-8121-8b86bbe00cd5
+Content-Type: application/json
+Authorization: Bearer {{adm_access_token}}
+
+{
+  "id": "1ed5b7de-b25e-615e-8121-8b86bbe00cd5",
+  "name": "Test (updated)",
+  "serviceSlug": "artemis_cms",
+  "extSystem": 1,
+  "options": [
+    {
+      "id": "1ed5b7de-b25d-6f7e-9724-8b86bbe00cd5",
+      "name": "Test 2",
+      "position": 2
+    },
+    {
+      "id": "1ed5b7de-b25d-69f2-b2e2-8b86bbe00cd5",
+      "name": "Test 1 (updated)",
+      "position": 3
+    }
+  ]
+}
