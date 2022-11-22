@@ -1,0 +1,7 @@
+anzu_systems_core_dam:
+    asset_external_providers:
+        unsplash_cms:
+            provider: AnzuSystems\CoreDamBundle\AssetExternalProvider\Provider\UnsplashAssetExternalProvider
+            options:
+                access_key: '%env(string:ASSET_EXTERNAL_PROVIDER_UNSPLASH_CMS_ACCESS_KEY)%'
+

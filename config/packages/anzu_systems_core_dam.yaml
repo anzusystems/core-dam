@@ -8,6 +8,8 @@ anzu_systems_core_dam:
     admin_allow_list_name: 'admin'
     max_bulk_item_count: 10
     acl_check_enabled: true
+    app_redis: DamRedis
+    cache_redis: CacheRedis
     image_chunk_config:
       min_size: '%env(byte_size:APP_SIZE_MIN_CHUNK_SIZE)%'
       max_size: '%env(byte_size:APP_SIZE_MAX_CHUNK_SIZE)%'
@@ -120,6 +122,7 @@ anzu_systems_core_dam:
   ext_systems:
     cms:
       id: 1
+      asset_external_providers: [ unsplash_cms ]
       image:
         custom_metadata_pinned_amount: 3
         storage_name: 'cms.image'
