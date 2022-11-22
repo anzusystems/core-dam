@@ -33,7 +33,7 @@ return static function (ContainerConfigurator $configurator): void {
     ;
 
     $services
-        ->set('CacheRedis', Redis::class)
+        ->set('VersionedCacheRedis', Redis::class)
         ->call('connect', [
             env('string:REDIS_CACHE_HOST'),
             env('int:REDIS_CACHE_PORT'),
@@ -44,6 +44,21 @@ return static function (ContainerConfigurator $configurator): void {
         ->call('setOption', [
             Redis::OPT_PREFIX,
             'core_dam_cache_' . env('string:APP_ENV') . '_' . env('string:APP_VERSION') . '_',
+        ])
+    ;
+
+    $services
+        ->set('CacheRedis', Redis::class)
+        ->call('connect', [
+            env('string:REDIS_CACHE_HOST'),
+            env('int:REDIS_CACHE_PORT'),
+        ])
+        ->call('select', [
+            env('int:REDIS_CACHE_DB')
+        ])
+        ->call('setOption', [
+            Redis::OPT_PREFIX,
+            'core_dam_cache_' . env('string:APP_ENV') . '_',
         ])
     ;
 

@@ -17,13 +17,13 @@ doctrine:
                 pool: doctrine.redis_cache_pool
         metadata_cache_driver:
             type: pool
-            pool: core_dam_app.cache
+            pool: cache.system
         query_cache_driver:
             type: pool
-            pool: core_dam_app.cache
+            pool: cache.system
         result_cache_driver:
             type: pool
-            pool: core_dam_app.cache
+            pool: cache.system
         mappings:
             App:
                 is_bundle: false
