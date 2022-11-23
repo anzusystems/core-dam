@@ -1,6 +1,7 @@
 anzu_systems_core_dam:
   settings:
     api_domain: '%env(resolve:string:DOMAIN_CORE_DAM_API)%'
+    youtube_api_key: '%env(resolve:string:YOUTUBE_API_KEY)%'
     default_ext_system_id: 1
     default_asset_licence_id: 1
     allow_select_ext_system: false
@@ -167,13 +168,22 @@ anzu_systems_core_dam:
             youtube_cms_main:
               blocked_by: []
               strategy: none
+              distribution_metadata_map:
+                title: ['customData:title', 'customData:headline']
+                description: ['customData:description']
               category_select:
                 enabled: true
                 required: false
             youtube_cms_fici:
+              distribution_metadata_map:
+                title: [ 'customData:title', 'customData:headline' ]
+                description: [ 'customData:description' ]
               blocked_by: [ ]
               strategy: none
             jw_cms:
+              distribution_metadata_map:
+                title: [ 'customData:title', 'customData:headline' ]
+                description: [ 'customData:description' ]
               blocked_by: [ ]
               strategy: none
               category_select:

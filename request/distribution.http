@@ -1,12 +1,35 @@
+### Login admin
+POST {{host}}/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "dam_admin@anzusystems.dev",
+  "password": "admin"
+}
+
+<> 2022-11-21T090632.200.json
+<> 2022-11-21T084803.200.json
+<> 2022-11-21T084426.200.json
+<> 2022-11-19T152427.200.json
+<> 2022-11-16T085137.200.json
+<> 2022-11-16T084802.200.json
+<> 2022-11-16T084620.200.json
+<> 2022-11-16T083214.200.json
+<> 2022-11-16T075832.200.json
+<> 2022-11-16T065445.200.json
+
+### Ext system config
+GET {{host}}/api/adm/v1/configuration/ext-system/1
+Content-Type: application/json
+
 ### Youtube distribute
-POST {{host}}/api/adm/v1/distribution/asset-file/aa967cf4-0ea9-499e-be2a-13bf0b63eabe/youtube
+POST {{host}}/api/adm/v1/youtube-distribution/asset-file/aa967cf4-0ea9-499e-be2a-13bf0b63eabe/distribute
 Content-Type: application/json
 
 {
   "publishAt": null,
-  "channelId": "string",
+  "distributionService": "youtube_cms_main",
   "privacy": "private",
-  "videoFile": "aa967cf4-0ea9-499e-be2a-13bf0b63eabe",
   "texts": {
     "title": "title",
     "description": "description",
@@ -18,28 +41,79 @@ Content-Type: application/json
   client.global.set('youtubeId', response.body.id)
 %}
 
+<> 2022-11-21T090642.200.json
+<> 2022-11-21T084832.500.json
+<> 2022-11-21T084448.200.json
+<> 2022-11-19T152434.200.json
+<> 2022-11-16T075839.500.json
+<> 2022-11-16T070350.200.json
+<> 2022-11-16T070337.422.json
+<> 2022-11-16T070302.500.json
+<> 2022-11-16T065654.200.json
+<> 2022-11-16T065628.422.json
+<> 2022-11-16T065510.500.json
+<> 2022-11-16T065449.404.json
+<> 2022-11-15T141450.200.json
+<> 2022-11-15T141041.500.json
+<> 2022-11-15T140914.500.json
+<> 2022-11-08T121511.200.json
+
 ### Custom distribute
-POST {{host}}/api/adm/v1/distribution/asset-file/aa967cf4-0ea9-499e-be2a-13bf0b63eabe/jw-video
+POST {{host}}/api/adm/v1/jw-distribution/asset-file/aa967cf4-0ea9-499e-be2a-13bf0b63eabe/distribute
 Content-Type: application/json
 
 {
+  "distributionService": "jw_cms"
 }
 
 > {%
   client.global.set('jwId', response.body.id)
 %}
+
+<> 2022-11-21T091146.500.json
+<> 2022-11-21T091105.500.json
+<> 2022-11-21T090919.500.json
+<> 2022-11-21T090739.500.json
+<> 2022-11-19T162210.200.json
+<> 2022-11-16T085823.200.json
+<> 2022-11-16T085706.200.json
+<> 2022-11-16T085548.200.json
+<> 2022-11-16T085440.200.json
+<> 2022-11-16T085144.200.json
+<> 2022-11-16T084812.200.json
+<> 2022-11-16T084631.200.json
+<> 2022-11-16T084235.200.json
+<> 2022-11-16T083733.200.json
+<> 2022-11-16T083230.200.json
+<> 2022-11-16T081216.200.json
+<> 2022-11-16T080518.200.json
+<> 2022-11-16T080139.500.json
+<> 2022-11-16T080126.200.html
+<> 2022-11-16T080054.500.json
+<> 2022-11-16T075854.500.json
+<> 2022-11-16T070356.500.json
+<> 2022-11-16T065747.500.json
+<> 2022-11-16T065736.404.json
+<> 2022-11-16T065727.404.json
+<> 2022-11-09T151724.500.json
+<> 2022-11-09T151004.500.json
 
 ### Custom distribute
 POST {{host}}/api/adm/v1/distribution/asset-file/aa967cf4-0ea9-499e-be2a-13bf0b63eabe/custom
 Content-Type: application/json
 
 {
+  "distributionService": "artemis_cms",
   "customData": {
     "createArticle": true
   },
-  "blockedBy": [{{youtubeId}}, {{jwId}}]
+  "blockedBy": ["{{youtubeId}}", "{{jwId}}"]
 }
 
 > {%
-  client.global.set('jwId', response.body.id)
+  client.global.set('customId', response.body.id)
 %}
+
+### Get asset files
+GET {{host}}/api/adm/v1/distribution/asset-file/aa967cf4-0ea9-499e-be2a-13bf0b63eabe
+Content-Type: application/json

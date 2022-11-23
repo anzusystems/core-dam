@@ -5,12 +5,13 @@ declare(strict_types=1);
 
 namespace App\Distribution\Modules;
 
+use AnzuSystems\CoreDamBundle\Distribution\AbstractDistributionModule;
 use AnzuSystems\CoreDamBundle\Distribution\DistributionModuleInterface;
 use AnzuSystems\CoreDamBundle\Entity\Distribution;
 use AnzuSystems\CoreDamBundle\Model\Enum\AssetType;
 use App\Entity\ArtemisDistribution;
 
-final class ArtemisVideoDistributionModule implements DistributionModuleInterface
+final class ArtemisVideoDistributionModule extends AbstractDistributionModule implements DistributionModuleInterface
 {
     public function distribute(Distribution $distribution): void
     {
@@ -27,11 +28,6 @@ final class ArtemisVideoDistributionModule implements DistributionModuleInterfac
         return [
             AssetType::Video
         ];
-    }
-
-    public static function getDefaultKeyName(): string
-    {
-        return ArtemisDistribution::class;
     }
 
     public function waitForRemoteProcessing(): bool

@@ -4,22 +4,24 @@ anzu_systems_core_dam:
             type: youtubeDistribution
             module: AnzuSystems\CoreDamBundle\Distribution\Modules\YoutubeDistributionModule
             options:
-                shared_login: true
                 oauth_credentials: '%env(resolve:string:DISTRIBUTION_YOUTUBE_CMS_MAIN_OAUTH_CREDENTIALS)%'
                 channel_id: '%env(resolve:string:DISTRIBUTION_YOUTUBE_CMS_MAIN_CHANNEL_ID)%'
+                region_code: 'SK'
         youtube_cms_fici:
             type: youtubeDistribution
             module: AnzuSystems\CoreDamBundle\Distribution\Modules\YoutubeDistributionModule
             options:
                 oauth_credentials: '%env(resolve:string:DISTRIBUTION_YOUTUBE_CMS_FICI_OAUTH_CREDENTIALS)%'
                 channel_id: '%env(resolve:string:DISTRIBUTION_YOUTUBE_CMS_FICI_CHANNEL_ID)%'
+                region_code: 'SK'
         jw_cms:
             type: jwDistribution
             module: AnzuSystems\CoreDamBundle\Distribution\Modules\JwPlayerDistributionModule
             options:
-                key: '%env(string:DISTRIBUTION_YOUTUBE_JW_CMS_KEY)%'
-                secret: '%env(string:DISTRIBUTION_YOUTUBE_JW_CMS_SECRET)%'
-                secret_v2: '%env(string:DISTRIBUTION_YOUTUBE_JW_CMS_SECRET_V2)%'
+                key: '%env(string:DISTRIBUTION_JW_CMS_KEY)%'
+                secret: '%env(string:DISTRIBUTION_JW_CMS_SECRET)%'
+                secret_v2: '%env(string:DISTRIBUTION_JW_CMS_SECRET_V2)%'
+                site_id: '%env(string:DISTRIBUTION_JW_CMS_SITE_ID)%'
         artemis_cms:
             type: artemisDistribution
             module: App\Distribution\Modules\ArtemisVideoDistributionModule
