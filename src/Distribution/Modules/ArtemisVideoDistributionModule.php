@@ -31,11 +31,21 @@ final class ArtemisVideoDistributionModule implements DistributionModuleInterfac
 
     public static function getDefaultKeyName(): string
     {
-        return ArtemisDistribution::class;
+        return self::class;
     }
 
     public function waitForRemoteProcessing(): bool
     {
         return false;
+    }
+
+    public function isAuthenticated(string $distributionService): bool
+    {
+        return true;
+    }
+
+    public static function supportsDistributionResourceName(): string
+    {
+        return ArtemisDistribution::getResourceName();
     }
 }
