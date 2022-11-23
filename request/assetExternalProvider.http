@@ -4,6 +4,11 @@ Content-Type: application/json
 Authorization: Bearer {{adm_access_token}}
 
 ### Get by ids
-GET {{host}}/api/adm/v1/asset-external-provider/unsplash_cms/ids/eCktzGjC-iU,ikz8R6LGbK8,FOT822IZaY0,N6zIsVM_dY8
+GET {{host}}/api/adm/v1/asset-external-provider/unsplash_cms/ids/cjYQBSKDSII
+Content-Type: application/json
+Authorization: Bearer {{adm_access_token}}
+
+### Get by id
+GET {{host}}/api/adm/v1/asset-external-provider/unsplash_cms/cjYQBSKDSII
 Content-Type: application/json
 Authorization: Bearer {{adm_access_token}}

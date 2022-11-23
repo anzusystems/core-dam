@@ -11,7 +11,7 @@ use AnzuSystems\CoreDamBundle\Entity\Distribution;
 use AnzuSystems\CoreDamBundle\Model\Enum\AssetType;
 use App\Entity\ArtemisDistribution;
 
-final class ArtemisVideoDistributionModule extends AbstractDistributionModule implements DistributionModuleInterface
+final class ArtemisVideoDistributionModule implements DistributionModuleInterface
 {
     public function distribute(Distribution $distribution): void
     {
@@ -30,8 +30,23 @@ final class ArtemisVideoDistributionModule extends AbstractDistributionModule im
         ];
     }
 
+    public static function getDefaultKeyName(): string
+    {
+        return self::class;
+    }
+
     public function waitForRemoteProcessing(): bool
     {
         return false;
+    }
+
+    public function isAuthenticated(string $distributionService): bool
+    {
+        return true;
+    }
+
+    public static function supportsDistributionResourceName(): string
+    {
+        return ArtemisDistribution::getResourceName();
     }
 }
