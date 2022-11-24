@@ -123,7 +123,9 @@ anzu_systems_core_dam:
   ext_systems:
     cms:
       id: 1
-      asset_external_providers: [ unsplash_cms ]
+      asset_external_providers:
+        unsplash_cms:
+          title: Unsplash
       image:
         custom_metadata_pinned_amount: 3
         storage_name: 'cms.image'

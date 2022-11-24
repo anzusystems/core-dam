@@ -12,3 +12,13 @@ Authorization: Bearer {{adm_access_token}}
 GET {{host}}/api/adm/v1/asset-external-provider/unsplash_cms/cjYQBSKDSII
 Content-Type: application/json
 Authorization: Bearer {{adm_access_token}}
+
+### POST by id
+POST {{host}}/api/adm/v1/image/licence/1/external-provider
+Content-Type: application/json
+Authorization: Bearer {{adm_access_token}}
+
+{
+  "id": "N6zIsVM_dY8",
+  "externalProvider": "unsplash_cms"
+}
