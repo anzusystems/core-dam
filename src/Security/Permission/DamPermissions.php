@@ -435,6 +435,13 @@ final class DamPermissions extends BaseDamPermissions
                     self::UI_GROUP => UiGroups::GROUP_SIDEBAR_DIGITAL_MEDIA,
                 ],
             ],
+            UiPermissions::ADMIN_LOG_UI => [
+                self::GRANTS => [Grants::GRANT_ALLOW, Grants::GRANT_DENY],
+                self::UI => [
+                    self::UI_CATEGORY => UiCategories::CATEGORY_ADMIN_DAM,
+                    self::UI_GROUP => UiGroups::GROUP_SIDEBAR_DIGITAL_MEDIA,
+                ],
+            ],
         ];
     }
 
