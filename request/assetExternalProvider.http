@@ -1,5 +1,5 @@
 ### Search
-GET {{host}}/api/adm/v1/asset-external-provider/unsplash_cms/search/?term=fifa
+GET {{host}}/api/adm/v1/asset-external-provider/unsplash_cms/search/?term=fifa&limit=30
 Content-Type: application/json
 Authorization: Bearer {{adm_access_token}}
 
