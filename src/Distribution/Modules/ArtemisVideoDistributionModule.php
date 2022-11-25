@@ -5,16 +5,33 @@ declare(strict_types=1);
 
 namespace App\Distribution\Modules;
 
+use AnzuSystems\CoreDamBundle\Distribution\AbstractDistributionModule;
 use AnzuSystems\CoreDamBundle\Distribution\DistributionModuleInterface;
+use AnzuSystems\CoreDamBundle\Entity\CustomDistribution;
 use AnzuSystems\CoreDamBundle\Entity\Distribution;
 use AnzuSystems\CoreDamBundle\Model\Enum\AssetType;
-use App\Entity\ArtemisDistribution;
 
-final class ArtemisVideoDistributionModule implements DistributionModuleInterface
+final class ArtemisVideoDistributionModule extends AbstractDistributionModule implements DistributionModuleInterface
 {
+    private const ARTICLE_WEB_URL = 'articleWebUrl';
+    private const ARTICLE_ADMIN_URL = 'articleAdminUrl';
+    private const MEDIA_ADMIN_URL = 'mediaAdminUrl';
+
+    /**
+     * @param CustomDistribution $distribution
+     */
     public function distribute(Distribution $distribution): void
     {
-        // TODO: Implement distribute() method.
+        // todo implement
+        $distribution->setExtId('123');
+        $customDistributionData = [self::MEDIA_ADMIN_URL => 'https://url.sme.sk',];
+
+        if ($distribution->getCustomData()['createArticle'] ?? false) {
+            $customDistributionData[self::ARTICLE_WEB_URL] =  'https://url.sme.sk';
+            $customDistributionData[self::ARTICLE_ADMIN_URL] =  'https://url.sme.sk';
+        }
+
+        $distribution->setDistributionData($customDistributionData);
     }
 
     public function redistribute(Distribution $distribution): void
@@ -37,10 +54,5 @@ final class ArtemisVideoDistributionModule implements DistributionModuleInterfac
     public function isAuthenticated(string $distributionService): bool
     {
         return true;
-    }
-
-    public static function supportsDistributionResourceName(): string
-    {
-        return ArtemisDistribution::getResourceName();
     }
 }

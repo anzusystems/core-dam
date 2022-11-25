@@ -7,19 +7,32 @@ Content-Type: application/json
   "password": "admin"
 }
 
-<> 2022-11-21T090632.200.json
-<> 2022-11-21T084803.200.json
-<> 2022-11-21T084426.200.json
-<> 2022-11-19T152427.200.json
-<> 2022-11-16T085137.200.json
-<> 2022-11-16T084802.200.json
-<> 2022-11-16T084620.200.json
-<> 2022-11-16T083214.200.json
-<> 2022-11-16T075832.200.json
-<> 2022-11-16T065445.200.json
+### Get ext system configuration
+GET {{host}}/api/adm/v1/configuration/ext-system/1
+Content-Type: application/json
+
+### Get authorized distributions
+GET {{host}}/api/adm/v1/distribution/ext-system/1/type/video/available
+Content-Type: application/json
+
+### Get authorize URL
+GET {{host}}/api/adm/v1/youtube-distribution/youtube_cms_main/auth-url
+Content-Type: application/json
+
+### Youtube playlists
+GET http://core-dam.sme.localhost/api/adm/v1/youtube-distribution/youtube_cms_main/playlist
+Content-Type: application/json
+
+### Youtube languages
+GET http://core-dam.sme.localhost/api/adm/v1/youtube-distribution/youtube_cms_main/language
+Content-Type: application/json
 
 ### Ext system config
 GET {{host}}/api/adm/v1/configuration/ext-system/1
+Content-Type: application/json
+
+### Youtube prepare distribution payload
+GET {{host}}/api/adm/v1/youtube-distribution/asset-file/aa967cf4-0ea9-499e-be2a-13bf0b63eabe/prepare-payload/youtube_cms_main
 Content-Type: application/json
 
 ### Youtube distribute
@@ -30,10 +43,20 @@ Content-Type: application/json
   "publishAt": null,
   "distributionService": "youtube_cms_main",
   "privacy": "private",
+  "playlist": "",
+  "language": "as",
   "texts": {
     "title": "title",
     "description": "description",
-    "keywords": ["aaa", "bbb"]
+    "keywords": [
+      "aaa",
+      "bbb"
+    ]
+  },
+  "flags": {
+    "embeddable": true,
+    "forKids": true,
+    "notifySubscribers": true
   }
 }
 
@@ -41,28 +64,25 @@ Content-Type: application/json
   client.global.set('youtubeId', response.body.id)
 %}
 
-<> 2022-11-21T090642.200.json
-<> 2022-11-21T084832.500.json
-<> 2022-11-21T084448.200.json
-<> 2022-11-19T152434.200.json
-<> 2022-11-16T075839.500.json
-<> 2022-11-16T070350.200.json
-<> 2022-11-16T070337.422.json
-<> 2022-11-16T070302.500.json
-<> 2022-11-16T065654.200.json
-<> 2022-11-16T065628.422.json
-<> 2022-11-16T065510.500.json
-<> 2022-11-16T065449.404.json
-<> 2022-11-15T141450.200.json
-<> 2022-11-15T141041.500.json
-<> 2022-11-15T140914.500.json
-<> 2022-11-08T121511.200.json
+### Jw prepare distribution payload
+GET {{host}}/api/adm/v1/jw-distribution/asset-file/aa967cf4-0ea9-499e-be2a-13bf0b63eabe/prepare-payload/jw_cms
+Content-Type: application/json
 
-### Custom distribute
+### Jw distribute
 POST {{host}}/api/adm/v1/jw-distribution/asset-file/aa967cf4-0ea9-499e-be2a-13bf0b63eabe/distribute
 Content-Type: application/json
 
 {
+  "texts": {
+    "title": "Video title",
+    "description": "Custom video description",
+    "author": "Aarne Ormonde",
+    "keywords": [
+      "News",
+      "Podcast",
+      "Politics"
+    ]
+  },
   "distributionService": "jw_cms"
 }
 
@@ -70,36 +90,12 @@ Content-Type: application/json
   client.global.set('jwId', response.body.id)
 %}
 
-<> 2022-11-21T091146.500.json
-<> 2022-11-21T091105.500.json
-<> 2022-11-21T090919.500.json
-<> 2022-11-21T090739.500.json
-<> 2022-11-19T162210.200.json
-<> 2022-11-16T085823.200.json
-<> 2022-11-16T085706.200.json
-<> 2022-11-16T085548.200.json
-<> 2022-11-16T085440.200.json
-<> 2022-11-16T085144.200.json
-<> 2022-11-16T084812.200.json
-<> 2022-11-16T084631.200.json
-<> 2022-11-16T084235.200.json
-<> 2022-11-16T083733.200.json
-<> 2022-11-16T083230.200.json
-<> 2022-11-16T081216.200.json
-<> 2022-11-16T080518.200.json
-<> 2022-11-16T080139.500.json
-<> 2022-11-16T080126.200.html
-<> 2022-11-16T080054.500.json
-<> 2022-11-16T075854.500.json
-<> 2022-11-16T070356.500.json
-<> 2022-11-16T065747.500.json
-<> 2022-11-16T065736.404.json
-<> 2022-11-16T065727.404.json
-<> 2022-11-09T151724.500.json
-<> 2022-11-09T151004.500.json
+### Custom distribution custom form
+GET {{host}}/api/adm/v1/asset-custom-form/distribution-service/artemis_cms/element
+Content-Type: application/json
 
 ### Custom distribute
-POST {{host}}/api/adm/v1/distribution/asset-file/aa967cf4-0ea9-499e-be2a-13bf0b63eabe/custom
+POST {{host}}/api/adm/v1/custom-distribution/asset-file/aa967cf4-0ea9-499e-be2a-13bf0b63eabe/distribute
 Content-Type: application/json
 
 {
