@@ -141,7 +141,7 @@
             "source": {
                 "type": "git",
                 "url": "git@ssh.dev.azure.com:v3/petitpress/Anzu/core-dam-bundle",
-                "reference": "cf1375d14ac98735018a7222763467da5c0d0628"
+                "reference": "ae3314c4058725c582b3f649ec210671706e8cc9"
             },
             "require": {
                 "anzusystems/common-bundle": "^2.0",
@@ -171,6 +171,7 @@
                 "symfony/lock": "^6.1",
                 "symfony/messenger": "^6.1",
                 "symfony/mime": "^6.1",
+                "symfony/options-resolver": "^6.1",
                 "symfony/polyfill-uuid": "^1.24",
                 "symfony/process": "^6.1",
                 "symfony/runtime": "^6.1",
@@ -204,7 +205,7 @@
                 "proprietary"
             ],
             "description": "Dam core bundle",
-            "time": "2022-11-25T13:04:56+00:00"
+            "time": "2022-11-25T14:18:26+00:00"
         },
         {
             "name": "anzusystems/serializer-bundle",

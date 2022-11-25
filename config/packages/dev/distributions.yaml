@@ -3,6 +3,7 @@ anzu_systems_core_dam:
       youtube_cms_main:
           type: youtubeDistribution
           module: AnzuSystems\CoreDamBundle\Distribution\Modules\YoutubeDistributionModule
+          auth_redirect_url: '%env(resolve:string:DISTRIBUTION_YOUTUBE_CMS_MAIN_REDIRECT_URL)%'
           options:
               oauth_credentials: '%env(resolve:string:DISTRIBUTION_YOUTUBE_CMS_MAIN_OAUTH_CREDENTIALS)%'
               channel_id: '%env(resolve:string:DISTRIBUTION_YOUTUBE_CMS_MAIN_CHANNEL_ID)%'
@@ -16,6 +17,7 @@ anzu_systems_core_dam:
       youtube_cms_fici:
           type: youtubeDistribution
           module: AnzuSystems\CoreDamBundle\Distribution\Modules\YoutubeDistributionModule
+          auth_redirect_url: '%env(resolve:string:DISTRIBUTION_YOUTUBE_CMS_FICI_REDIRECT_URL)%'
           options:
              oauth_credentials: '%env(resolve:string:DISTRIBUTION_YOUTUBE_CMS_FICI_OAUTH_CREDENTIALS)%'
              channel_id: '%env(resolve:string:DISTRIBUTION_YOUTUBE_CMS_FICI_CHANNEL_ID)%'
