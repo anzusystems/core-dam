@@ -25,19 +25,6 @@ final class UserFacade
     }
 
     /**
-     * Process creating of user.
-     *
-     * @throws ValidationException
-     */
-    public function create(User $user): User
-    {
-        $this->validator->validate($user);
-        $this->userManager->create($user);
-
-        return $user;
-    }
-
-    /**
      * Process creating of user from DTO.
      *
      * @throws ValidationException
@@ -59,21 +46,6 @@ final class UserFacade
     {
         $this->validator->validateDto($updateUserDto);
         $user = $this->userManager->updateFromDto($user, $updateUserDto);
-        $this->userNotificationDispatcher->notifyUserUpdated((int) $user->getId());
-
-        return $user;
-    }
-
-    /**
-     * Process updating of user.
-     *
-     * @throws ValidationException
-     * @throws SerializerException
-     */
-    public function update(User $user, User $newUser): User
-    {
-        $this->validator->validate($newUser, $user);
-        $this->userManager->update($user, $newUser);
         $this->userNotificationDispatcher->notifyUserUpdated((int) $user->getId());
 
         return $user;

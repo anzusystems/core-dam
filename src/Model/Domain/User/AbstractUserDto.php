@@ -26,12 +26,20 @@ abstract class AbstractUserDto
     #[Serialize(handler: EntityIdHandler::class, type: ExtSystem::class)]
     protected ArrayCollection $adminToExtSystems;
 
+    #[Serialize]
+    protected array $allowedAssetExternalProviders;
+
+    #[Serialize]
+    protected array $allowedDistributionServices;
+
     public function __construct()
     {
         $this->setPlainPassword('');
         $this->setEnabled(true);
         $this->setSuperAdmin(false);
         $this->setAdminToExtSystems(new ArrayCollection());
+        $this->setAllowedAssetExternalProviders([]);
+        $this->setAllowedDistributionServices([]);
     }
 
     public function getPlainPassword(): string
@@ -81,6 +89,30 @@ abstract class AbstractUserDto
     public function setSuperAdmin(bool $superAdmin): self
     {
         $this->superAdmin = $superAdmin;
+
+        return $this;
+    }
+
+    public function getAllowedAssetExternalProviders(): array
+    {
+        return $this->allowedAssetExternalProviders;
+    }
+
+    public function setAllowedAssetExternalProviders(array $allowedAssetExternalProviders): self
+    {
+        $this->allowedAssetExternalProviders = $allowedAssetExternalProviders;
+
+        return $this;
+    }
+
+    public function getAllowedDistributionServices(): array
+    {
+        return $this->allowedDistributionServices;
+    }
+
+    public function setAllowedDistributionServices(array $allowedDistributionServices): self
+    {
+        $this->allowedDistributionServices = $allowedDistributionServices;
 
         return $this;
     }

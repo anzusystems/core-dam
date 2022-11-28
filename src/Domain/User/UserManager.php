@@ -46,6 +46,8 @@ final class UserManager extends AbstractManager
             ->setLastName($createUserDto->getLastName())
             ->setEmail($createUserDto->getEmail())
             ->setAdminToExtSystems($createUserDto->getAdminToExtSystems())
+            ->setAllowedAssetExternalProviders($createUserDto->getAllowedAssetExternalProviders())
+            ->setAllowedDistributionServices($createUserDto->getAllowedDistributionServices())
         ;
         if ($createUserDto->isSuperAdmin()) {
             $user->setRoles([AnzuUser::ROLE_ADMIN]);
@@ -62,6 +64,8 @@ final class UserManager extends AbstractManager
             ->setFirstName($updateUserDto->getFirstName())
             ->setLastName($updateUserDto->getLastName())
             ->setPermissions($updateUserDto->getPermissions())
+            ->setAllowedAssetExternalProviders($updateUserDto->getAllowedAssetExternalProviders())
+            ->setAllowedDistributionServices($updateUserDto->getAllowedDistributionServices())
         ;
         $this->colUpdate(
             oldCollection: $user->getAdminToExtSystems(),
@@ -77,23 +81,15 @@ final class UserManager extends AbstractManager
         );
         $user = $this->toggleSuperAdminRole($user, $updateUserDto->isSuperAdmin());
 
-        return $this->update($user, $user, $flush);
+        return $this->updateExisting($user, $flush);
     }
 
     /**
      * Update user with fields from new user and persist it.
      */
-    public function update(User $user, User $newUser, bool $flush = true): User
+    public function updateExisting(User $user, bool $flush = true): User
     {
         $this->trackModification($user);
-        $user
-            ->setFirstName($newUser->getFirstName())
-            ->setLastName($newUser->getLastName())
-            ->setRoles($newUser->getRoles())
-            ->setEmail($newUser->getEmail())
-            ->setPermissions($newUser->getPermissions())
-            ->setEnabled($newUser->isEnabled())
-        ;
         $this->flush($flush);
 
         return $user;

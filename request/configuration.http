@@ -2,9 +2,8 @@
 GET {{host}}/api/adm/v1/configuration
 Content-Type: application/json
 
-
 ### Fetch admin configuration
-GET {{host}}/api/adm/v1/configuration/ext-system/2
+GET {{host}}/api/adm/v1/configuration/ext-system/1
 Content-Type: application/json
 
 ### Fetch admin configuration
