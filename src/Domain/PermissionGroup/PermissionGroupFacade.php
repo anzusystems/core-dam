@@ -7,6 +7,7 @@ namespace App\Domain\PermissionGroup;
 use AnzuSystems\CommonBundle\Exception\ValidationException;
 use AnzuSystems\CoreDamBundle\Validator\EntityValidator;
 use App\Entity\PermissionGroup;
+use App\Security\Permission\DamPermissions;
 
 /**
  * Complete PermissionGroup processing.
@@ -26,6 +27,7 @@ final class PermissionGroupFacade
      */
     public function create(PermissionGroup $permissionGroup): PermissionGroup
     {
+        $permissionGroup->setPermissions(DamPermissions::default());
         $this->validator->validate($permissionGroup);
         $this->permissionGroupManager->create($permissionGroup);
 
