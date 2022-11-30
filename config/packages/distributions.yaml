@@ -25,8 +25,6 @@ anzu_systems_core_dam:
             title: JwVideo
             module: AnzuSystems\CoreDamBundle\Distribution\Modules\JwPlayerDistributionModule
             options:
-                key: '%env(string:DISTRIBUTION_JW_CMS_KEY)%'
-                secret: '%env(string:DISTRIBUTION_JW_CMS_SECRET)%'
                 secret_v2: '%env(string:DISTRIBUTION_JW_CMS_SECRET_V2)%'
                 site_id: '%env(string:DISTRIBUTION_JW_CMS_SITE_ID)%'
         artemis_cms:
