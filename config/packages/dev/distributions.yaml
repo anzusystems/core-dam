@@ -5,6 +5,7 @@ anzu_systems_core_dam:
           title: Youtube CMS
           module: AnzuSystems\CoreDamBundle\Distribution\Modules\YoutubeDistributionModule
           auth_redirect_url: '%env(resolve:string:DISTRIBUTION_YOUTUBE_CMS_MAIN_REDIRECT_URL)%'
+          required_auth: true
           options:
               oauth_credentials: '%env(resolve:string:DISTRIBUTION_YOUTUBE_CMS_MAIN_OAUTH_CREDENTIALS)%'
               channel_id: '%env(resolve:string:DISTRIBUTION_YOUTUBE_CMS_MAIN_CHANNEL_ID)%'
@@ -20,6 +21,7 @@ anzu_systems_core_dam:
           title: Youtube Fičí
           module: AnzuSystems\CoreDamBundle\Distribution\Modules\YoutubeDistributionModule
           auth_redirect_url: '%env(resolve:string:DISTRIBUTION_YOUTUBE_CMS_FICI_REDIRECT_URL)%'
+          required_auth: true
           options:
              oauth_credentials: '%env(resolve:string:DISTRIBUTION_YOUTUBE_CMS_FICI_OAUTH_CREDENTIALS)%'
              channel_id: '%env(resolve:string:DISTRIBUTION_YOUTUBE_CMS_FICI_CHANNEL_ID)%'

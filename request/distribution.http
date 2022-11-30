@@ -11,8 +11,8 @@ Content-Type: application/json
 GET {{host}}/api/adm/v1/configuration/ext-system/1
 Content-Type: application/json
 
-### Get authorized distributions
-GET {{host}}/api/adm/v1/distribution/ext-system/1/type/video/available
+### Check if distribution is authorized
+GET {{host}}/api/adm/v1/distribution/youtube_cms_main/authorized
 Content-Type: application/json
 
 ### Get authorize URL
