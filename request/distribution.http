@@ -7,6 +7,18 @@ Content-Type: application/json
   "password": "admin"
 }
 
+### Get distributions by asset file
+GET {{host}}/api/adm/v1/distribution/asset-file/aa967cf4-0ea9-499e-be2a-13bf0b63eabe
+Content-Type: application/json
+
+> {%
+  client.global.set('assetId', response.body.data[0].assetId)
+%}
+
+### Get distributions by asset file
+GET {{host}}/api/adm/v1/distribution/asset/{{assetId}}
+Content-Type: application/json
+
 ### Get ext system configuration
 GET {{host}}/api/adm/v1/configuration/ext-system/1
 Content-Type: application/json
