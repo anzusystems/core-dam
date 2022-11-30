@@ -11,9 +11,9 @@ final class Version20221003075735 extends AbstractMigration
 {
     public function up(Schema $schema): void
     {
-        $this->addSql("INSERT INTO `user` (id, email, first_name, last_name, roles, permissions, enabled, created_by_id, modified_by_id, created_at, modified_at) VALUES
-            (1, 'dam_anonymous@anzusystems.dev', 'Anonymous', 'DAM', '[\"ROLE_USER\"]', '[]', 0, 1, 1, NOW(), NOW()),                                                       
-            (2, 'dam_console@anzusystems.dev', 'Console', 'DAM', '[\"ROLE_USER\"]', '[]', 0, 1, 1, NOW(), NOW())                                                       
+        $this->addSql("INSERT INTO `user` (id, email, first_name, last_name, roles, permissions, enabled, created_by_id, modified_by_id, created_at, modified_at, allowed_asset_external_providers, allowed_distribution_services) VALUES
+            (1, 'dam_anonymous@anzusystems.dev', 'Anonymous', 'DAM', '[\"ROLE_USER\"]', '[]', 0, 1, 1, NOW(), NOW(), JSON_ARRAY(), JSON_ARRAY()),                                                       
+            (2, 'dam_console@anzusystems.dev', 'Console', 'DAM', '[\"ROLE_USER\"]', '[]', 0, 1, 1, NOW(), NOW(), JSON_ARRAY(), JSON_ARRAY())                                                       
         ");
 
         $this->addSql(
