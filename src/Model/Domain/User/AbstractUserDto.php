@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Model\Domain\User;
 
+use AnzuSystems\CoreDamBundle\Entity\AssetLicence;
 use AnzuSystems\CoreDamBundle\Entity\ExtSystem;
 use AnzuSystems\CoreDamBundle\Entity\Traits\PersonNameTrait;
 use AnzuSystems\SerializerBundle\Attributes\Serialize;
@@ -26,6 +27,9 @@ abstract class AbstractUserDto
     #[Serialize(handler: EntityIdHandler::class, type: ExtSystem::class)]
     protected ArrayCollection $adminToExtSystems;
 
+    #[Serialize(handler: EntityIdHandler::class, type: AssetLicence::class)]
+    protected ArrayCollection $assetLicences;
+
     #[Serialize]
     protected array $allowedAssetExternalProviders;
 
@@ -38,6 +42,7 @@ abstract class AbstractUserDto
         $this->setEnabled(true);
         $this->setSuperAdmin(false);
         $this->setAdminToExtSystems(new ArrayCollection());
+        $this->setAssetLicences(new ArrayCollection());
         $this->setAllowedAssetExternalProviders([]);
         $this->setAllowedDistributionServices([]);
     }
@@ -89,6 +94,21 @@ abstract class AbstractUserDto
     public function setSuperAdmin(bool $superAdmin): self
     {
         $this->superAdmin = $superAdmin;
+
+        return $this;
+    }
+
+    /**
+     * @return ArrayCollection<int, AssetLicence>
+     */
+    public function getAssetLicences(): ArrayCollection
+    {
+        return $this->assetLicences;
+    }
+
+    public function setAssetLicences(ArrayCollection $assetLicences): self
+    {
+        $this->assetLicences = $assetLicences;
 
         return $this;
     }

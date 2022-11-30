@@ -6,6 +6,8 @@ namespace App\Domain\User;
 
 use AnzuSystems\Contracts\Entity\AnzuUser;
 use AnzuSystems\CoreDamBundle\Domain\AbstractManager;
+use AnzuSystems\CoreDamBundle\Entity\AssetLicence;
+use AnzuSystems\CoreDamBundle\Entity\DamUser;
 use AnzuSystems\CoreDamBundle\Entity\ExtSystem;
 use App\Entity\User;
 use App\Model\Domain\User\AbstractUserDto;
@@ -77,6 +79,24 @@ final class UserManager extends AbstractManager
             removeElementFn: function (Collection $oldCollection, ExtSystem $oldExtSystem) use ($user) {
                 $oldExtSystem->getAdminUsers()->removeElement($user);
                 $oldCollection->removeElement($oldExtSystem);
+            }
+        );
+        $this->colUpdate(
+            oldCollection: $user->getAssetLicences(),
+            newCollection: $updateUserDto->getAssetLicences(),
+            addElementFn: function (Collection $oldCollection, AssetLicence $newAssetLicence) use ($user) {
+                $newAssetLicence->getUsers()->add($user);
+                $oldCollection->add($newAssetLicence);
+                if (false === $user->getUserToExtSystems()->containsKey((int) $newAssetLicence->getExtSystem()->getId())) {
+                    $user->getUserToExtSystems()->add($newAssetLicence->getExtSystem());
+                }
+            },
+            removeElementFn: function (Collection $oldCollection, AssetLicence $oldAssetLicence) use ($user) {
+                $oldAssetLicence->getUsers()->removeElement($user);
+                $oldCollection->removeElement($oldAssetLicence);
+                if ($user->getUserToExtSystems()->containsKey((int) $oldAssetLicence->getExtSystem()->getId())) {
+                    $user->getUserToExtSystems()->removeElement($oldAssetLicence->getExtSystem());
+                }
             }
         );
         $user = $this->toggleSuperAdminRole($user, $updateUserDto->isSuperAdmin());

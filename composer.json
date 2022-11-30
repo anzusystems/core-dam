@@ -8,7 +8,7 @@
         "ext-iconv": "*",
         "ext-redis": "^5.3",
         "anzusystems/auth-bundle": "dev-main",
-        "anzusystems/common-bundle": "dev-fix_mongo_and_custom_filters as 2.0.4",
+        "anzusystems/common-bundle": "^1.0.0",
         "anzusystems/core-dam-bundle": "dev-develop",
         "doctrine/doctrine-migrations-bundle": "^3.2",
         "doctrine/orm": "2.13.1",
@@ -22,23 +22,11 @@
     "repositories": [
         {
             "type": "vcs",
-            "url": "git@ssh.dev.azure.com:v3/petitpress/Anzu/common-bundle"
-        },
-        {
-            "type": "vcs",
             "url": "git@ssh.dev.azure.com:v3/petitpress/Anzu/auth-bundle"
         },
         {
             "type": "vcs",
             "url": "git@ssh.dev.azure.com:v3/petitpress/Anzu/core-dam-bundle"
-        },
-        {
-            "type": "vcs",
-            "url": "git@ssh.dev.azure.com:v3/petitpress/Anzu/contracts"
-        },
-        {
-            "type": "vcs",
-            "url": "git@ssh.dev.azure.com:v3/petitpress/Anzu/serializer-bundle"
         }
     ],
     "config": {

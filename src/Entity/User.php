@@ -93,6 +93,7 @@ class User extends DamUser implements
         $this->setPermissionGroups(new ArrayCollection());
         $this->setAssetLicences(new ArrayCollection());
         $this->setAdminToExtSystems(new ArrayCollection());
+        $this->setUserToExtSystems(new ArrayCollection());
     }
 
     public function getEmail(): string
