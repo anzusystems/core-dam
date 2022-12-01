@@ -26,6 +26,7 @@
         "petitpress/gps-messenger-bundle": "^1.1",
         "symfony/asset": "6.2.*",
         "symfony/debug-bundle": "^6.2",
+        "symfony/doctrine-bridge": "6.1.*",
         "symfony/flex": "^2.2",
         "symfony/twig-bundle": "6.2.*"
     },
