@@ -1,5 +1,4 @@
 security:
-    enable_authenticator_manager: true
     providers:
         app_user_provider_email:
             entity:
@@ -40,6 +39,7 @@ security:
         sys:
             pattern: ^/api/sys/
             stateless: true
+            provider: app_user_provider_id
             custom_authenticators:
                 - AnzuSystems\AuthBundle\Security\Authentication\ApiTokenAuthenticator
 

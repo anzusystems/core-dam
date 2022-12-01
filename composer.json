@@ -1,7 +1,17 @@
 {
     "type": "project",
-    "license": "proprietary",
+    "license": "Apache-2.0",
     "prefer-stable": true,
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "git@ssh.dev.azure.com:v3/petitpress/Anzu/auth-bundle"
+        },
+        {
+            "type": "vcs",
+            "url": "git@ssh.dev.azure.com:v3/petitpress/Anzu/core-dam-bundle"
+        }
+    ],
     "require": {
         "php": ">=8.1",
         "ext-ctype": "*",
@@ -14,21 +24,16 @@
         "doctrine/orm": "2.13.1",
         "league/flysystem-google-cloud-storage": "^3.0",
         "petitpress/gps-messenger-bundle": "^1.1",
-        "symfony/asset": "6.1.*",
-        "symfony/debug-bundle": "^6.1",
+        "symfony/asset": "6.2.*",
+        "symfony/debug-bundle": "^6.2",
         "symfony/flex": "^2.2",
-        "symfony/twig-bundle": "6.1.*"
+        "symfony/twig-bundle": "6.2.*"
     },
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "git@ssh.dev.azure.com:v3/petitpress/Anzu/auth-bundle"
-        },
-        {
-            "type": "vcs",
-            "url": "git@ssh.dev.azure.com:v3/petitpress/Anzu/core-dam-bundle"
-        }
-    ],
+    "require-dev": {
+        "symfony/stopwatch": "6.2.*",
+        "symfony/var-dumper": "6.2.*",
+        "symfony/web-profiler-bundle": "6.2.*"
+    },
     "config": {
         "allow-plugins": {
             "composer/package-versions-deprecated": true,
@@ -78,16 +83,11 @@
     "extra": {
         "symfony": {
             "allow-contrib": false,
-            "require": "6.1.*"
+            "require": "6.2.*"
         },
         "runtime": {
             "use_putenv": true
         }
     },
-    "minimum-stability": "dev",
-    "require-dev": {
-        "symfony/stopwatch": "6.1.*",
-        "symfony/var-dumper": "6.1.*",
-        "symfony/web-profiler-bundle": "6.1.*"
-    }
+    "minimum-stability": "dev"
 }
