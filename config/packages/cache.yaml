@@ -9,8 +9,7 @@ framework:
                 provider: CacheRedis
                 default_lifetime: PT3M
             core_dam_app.cache:
-                adapter: cache.adapter.redis_tag_aware
+                adapter: cache.adapter.redis
                 provider: DamRedis
                 default_lifetime: PT3M
-                tags: true
 
