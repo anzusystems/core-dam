@@ -125,3 +125,7 @@ Content-Type: application/json
 ### Get asset files
 GET {{host}}/api/adm/v1/distribution/asset-file/aa967cf4-0ea9-499e-be2a-13bf0b63eabe
 Content-Type: application/json
+
+### Get distribution
+GET {{host}}/api/adm/v1/distribution/1ed71b91-167c-66ec-84e8-0389a2aa1cbc
+Content-Type: application/json
