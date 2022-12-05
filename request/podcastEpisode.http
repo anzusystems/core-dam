@@ -1,0 +1,48 @@
+### Login admin
+POST {{host}}/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "dam_admin@anzusystems.dev",
+  "password": "admin"
+}
+
+### GET Podcast episodes
+GET {{host}}/api/adm/v1/podcast-episode/podcast/1ed746a1-c020-63a2-979d-0f76227ddce4
+Content-Type: application/json
+
+### Create podcast episode
+POST {{host}}/api/adm/v1/podcast-episode
+Content-Type: application/json
+
+{
+  "asset": "1ed7315f-76c1-6460-a899-4119adc23397",
+  "podcast": "1ed746a1-c020-63a2-979d-0f76227ddce4",
+  "attributes": {
+    "seasonNumber": 1,
+    "episodeNumber": 1
+  }
+}
+
+> {%
+  client.global.set('podcastEpisodeId', response.body.id)
+%}
+
+### Update podcast episode
+PUT {{host}}/api/adm/v1/podcast-episode/{{podcastEpisodeId}}
+Content-Type: application/json
+
+{
+  "id": "{{podcastEpisodeId}}",
+  "asset": "1ed724c0-1fd4-6cca-a962-fd00e5bd9602",
+  "podcast": "1ed724c0-1677-651a-801c-fd00e5bd9602",
+  "attributes": {
+    "seasonNumber": 1,
+    "episodeNumber": 1
+  }
+}
+
+### Delete podcast episode
+DELETE {{host}}/api/adm/v1/podcast-episode/{{podcastEpisodeId}}
+Content-Type: application/json
+

@@ -182,7 +182,7 @@
             "source": {
                 "type": "git",
                 "url": "git@ssh.dev.azure.com:v3/petitpress/Anzu/core-dam-bundle",
-                "reference": "770addc9eeb74ba3f1a458a372792c180980fcfe"
+                "reference": "fda8fedd4b68bc2c88509881bc533f06d9327424"
             },
             "require": {
                 "anzusystems/common-bundle": "^1.0",
@@ -192,7 +192,9 @@
                 "ext-json": "*",
                 "ext-mongodb": "*",
                 "ext-redis": "*",
+                "ext-simplexml": "*",
                 "ext-vips": "*",
+                "ext-xmlreader": "*",
                 "ext-zend-opcache": "*",
                 "fakerphp/faker": "^1.20",
                 "google/apiclient": "^2.12",
@@ -247,7 +249,7 @@
                 "Apache-2.0"
             ],
             "description": "Dam core bundle",
-            "time": "2022-12-02T11:51:35+00:00"
+            "time": "2022-12-05T07:07:21+00:00"
         },
         {
             "name": "anzusystems/serializer-bundle",

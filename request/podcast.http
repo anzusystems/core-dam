@@ -1,0 +1,58 @@
+### Login admin
+POST {{host}}/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "dam_admin@anzusystems.dev",
+  "password": "admin"
+}
+
+### Get podcasts by ext-system
+GET {{host}}/api/adm/v1/podcast/ext-system/1
+Content-Type: application/json
+
+### Get podcasts by licence
+GET {{host}}/api/adm/v1/podcast/licence/1
+Content-Type: application/json
+
+### Create podcast
+POST {{host}}/api/adm/v1/podcast
+Content-Type: application/json
+
+{
+  "licence": 1,
+  "texts": {
+    "title": "Piatocek"
+  },
+  "attributes": {
+    "rssUrl": "https://anchor.fm/s/1d498f00/podcast/rss"
+  }
+}
+
+> {%
+  client.global.set('podcastId', response.body.id)
+%}
+
+### Update podcast
+PUT {{host}}/api/adm/v1/podcast/{{podcastId}}
+Content-Type: application/json
+
+{
+  "id": "{{podcastId}}",
+  "licence": 1,
+  "texts": {
+    "title": "Stvrtocek"
+  },
+  "attributes": {
+    "rssUrl": "https://anchor.fm/s/1d498f00/podcast/rss"
+  }
+}
+
+### Get single podcast
+GET {{host}}/api/adm/v1/podcast/{{podcastId}}
+Content-Type: application/json
+
+### Delete podcast
+DELETE {{host}}/api/adm/v1/podcast/{{podcastId}}
+Content-Type: application/json
+

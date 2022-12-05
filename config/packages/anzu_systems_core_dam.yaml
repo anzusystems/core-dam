@@ -128,6 +128,7 @@ anzu_systems_core_dam:
       asset_external_providers:
         unsplash_cms: {}
       image:
+        title: ['customData:title']
         custom_metadata_pinned_amount: 3
         storage_name: 'cms.image'
         crop_storage_name: 'cms.crop'
@@ -152,6 +153,7 @@ anzu_systems_core_dam:
             Owners: ','
             OwnerName: ~
       audio:
+        title: ['customData:title']
         custom_metadata_pinned_amount: 3
         storage_name: 'cms.audio'
         chunk_storage_name: 'cms.audio'
@@ -160,6 +162,7 @@ anzu_systems_core_dam:
           default: free
           versions: [ free, paid ]
       video:
+        title: ['customData:title']
         custom_metadata_pinned_amount: 3
         storage_name: 'cms.video'
         chunk_storage_name: 'cms.video'
@@ -203,6 +206,7 @@ anzu_systems_core_dam:
                 enabled: true
                 required: true
       document:
+        title: ['customData:title']
         custom_metadata_pinned_amount: 3
         storage_name: 'cms.document'
         chunk_storage_name: 'cms.document'
@@ -211,6 +215,7 @@ anzu_systems_core_dam:
     blog:
       id: 2
       image:
+        title: ['customData:title']
         custom_metadata_pinned_amount: 2
         storage_name: 'cms.image'
         crop_storage_name: 'cms.crop'
