@@ -28,6 +28,10 @@ Content-Type: application/json
   client.global.set('podcastEpisodeId', response.body.id)
 %}
 
+### Get single podcast episode
+GET {{host}}/api/adm/v1/podcast-episode/{{podcastEpisodeId}}
+Content-Type: application/json
+
 ### Update podcast episode
 PUT {{host}}/api/adm/v1/podcast-episode/{{podcastEpisodeId}}
 Content-Type: application/json
