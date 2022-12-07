@@ -18,7 +18,6 @@
         "ext-iconv": "*",
         "ext-redis": "^5.3",
         "anzusystems/auth-bundle": "dev-main",
-        "anzusystems/common-bundle": "^1.0.0",
         "anzusystems/core-dam-bundle": "dev-develop",
         "doctrine/doctrine-migrations-bundle": "^3.2",
         "doctrine/orm": "2.13.1",
