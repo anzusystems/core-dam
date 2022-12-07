@@ -7,8 +7,10 @@ namespace App\DataFixtures;
 use AnzuSystems\CommonBundle\DataFixtures\Fixtures\AbstractFixtures;
 use AnzuSystems\Contracts\Entity\AnzuUser;
 use AnzuSystems\CoreDamBundle\DataFixtures\AssetLicenceFixtures;
+use AnzuSystems\CoreDamBundle\Entity\ExtSystem;
 use App\Domain\User\UserManager;
 use App\Entity\User;
+use Doctrine\ORM\Exception\ORMException;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
@@ -17,6 +19,8 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
  */
 final class UserFixtures extends AbstractFixtures
 {
+    private const CMS_EXT_SYSTEM_ID = 1;
+
     public function __construct(
         private readonly UserManager $userManager,
         private readonly UserPasswordHasherInterface $userPasswordHasher,
@@ -50,6 +54,8 @@ final class UserFixtures extends AbstractFixtures
 
     /**
      * @return iterable<User>
+     *
+     * @throws ORMException
      */
     private function getData(): iterable
     {
@@ -66,6 +72,7 @@ final class UserFixtures extends AbstractFixtures
 
         yield $adminUser;
 
+        $cmsExtSystem = $this->userManager->getEntityManager()->getReference(ExtSystem::class, self::CMS_EXT_SYSTEM_ID);
         $basicUser = (new User())
             ->setId(User::ID_BASIC_USER)
             ->setEmail('dam_basic@anzusystems.dev')
@@ -88,6 +95,9 @@ final class UserFixtures extends AbstractFixtures
                 $this->assetLicenceFixtures->getOneFromRegistry(AssetLicenceFixtures::DEFAULT_LICENCE_ID)
             )
         ;
+        $basicUser
+            ->getUserToExtSystems()
+            ->add($cmsExtSystem);
 
         yield $basicUser;
     }

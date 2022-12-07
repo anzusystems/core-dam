@@ -26,7 +26,7 @@ return static function (RoutingConfigurator $routes): void {
         ->prefix('/');
 
     $routes
-        ->import('@AnzuSystemsAuthBundle/Controller/Api/AuthController.php', type: 'attribute')
+        ->import('@AnzuSystemsAuthBundle/Controller/Api/JsonCredentialsAuthController.php', type: 'attribute')
         ->prefix('/api/auth/');
 
     $routes
