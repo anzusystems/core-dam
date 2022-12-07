@@ -16,8 +16,10 @@ POST {{host}}/api/adm/v1/podcast-episode
 Content-Type: application/json
 
 {
-  "asset": "1ed7315f-76c1-6460-a899-4119adc23397",
-  "podcast": "1ed746a1-c020-63a2-979d-0f76227ddce4",
+  "podcast": "5edeb44d-c64b-4357-957d-688d9cf7e63a",
+  "texts": {
+    "title": "New episode"
+  },
   "attributes": {
     "seasonNumber": 1,
     "episodeNumber": 1

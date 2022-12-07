@@ -54,5 +54,11 @@ GET {{host}}/api/adm/v1/asset/search?offset=10&visible=true&described=false&with
 ### Search
 GET {{host}}/api/adm/v1/asset/licence/1/search?type=image,audio&status=with_file,draft&order[createdAt]=desc
 
+### Search by podcast
+GET {{host}}/api/adm/v1/asset/licence/1/search?podcastIds=5edeb44d-c64b-4357-957d-688d9cf7e63a
+
+### Search by podcast
+GET {{host}}/api/adm/v1/asset/licence/1/search?inPodcast=true
+
 ###
 GET {{host}}/api/adm/v1/image/0d584443-2718-470a-b9b1-92d2d9c7447c/download
