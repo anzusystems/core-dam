@@ -127,7 +127,8 @@ anzu_systems_core_dam:
     cms:
       id: 1
       asset_external_providers:
-        unsplash_cms: {}
+        unsplash_cms:
+          title: Unsplash
       image:
         title: ['customData:title']
         custom_metadata_pinned_amount: 3
@@ -153,6 +154,15 @@ anzu_systems_core_dam:
             Artist: ','
             Owners: ','
             OwnerName: ~
+        asset_external_providers_map:
+          title:
+            source_property_path: 'texts.displayTitle'
+            destination_property_path: 'metadata.customData[title]'
+          description:
+            source_property_path: 'texts.description'
+            destination_property_path: 'metadata.customData[description]'
+            normalizers:
+              - { type: string, options: { length: 5000 } }
       audio:
         title: ['customData:title']
         custom_metadata_pinned_amount: 3
