@@ -23,5 +23,5 @@ SHELL=/bin/bash
 # At every minute
 * * * * * cron-cmd -n date_command date \\"+\%F \%B\\"
 
-Every hour
+# Every hour
 0 * * * * cron-cmd -n podcast_read_rss anzu-dam:podcast:read-rss
