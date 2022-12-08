@@ -81,6 +81,20 @@ spec:
                 - /var/run/crond.pid
             initialDelaySeconds: 10
             periodSeconds: 10
+        - name: podcast-read-rss-log
+          image: busybox
+          command: [ "/bin/sh", "-c" ]
+          args: [ "/var/www/html/var/log/tail-cmd -f /var/www/html/var/log/podcast_read_rss.log" ]
+          resources:
+            limits:
+              cpu: 5m
+              memory: 10Mi
+            requests:
+              cpu: 1m
+              memory: 5Mi
+          volumeMounts:
+            - name: logs
+              mountPath: /var/www/html/var/log
         - name: container-stop-log
           image: busybox
           command: ["/bin/sh", "-c"]

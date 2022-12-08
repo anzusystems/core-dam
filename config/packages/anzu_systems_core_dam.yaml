@@ -162,6 +162,19 @@ anzu_systems_core_dam:
         file_versions:
           default: free
           versions: [ free, paid ]
+        podcast_episode_rss_map:
+          title:
+            source_property_path: 'title'
+            destination_property_path: 'metadata.customData[title]'
+            normalizers:
+              - { type: string, options: { length: 64 } }
+              - { type: html, options: { words_wrap: 0 } }
+          description:
+            source_property_path: 'description'
+            destination_property_path: 'metadata.customData[description]'
+            normalizers:
+              - { type: string, options: { length: 5000 } }
+              - { type: html, options: { words_wrap: 0 } }
       video:
         title: ['customData:title']
         custom_metadata_pinned_amount: 3
