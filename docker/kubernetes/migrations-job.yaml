@@ -78,6 +78,8 @@ spec:
                 path: google/storage-bucket-credentials.json
               - key: google-pubsub-credentials.json
                 path: google/pubsub-credentials.json
+              - key: dam-youtube-oauth2-credentials.json
+                path: youtube/yt_oauth2_credentials.json
 ---
 apiVersion: policy/v1
 kind: PodDisruptionBudget
