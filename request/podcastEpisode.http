@@ -8,7 +8,11 @@ Content-Type: application/json
 }
 
 ### GET Podcast episodes
-GET {{host}}/api/adm/v1/podcast-episode/podcast/1ed746a1-c020-63a2-979d-0f76227ddce4
+GET {{host}}/api/adm/v1/podcast-episode/podcast/1ed76c43-2365-6bbc-842e-39673057d810
+Content-Type: application/json
+
+### GET Asset episodes
+GET {{host}}/api/adm/v1/podcast-episode/asset/1ed76cf7-9022-6732-bdd3-69835d8cc8a2
 Content-Type: application/json
 
 ### Create podcast episode
