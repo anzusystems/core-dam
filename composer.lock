@@ -4,20 +4,27 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a5f3c91a9549449a4384519d06456d2c",
+    "content-hash": "83a08ce40482cd02f7501898b5c8edeb",
     "packages": [
         {
             "name": "anzusystems/auth-bundle",
             "version": "dev-main",
             "source": {
                 "type": "git",
-                "url": "git@ssh.dev.azure.com:v3/petitpress/Anzu/auth-bundle",
-                "reference": "79865859ead7db7f2921e8ae79dd3c954c6accfe"
+                "url": "https://github.com/anzusystems/auth-bundle.git",
+                "reference": "eeaaf386c89c72a00fadfff7084c8f8ba776bf9f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/anzusystems/auth-bundle/zipball/eeaaf386c89c72a00fadfff7084c8f8ba776bf9f",
+                "reference": "eeaaf386c89c72a00fadfff7084c8f8ba776bf9f",
+                "shasum": ""
             },
             "require": {
                 "anzusystems/common-bundle": "^1.0",
                 "doctrine/common": "^3.3",
                 "ext-json": "*",
+                "ext-redis": "*",
                 "lcobucci/jwt": "^4.2",
                 "php": ">=8.1"
             },
@@ -36,13 +43,27 @@
                     "AnzuSystems\\AuthBundle\\": "src"
                 }
             },
-            "autoload-dev": {
-                "psr-4": {
-                    "AnzuSystems\\AuthBundle\\Tests\\": "tests"
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "AnzuSystems Community",
+                    "homepage": "https://github.com/orgs/anzusystems/people"
                 }
+            ],
+            "description": "Anzu authorization services",
+            "keywords": [
+                "anzusystems",
+                "authorization",
+                "symfony"
+            ],
+            "support": {
+                "issues": "https://github.com/anzusystems/auth-bundle/issues",
+                "source": "https://github.com/anzusystems/auth-bundle/tree/main"
             },
-            "description": "Auth bundle.",
-            "time": "2022-11-30T16:00:31+00:00"
+            "time": "2022-12-12T14:10:49+00:00"
         },
         {
             "name": "anzusystems/common-bundle",
@@ -182,7 +203,7 @@
             "source": {
                 "type": "git",
                 "url": "git@ssh.dev.azure.com:v3/petitpress/Anzu/core-dam-bundle",
-                "reference": "5262e91d24a54bcf0d205bdce845cccf53145221"
+                "reference": "4094e345bf3bdd8154d04d0cde534c68ed33b4cc"
             },
             "require": {
                 "anzusystems/common-bundle": "^1.0",
@@ -249,7 +270,7 @@
                 "Apache-2.0"
             ],
             "description": "Dam core bundle",
-            "time": "2022-12-08T15:36:19+00:00"
+            "time": "2022-12-11T14:36:54+00:00"
         },
         {
             "name": "anzusystems/serializer-bundle",

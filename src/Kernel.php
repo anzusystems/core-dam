@@ -10,6 +10,7 @@ class Kernel extends AnzuKernel
 {
     protected int $userIdConsole = User::ID_CONSOLE;
     protected int $userIdAnonymous = User::ID_ANONYMOUS;
+    protected int $userIdAdmin = User::ID_ADMIN;
 
     use MicroKernelTrait;
 }

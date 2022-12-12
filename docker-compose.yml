@@ -13,6 +13,7 @@ services:
       - NGINX_PORT=${NGINX_PORT:-8130}
     external_links:
       - local-proxy:core-dam.sme.localhost
+      - local-proxy:central.sme.localhost
     env_file:
       - .env.docker.dist
       - .env.docker.local

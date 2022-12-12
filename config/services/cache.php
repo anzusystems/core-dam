@@ -63,6 +63,15 @@ return static function (ContainerConfigurator $configurator): void {
     ;
 
     $services
+        ->set('SharedTokenStorageRedis', Redis::class)
+        ->call('connect', [
+            env('string:REDIS_HOST'),
+            env('int:REDIS_PORT'),
+        ])
+        ->call('select', [0])
+    ;
+
+    $services
         ->set(Cache::class)
         ->factory([DoctrineProvider::class, 'wrap'])
         ->arg('$pool', service('doctrine.redis_cache_pool'))

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Repository;
 
+use AnzuSystems\AuthBundle\Contracts\AnzuAuthUserInterface;
+use AnzuSystems\AuthBundle\Contracts\OAuth2AuthUserRepositoryInterface;
 use AnzuSystems\CommonBundle\Repository\AbstractAnzuRepository;
 use App\Entity\User;
 
@@ -13,10 +15,15 @@ use App\Entity\User;
  * @method User|null find($id, $lockMode = null, $lockVersion = null)
  * @method User|null findOneBy(array $criteria, array $orderBy = null)
  */
-final class UserRepository extends AbstractAnzuRepository
+final class UserRepository extends AbstractAnzuRepository implements OAuth2AuthUserRepositoryInterface
 {
     protected function getEntityClass(): string
     {
         return User::class;
+    }
+
+    public function findOneBySsoUserId(string $ssoUserId): ?AnzuAuthUserInterface
+    {
+        return $this->findOneBy(['ssoId' => $ssoUserId]);
     }
 }

@@ -7,6 +7,19 @@ anzu_systems_auth:
         private_cert: '%env(base64:AUTH_JWT_PRIVATE_CERT)%'
     authorization:
         enabled: true
-        refresh_token_storage: App\Domain\RefreshToken\RefreshTokenStorage
-        logout_redirect_default_url: '%env(AUTH_LOGOUT_REDIRECT_DEFAULT_URL)%'
-        logout_redirect_query_url_allowed_pattern: '%env(AUTH_LOGOUT_REDIRECT_QUERY_URL_ALLOWED_PATTERN)%'
+        refresh_token:
+            storage:
+                redis:
+                    service_id: SharedTokenStorageRedis
+        auth_redirect_default_url: '%env(AUTH_REDIRECT_DEFAULT_URL)%'
+        auth_redirect_query_url_allowed_pattern: '%env(AUTH_REDIRECT_QUERY_URL_ALLOWED_PATTERN)%'
+        type: json_credentials
+#        type: oauth2
+#        oauth2:
+#            user_repository_service_id: App\Repository\UserRepository
+#            authorize_url: '%env(AUTH_OAUTH2_AUTHORIZE_URL)%'
+#            access_token_url: '%env(AUTH_OAUTH2_ACCESS_TOKEN_URL)%'
+#            redirect_url: '%env(AUTH_OAUTH2_REDIRECT_URL)%'
+#            client_id: anzusystems-dam
+#            client_secret: '%env(AUTH_OAUTH2_CLIENT_SECRET)%'
+#            public_cert: '%env(base64:AUTH_OAUTH2_JWT_PUBLIC_CERT)%'
