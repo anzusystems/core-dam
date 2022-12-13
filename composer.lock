@@ -203,12 +203,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/anzusystems/core-dam-bundle.git",
-                "reference": "bfcfa548a0fe3141c67485fbafde81b800fbe2c6"
+                "reference": "c266dc353f15c286d22f145f39ca097aee955a01"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/anzusystems/core-dam-bundle/zipball/bfcfa548a0fe3141c67485fbafde81b800fbe2c6",
-                "reference": "bfcfa548a0fe3141c67485fbafde81b800fbe2c6",
+                "url": "https://api.github.com/repos/anzusystems/core-dam-bundle/zipball/c266dc353f15c286d22f145f39ca097aee955a01",
+                "reference": "c266dc353f15c286d22f145f39ca097aee955a01",
                 "shasum": ""
             },
             "require": {
@@ -228,6 +228,7 @@
                 "jcupitt/vips": "^1.0",
                 "league/flysystem": "^3.7",
                 "league/flysystem-google-cloud-storage": "^3.7",
+                "petitpress/gps-messenger-bundle": "^1.4",
                 "php": ">=8.1",
                 "php-ffmpeg/php-ffmpeg": "^1.0",
                 "phpexiftool/exiftool": "^10.16",
@@ -276,7 +277,7 @@
                 "issues": "https://github.com/anzusystems/core-dam-bundle/issues",
                 "source": "https://github.com/anzusystems/core-dam-bundle/tree/main"
             },
-            "time": "2022-12-13T09:17:10+00:00"
+            "time": "2022-12-13T12:52:25+00:00"
         },
         {
             "name": "anzusystems/serializer-bundle",
