@@ -1,0 +1,26 @@
+anzu_systems_core_dam:
+    storages:
+        cms.audio:
+            adapter: 'local'
+            options:
+                directory: '%kernel.project_dir%/var/mnt/data/audio'
+        cms.image:
+            adapter: 'local'
+            options:
+                directory: '%kernel.project_dir%/var/mnt/data/image'
+        cms.document:
+            adapter: 'local'
+            options:
+                directory: '%kernel.project_dir%/var/mnt/data/document'
+        cms.video:
+            adapter: 'local'
+            options:
+                directory: '%kernel.project_dir%/var/mnt/data/video'
+        cms.chunk:
+            adapter: 'local'
+            options:
+                directory: '%kernel.project_dir%/var/mnt/data/chunk'
+        cms.crop:
+            adapter: 'local'
+            options:
+                directory: '%kernel.project_dir%/var/mnt/data/crop'

@@ -1,0 +1,10 @@
+framework:
+    http_method_override: true
+    trusted_proxies: '%env(APP_TRUSTED_PROXIES)%'
+    trusted_headers: ['x-forwarded-for', 'x-forwarded-port', 'x-forwarded-proto']
+    secret: '%env(APP_SECRET)%'
+    session:
+        enabled: false
+    php_errors:
+        log: '%env(int:PHP_ERROR_REPORTING)%'
+

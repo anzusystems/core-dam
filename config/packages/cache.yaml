@@ -1,0 +1,15 @@
+framework:
+    cache:
+        default_redis_provider: VersionedCacheRedis
+        app: core_dam_app.cache
+        system: cache.adapter.filesystem
+        pools:
+            doctrine.redis_cache_pool:
+                adapter: cache.adapter.redis
+                provider: CacheRedis
+                default_lifetime: PT3M
+            core_dam_app.cache:
+                adapter: cache.adapter.redis
+                provider: DamRedis
+                default_lifetime: PT3M
+

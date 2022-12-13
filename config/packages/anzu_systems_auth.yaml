@@ -1,0 +1,16 @@
+anzu_systems_auth:
+    cookie:
+        domain: '%env(COOKIE_DOMAIN)%'
+        secure: '%env(bool:COOKIE_SECURE)%'
+    jwt:
+        public_cert: '%env(base64:AUTH_JWT_PUBLIC_CERT)%'
+        private_cert: '%env(base64:AUTH_JWT_PRIVATE_CERT)%'
+    authorization:
+        enabled: true
+        refresh_token:
+            storage:
+                redis:
+                    service_id: SharedTokenStorageRedis
+        auth_redirect_default_url: '%env(AUTH_REDIRECT_DEFAULT_URL)%'
+        auth_redirect_query_url_allowed_pattern: '%env(AUTH_REDIRECT_QUERY_URL_ALLOWED_PATTERN)%'
+        type: json_credentials

@@ -1,0 +1,9 @@
+framework:
+    messenger:
+        transports: ~
+        buses:
+            messenger.bus.default:
+                middleware:
+                    AnzuSystems\CommonBundle\Messenger\Middleware\ContextIdentityMiddleware
+
+        routing: ~

@@ -1,0 +1,82 @@
+{
+    "type": "project",
+    "license": "Apache-2.0",
+    "prefer-stable": true,
+    "require": {
+        "php": ">=8.1",
+        "ext-ctype": "*",
+        "ext-iconv": "*",
+        "ext-redis": "^5.3",
+        "anzusystems/auth-bundle": "dev-main",
+        "anzusystems/core-dam-bundle": "dev-main",
+        "doctrine/doctrine-migrations-bundle": "^3.2",
+        "doctrine/orm": "2.13.1",
+        "petitpress/gps-messenger-bundle": "^1.1",
+        "symfony/asset": "6.2.*",
+        "symfony/debug-bundle": "^6.2",
+        "symfony/doctrine-bridge": "6.1.*",
+        "symfony/flex": "^2.2",
+        "symfony/twig-bundle": "6.2.*"
+    },
+    "require-dev": {
+        "symfony/stopwatch": "6.2.*",
+        "symfony/var-dumper": "6.2.*",
+        "symfony/web-profiler-bundle": "6.2.*"
+    },
+    "config": {
+        "allow-plugins": {
+            "composer/package-versions-deprecated": true,
+            "symfony/flex": true,
+            "symfony/runtime": true
+        },
+        "optimize-autoloader": true,
+        "preferred-install": {
+            "*": "dist"
+        },
+        "sort-packages": true
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "App\\Tests\\": "tests/"
+        }
+    },
+    "replace": {
+        "symfony/polyfill-ctype": "*",
+        "symfony/polyfill-iconv": "*",
+        "symfony/polyfill-php72": "*",
+        "symfony/polyfill-php73": "*",
+        "symfony/polyfill-php74": "*",
+        "symfony/polyfill-php80": "*",
+        "symfony/polyfill-php81": "*"
+    },
+    "scripts": {
+        "auto-scripts": {
+            "cache:clear": "symfony-cmd",
+            "assets:install %PUBLIC_DIR%": "symfony-cmd"
+        },
+        "post-install-cmd": [
+            "@auto-scripts"
+        ],
+        "post-update-cmd": [
+            "@auto-scripts"
+        ]
+    },
+    "conflict": {
+        "symfony/symfony": "*"
+    },
+    "extra": {
+        "symfony": {
+            "allow-contrib": false,
+            "require": "6.2.*"
+        },
+        "runtime": {
+            "use_putenv": true
+        }
+    },
+    "minimum-stability": "dev"
+}

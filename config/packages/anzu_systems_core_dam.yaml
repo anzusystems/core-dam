@@ -1,0 +1,192 @@
+anzu_systems_core_dam:
+  settings:
+    api_domain: '%env(resolve:string:DOMAIN_CORE_DAM_API)%'
+    elastic_index_prefix: '%env(resolve:string:ELASTIC_INDEX_PREFIX)%'
+    elastic_language_dictionaries: ['sk']
+    distribution_auth_redirect_url: ''
+    default_ext_system_id: 1
+    default_asset_licence_id: 1
+    allow_select_ext_system: false
+    allow_select_licence: false
+    admin_allow_list_name: 'admin'
+    max_bulk_item_count: 10
+    acl_check_enabled: true
+    app_redis: DamRedis
+    cache_redis: CacheRedis
+    image_chunk_config:
+      min_size: '%env(byte_size:APP_SIZE_MIN_CHUNK_SIZE)%'
+      max_size: '%env(byte_size:APP_SIZE_MAX_CHUNK_SIZE)%'
+  display_title:
+    image:
+      - 'customData:title'
+      - 'customData:headline'
+      - 'assetTexts:title'
+      - 'assetFileAttributes:originFileName'
+      - 'asset:id'
+      - 'assetFile:id'
+      - 'assetTexts:title'
+    audio:
+      - 'customData:title'
+      - 'customData:headline'
+      - 'assetTexts:title'
+      - 'assetFileAttributes:originFileName'
+      - 'asset:id'
+      - 'assetFile:id'
+      - 'assetTexts:title'
+    video:
+      - 'customData:title'
+      - 'customData:headline'
+      - 'assetTexts:title'
+      - 'assetFileAttributes:originFileName'
+      - 'asset:id'
+      - 'assetFile:id'
+      - 'assetTexts:title'
+    document:
+      - 'customData:title'
+      - 'customData:headline'
+      - 'assetTexts:title'
+      - 'assetFileAttributes:originFileName'
+      - 'asset:id'
+      - 'assetFile:id'
+      - 'assetTexts:title'
+  file_operations:
+    tmp_dir_path: '/tmp'
+    fixtures_dir_path: '%kernel.project_dir%/var/mnt/data/fixtures'
+  exif_metadata:
+    common_metadata:
+      Software:
+        autoFillField: 'title'
+      ExifVersion:
+        autoFillField: 'title'
+      Make: ~
+      Artist: ~
+      Description: ~
+      Rights: ~
+      Title: ~
+      Subject: ~
+      Headline: ~
+      City: ~
+      Credit: ~
+      Source: ~
+      State: ~
+      Creator: ~
+      Country: ~
+      DateCreated: ~
+      Keywords: ~
+      OwnerName: ~
+    image_metadata:
+      ColorSpace:
+        autoFillField: 'description'
+      Flash: ~
+      ImageDescription: ~
+  image_settings:
+    optimal_resizes: [ 2000, 1000 ]
+    enable_crop_cache: true
+    color_set:
+      red:
+        rgb: [238, 2, 2]
+      yellow:
+        rgb: [251, 239, 0]
+      blue:
+        rgb: [30, 21, 246]
+      orange:
+        rgb: [244, 114, 0]
+      green:
+        rgb: [46, 145, 2]
+      purple:
+        rgb: [158, 11, 246]
+      white:
+        rgb: [255, 255, 255]
+      black:
+        rgb: [0, 0, 0]
+      pink:
+        rgb: [210, 7, 151]
+      brown:
+        rgb: [154, 0, 5]
+    crop_allow_list:
+      admin:
+        domains: [ admin ]
+        quality_whitelist: [ ]
+        crops:
+          - { width: 300, height: 200, tags: ['roi_example'], title: '3:2' }  # admin roi example 3:2
+          - { width: 0, height: 200, tags: ['list'] }                         # admin DAM listing
+          - { width: 200, height: 200, tags: ['roi_example'], title: '1:1' }  # admin roi example 1:1
+          - { width: 1920, height: 0, tags: ['detail'] }                      # admin DAM image crop
+      web_cms:
+        domains: [ web_cms ]
+        quality_whitelist: [ 90 ]
+        crops:
+          - { width: 800, height: 450 }   # anzu web general
+          - { width: 350, height: 197 }   # anzu web box item photo
+  ext_systems:
+    cms:
+      id: 1
+      image:
+        enabled: true
+        title: ['customData:title']
+        custom_metadata_pinned_amount: 3
+        storage_name: 'cms.image'
+        crop_storage_name: 'cms.crop'
+        chunk_storage_name: 'cms.image'
+        size_limit: '%env(byte_size:APP_CMS_IMAGE_MAX_SIZE)%'
+        roi_width: 16
+        roi_height: 9
+        file_versions:
+          default: default
+          versions: [ default ]
+        keywords:
+          enabled: true
+          required: false
+          autocomplete_from_exif_metadata_tags:
+            Keywords: ','
+            Subjects: ','
+        authors:
+          enabled: true
+          required: false
+          autocomplete_from_exif_metadata_tags:
+            Artist: ','
+            Owners: ','
+            OwnerName: ~
+        asset_external_providers_map: []
+      audio:
+        enabled: true
+        title: ['customData:title']
+        custom_metadata_pinned_amount: 3
+        storage_name: 'cms.audio'
+        chunk_storage_name: 'cms.audio'
+        size_limit: '%env(byte_size:APP_CMS_AUDIO_MAX_SIZE)%'
+        file_versions: ~
+        podcast_episode_rss_map:
+          title:
+            source_property_path: 'title'
+            destination_property_path: 'metadata.customData[title]'
+            normalizers:
+              - { type: string, options: { length: 64 } }
+              - { type: html, options: { words_wrap: 0 } }
+          description:
+            source_property_path: 'description'
+            destination_property_path: 'metadata.customData[description]'
+            normalizers:
+              - { type: string, options: { length: 5000 } }
+              - { type: html, options: { words_wrap: 0 } }
+      video:
+        enabled: true
+        title: ['customData:title']
+        custom_metadata_pinned_amount: 3
+        storage_name: 'cms.video'
+        chunk_storage_name: 'cms.video'
+        size_limit: '%env(byte_size:APP_CMS_VIDEO_MAX_SIZE)%'
+        file_versions: ~
+      document:
+        enabled: true
+        title: ['customData:title']
+        custom_metadata_pinned_amount: 3
+        storage_name: 'cms.document'
+        chunk_storage_name: 'cms.document'
+        size_limit: '%env(byte_size:APP_CMS_DOCUMENT_MAX_SIZE)%'
+        file_versions: ~
+  domains:
+    admin:
+      domain: '%env(resolve:string:DOMAIN_ADMIN_WEB)%'
+    web_cms:
+      domain: '%env(resolve:string:DOMAIN_CMS_WEB)%'

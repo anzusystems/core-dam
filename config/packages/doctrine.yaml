@@ -1,0 +1,33 @@
+doctrine:
+    dbal:
+        connections:
+            default:
+                url: '%env(resolve:DB_CORE_DAM_URL)%'
+    orm:
+        auto_generate_proxy_classes: true
+        naming_strategy: doctrine.orm.naming_strategy.underscore_number_aware
+        auto_mapping: true
+        resolve_target_entities:
+            AnzuSystems\CoreDamBundle\Entity\DamUser: App\Entity\User
+        second_level_cache:
+            enabled: '%env(bool:DOCTRINE_CACHE_ENABLED)%'
+            log_enabled: false
+            region_lifetime: '%env(int:DOCTRINE_CACHE_TTL)%'
+            region_cache_driver:
+                pool: doctrine.redis_cache_pool
+        metadata_cache_driver:
+            type: pool
+            pool: cache.system
+        query_cache_driver:
+            type: pool
+            pool: cache.system
+        result_cache_driver:
+            type: pool
+            pool: cache.system
+        mappings:
+            App:
+                is_bundle: false
+                type: attribute
+                dir: '%kernel.project_dir%/src/Entity'
+                prefix: 'App\Entity'
+                alias: App
