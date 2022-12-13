@@ -26,6 +26,7 @@ use App\Validator\Constraints as AppAssert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_email', fields: ['email'])]
+#[ORM\UniqueConstraint(name: 'UNIQ_ssoId', fields: ['ssoId'])] //TODO: remove for github
 class User extends DamUser implements
     AnzuAuthUserInterface,
     PasswordAuthenticatedUserInterface,
@@ -47,6 +48,13 @@ class User extends DamUser implements
     #[ORM\Column(type: Types::INTEGER)]
     #[Serialize]
     protected ?int $id = null;
+
+    /**
+     * TODO: remove for github
+     */
+    #[ORM\Column(type: Types::STRING, nullable: true)]
+    #[Serialize]
+    protected ?string $ssoId = null;
 
     /**
      * Unique Email of user.
@@ -84,6 +92,8 @@ class User extends DamUser implements
 
     public function __construct()
     {
+        $this->setId(null);
+        $this->setSsoId(null);
         $this->setEmail('');
         $this->setPassword(null);
         $this->setPermissions([]);
@@ -94,6 +104,18 @@ class User extends DamUser implements
         $this->setAssetLicences(new ArrayCollection());
         $this->setAdminToExtSystems(new ArrayCollection());
         $this->setUserToExtSystems(new ArrayCollection());
+    }
+
+    public function getSsoId(): ?string
+    {
+        return $this->ssoId;
+    }
+
+    public function setSsoId(?string $ssoId): self
+    {
+        $this->ssoId = $ssoId;
+
+        return $this;
     }
 
     public function getEmail(): string

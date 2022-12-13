@@ -5,10 +5,6 @@
     "repositories": [
         {
             "type": "vcs",
-            "url": "git@ssh.dev.azure.com:v3/petitpress/Anzu/auth-bundle"
-        },
-        {
-            "type": "vcs",
             "url": "git@ssh.dev.azure.com:v3/petitpress/Anzu/core-dam-bundle"
         }
     ],

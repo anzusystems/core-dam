@@ -94,6 +94,9 @@ if [ -f /.dockerenv ]; then
     bin/console doctrine:migrations:migrate --no-interaction --allow-no-migration
     bin/console doctrine:schema:update --force
 
+    echo "[INFO] Creating mandatory users"
+    bin/console anzu:mandatory-create:user
+
     if ${FIXTURES_LOAD}; then
         echo "[INFO] Loading fixtures"
         bin/console anzu:fixtures:generate

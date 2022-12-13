@@ -23,6 +23,7 @@ security:
             security: false
         auth:
             pattern: ^/api/auth/
+            stateless: true
             provider: app_user_provider_email
             json_login:
                 check_path: auth_login

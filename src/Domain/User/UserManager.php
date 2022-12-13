@@ -46,6 +46,7 @@ final class UserManager extends AbstractManager
             ->setFirstName($createUserDto->getFirstName())
             ->setLastName($createUserDto->getLastName())
             ->setEmail($createUserDto->getEmail())
+            ->setSsoId($createUserDto->getSsoId())
             ->setAdminToExtSystems($createUserDto->getAdminToExtSystems())
             ->setAllowedAssetExternalProviders($createUserDto->getAllowedAssetExternalProviders())
             ->setAllowedDistributionServices($createUserDto->getAllowedDistributionServices())
