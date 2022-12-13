@@ -1,4 +1,4 @@
-FROM anzusystems/php:1.0.0-php81-fpm-vipsffmpeg-nginx
+FROM anzusystems/php:1.0.0-php82-fpm-vipsffmpeg-nginx
 
 LABEL maintainer="Lubomir Stanko <lubomir.stanko@petitpress.sk>"
 #
