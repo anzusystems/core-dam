@@ -97,6 +97,9 @@ if [ -f /.dockerenv ]; then
     echo "[INFO] Creating mandatory users"
     bin/console anzu:mandatory-create:user
 
+    echo "[INFO] Synchronize ExtSystem entities"
+    bin/console anzu-dam:ext-system:sync
+
     if ${FIXTURES_LOAD}; then
         echo "[INFO] Loading fixtures"
         bin/console anzu:fixtures:generate
