@@ -1,0 +1,135 @@
+services:
+  app:
+    build:
+      args:
+        - DOCKER_USER=${DOCKER_USER:-user}
+        - DOCKER_USER_ID=${DOCKER_USER_ID:-1000}
+        - DOCKER_GROUP_ID=${DOCKER_GROUP_ID:-1000}
+      context: .
+      dockerfile: ./docker/app/local/Dockerfile
+    environment:
+      - VIRTUAL_HOST=core-dam.anzusystems.localhost,image.anzusystemsdata.localhost,admin-image.anzusystemsdata.localhost
+      - VIRTUAL_PORT=${NGINX_PORT:-8130}
+      - NGINX_PORT=${NGINX_PORT:-8130}
+    external_links:
+      - local-proxy:core-dam.anzusystems.localhost
+    env_file:
+      - .env.docker.dist
+      - .env.docker.local
+    volumes:
+      - .:/var/www/html:cached
+      - ./tests/coverage:/opt/phpstorm-coverage:cached
+    ports:
+      - ${NGINX_PORT:-8130}:${NGINX_PORT:-8130}
+    hostname: core-dam
+    networks:
+      anzusystems_network:
+        aliases:
+          - core-dam
+
+  app-cron:
+    build:
+      args:
+        - DOCKER_USER=${DOCKER_USER:-user}
+        - DOCKER_USER_ID=${DOCKER_USER_ID:-1000}
+        - DOCKER_GROUP_ID=${DOCKER_GROUP_ID:-1000}
+      context: .
+      dockerfile: ./docker/app-cron/local/Dockerfile
+    external_links:
+      - local-proxy:core-dam.anzusystems.localhost
+    env_file:
+      - .env.docker.dist
+      - .env.docker.local
+    volumes:
+      - .:/var/www/html:cached
+    hostname: core-dam-cron
+    networks:
+      - anzusystems_network
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.17.8
+    environment:
+      - cluster.routing.allocation.disk.threshold_enabled=false
+      - discovery.type=single-node
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - xpack.security.enabled=false
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - ./docker/elasticsearch/vocabulary/hunspell:/usr/share/elasticsearch/config/hunspell:cached
+      - ./docker/elasticsearch/vocabulary/stop-words:/usr/share/elasticsearch/config/stop-words:cached
+      - ./docker/elasticsearch/vocabulary/synonyms:/usr/share/elasticsearch/config/synonyms:cached
+      - elasticsearch_data:/usr/share/elasticsearch/data:cached
+    ports:
+      - ${ELASTICSEARCH_DOCKER_PORT:-9225}:9200
+    hostname: elasticsearch-core
+    networks:
+      - anzusystems_network
+
+  mysql:
+    image: mysql:8.0
+    command:
+      - --default-authentication-plugin=mysql_native_password
+      - --disable-log-bin
+    env_file:
+      - .env.docker.dist
+      - .env.docker.local
+    volumes:
+      - mysql_data:/var/lib/mysql:cached
+    ports:
+      - ${MYSQL_DOCKER_PORT:-3353}:3306
+    hostname: mysql-core
+    networks:
+      - anzusystems_network
+
+  mongo:
+    image: mongo:5.0
+    command: ${MONGO_LOGAPPEND:-} ${MONGO_NOTABLESCAN:-}
+    env_file:
+      - .env.docker.dist
+      - .env.docker.local
+    volumes:
+      - mongo_data:/data/db:cached
+    ports:
+      - ${MONGO_DOCKER_PORT:-27517}:27017
+    hostname: mongo-core
+    networks:
+      - anzusystems_network
+
+  pubsub:
+    build:
+      context: docker/pubsub
+    ports:
+      - ${PUBSUB_DOCKER_PORT:-8238}:8538
+    hostname: pubsub
+    networks:
+      - anzusystems_network
+
+  redis:
+    image: redis:6.2
+    volumes:
+      - redis_data:/data:cached
+    ports:
+      - ${REDIS_DOCKER_PORT:-6571}:6379
+    hostname: redis-core
+    networks:
+      - anzusystems_network
+
+volumes:
+  mysql_data:
+    driver: local
+
+  redis_data:
+    driver: local
+
+  elasticsearch_data:
+    driver: local
+
+  mongo_data:
+    driver: local
+
+networks:
+  anzusystems_network:
+    external: true

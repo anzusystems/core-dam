@@ -1,0 +1,25 @@
+#!/bin/bash
+# Script to run setup inside the container
+set -e
+
+cd /var/www/html || exit 1
+
+echo "[INFO] Setup system wide environment variables for cron"
+printenv | grep -E -v '^HOME|^TERM' >>/etc/environment
+
+echo "[INFO] Redirecting logs to stdout"
+tail -F \
+    /var/log/cron/cron.log \
+    "${PHP_ERROR_LOG}" 2>/dev/null &
+
+if ${ENABLE_AUTOMATIC_CRON_STARTUP}; then
+    echo "[INFO] Setup crontab"
+    if [ -f "docker/crontab/crontab_local" ]; then
+        su -c "crontab docker/crontab/crontab_local" user
+    else
+        su -c "crontab docker/crontab/crontab" user
+    fi
+fi
+
+echo "[INFO] Starting cron"
+/usr/sbin/cron -f

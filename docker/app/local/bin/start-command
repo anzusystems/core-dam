@@ -1,0 +1,24 @@
+#!/bin/bash
+# Script to run setup inside the container
+set -e
+
+cd /var/www/html || exit 1
+
+echo "[INFO] Redirecting logs to stdout"
+tail -F \
+    "${PHP_ERROR_LOG}" 2>/dev/null &
+
+if [ -n "${GITHUB_PERSONAL_ACCESS_TOKEN}" ]; then
+    echo "[INFO] Setup token for github.com"
+    cat <<EOF >/composer/auth.json
+{
+    "github-oauth": {
+        "github.com": "${GITHUB_PERSONAL_ACCESS_TOKEN}"
+    }
+}
+EOF
+fi
+
+echo "[INFO] Starting supervisor"
+messenger-supervisor-conf
+/usr/bin/supervisord

@@ -1,0 +1,121 @@
+#!/bin/bash
+# Script used to build the project
+
+PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")"/.. && pwd)"
+ARGS="$*"
+CACHE_CLEAR=true
+DB_DROP=true
+FIXTURES_LOAD=true
+MESSENGER_START=true
+
+cd "${PROJECT_ROOT}" || exit 1
+
+function help() {
+    echo -en "$(printf %q "${BASH_SOURCE[0]}") [OPERATION] [OPTIONS]...
+    \nBuild script used to build the project.
+
+    Options:
+        --no-cc        Run the build without cache clear
+        --no-drop      Run the build without database recreate
+        --no-fixtures  Run the build without fixtures load
+        --no-messenger Run the build without messenger start
+
+    Examples:
+        $(printf %q "${BASH_SOURCE[0]}") --no-drop
+    \n"
+}
+
+while [ "$#" -gt 0 ]; do
+    case $1 in
+    --no-cc)
+        CACHE_CLEAR=false
+        shift 1
+        continue
+        ;;
+    --no-drop)
+        DB_DROP=false
+        shift 1
+        continue
+        ;;
+    --no-fixtures)
+        FIXTURES_LOAD=false
+        shift 1
+        continue
+        ;;
+    --no-messenger)
+        MESSENGER_START=false
+        shift 1
+        continue
+        ;;
+    -h | --help)
+        help
+        exit
+        ;;
+    *)
+        echo "[WARN] Unknown command line switch: $1" >&2
+        help
+        exit
+        ;;
+    esac
+done
+
+if [ -f /.dockerenv ]; then
+    SUPERVISOR_MESSENGERS=$(supervisorctl status | grep messenger- | sed -e 's/^messenger-\(.*\):messenger.*/\1/g' | sort -u)
+
+    echo "[INFO] Stopping all messengers"
+    for messenger in ${SUPERVISOR_MESSENGERS}; do
+        if supervisorctl status "messenger-${messenger}:*" | grep -q RUNNING; then
+            supervisorctl stop "messenger-${messenger}:*"
+        fi
+    done
+
+    if ${CACHE_CLEAR}; then
+        bin/cc --no-autoload
+    fi
+
+    echo "[INFO] Running composer install"
+    composer -n install
+    composer dump-autoload
+
+    echo "[INFO] Create topics"
+    bin/console messenger:setup-transports
+
+    if ${DB_DROP}; then
+        echo "[INFO] Dropping the database"
+        bin/console doctrine:database:drop --if-exists --force
+        bin/console doctrine:database:create
+    fi
+
+    echo "[INFO] Running doctrine database migrations"
+    bin/console doctrine:migrations:sync-metadata-storage --no-interaction
+    bin/console doctrine:migrations:migrate --no-interaction --allow-no-migration
+    bin/console doctrine:schema:update --force
+
+    echo "[INFO] Creating mandatory users"
+    bin/console anzu:mandatory-create:user
+
+    echo "[INFO] Synchronize ExtSystem entities"
+    bin/console anzu-dam:ext-system:sync
+
+    if ${FIXTURES_LOAD}; then
+        echo "[INFO] Loading fixtures"
+        bin/console anzu:fixtures:generate
+        bin/console anzu:elastic:rebuild asset
+        bin/console anzu:elastic:rebuild keyword
+        bin/console anzu:elastic:rebuild author
+        echo ""
+    fi
+
+    echo "[INFO] Synchronize DistributionCategorySelect according ext systems distribution requirements."
+    bin/console anzu-dam:distribution:sync-category-select
+
+    if ${MESSENGER_START}; then
+        for messenger in ${SUPERVISOR_MESSENGERS}; do
+            echo "[INFO] Starting ${messenger} messenger"
+            supervisorctl start "messenger-${messenger}:*"
+        done
+    fi
+    exit
+fi
+
+bin/docker-compose exec app bash -c \'bin/build "${ARGS}"\'
