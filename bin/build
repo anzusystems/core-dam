@@ -95,7 +95,7 @@ if [ -f /.dockerenv ]; then
     bin/console doctrine:schema:update --force
 
     echo "[INFO] Creating mandatory users"
-    bin/console anzu:mandatory-create:user
+    bin/console anzu:mandatory-create:user --admin-user-password=root --no-interaction
 
     echo "[INFO] Synchronize ExtSystem entities"
     bin/console anzu-dam:ext-system:sync

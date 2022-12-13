@@ -15,6 +15,7 @@ use Exception;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\QuestionHelper;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
@@ -35,6 +36,8 @@ final class CreateMandatoryUsersCommand extends Command
 {
     private QuestionHelper $questionHelper;
 
+    private const ADMIN_USER_PASSWORD_ARG = 'admin-user-password';
+
     public function __construct(
         private readonly UserManager $userManager,
         private readonly CurrentAnzuUserProvider $currentAnzuUserProvider,
@@ -42,6 +45,16 @@ final class CreateMandatoryUsersCommand extends Command
     ) {
         parent::__construct();
     }
+
+    public function configure(): void
+    {
+        $this
+            ->addOption(
+                name: self::ADMIN_USER_PASSWORD_ARG,
+                mode: InputArgument::OPTIONAL
+            );
+    }
+
 
     /**
      * @throws Exception
@@ -108,19 +121,22 @@ final class CreateMandatoryUsersCommand extends Command
             $output->writeln('<info>Admin user (' . $adminUserId . ') not found. Creating...</info>');
             $email = $this->askForEmail($input, $output, 'dam_admin@anzusystems.dev');
 
-            $passwordQuestion = new Question('Please enter a password for admin user (empty will generate a password): ');
-            $passwordValidation = Validation::createCallable(
-                new AtLeastOneOf(constraints: [
-                    new Blank(),
-                    new All(constraints: [
-                        new NotCompromisedPassword(),
-                        new Length(min: 8),
-                    ]),
-                ])
-            );
-            $passwordQuestion->setValidator($passwordValidation);
-            $password = $this->questionHelper->ask($input, $output, $passwordQuestion);
-            $password = $password ?: bin2hex(random_bytes(10));
+            $password = $input->getOption(self::ADMIN_USER_PASSWORD_ARG);
+            if (empty($password)) {
+                $passwordQuestion = new Question('Please enter a password for admin user (empty will generate a password): ');
+                $passwordValidation = Validation::createCallable(
+                    new AtLeastOneOf(constraints: [
+                        new Blank(),
+                        new All(constraints: [
+                            new NotCompromisedPassword(),
+                            new Length(min: 8),
+                        ]),
+                    ])
+                );
+                $passwordQuestion->setValidator($passwordValidation);
+                $password = $this->questionHelper->ask($input, $output, $passwordQuestion);
+                $password = $password ?: bin2hex(random_bytes(10));
+            }
             $output->writeln('Password for admin user is: ' . $password);
 
             $adminUser = new User();
