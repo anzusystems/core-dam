@@ -130,6 +130,7 @@ anzu_systems_core_dam:
         unsplash_cms:
           title: Unsplash
       image:
+        enabled: true
         title: ['customData:title']
         custom_metadata_pinned_amount: 3
         storage_name: 'cms.image'
@@ -164,6 +165,7 @@ anzu_systems_core_dam:
             normalizers:
               - { type: string, options: { length: 5000 } }
       audio:
+        enabled: true
         title: ['customData:title']
         custom_metadata_pinned_amount: 3
         storage_name: 'cms.audio'
@@ -186,6 +188,7 @@ anzu_systems_core_dam:
               - { type: string, options: { length: 5000 } }
               - { type: html, options: { words_wrap: 0 } }
       video:
+        enabled: true
         title: ['customData:title']
         custom_metadata_pinned_amount: 3
         storage_name: 'cms.video'
@@ -230,6 +233,7 @@ anzu_systems_core_dam:
                 enabled: true
                 required: true
       document:
+        enabled: true
         title: ['customData:title']
         custom_metadata_pinned_amount: 3
         storage_name: 'cms.document'
@@ -239,6 +243,7 @@ anzu_systems_core_dam:
     blog:
       id: 2
       image:
+        enabled: true
         title: ['customData:title']
         custom_metadata_pinned_amount: 2
         storage_name: 'cms.image'
