@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f509ec3b4a950ee8fb48b5acd84f1986",
+    "content-hash": "2789620a55abe57cfd231bb9adc3d629",
     "packages": [
         {
             "name": "anzusystems/auth-bundle",
@@ -199,16 +199,16 @@
         },
         {
             "name": "anzusystems/core-dam-bundle",
-            "version": "dev-pub_config",
+            "version": "dev-main",
             "source": {
                 "type": "git",
                 "url": "https://github.com/anzusystems/core-dam-bundle.git",
-                "reference": "d44b3e5e6d24d5f20a284acf7f43b3abb951768e"
+                "reference": "3710203d4454408c15814539dca88824142158d2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/anzusystems/core-dam-bundle/zipball/d44b3e5e6d24d5f20a284acf7f43b3abb951768e",
-                "reference": "d44b3e5e6d24d5f20a284acf7f43b3abb951768e",
+                "url": "https://api.github.com/repos/anzusystems/core-dam-bundle/zipball/3710203d4454408c15814539dca88824142158d2",
+                "reference": "3710203d4454408c15814539dca88824142158d2",
                 "shasum": ""
             },
             "require": {
@@ -228,6 +228,7 @@
                 "jcupitt/vips": "^1.0",
                 "league/flysystem": "^3.7",
                 "league/flysystem-google-cloud-storage": "^3.7",
+                "petitpress/gps-messenger-bundle": "^1.4",
                 "php": ">=8.2",
                 "php-ffmpeg/php-ffmpeg": "^1.0",
                 "phpexiftool/exiftool": "^10.16",
@@ -260,6 +261,7 @@
                 "symplify/easy-coding-standard": "^11.1",
                 "vimeo/psalm": "^4.11"
             },
+            "default-branch": true,
             "type": "symfony-bundle",
             "autoload": {
                 "psr-4": {
@@ -273,9 +275,9 @@
             "description": "Dam core bundle",
             "support": {
                 "issues": "https://github.com/anzusystems/core-dam-bundle/issues",
-                "source": "https://github.com/anzusystems/core-dam-bundle/tree/pub_config"
+                "source": "https://github.com/anzusystems/core-dam-bundle/tree/main"
             },
-            "time": "2022-12-13T14:40:02+00:00"
+            "time": "2022-12-13T14:56:56+00:00"
         },
         {
             "name": "anzusystems/serializer-bundle",
