@@ -110,13 +110,16 @@ final class CreateMandatoryUsersCommand extends Command
 
             $passwordQuestion = new Question('Please enter a password for admin user (empty will generate a password): ');
             $passwordValidation = Validation::createCallable(
-                new AtLeastOneOf(constraints: [
-                    new Blank(),
-                    new All(constraints: [
-                        new NotCompromisedPassword(),
-                        new Length(min: 8),
-                    ]),
-                ])
+                new AtLeastOneOf(
+                    constraints: [
+                        new Blank(),
+                        new All(constraints: [
+                            new NotCompromisedPassword(),
+                            new Length(min: 8),
+                        ]),
+                    ],
+                    includeInternalMessages: true,
+                )
             );
             $passwordQuestion->setValidator($passwordValidation);
             $password = $this->questionHelper->ask($input, $output, $passwordQuestion);

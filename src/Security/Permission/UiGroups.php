@@ -25,4 +25,5 @@ final class UiGroups
     public const GROUP_DISTRIBUTION_CATEGORY_SELECT = 'distributionCategorySelect';
     public const GROUP_SIDEBAR_DIGITAL_MEDIA = 'sidebarDigitalMedia';
     public const GROUP_ASSET_EXTERNAL_PROVIDER = 'assetExternalProvider';
+    public const GROUP_PODCAST = 'podcast';
 }
