@@ -56,7 +56,7 @@ services:
       - .env.docker.dist
       - .env.docker.local
     volumes:
-      - mysql_data:/var/lib/mysql:cached
+      - mysql_local_data:/var/lib/mysql:cached
     ports:
       - ${MYSQL_DOCKER_PORT:-3353}:3306
     hostname: mysql-core
@@ -66,7 +66,7 @@ services:
   redis-core-dam:
     image: redis:6.2.7
     volumes:
-      - redis_data:/data:cached
+      - redis_local_data:/data:cached
     ports:
       - ${REDIS_DOCKER_PORT:-6571}:6379
     hostname: redis-core
@@ -85,7 +85,7 @@ services:
         soft: -1
         hard: -1
     volumes:
-      - elasticsearch_data:/usr/share/elasticsearch/data:cached
+      - elasticsearch_local_data:/usr/share/elasticsearch/data:cached
     ports:
       - ${ELASTICSEARCH_DOCKER_PORT:-9225}:9200
     hostname: elasticsearch-core
@@ -99,7 +99,7 @@ services:
       - .env.docker.dist
       - .env.docker.local
     volumes:
-      - mongo_data:/data/db:cached
+      - mongo_local_data:/data/db:cached
     ports:
       - ${MONGO_DOCKER_PORT:-27517}:27017
     hostname: mongo-core
@@ -126,16 +126,16 @@ secrets:
     file: ${DOCKER_SSH_PRV_KEY_FILE:-~/.ssh/id_rsa}
 
 volumes:
-  mysql_data:
+  mysql_local_data:
     driver: local
 
-  redis_data:
+  redis_local_data:
     driver: local
 
-  elasticsearch_data:
+  elasticsearch_local_data:
     driver: local
 
-  mongo_data:
+  mongo_local_data:
     driver: local
 
 networks:
