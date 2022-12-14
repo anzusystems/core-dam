@@ -51,7 +51,7 @@ anzu_systems_core_dam:
       - 'assetTexts:title'
   file_operations:
     tmp_dir_path: '/tmp'
-    fixtures_dir_path: '%kernel.project_dir%/var/mnt/data/fixtures'
+    fixtures_dir_path: '%kernel.project_dir%/var/mnt/fixtures'
   exif_metadata:
     common_metadata:
       Software:
