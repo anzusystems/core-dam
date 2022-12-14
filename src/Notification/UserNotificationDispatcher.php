@@ -5,6 +5,7 @@ declare(strict_types=1);
 
 namespace App\Notification;
 
+use AnzuSystems\CoreDamBundle\Notification\AbstractNotificationDispatcher;
 use AnzuSystems\SerializerBundle\Exception\SerializerException;
 
 final class UserNotificationDispatcher extends AbstractNotificationDispatcher
