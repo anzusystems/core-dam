@@ -391,6 +391,64 @@ final class DamPermissions extends BaseDamPermissions
                     self::UI_GROUP => UiGroups::GROUP_KEYWORD,
                 ],
             ],
+            // Podcast
+            self::DAM_PODCAST_VIEW => [
+                self::GRANTS => [Grants::GRANT_ALLOW, Grants::GRANT_DENY],
+                self::UI => [
+                    self::UI_CATEGORY => UiCategories::CATEGORY_DAM,
+                    self::UI_GROUP => UiGroups::GROUP_PODCAST,
+                ],
+            ],
+            self::DAM_PODCAST_CREATE => [
+                self::GRANTS => [Grants::GRANT_ALLOW, Grants::GRANT_DENY],
+                self::UI => [
+                    self::UI_CATEGORY => UiCategories::CATEGORY_DAM,
+                    self::UI_GROUP => UiGroups::GROUP_PODCAST,
+                ],
+            ],
+            self::DAM_PODCAST_UPDATE => [
+                self::GRANTS => [Grants::GRANT_ALLOW, Grants::GRANT_DENY],
+                self::UI => [
+                    self::UI_CATEGORY => UiCategories::CATEGORY_DAM,
+                    self::UI_GROUP => UiGroups::GROUP_PODCAST,
+                ],
+            ],
+            self::DAM_PODCAST_DELETE => [
+                self::GRANTS => [Grants::GRANT_ALLOW, Grants::GRANT_DENY],
+                self::UI => [
+                    self::UI_CATEGORY => UiCategories::CATEGORY_DAM,
+                    self::UI_GROUP => UiGroups::GROUP_PODCAST,
+                ],
+            ],
+            // Podcast Episode
+            self::DAM_PODCAST_EPISODE_VIEW => [
+                self::GRANTS => [Grants::GRANT_ALLOW, Grants::GRANT_DENY],
+                self::UI => [
+                    self::UI_CATEGORY => UiCategories::CATEGORY_DAM,
+                    self::UI_GROUP => UiGroups::GROUP_PODCAST,
+                ],
+            ],
+            self::DAM_PODCAST_EPISODE_CREATE => [
+                self::GRANTS => [Grants::GRANT_ALLOW, Grants::GRANT_DENY],
+                self::UI => [
+                    self::UI_CATEGORY => UiCategories::CATEGORY_DAM,
+                    self::UI_GROUP => UiGroups::GROUP_PODCAST,
+                ],
+            ],
+            self::DAM_PODCAST_EPISODE_UPDATE => [
+                self::GRANTS => [Grants::GRANT_ALLOW, Grants::GRANT_DENY],
+                self::UI => [
+                    self::UI_CATEGORY => UiCategories::CATEGORY_DAM,
+                    self::UI_GROUP => UiGroups::GROUP_PODCAST,
+                ],
+            ],
+            self::DAM_PODCAST_EPISODE_DELETE => [
+                self::GRANTS => [Grants::GRANT_ALLOW, Grants::GRANT_DENY],
+                self::UI => [
+                    self::UI_CATEGORY => UiCategories::CATEGORY_DAM,
+                    self::UI_GROUP => UiGroups::GROUP_PODCAST,
+                ],
+            ],
             // Distribution Category
             self::DAM_DISTRIBUTION_CATEGORY_VIEW => [
                 self::GRANTS => [Grants::GRANT_ALLOW, Grants::GRANT_DENY],
@@ -513,6 +571,20 @@ final class DamPermissions extends BaseDamPermissions
                 self::UI => [
                     self::UI_CATEGORY => UiCategories::CATEGORY_ADMIN_DAM,
                     self::UI_GROUP => UiGroups::GROUP_SIDEBAR_DIGITAL_MEDIA,
+                ],
+            ],
+            UiPermissions::DAM_PODCAST_UI => [
+                self::GRANTS => [Grants::GRANT_ALLOW, Grants::GRANT_DENY],
+                self::UI => [
+                    self::UI_CATEGORY => UiCategories::CATEGORY_ADMIN_DAM,
+                    self::UI_GROUP => UiGroups::GROUP_PODCAST,
+                ],
+            ],
+            UiPermissions::DAM_PODCAST_EPISODE_UI => [
+                self::GRANTS => [Grants::GRANT_ALLOW, Grants::GRANT_DENY],
+                self::UI => [
+                    self::UI_CATEGORY => UiCategories::CATEGORY_ADMIN_DAM,
+                    self::UI_GROUP => UiGroups::GROUP_PODCAST,
                 ],
             ],
         ];
