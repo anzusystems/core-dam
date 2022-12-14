@@ -11,23 +11,13 @@ use App\Validator\Constraints\UniqueEntityDto;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[UniqueEntityDto(entity: User::class, fields: ['email'])]
+#[UniqueEntityDto(entity: User::class, fields: ['ssoId'])]
 final class CreateUserDto extends AbstractUserDto
 {
-    #[Serialize]
-    #[Assert\NotCompromisedPassword(message: ValidationException::ERROR_COMPROMISED_PASSWORD)]
-    #[Assert\Length(
-        min: 8,
-        minMessage: ValidationException::ERROR_FIELD_LENGTH_MIN,
-    )]
-    protected string $plainPassword;
-
     #[Serialize]
     #[Assert\Email(message: ValidationException::ERROR_FIELD_INVALID)]
     private string $email;
 
-    /**
-     * TODO: remove for github
-     */
     #[Serialize]
     private string $ssoId;
 

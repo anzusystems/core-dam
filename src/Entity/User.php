@@ -21,15 +21,13 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use App\Validator\Constraints as AppAssert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_email', fields: ['email'])]
-#[ORM\UniqueConstraint(name: 'UNIQ_ssoId', fields: ['ssoId'])] //TODO: remove for github
+#[ORM\UniqueConstraint(name: 'UNIQ_ssoId', fields: ['ssoId'])]
 class User extends DamUser implements
     AnzuAuthUserInterface,
-    PasswordAuthenticatedUserInterface,
     ApiTokenUserInterface,
     UserTrackingInterface,
     TimeTrackingInterface
@@ -49,9 +47,6 @@ class User extends DamUser implements
     #[Serialize]
     protected ?int $id = null;
 
-    /**
-     * TODO: remove for github
-     */
     #[ORM\Column(type: Types::STRING, nullable: true)]
     #[Serialize]
     protected ?string $ssoId = null;
@@ -62,12 +57,6 @@ class User extends DamUser implements
     #[ORM\Column(type: Types::STRING, length: 180)]
     #[Serialize]
     private string $email;
-
-    /**
-     * Authorization password for system users.
-     */
-    #[ORM\Column(type: Types::STRING, nullable: true)]
-    private ?string $password;
 
     /**
      * Authorization token for system users. Required to access /api/sys/* endpoints.
@@ -95,7 +84,6 @@ class User extends DamUser implements
         $this->setId(null);
         $this->setSsoId(null);
         $this->setEmail('');
-        $this->setPassword(null);
         $this->setPermissions([]);
         $this->setApiToken(null);
         $this->setEnabled(true);
@@ -130,18 +118,6 @@ class User extends DamUser implements
         return $this;
     }
 
-    public function getPassword(): ?string
-    {
-        return $this->password;
-    }
-
-    public function setPassword(?string $password): self
-    {
-        $this->password = $password;
-
-        return $this;
-    }
-
     public function getApiToken(): ?string
     {
         return $this->apiToken;
@@ -165,6 +141,7 @@ class User extends DamUser implements
 
         return $this;
     }
+
     /**
      * @return Collection<int, PermissionGroup>
      */

@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/anzusystems/auth-bundle.git",
-                "reference": "eeaaf386c89c72a00fadfff7084c8f8ba776bf9f"
+                "reference": "5ad6c749eb07445e53fc80f5a0cab56c14ae86b2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/anzusystems/auth-bundle/zipball/eeaaf386c89c72a00fadfff7084c8f8ba776bf9f",
-                "reference": "eeaaf386c89c72a00fadfff7084c8f8ba776bf9f",
+                "url": "https://api.github.com/repos/anzusystems/auth-bundle/zipball/5ad6c749eb07445e53fc80f5a0cab56c14ae86b2",
+                "reference": "5ad6c749eb07445e53fc80f5a0cab56c14ae86b2",
                 "shasum": ""
             },
             "require": {
@@ -63,7 +63,7 @@
                 "issues": "https://github.com/anzusystems/auth-bundle/issues",
                 "source": "https://github.com/anzusystems/auth-bundle/tree/main"
             },
-            "time": "2022-12-12T14:10:49+00:00"
+            "time": "2022-12-14T15:09:32+00:00"
         },
         {
             "name": "anzusystems/common-bundle",
@@ -203,12 +203,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/anzusystems/core-dam-bundle.git",
-                "reference": "f46e52e16ecdc23beb52758f5e256921c1a7d8c1"
+                "reference": "264420225367b0d9e8d171b8c2ac928b7e6d3c8d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/anzusystems/core-dam-bundle/zipball/f46e52e16ecdc23beb52758f5e256921c1a7d8c1",
-                "reference": "f46e52e16ecdc23beb52758f5e256921c1a7d8c1",
+                "url": "https://api.github.com/repos/anzusystems/core-dam-bundle/zipball/264420225367b0d9e8d171b8c2ac928b7e6d3c8d",
+                "reference": "264420225367b0d9e8d171b8c2ac928b7e6d3c8d",
                 "shasum": ""
             },
             "require": {
@@ -276,7 +276,7 @@
                 "issues": "https://github.com/anzusystems/core-dam-bundle/issues",
                 "source": "https://github.com/anzusystems/core-dam-bundle/tree/feature/php_81"
             },
-            "time": "2022-12-14T12:31:44+00:00"
+            "time": "2022-12-14T14:08:30+00:00"
         },
         {
             "name": "anzusystems/serializer-bundle",

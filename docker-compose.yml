@@ -113,8 +113,6 @@ services:
       - .env.docker.local
     volumes:
       - ./docker/pubsub/pubsub.yaml:/opt/config/pubsub.yaml:cached
-    external_links:
-      - local-proxy:smsgw.sme.localhost
     ports:
       - ${PUBSUB_DOCKER_PORT:-8238}:8538
     hostname: pubsub-core

@@ -19,13 +19,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Symfony\Component\Validator\Constraints\All;
-use Symfony\Component\Validator\Constraints\AtLeastOneOf;
-use Symfony\Component\Validator\Constraints\Blank;
 use Symfony\Component\Validator\Constraints\Email;
-use Symfony\Component\Validator\Constraints\Length;
-use Symfony\Component\Validator\Constraints\NotCompromisedPassword;
 use Symfony\Component\Validator\Validation;
 
 #[AsCommand(
@@ -36,12 +30,11 @@ final class CreateMandatoryUsersCommand extends Command
 {
     private QuestionHelper $questionHelper;
 
-    private const ADMIN_USER_PASSWORD_ARG = 'admin-user-password';
+    private const ADMIN_USER_SSO_ID_ARG = 'sso-id';
 
     public function __construct(
         private readonly UserManager $userManager,
         private readonly CurrentAnzuUserProvider $currentAnzuUserProvider,
-        private readonly UserPasswordHasherInterface $userPasswordHasher,
     ) {
         parent::__construct();
     }
@@ -50,8 +43,9 @@ final class CreateMandatoryUsersCommand extends Command
     {
         $this
             ->addOption(
-                name: self::ADMIN_USER_PASSWORD_ARG,
-                mode: InputArgument::OPTIONAL
+                name: self::ADMIN_USER_SSO_ID_ARG,
+                mode: InputArgument::OPTIONAL,
+                default: '673348',
             );
     }
 
@@ -121,23 +115,8 @@ final class CreateMandatoryUsersCommand extends Command
             $output->writeln('<info>Admin user (' . $adminUserId . ') not found. Creating...</info>');
             $email = $this->askForEmail($input, $output, 'dam_admin@anzusystems.dev');
 
-            $password = $input->getOption(self::ADMIN_USER_PASSWORD_ARG);
-            if (empty($password)) {
-                $passwordQuestion = new Question('Please enter a password for admin user (empty will generate a password): ');
-                $passwordValidation = Validation::createCallable(
-                    new AtLeastOneOf(constraints: [
-                        new Blank(),
-                        new All(constraints: [
-                            new NotCompromisedPassword(),
-                            new Length(min: 8),
-                        ]),
-                    ])
-                );
-                $passwordQuestion->setValidator($passwordValidation);
-                $password = $this->questionHelper->ask($input, $output, $passwordQuestion);
-                $password = $password ?: bin2hex(random_bytes(10));
-            }
-            $output->writeln('Password for admin user is: ' . $password);
+            $ssoId = $input->getOption(self::ADMIN_USER_SSO_ID_ARG);
+            $output->writeln('SSO ID for admin user is: ' . $ssoId);
 
             $adminUser = new User();
             $adminUser->setId($adminUserId);
@@ -146,9 +125,7 @@ final class CreateMandatoryUsersCommand extends Command
             $adminUser->setLastName('DAM');
             $adminUser->setEnabled(true);
             $adminUser->setRoles([User::ROLE_ADMIN]);
-            $adminUser->setPassword(
-                $this->userPasswordHasher->hashPassword($adminUser, $password)
-            );
+            $adminUser->setSsoId($ssoId);
 
             $this->userManager->create($adminUser);
         }

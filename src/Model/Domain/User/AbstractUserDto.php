@@ -16,9 +16,6 @@ abstract class AbstractUserDto
     use PersonNameTrait;
 
     #[Serialize]
-    protected string $plainPassword;
-
-    #[Serialize]
     protected bool $enabled;
 
     #[Serialize]
@@ -38,25 +35,12 @@ abstract class AbstractUserDto
 
     public function __construct()
     {
-        $this->setPlainPassword('');
         $this->setEnabled(true);
         $this->setSuperAdmin(false);
         $this->setAdminToExtSystems(new ArrayCollection());
         $this->setAssetLicences(new ArrayCollection());
         $this->setAllowedAssetExternalProviders([]);
         $this->setAllowedDistributionServices([]);
-    }
-
-    public function getPlainPassword(): string
-    {
-        return $this->plainPassword;
-    }
-
-    public function setPlainPassword(string $plainPassword): self
-    {
-        $this->plainPassword = $plainPassword;
-
-        return $this;
     }
 
     public function isEnabled(): bool

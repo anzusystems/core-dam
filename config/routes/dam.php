@@ -10,6 +10,9 @@ return static function (RoutingConfigurator $routes): void {
         ->prefix('/api/adm/v1/');
 
     $routes
+        ->import('@AnzuSystemsCoreDamBundle/Controller/Api/Pub/V1', type: 'attribute')
+        ->prefix('/api/pub/v1/');
+    $routes
         ->import('@AnzuSystemsCoreDamBundle/Controller/Adm', type: 'attribute')
         ->prefix('/adm/');
 
@@ -26,12 +29,8 @@ return static function (RoutingConfigurator $routes): void {
         ->prefix('/');
 
     $routes
-        ->import('@AnzuSystemsAuthBundle/Controller/Api/JsonCredentialsAuthController.php', type: 'attribute')
+        ->import('@AnzuSystemsAuthBundle/Controller/Api/OAuth2AuthController.php', type: 'attribute')
         ->prefix('/api/auth/');
-
-//    $routes
-//        ->import('@AnzuSystemsAuthBundle/Controller/Api/OAuth2AuthController.php', type: 'attribute')
-//        ->prefix('/api/auth/');
 
     $routes
         ->import(__DIR__ . '/../../src/Controller/', type: 'attribute')
