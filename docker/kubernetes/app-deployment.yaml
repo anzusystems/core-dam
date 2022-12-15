@@ -137,10 +137,52 @@ spec:
           volumeMounts:
             - name: logs
               mountPath: /var/www/html/var/log
-        - name: messenger-anzu-core-asset-file-change-state-log
+        - name: messenger-anzu-core-image-file-change-state-log
           image: busybox
           command: ["/bin/sh", "-c"]
-          args: ["/var/www/html/var/log/tail-cmd -f /var/www/html/var/log/messenger_anzu_core_asset_file_change_state.log"]
+          args: ["/var/www/html/var/log/tail-cmd -f /var/www/html/var/log/messenger_anzu_core_dam_image_file_change_state.log"]
+          resources:
+            limits:
+              cpu: 5m
+              memory: 10Mi
+            requests:
+              cpu: 1m
+              memory: 5Mi
+          volumeMounts:
+            - name: logs
+              mountPath: /var/www/html/var/log
+        - name: messenger-anzu-core-video-file-change-state-log
+          image: busybox
+          command: [ "/bin/sh", "-c" ]
+          args: [ "/var/www/html/var/log/tail-cmd -f /var/www/html/var/log/messenger_anzu_core_dam_video_file_change_state.log" ]
+          resources:
+            limits:
+              cpu: 5m
+              memory: 10Mi
+            requests:
+              cpu: 1m
+              memory: 5Mi
+          volumeMounts:
+            - name: logs
+              mountPath: /var/www/html/var/log
+        - name: messenger-anzu-core-audio-file-change-state-log
+          image: busybox
+          command: [ "/bin/sh", "-c" ]
+          args: [ "/var/www/html/var/log/tail-cmd -f /var/www/html/var/log/messenger_anzu_core_dam_audio_file_change_state.log" ]
+          resources:
+            limits:
+              cpu: 5m
+              memory: 10Mi
+            requests:
+              cpu: 1m
+              memory: 5Mi
+          volumeMounts:
+            - name: logs
+              mountPath: /var/www/html/var/log
+        - name: messenger-anzu-core-document-file-change-state-log
+          image: busybox
+          command: [ "/bin/sh", "-c" ]
+          args: [ "/var/www/html/var/log/tail-cmd -f /var/www/html/var/log/messenger_anzu_core_dam_document_file_change_state.log" ]
           resources:
             limits:
               cpu: 5m
