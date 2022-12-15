@@ -203,12 +203,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/anzusystems/core-dam-bundle.git",
-                "reference": "4620d968c94691d1c45cadca34cd5b67d68a28b9"
+                "reference": "841ecc91a18b46b91d638da277cd2f67dbd646c2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/anzusystems/core-dam-bundle/zipball/4620d968c94691d1c45cadca34cd5b67d68a28b9",
-                "reference": "4620d968c94691d1c45cadca34cd5b67d68a28b9",
+                "url": "https://api.github.com/repos/anzusystems/core-dam-bundle/zipball/841ecc91a18b46b91d638da277cd2f67dbd646c2",
+                "reference": "841ecc91a18b46b91d638da277cd2f67dbd646c2",
                 "shasum": ""
             },
             "require": {
@@ -277,7 +277,7 @@
                 "issues": "https://github.com/anzusystems/core-dam-bundle/issues",
                 "source": "https://github.com/anzusystems/core-dam-bundle/tree/main"
             },
-            "time": "2022-12-14T13:56:13+00:00"
+            "time": "2022-12-15T13:53:08+00:00"
         },
         {
             "name": "anzusystems/serializer-bundle",
