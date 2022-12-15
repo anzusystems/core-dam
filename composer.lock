@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4340ada42a9b26aa957be652ff4d6cbf",
+    "content-hash": "2789620a55abe57cfd231bb9adc3d629",
     "packages": [
         {
             "name": "anzusystems/auth-bundle",
@@ -199,16 +199,16 @@
         },
         {
             "name": "anzusystems/core-dam-bundle",
-            "version": "dev-feature/php_81",
+            "version": "dev-main",
             "source": {
                 "type": "git",
                 "url": "https://github.com/anzusystems/core-dam-bundle.git",
-                "reference": "264420225367b0d9e8d171b8c2ac928b7e6d3c8d"
+                "reference": "4620d968c94691d1c45cadca34cd5b67d68a28b9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/anzusystems/core-dam-bundle/zipball/264420225367b0d9e8d171b8c2ac928b7e6d3c8d",
-                "reference": "264420225367b0d9e8d171b8c2ac928b7e6d3c8d",
+                "url": "https://api.github.com/repos/anzusystems/core-dam-bundle/zipball/4620d968c94691d1c45cadca34cd5b67d68a28b9",
+                "reference": "4620d968c94691d1c45cadca34cd5b67d68a28b9",
                 "shasum": ""
             },
             "require": {
@@ -229,7 +229,7 @@
                 "league/flysystem": "^3.7",
                 "league/flysystem-google-cloud-storage": "^3.7",
                 "petitpress/gps-messenger-bundle": "^1.4",
-                "php": ">=8.1",
+                "php": ">=8.2",
                 "php-ffmpeg/php-ffmpeg": "^1.0",
                 "phpexiftool/exiftool": "^10.16",
                 "sensio/framework-extra-bundle": "^6.2",
@@ -261,6 +261,7 @@
                 "symplify/easy-coding-standard": "^11.1",
                 "vimeo/psalm": "^4.11"
             },
+            "default-branch": true,
             "type": "symfony-bundle",
             "autoload": {
                 "psr-4": {
@@ -274,9 +275,9 @@
             "description": "Dam core bundle",
             "support": {
                 "issues": "https://github.com/anzusystems/core-dam-bundle/issues",
-                "source": "https://github.com/anzusystems/core-dam-bundle/tree/feature/php_81"
+                "source": "https://github.com/anzusystems/core-dam-bundle/tree/main"
             },
-            "time": "2022-12-14T14:08:30+00:00"
+            "time": "2022-12-14T13:56:13+00:00"
         },
         {
             "name": "anzusystems/serializer-bundle",
@@ -10154,7 +10155,7 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=8.1",
+        "php": ">=8.2",
         "ext-ctype": "*",
         "ext-iconv": "*",
         "ext-redis": "^5.3"
