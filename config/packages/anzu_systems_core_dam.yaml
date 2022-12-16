@@ -15,6 +15,9 @@ anzu_systems_core_dam:
     app_redis: DamRedis
     cache_redis: CacheRedis
     user_auth_type: oauth2
+    notifications:
+      gps_config:
+        transport: rest
     image_chunk_config:
       min_size: '%env(byte_size:APP_SIZE_MIN_CHUNK_SIZE)%'
       max_size: '%env(byte_size:APP_SIZE_MAX_CHUNK_SIZE)%'
