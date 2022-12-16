@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2789620a55abe57cfd231bb9adc3d629",
+    "content-hash": "7458467c3ff76446f7107f1b89a96ff6",
     "packages": [
         {
             "name": "anzusystems/auth-bundle",
@@ -4121,16 +4121,16 @@
         },
         {
             "name": "petitpress/gps-messenger-bundle",
-            "version": "1.4.0",
+            "version": "dev-forced_transport",
             "source": {
                 "type": "git",
                 "url": "https://github.com/petitpress/gps-messenger-bundle.git",
-                "reference": "29211cc1f119a9c7c9b1e26f56c9574b49b546bd"
+                "reference": "be0c0e9971871c2cdc03e79ce5816228c6994851"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/petitpress/gps-messenger-bundle/zipball/29211cc1f119a9c7c9b1e26f56c9574b49b546bd",
-                "reference": "29211cc1f119a9c7c9b1e26f56c9574b49b546bd",
+                "url": "https://api.github.com/repos/petitpress/gps-messenger-bundle/zipball/be0c0e9971871c2cdc03e79ce5816228c6994851",
+                "reference": "be0c0e9971871c2cdc03e79ce5816228c6994851",
                 "shasum": ""
             },
             "require": {
@@ -4184,9 +4184,9 @@
             ],
             "support": {
                 "issues": "https://github.com/petitpress/gps-messenger-bundle/issues",
-                "source": "https://github.com/petitpress/gps-messenger-bundle/tree/1.4.0"
+                "source": "https://github.com/petitpress/gps-messenger-bundle/tree/forced_transport"
             },
-            "time": "2022-10-21T08:13:51+00:00"
+            "time": "2022-12-16T08:52:32+00:00"
         },
         {
             "name": "php-ffmpeg/php-ffmpeg",
@@ -10146,11 +10146,19 @@
             "time": "2022-12-05T08:52:42+00:00"
         }
     ],
-    "aliases": [],
+    "aliases": [
+        {
+            "package": "petitpress/gps-messenger-bundle",
+            "version": "dev-forced_transport",
+            "alias": "1.5",
+            "alias_normalized": "1.5.0.0"
+        }
+    ],
     "minimum-stability": "dev",
     "stability-flags": {
         "anzusystems/auth-bundle": 20,
-        "anzusystems/core-dam-bundle": 20
+        "anzusystems/core-dam-bundle": 20,
+        "petitpress/gps-messenger-bundle": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,

@@ -12,7 +12,7 @@
         "doctrine/doctrine-migrations-bundle": "^3.2",
         "doctrine/orm": "2.13.1",
         "league/flysystem-google-cloud-storage": "^3.0",
-        "petitpress/gps-messenger-bundle": "^1.1",
+        "petitpress/gps-messenger-bundle": "dev-forced_transport as 1.5",
         "symfony/asset": "6.2.*",
         "symfony/debug-bundle": "^6.2",
         "symfony/doctrine-bridge": "6.1.*",
