@@ -191,6 +191,13 @@ anzu_systems_core_dam:
             normalizers:
               - { type: string, options: { length: 5000 } }
               - { type: html, options: { words_wrap: 0 } }
+        podcast_episode_entity_map:
+          title:
+            source_property_path: 'metadata.customData[title]'
+            destination_property_path: 'texts.title'
+          description:
+            source_property_path: 'metadata.customData[description]'
+            destination_property_path: 'texts.description'
       video:
         enabled: true
         title: ['customData:title']
