@@ -68,6 +68,8 @@ if [ -f /.dockerenv ]; then
             supervisorctl stop "messenger-${messenger}:*"
         fi
     done
+    # Killing leftovers after messengers
+    pgrep -f 'php bin/console messenger:consume' | xargs -r kill -9
 
     if ${CACHE_CLEAR}; then
         bin/cc --no-autoload
