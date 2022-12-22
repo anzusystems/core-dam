@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[UniqueEntityDto(entity: User::class, fields: ['email'])]
 #[UniqueEntityDto(entity: User::class, fields: ['ssoId'])]
-final class CreateUserDto extends AbstractUserDto
+final class CreateUserDto extends AbstractUpsertUserDto
 {
     #[Serialize]
     #[Assert\Email(message: ValidationException::ERROR_FIELD_INVALID)]

@@ -10,8 +10,9 @@ use AnzuSystems\CoreDamBundle\Entity\Traits\PersonNameTrait;
 use AnzuSystems\SerializerBundle\Attributes\Serialize;
 use AnzuSystems\SerializerBundle\Handler\Handlers\EntityIdHandler;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
-abstract class AbstractUserDto
+abstract class AbstractUpsertUserDto
 {
     use PersonNameTrait;
 
@@ -22,10 +23,10 @@ abstract class AbstractUserDto
     protected bool $superAdmin;
 
     #[Serialize(handler: EntityIdHandler::class, type: ExtSystem::class)]
-    protected ArrayCollection $adminToExtSystems;
+    protected Collection $adminToExtSystems;
 
     #[Serialize(handler: EntityIdHandler::class, type: AssetLicence::class)]
-    protected ArrayCollection $assetLicences;
+    protected Collection $assetLicences;
 
     #[Serialize]
     protected array $allowedAssetExternalProviders;
@@ -56,14 +57,14 @@ abstract class AbstractUserDto
     }
 
     /**
-     * @return ArrayCollection<int, ExtSystem>
+     * @return Collection<int, ExtSystem>
      */
-    public function getAdminToExtSystems(): ArrayCollection
+    public function getAdminToExtSystems(): Collection
     {
         return $this->adminToExtSystems;
     }
 
-    public function setAdminToExtSystems(ArrayCollection $adminToExtSystems): self
+    public function setAdminToExtSystems(Collection $adminToExtSystems): self
     {
         $this->adminToExtSystems = $adminToExtSystems;
 
@@ -83,14 +84,14 @@ abstract class AbstractUserDto
     }
 
     /**
-     * @return ArrayCollection<int, AssetLicence>
+     * @return Collection<int, AssetLicence>
      */
-    public function getAssetLicences(): ArrayCollection
+    public function getAssetLicences(): Collection
     {
         return $this->assetLicences;
     }
 
-    public function setAssetLicences(ArrayCollection $assetLicences): self
+    public function setAssetLicences(Collection $assetLicences): self
     {
         $this->assetLicences = $assetLicences;
 

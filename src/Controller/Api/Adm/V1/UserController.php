@@ -20,6 +20,7 @@ use App\App;
 use App\Domain\User\UserFacade;
 use App\Entity\User;
 use App\Model\Domain\User\CreateUserDto;
+use App\Model\Domain\User\CurrentUserDto;
 use App\Model\Domain\User\UpdateUserDto;
 use App\Repository\UserRepository;
 use App\Security\Permission\DamPermissions;
@@ -44,7 +45,7 @@ final class UserController extends AbstractApiController
     #[OAResponse(User::class)]
     public function getCurrent(): JsonResponse
     {
-        return $this->okResponse($this->getUser());
+        return $this->okResponse(CurrentUserDto::getInstance($this->getUser()));
     }
 
     /**
