@@ -285,7 +285,7 @@ spec:
               - key: dam-youtube-oauth2-credentials.json
                 path: youtube/yt_oauth2_credentials.json
 ---
-apiVersion: autoscaling/v2beta2
+apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
   name: #{APP_KUBERNETES_DEPLOYMENT_NAME}#
