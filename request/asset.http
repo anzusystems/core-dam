@@ -7,7 +7,11 @@ Content-Type: application/json
   "type": "image"
 }
 
-> {% client.global.set('assetId', response.body.id) %}
+> {% client.global.set('assetId', response.body.id); %}
+
+### Add to position
+PATCH {{host}}/api/adm/v1/image/0d584443-2718-470a-b9b1-92d2d9c7447c/asset/{{assetId}}/position/free
+Content-Type: application/json
 
 ### Create assest with associated image file
 POST {{host}}/api/adm/v1/image/asset/{{assetId}}/position/default
@@ -15,11 +19,13 @@ Content-Type: application/json
 
 {
   "mimeType": "image/jpeg",
-  "checksum": "123456"
+  "checksum": "123456",
+  "size": 262144
 }
 
 > {%
-  client.global.set('imageId', response.body.id)
+    client.global.set('imageId', response.body.id);
+    client.global.set('assetId', response.body.asset);
 %}
 
 ### Upload chunk 1
@@ -42,6 +48,18 @@ Content-Type: application/json
 
 ### Finish upload
 PATCH {{host}}/api/adm/v1/image/{{imageId}}/uploaded
+Content-Type: application/json
+
+{
+  "checksum": "123456"
+}
+
+### Get Asset files based on version
+GET {{host}}/api/adm/v1/asset-file/asset/{{assetId}}
+Content-Type: application/json
+
+### Get Asset files based on version
+PATCH {{host}}/api/adm/v1/image/0d584443-2718-470a-b9b1-92d2d9c7447c/asset/{{assetId}}/position/free
 Content-Type: application/json
 
 ### GEt single asset

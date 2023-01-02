@@ -113,7 +113,6 @@ anzu_systems_core_dam:
         domains: [ admin ]
         quality_whitelist: [ ]
         crops:
-          # todo enum constant
 #          - { width: 1920, height: 1080, tags: ['detail'] }    #
           - { width: 300, height: 200, tags: ['roi_example'], title: '3:2' }  # admin roi example 3:2
 #          - { width: 160, height: 90, tags: ['list'] }         #
@@ -143,9 +142,9 @@ anzu_systems_core_dam:
         size_limit: '%env(byte_size:APP_CMS_IMAGE_MAX_SIZE)%'
         roi_width: 16
         roi_height: 9
-        file_versions:
+        file_slots:
           default: default
-          versions: [ default ]
+          slots: [ default, free, extra ]
         keywords:
           enabled: true
           required: false
@@ -175,9 +174,9 @@ anzu_systems_core_dam:
         storage_name: 'cms.audio'
         chunk_storage_name: 'cms.audio'
         size_limit: '%env(byte_size:APP_CMS_AUDIO_MAX_SIZE)%'
-        file_versions:
+        file_slots:
           default: free
-          versions: [ free, paid ]
+          slots: [ free, paid ]
         podcast_episode_rss_map:
           title:
             source_property_path: 'title'
@@ -205,7 +204,7 @@ anzu_systems_core_dam:
         storage_name: 'cms.video'
         chunk_storage_name: 'cms.video'
         size_limit: '%env(byte_size:APP_CMS_VIDEO_MAX_SIZE)%'
-        file_versions: ~
+        file_slots: ~
         distribution:
           distribution_services: [ youtube_cms_main, youtube_cms_fici, jw_cms, artemis_cms ]
           distribution_requirements:
@@ -250,7 +249,7 @@ anzu_systems_core_dam:
         storage_name: 'cms.document'
         chunk_storage_name: 'cms.document'
         size_limit: '%env(byte_size:APP_CMS_DOCUMENT_MAX_SIZE)%'
-        file_versions: ~
+        file_slots: ~
     blog:
       id: 2
       image:
@@ -263,9 +262,9 @@ anzu_systems_core_dam:
         size_limit: '%env(byte_size:APP_CMS_BLOG_MAX_SIZE)%'
         roi_width: 16
         roi_height: 9
-        file_versions:
+        file_slots:
           default: default
-          versions: [ default ]
+          slots: [ default ]
   domains:
     admin:
       domain: '%env(resolve:string:DOMAIN_ADMIN_WEB)%'

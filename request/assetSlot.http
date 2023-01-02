@@ -1,0 +1,145 @@
+### Get asset ID
+GET {{host}}/api/adm/v1/image/0d584443-2718-470a-b9b1-92d2d9c7447c
+Content-Type: application/json
+
+> {%
+    client.global.set('assetId', response.body.asset);
+    client.test("Request executed successfully", function() {
+        client.assert(response.status === 200, "Response status is not 200");
+    });
+%}
+
+### Get slots of asset
+GET {{host}}/api/adm/v1/asset-slot/asset/{{assetId}}
+Content-Type: application/json
+
+> {%
+    client.test("Request executed successfully", function() {
+        client.assert(response.status === 200, "Response status is not 200");
+    });
+%}
+
+### Update positions
+PATCH {{host}}/api/adm/v1/asset-slot/asset/{{assetId}}
+Content-Type: application/json
+
+[
+  {
+    "assetFile": "0d584443-2718-470a-b9b1-92d2d9c7447c",
+    "slotName": "default"
+  },
+  {
+    "assetFile": "892d7b56-7423-4428-86a0-2d366685d823",
+    "slotName": "extra"
+  },
+  {
+    "assetFile": "892d7b56-7423-4428-86a0-2d366685d823",
+    "slotName": "free"
+  }
+]
+
+> {%
+    client.test("Request executed successfully", function() {
+        client.assert(response.status === 200, "Response status is not 200");
+    });
+%}
+
+### Update positions with remove
+PATCH {{host}}/api/adm/v1/asset-slot/asset/{{assetId}}
+Content-Type: application/json
+
+[
+  {
+    "assetFile": "0d584443-2718-470a-b9b1-92d2d9c7447c",
+    "slotName": "free"
+  },
+  {
+    "assetFile": "892d7b56-7423-4428-86a0-2d366685d823",
+    "slotName": "default"
+  }
+]
+
+> {%
+    client.test("Request executed successfully", function() {
+        client.assert(response.status === 200, "Response status is not 200");
+    });
+%}
+
+### Set main file 1
+PATCH {{host}}/api/adm/v1/image/0d584443-2718-470a-b9b1-92d2d9c7447c/asset/{{assetId}}/main
+
+> {%
+    client.test("Request executed successfully", function() {
+        client.assert(response.status === 200, "Response status is not 200");
+    });
+%}
+
+### Set main file 2
+PATCH {{host}}/api/adm/v1/image/892d7b56-7423-4428-86a0-2d366685d823/asset/{{assetId}}/main
+
+> {%
+    client.test("Request executed successfully", function() {
+        client.assert(response.status === 200, "Response status is not 200");
+    });
+%}
+
+### Create image to asset slot
+POST {{host}}/api/adm/v1/image/asset/{{assetId}}/slot-name/extra
+Content-Type: application/json
+
+{
+  "mimeType": "image/jpeg",
+  "checksum": "123456",
+  "size": 262144
+}
+
+> {%
+    client.global.set('imageId', response.body.id);
+    client.test("Request executed successfully", function() {
+        client.assert(response.status === 201, "Response status is not 201");
+    });
+%}
+
+### Upload chunk 1
+POST {{host}}/api/adm/v1/image/{{imageId}}/chunk
+Content-Type: multipart/form-data; boundary=boundary
+
+--boundary
+Content-Disposition: form-data; name="file"; filename="filename.jpg"
+
+< /home/tomas/Projects/anzu/core-dam/tests/data/chunk/chunkaa
+
+--boundary
+Content-Disposition: form-data; name="chunk";
+Content-Type: application/json
+
+{
+  "offset": 0,
+  "size": 262144
+}
+
+> {%
+    client.test("Request executed successfully", function() {
+        client.assert(response.status === 201, "Response status is not 201");
+    });
+%}
+
+### Finish upload
+PATCH {{host}}/api/adm/v1/image/{{imageId}}/uploaded
+Content-Type: application/json
+
+{
+  "checksum": "123456"
+}
+
+> {%
+    client.test("Request executed successfully", function() {
+        client.assert(response.status === 200, "Response status is not 200");
+    });
+%}
+
+### Delete
+DELETE {{host}}/api/adm/v1/image/{{imageId}}
+
+### Set existing image to position
+PATCH {{host}}/api/adm/v1/image/d9cb26ab-81bd-4804-9f86-fb629673b1b1/asset/{{assetId}}/slot-name/extra
