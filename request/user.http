@@ -22,3 +22,11 @@ Content-Type: application/json
 {
   "plainPassword": "Hello.4567"
 }
+
+### Update current user
+PATCH {{host}}/api/adm/v1/user/current
+Content-Type: application/json
+
+{
+  "selectedLicence": 1
+}

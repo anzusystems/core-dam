@@ -73,7 +73,7 @@ final class CurrentUserDto
     #[Serialize(type: AssetLicenceDto::class)]
     public function getAssetLicences(): Collection
     {
-        return $this->user->getAssetLicences()->map(fn (AssetLicence $extSystem) => AssetLicenceDto::getInstance($extSystem));
+        return $this->user->getAssetLicences()->map(fn (AssetLicence $licence) => AssetLicenceDto::getInstance($licence));
     }
 
     #[Serialize(type: ExtSystemDto::class)]
@@ -86,6 +86,12 @@ final class CurrentUserDto
     public function getAdminToExtSystems(): Collection
     {
         return $this->user->getAdminToExtSystems()->map(fn (ExtSystem $extSystem) => ExtSystemDto::getInstance($extSystem));
+    }
+
+    #[Serialize]
+    public function getSelectedLicence(): ?AssetLicenceDto
+    {
+        return $this->user->getSelectedLicence() ? AssetLicenceDto::getInstance($this->user->getSelectedLicence()) : null;
     }
 
     #[Serialize]

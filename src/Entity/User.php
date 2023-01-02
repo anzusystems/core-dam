@@ -10,6 +10,7 @@ use AnzuSystems\Contracts\Entity\Interfaces\TimeTrackingInterface;
 use AnzuSystems\Contracts\Entity\Interfaces\UserTrackingInterface;
 use AnzuSystems\Contracts\Entity\Traits\TimeTrackingTrait;
 use AnzuSystems\CoreDamBundle\App;
+use AnzuSystems\CoreDamBundle\Entity\AssetLicence;
 use AnzuSystems\CoreDamBundle\Entity\DamUser;
 use AnzuSystems\CoreDamBundle\Entity\Traits\PersonNameTrait;
 use AnzuSystems\CoreDamBundle\Entity\Traits\UserTrackingTrait;
@@ -79,6 +80,9 @@ class User extends DamUser implements
     #[Serialize(handler: EntityIdHandler::class, type: PermissionGroup::class)]
     private Collection $permissionGroups;
 
+    #[ORM\ManyToOne]
+    private ?AssetLicence $selectedLicence;
+
     public function __construct()
     {
         $this->setId(null);
@@ -92,6 +96,7 @@ class User extends DamUser implements
         $this->setAssetLicences(new ArrayCollection());
         $this->setAdminToExtSystems(new ArrayCollection());
         $this->setUserToExtSystems(new ArrayCollection());
+        $this->setSelectedLicence(null);
     }
 
     public function getSsoId(): ?string
@@ -198,6 +203,18 @@ class User extends DamUser implements
         if (is_int($foundKey)) {
             unset($this->roles[$foundKey]);
         }
+
+        return $this;
+    }
+
+    public function getSelectedLicence(): ?AssetLicence
+    {
+        return $this->selectedLicence;
+    }
+
+    public function setSelectedLicence(?AssetLicence $selectedLicence): self
+    {
+        $this->selectedLicence = $selectedLicence;
 
         return $this;
     }
