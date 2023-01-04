@@ -11,17 +11,9 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Result;
 
-final class UserMigrations
+final class UserMigrations extends AbstractMigrations
 {
     use OutputUtilTrait;
-
-    public function __construct(
-        private readonly Connection $damLegacyConnection,
-        private readonly Connection $defaultConnection,
-        private readonly Connection $coreConnection,
-        private readonly Connection $blogConnection,
-    ) {
-    }
 
     /**
      * @throws Exception

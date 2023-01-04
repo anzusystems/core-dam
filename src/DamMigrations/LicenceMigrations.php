@@ -17,16 +17,9 @@ use Doctrine\DBAL\Result;
 use JetBrains\PhpStorm\ArrayShape;
 use Symfony\Component\Uid\Uuid;
 
-final class LicenceMigrations
+final class LicenceMigrations extends AbstractMigrations
 {
     use OutputUtilTrait;
-
-    public function __construct(
-        private readonly Connection $damLegacyConnection,
-        private readonly Connection $defaultConnection,
-        private readonly Connection $coreConnection,
-    ) {
-    }
 
     /**
      * @throws Exception

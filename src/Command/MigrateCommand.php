@@ -22,8 +22,6 @@ use Doctrine\DBAL\Result;
 final class MigrateCommand extends Command
 {
     public function __construct(
-        private readonly Connection $artemisConnection,
-        private readonly Connection $damLegacyConnection,
         private readonly LegacyDamPodcastMigrations $legacyDamPodcastMigrations,
         private readonly UserMigrations $userMigrations,
         private readonly LicenceMigrations $licenceMigrations,
@@ -38,7 +36,8 @@ final class MigrateCommand extends Command
     {
 //        $this->licenceMigrations->migrate();
 //        $this->userMigrations->migrate();
-//        $this->legacyDamPodcastMigrations->migratePodcasts(1);
+//        $this->legacyDamPodcastMigrations->migratePodcasts(100_000);
+
         return Command::SUCCESS;
     }
 }

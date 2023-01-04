@@ -9,6 +9,7 @@ use AnzuSystems\CoreDamBundle\Command\Traits\OutputUtilTrait;
 use AnzuSystems\CoreDamBundle\Model\Enum\PodcastImportMode;
 use AnzuSystems\CoreDamBundle\Model\Enum\PodcastLastImportStatus;
 use App\App;
+use App\Entity\User;
 use DateTimeImmutable;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;
@@ -16,7 +17,7 @@ use Doctrine\DBAL\Result;
 use JetBrains\PhpStorm\ArrayShape;
 use Symfony\Component\Uid\Uuid;
 
-final class LegacyDamPodcastMigrations
+final class LegacyDamPodcastMigrations extends AbstractMigrations
 {
     use OutputUtilTrait;
 
@@ -39,13 +40,6 @@ final class LegacyDamPodcastMigrations
         'modified_at' => 'string',
         'type' => 'string',
     ];
-
-    public function __construct(
-        private readonly Connection $damLegacyConnection,
-        private readonly Connection $defaultConnection,
-        private readonly Connection $artemisConnection,
-    ) {
-    }
 
     /**
      * @throws Exception
@@ -94,8 +88,8 @@ final class LegacyDamPodcastMigrations
         $this->defaultConnection->update(
             'podcast',
             [
-                'texts_description' => $row['description'],
-                'attributes_rss_url' => $row['rss_feed'],
+                'texts_description' => (string) $row['description'],
+                'attributes_rss_url' => (string) $row['rss_feed'],
                 'attributes_mode' => empty($row['rss_feed'])
                     ? PodcastImportMode::notImport->toString()
                     : PodcastImportMode::import->toString()
@@ -112,12 +106,13 @@ final class LegacyDamPodcastMigrations
         int $licenceId
     ): void
     {
-        // todo cretedBy, ...
         $this->defaultConnection->insert(
             'podcast',
             [
                 'id' =>  Uuid::v6(),
                 'texts_title' => $row['title'],
+                'created_by_id' => User::ID_CONSOLE,
+                'modified_by_id' => User::ID_CONSOLE,
                 'created_at' => App::getAppDate()->format(DateTimeImmutable::ATOM),
                 'modified_at' => App::getAppDate()->format(DateTimeImmutable::ATOM),
                 'texts_description' => $row['description'],
@@ -135,7 +130,6 @@ final class LegacyDamPodcastMigrations
         int $licenceId,
     ): void
     {
-        // todo cretedBy, ...
         $this->defaultConnection->insert(
             'podcast',
             [
@@ -143,6 +137,8 @@ final class LegacyDamPodcastMigrations
                 'texts_title' => $row['title'],
                 'created_at' => $row['created_at'],
                 'modified_at' => $row['modified_at'],
+                'created_by_id' => $this->getUserIdBySsoId((int) $row['created_by_id']),
+                'modified_by_id' => $this->getUserIdBySsoId((int) $row['modified_by_id']),
                 'texts_description' => '',
                 'licence_id' => $licenceId,
                 'attributes_last_import_status' => PodcastLastImportStatus::notImported->toString(),
