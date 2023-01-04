@@ -19,7 +19,7 @@ final class Version20221003075735 extends AbstractMigration
         $this->addSql(
             'INSERT INTO `ext_system` (id, `name`, `slug`, created_by_id, modified_by_id, created_at, modified_at) VALUES
             (1, \'CMS system\', \'cms\', 1, 1, NOW(), NOW()),
-            (2, \'Blog system\', \'blog\', 1, 1, NOW(), NOW());
+            (4, \'Blog system\', \'blog\', 1, 1, NOW(), NOW());
         ');
     }
 
