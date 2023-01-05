@@ -2,18 +2,32 @@ anzu_systems_core_dam:
     storages:
         cms.audio:
             adapter: 'local'
+            fallback_enabled: '%env(bool:CMS_AUDIO_FALLBACK_ENABLED)%'
+            fallback_storage: cms.audio_fallback
             options:
                 directory: '%kernel.project_dir%/var/mnt/data/audio'
         cms.image:
             adapter: 'local'
+            fallback_enabled: '%env(bool:CMS_IMAGE_FALLBACK_ENABLED)%'
+            fallback_storage: cms.image_fallback
             options:
                 directory: '%kernel.project_dir%/var/mnt/data/image'
+        blog.image:
+            adapter: 'local'
+            fallback_enabled: '%env(bool:BLOG_IMAGE_FALLBACK_ENABLED)%'
+            fallback_storage: blog.image_fallback
+            options:
+                directory: '%kernel.project_dir%/var/mnt/data/blog_image'
         cms.document:
             adapter: 'local'
+            fallback_enabled: '%env(bool:CMS_DOCUMENT_FALLBACK_ENABLED)%'
+            fallback_storage: cms.document_fallback
             options:
                 directory: '%kernel.project_dir%/var/mnt/data/document'
         cms.video:
             adapter: 'local'
+            fallback_enabled: '%env(bool:CMS_VIDEO_FALLBACK_ENABLED)%'
+            fallback_storage: cms.video_fallback
             options:
                 directory: '%kernel.project_dir%/var/mnt/data/video'
         cms.chunk:
@@ -24,3 +38,43 @@ anzu_systems_core_dam:
             adapter: 'local'
             options:
                 directory: '%kernel.project_dir%/var/mnt/data/crop'
+        blog.crop:
+            adapter: 'local'
+            options:
+                directory: '%kernel.project_dir%/var/mnt/data/blog-crop'
+        blog.chunk:
+            adapter: 'local'
+            options:
+                directory: '%kernel.project_dir%/var/mnt/data/blog-chunk'
+
+        cms.image_fallback:
+            adapter: 'gcloud'
+            options:
+                client: 'anzu.google_storage.env_fallback_client'
+                bucket: '%env(string:GCS_IMAGE_FALLBACK_STORAGE_BUCKET)%'
+                prefix: 'assets'
+        blog.image_fallback:
+            adapter: 'gcloud'
+            options:
+                client: 'anzu.google_storage.env_fallback_client'
+                bucket: '%env(string:GCS_BLOG_IMAGE_FALLBACK_STORAGE_BUCKET)%'
+                prefix: 'images'
+        cms.audio_fallback:
+            adapter: 'gcloud'
+            options:
+                client: 'anzu.google_storage.env_fallback_client'
+                bucket: '%env(string:GCS_AUDIO_FALLBACK_STORAGE_BUCKET)%'
+                prefix: 'audios'
+        cms.video_fallback:
+            adapter: 'gcloud'
+            options:
+                client: 'anzu.google_storage.env_fallback_client'
+                bucket: '%env(string:GCS_VIDEO_FALLBACK_STORAGE_BUCKET)%'
+                prefix: 'videos'
+        cms.document_fallback:
+            adapter: 'gcloud'
+            options:
+                client: 'anzu.google_storage.env_fallback_client'
+                bucket: '%env(string:GCS_DOCUMENT_FALLBACK_STORAGE_BUCKET)%'
+                prefix: 'documents'
+

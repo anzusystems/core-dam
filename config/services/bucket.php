@@ -23,4 +23,15 @@ return static function (ContainerConfigurator $configurator): void {
             ]
         ])
     ;
+
+    $services->set('anzu.google_storage.env_fallback_client')
+        ->class(StorageClient::class)
+        ->lazy()
+        ->args([
+            [
+                'projectId' => 'anzu-devel-pp',
+                'keyFilePath' => env('resolve:string:GOOGLE_FALLBACK_BUCKET_CREDENTIALS')
+            ]
+        ])
+    ;
 };

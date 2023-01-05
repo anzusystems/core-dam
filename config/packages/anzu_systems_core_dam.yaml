@@ -256,9 +256,9 @@ anzu_systems_core_dam:
         enabled: true
         title: ['customData:title']
         custom_metadata_pinned_amount: 2
-        storage_name: 'cms.image'
-        crop_storage_name: 'cms.crop'
-        chunk_storage_name: 'cms.image'
+        storage_name: 'blog.image'
+        crop_storage_name: 'blog.crop'
+        chunk_storage_name: 'blog.chunk'
         size_limit: '%env(byte_size:APP_CMS_BLOG_MAX_SIZE)%'
         roi_width: 16
         roi_height: 9

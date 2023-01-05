@@ -2,28 +2,44 @@ anzu_systems_core_dam:
     storages:
         cms.audio:
             adapter: 'gcloud'
+            fallback_enabled: '%env(bool:CMS_AUDIO_FALLBACK_ENABLED)%'
+            fallback_storage: cms.audio_fallback
             options:
                 client: 'anzu.google_storage.env_client'
                 bucket: '%env(string:GCS_AUDIO_STORAGE_BUCKET)%'
                 prefix: 'audio'
         cms.image:
             adapter: 'gcloud'
+            fallback_enabled: '%env(bool:CMS_IMAGE_FALLBACK_ENABLED)%'
+            fallback_storage: cms.image_fallback
             options:
                 client: 'anzu.google_storage.env_client'
                 bucket: '%env(string:GCS_IMAGE_STORAGE_BUCKET)%'
                 prefix: 'image'
         cms.document:
             adapter: 'gcloud'
+            fallback_enabled: '%env(bool:CMS_DOCUMENT_FALLBACK_ENABLED)%'
+            fallback_storage: cms.document_fallback
             options:
                 client: 'anzu.google_storage.env_client'
                 bucket: '%env(string:GCS_DOCUMENT_STORAGE_BUCKET)%'
                 prefix: 'document'
         cms.video:
             adapter: 'gcloud'
+            fallback_enabled: '%env(bool:CMS_VIDEO_FALLBACK_ENABLED)%'
+            fallback_storage: cms.video_fallback
             options:
                 client: 'anzu.google_storage.env_client'
                 bucket: '%env(string:GCS_VIDEO_STORAGE_BUCKET)%'
                 prefix: 'video'
+        blog.image:
+            adapter: 'gcloud'
+            fallback_enabled: '%env(bool:BLOG_IMAGE_FALLBACK_ENABLED)%'
+            fallback_storage: blog.image_fallback
+            options:
+                client: 'anzu.google_storage.env_client'
+                bucket: '%env(string:GCS_BLOG_IMAGE_STORAGE_BUCKET)%'
+                prefix: 'crop'
         cms.chunk:
             adapter: 'gcloud'
             options:
@@ -36,3 +52,15 @@ anzu_systems_core_dam:
                 client: 'anzu.google_storage.env_client'
                 bucket: '%env(string:GCS_IMAGE_STORAGE_BUCKET)%'
                 prefix: 'crop'
+        blog.crop:
+            adapter: 'gcloud'
+            options:
+                client: 'anzu.google_storage.env_client'
+                bucket: '%env(string:GCS_BLOG_IMAGE_STORAGE_BUCKET)%'
+                prefix: 'crop'
+        blog.chunk:
+            adapter: 'gcloud'
+            options:
+                client: 'anzu.google_storage.env_client'
+                bucket: '%env(string:GCS_BLOG_IMAGE_STORAGE_BUCKET)%'
+                prefix: 'chunk'
