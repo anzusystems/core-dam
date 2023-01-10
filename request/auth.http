@@ -1,14 +1,10 @@
 ### Login admin
-POST {{host}}/force/login/3
+GET {{host}}/force/login/3
+Accept: application/json
 Content-Type: application/json
 
-{
-  "username": "dam_admin@anzusystems.dev",
-  "password": "admin"
-}
-
 > {%
-  client.global.set('adm_access_token', response.body.accessToken)
+  client.global.set('adm_access_token', response.body.accessToken);
 %}
 
 ### Refresh token admin

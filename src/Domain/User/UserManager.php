@@ -10,6 +10,7 @@ use AnzuSystems\CoreDamBundle\Entity\AssetLicence;
 use AnzuSystems\CoreDamBundle\Entity\ExtSystem;
 use App\Entity\User;
 use App\Model\Domain\User\CreateUserDto;
+use App\Model\Domain\User\UpdateCurrentUserDto;
 use App\Model\Domain\User\UpdateUserDto;
 use Doctrine\Common\Collections\Collection;
 
@@ -81,6 +82,9 @@ final class UserManager extends AbstractManager
                 if (false === $user->getUserToExtSystems()->containsKey((int) $newAssetLicence->getExtSystem()->getId())) {
                     $user->getUserToExtSystems()->add($newAssetLicence->getExtSystem());
                 }
+                if (null === $user->getSelectedLicence()) {
+                    $user->setSelectedLicence($newAssetLicence);
+                }
             },
             removeElementFn: function (Collection $oldCollection, AssetLicence $oldAssetLicence) use ($user) {
                 $oldAssetLicence->getUsers()->removeElement($user);
@@ -88,9 +92,19 @@ final class UserManager extends AbstractManager
                 if ($user->getUserToExtSystems()->containsKey((int) $oldAssetLicence->getExtSystem()->getId())) {
                     $user->getUserToExtSystems()->removeElement($oldAssetLicence->getExtSystem());
                 }
+                if ($user->getSelectedLicence() instanceof AssetLicence && $oldAssetLicence->is($user->getSelectedLicence())) {
+                    $user->setSelectedLicence($oldCollection->first() ?: null);
+                }
             }
         );
         $user = $this->toggleSuperAdminRole($user, $updateUserDto->isSuperAdmin());
+
+        return $this->updateExisting($user, $flush);
+    }
+
+    public function updateFromCurrentUserDto(User $user, UpdateCurrentUserDto $currentUserDto, bool $flush = true): User
+    {
+        $user->setSelectedLicence($currentUserDto->getSelectedLicence());
 
         return $this->updateExisting($user, $flush);
     }

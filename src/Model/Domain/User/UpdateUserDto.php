@@ -7,7 +7,7 @@ namespace App\Model\Domain\User;
 use AnzuSystems\SerializerBundle\Attributes\Serialize;
 use App\Validator\Constraints as AppAssert;
 
-final class UpdateUserDto extends AbstractUserDto
+final class UpdateUserDto extends AbstractUpsertUserDto
 {
     #[AppAssert\PermissionValid(requireAll: false)]
     #[Serialize(strategy: Serialize::KEYS_VALUES)]

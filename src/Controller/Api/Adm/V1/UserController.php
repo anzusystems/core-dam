@@ -20,6 +20,8 @@ use App\App;
 use App\Domain\User\UserFacade;
 use App\Entity\User;
 use App\Model\Domain\User\CreateUserDto;
+use App\Model\Domain\User\CurrentUserDto;
+use App\Model\Domain\User\UpdateCurrentUserDto;
 use App\Model\Domain\User\UpdateUserDto;
 use App\Repository\UserRepository;
 use App\Security\Permission\DamPermissions;
@@ -44,7 +46,22 @@ final class UserController extends AbstractApiController
     #[OAResponse(User::class)]
     public function getCurrent(): JsonResponse
     {
-        return $this->okResponse($this->getUser());
+        return $this->okResponse(CurrentUserDto::getInstance($this->getUser()));
+    }
+
+
+    /**
+     * @throws SerializerException
+     * @throws ValidationException
+     */
+    #[Route('/current', 'update_current', methods: [Request::METHOD_PATCH])]
+    #[ParamConverter('updateDto', converter: SerializerParamConverter::class)]
+    #[OARequest(UpdateCurrentUserDto::class), OAResponse(User::class), OAResponseValidation]
+    public function updateCurrent(UpdateCurrentUserDto $updateDto): JsonResponse
+    {
+        $user = $this->userFacade->updateFromCurrentUserDto($this->getUser(), $updateDto);
+
+        return $this->okResponse(CurrentUserDto::getInstance($user));
     }
 
     /**
