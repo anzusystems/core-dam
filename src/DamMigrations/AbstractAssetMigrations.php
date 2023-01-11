@@ -144,6 +144,7 @@ abstract class AbstractAssetMigrations extends AbstractMigrations
                 'dates_publish_at' => $row['publish_at'] ?? null,
                 'asset_flags_described' => $row['asset_flags_is_described'],
                 'asset_flags_visible' => 1, // TODO
+                'asset_flags_generated_by_system' => 1, // TODO
                 'asset_flags_autocompleted_metadata' => 1, // TODO
                 'asset_flags_auto_delete_unprocessed' => 0, // TODO
                 'attributes_asset_type' => match (static::ASSET_TYPE_DISC) {
