@@ -36,6 +36,16 @@ anzu_systems_core_dam:
                 api_token: '%env(string:DISTRIBUTION_ARTEMIS_CMS_API_TOKEN)%'
                 api_key_path: '%env(string:DISTRIBUTION_ARTEMIS_CMS_API_KEY_PATH)%'
                 api_cert_path: '%env(string:DISTRIBUTION_ARTEMIS_CMS_API_CERT_PATH)%'
+        artemis_podcast_cms:
+            type: artemisDistribution
+            title: Artemis CMS
+            module: App\Distribution\Modules\ArtemisVideoDistributionModule
+            options:
+                endpoint: '%env(string:DISTRIBUTION_ARTEMIS_CMS_ENDPOINT)%'
+                api_token: '%env(string:DISTRIBUTION_ARTEMIS_CMS_API_TOKEN)%'
+                api_key_path: '%env(string:DISTRIBUTION_ARTEMIS_CMS_API_KEY_PATH)%'
+                api_cert_path: '%env(string:DISTRIBUTION_ARTEMIS_CMS_API_CERT_PATH)%'
+
         custom_cms:
             type: customDistribution
             title: Custom CMS

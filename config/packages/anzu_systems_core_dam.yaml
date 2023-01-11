@@ -175,6 +175,16 @@ anzu_systems_core_dam:
         storage_name: 'cms.audio'
         chunk_storage_name: 'cms.audio'
         size_limit: '%env(byte_size:APP_CMS_AUDIO_MAX_SIZE)%'
+        distribution:
+          distribution_services: [ artemis_podcast_cms ]
+          distribution_requirements:
+            artemis_cms:
+              title: 'Artemis Podcasty'
+              blocked_by: [ ]
+              strategy: none
+              category_select:
+                enabled: true
+                required: true
         file_slots:
           default: free
           slots: [ free, paid ]

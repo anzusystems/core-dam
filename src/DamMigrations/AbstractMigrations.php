@@ -15,6 +15,8 @@ abstract class AbstractMigrations
     protected const CMS_LICENCE_ID = 100_000;
     protected const BLOG_EXT_SYSTEM_ID = 4;
 
+    protected const CMS_EXT_SYSTEM_ID = 1;
+
     protected readonly Connection $damLegacyConnection;
     protected readonly Connection $defaultConnection;
     protected readonly Connection $artemisConnection;

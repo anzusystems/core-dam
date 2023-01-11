@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace App\Command;
 
-use App\DamMigrations\AssetImageMigrations;
 use App\DamMigrations\LegacyDamPodcastMigrations;
 use App\DamMigrations\AdmUserMigrations;
 use App\DamMigrations\UgcLicenceMigrations;
 use App\DamMigrations\UgcUserMigrations;
+use App\DamMigrations\AssetImageMigrations;
+use App\DamMigrations\AudioCategoryMigrations;
 use App\Model\MigrateConfig;
 use Exception;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -31,6 +32,7 @@ final class MigrateCommand extends Command
         private readonly AdmUserMigrations $admUserMigrations,
         private readonly UgcUserMigrations $ugcUserMigrations,
         private readonly AssetImageMigrations $assetImageMigrations,
+        private readonly AudioCategoryMigrations $audioCategoryMigrations,
     ) {
         parent::__construct();
     }
@@ -58,6 +60,7 @@ final class MigrateCommand extends Command
         $this->ugcUserMigrations->migrate($migrateConfig);
         $this->assetImageMigrations->migrate($migrateConfig);
 //        $this->legacyDamPodcastMigrations->migrate($migrateConfig);
+//        $this->audioCategoryMigrations->migrate($migrateConfig);
 
         return Command::SUCCESS;
     }
