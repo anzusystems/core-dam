@@ -7,22 +7,27 @@ namespace App\DamMigrations;
 
 use AnzuSystems\CoreDamBundle\Command\Traits\OutputUtilTrait;
 use App\Entity\User;
-use Doctrine\DBAL\Connection;
+use App\Model\MigrateConfig;
 use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Result;
 
-final class UserMigrations extends AbstractMigrations
+final class UgcUserMigrations extends AbstractMigrations
 {
     use OutputUtilTrait;
 
     /**
      * @throws Exception
      */
-    public function migrate(): void
+    public function migrate(MigrateConfig $migrateConfig): void
     {
+        if ($migrateConfig->isNotUgc()) {
+            return;
+        }
+
         $res = $this->getDamUsers();
 
         $progressBar = $this->outputUtil->createProgressBar($this->totalCount());
+        $progressBar->setFormat('debug');
         $progressBar->start();
 
         while ($row = $res->fetchAssociative()) {
@@ -31,13 +36,13 @@ final class UserMigrations extends AbstractMigrations
                 $this->outputUtil->error(sprintf('User id (%s) missing', $row['id']));
                 continue;
             }
-            if ($this->hasUser($row['id'])) {
-                continue;
-            }
 
+            $licences = $this->getLicenceIds($row['id']);
             $this->defaultConnection->beginTransaction();
-            $userId = $this->insertUser($email, $row);
-            $this->insertLicences($userId);
+            if (false === $this->hasUser($row['id'])) {
+                $this->insertUser($email, $row);
+            }
+            $this->insertLicences($row['id'], $licences);
             $this->defaultConnection->commit();
 
             $progressBar->advance();
@@ -49,9 +54,9 @@ final class UserMigrations extends AbstractMigrations
 
     private function totalCount(): int
     {
-        return (int) $this->damLegacyConnection->fetchOne(
-            'SELECT count(id) FROM user'
-        );
+        return (int) $this->damLegacyConnection->fetchOne('
+            SELECT COUNT(id) FROM user WHERE JSON_LENGTH(permissions) = 0 AND roles = JSON_ARRAY(\'ROLE_USER\')
+        ');
     }
 
     private function getEmail(int $userId): ?string
@@ -60,7 +65,7 @@ final class UserMigrations extends AbstractMigrations
             $this->blogConnection->fetchOne('SELECT email FROM user where id = ?', [$userId])
             ?? $this->coreConnection->fetchOne('SELECT email FROM user where id = ?', [$userId]);
 
-        return is_string($email) ? $email : null;
+        return is_string($email) ? $email : 'dam-' . $userId . '@anzusystems.dev'; // TODO remove
     }
 
     private function hasUser(int $userId): bool
@@ -75,22 +80,7 @@ final class UserMigrations extends AbstractMigrations
         return is_int($res);
     }
 
-    private function insertLicences(int $userId): void
-    {
-        // todo rename user_asset_licence table
-        $licences = $this->getLicences($userId);
-        foreach ($licences as $licence) {
-            $this->defaultConnection->insert(
-                'user_asset_licence',
-                [
-                    'user_id' => $userId,
-                    'asset_licence_id' => $licence['licence_group_id']
-                ]
-            );
-        }
-    }
-
-    private function insertUser(string $email, array $row): int
+    private function insertUser(string $email, array $row): void
     {
         $this->defaultConnection->insert(
             'user',
@@ -105,35 +95,57 @@ final class UserMigrations extends AbstractMigrations
                 'email' => $email,
                 'first_name' => '',
                 'last_name' => '',
-                'api_token' => '',
-                'permissions' => '[]',
+                'api_token' => null,
+                'permissions' => '{}',
                 'allowed_asset_external_providers' => '[]',
                 'allowed_distribution_services' => '[]',
-
             ]
         );
 
-         return (int) $this->defaultConnection->lastInsertId('user');
+        $this->userIdBySsoIdCache[(int) $row['id']] ??= (int) $this->defaultConnection->lastInsertId('user');
     }
 
-    private function getLicences(int $userId): array
+    private function insertLicences(int $ssoUserId, array $licenceIds): void
+    {
+        $userId = $this->getUserIdBySsoId($ssoUserId);
+        foreach ($licenceIds as $licenceId) {
+            $this->defaultConnection->insert(
+                'user_asset_licence',
+                [
+                    'user_id' => $userId,
+                    'asset_licence_id' => $licenceId,
+                ]
+            );
+        }
+
+        $this->defaultConnection->insert(
+            'users_to_ext_systems',
+            [
+                'user_id' => $userId,
+                'ext_system_id' => self::BLOG_EXT_SYSTEM_ID,
+            ]
+        );
+    }
+
+    /**
+     * @return list<int>
+     */
+    private function getLicenceIds(int $sooUserId): array
     {
         return $this->damLegacyConnection->executeQuery('
             SELECT
-               licence_group_id,
-               user_id
+               licence_group_id
             FROM licence_group_has_user
             WHERE user_id = ?',
-            [$userId]
-        )->fetchAllAssociative();
+            [$sooUserId]
+        )->fetchFirstColumn();
     }
 
     private function getDamUsers(): Result
     {
         return $this->damLegacyConnection->executeQuery('
-            SELECT
-               id, created_at, modified_at, roles, permissions, enabled, api_token, ext_system_id, limited
-            FROM user
+            SELECT id, created_at, modified_at, roles, permissions, enabled, api_token, ext_system_id
+            FROM user WHERE JSON_LENGTH(permissions) = 0 AND roles = JSON_ARRAY(\'ROLE_USER\')
         ');
     }
 }

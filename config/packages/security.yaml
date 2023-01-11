@@ -8,6 +8,10 @@ security:
             entity:
                 class: App\Entity\User
                 property: id
+        app_user_provider_sso_id:
+            entity:
+                class: App\Entity\User
+                property: ssoId
     role_hierarchy:
         ROLE_ADMIN: ROLE_USER
         ROLE_USER: ~
@@ -33,6 +37,14 @@ security:
             provider: app_user_provider_id
             custom_authenticators:
                 - AnzuSystems\AuthBundle\Security\Authentication\JwtAuthentication
+        ugc:
+            pattern: ^/api/ugc/
+            stateless: true
+            provider: app_user_provider_sso_id
+            entry_point: App\Security\Authenticator\UgcAuthenticator
+            custom_authenticators:
+                - App\Security\Authenticator\UgcAuthenticator
+                - App\Security\Authenticator\UgcImpAuthenticator
         sys:
             pattern: ^/api/sys/
             stateless: true
@@ -44,5 +56,6 @@ security:
         - { path: ^/api/pub/, roles: PUBLIC_ACCESS }
         - { path: ^/api/auth/, roles: PUBLIC_ACCESS }
         - { path: ^/api/adm/, roles: ROLE_USER }
+        - { path: ^/api/ugc/, roles: ROLE_USER }
         - { path: ^/adm/, roles: ROLE_USER }
         - { path: ^/api/sys/, roles: ROLE_SYS_API }

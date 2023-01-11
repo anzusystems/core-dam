@@ -10,6 +10,7 @@ use AnzuSystems\CoreDamBundle\Model\Enum\PodcastImportMode;
 use AnzuSystems\CoreDamBundle\Model\Enum\PodcastLastImportStatus;
 use App\App;
 use App\Entity\User;
+use App\Model\MigrateConfig;
 use DateTimeImmutable;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;
@@ -41,10 +42,10 @@ final class LegacyDamPodcastMigrations extends AbstractMigrations
         'type' => 'string',
     ];
 
-    /**
-     * @throws Exception
-     */
-    public function migratePodcasts(int $licenceId): void {
+
+    public function migrate(MigrateConfig $migrateConfig): void
+    {
+        $licenceId = 100_000; // TODO
         $res = $this->getDamPodcasts();
 
         $this->outputUtil->info('Importing from legacy Dam');

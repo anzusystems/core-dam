@@ -17,6 +17,7 @@ final class DamPermissions extends BaseDamPermissions
     public const DAM_USER_CREATE = 'dam_user_create';
     public const DAM_USER_UPDATE = 'dam_user_update';
     public const DAM_USER_VIEW = 'dam_user_view';
+    public const DAM_USER_UGC_IMPERSONATE = 'dam_user_ugcImpersonate';
 
     // PermissionGroup
     public const DAM_PERMISSION_GROUP_CREATE = 'dam_permissionGroup_create';
@@ -247,6 +248,13 @@ final class DamPermissions extends BaseDamPermissions
                 ],
             ],
             self::DAM_USER_UPDATE => [
+                self::GRANTS => [Grants::GRANT_ALLOW, Grants::GRANT_DENY],
+                self::UI => [
+                    self::UI_CATEGORY => UiCategories::CATEGORY_DAM,
+                    self::UI_GROUP => UiGroups::GROUP_USER,
+                ],
+            ],
+            self::DAM_USER_UGC_IMPERSONATE => [
                 self::GRANTS => [Grants::GRANT_ALLOW, Grants::GRANT_DENY],
                 self::UI => [
                     self::UI_CATEGORY => UiCategories::CATEGORY_DAM,
@@ -599,6 +607,7 @@ final class DamPermissions extends BaseDamPermissions
                 self::DAM_USER_VIEW,
                 self::DAM_USER_CREATE,
                 self::DAM_USER_UPDATE,
+                self::DAM_USER_UGC_IMPERSONATE,
                 self::DAM_PERMISSION_GROUP_VIEW,
                 self::DAM_PERMISSION_GROUP_CREATE,
                 self::DAM_PERMISSION_GROUP_UPDATE,

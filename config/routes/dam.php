@@ -12,6 +12,7 @@ return static function (RoutingConfigurator $routes): void {
     $routes
         ->import('@AnzuSystemsCoreDamBundle/Controller/Api/Pub/V1', type: 'attribute')
         ->prefix('/api/pub/v1/');
+
     $routes
         ->import('@AnzuSystemsCoreDamBundle/Controller/Adm', type: 'attribute')
         ->prefix('/adm/');
@@ -39,4 +40,8 @@ return static function (RoutingConfigurator $routes): void {
     $routes
         ->import(__DIR__ . '/../../src/Controller/Api/Adm/V1', type: 'attribute')
         ->prefix('/api/adm/v1/');
+
+    $routes
+        ->import(__DIR__ . '/../../src/Controller/Api/Ugc/VLegacy', type: 'attribute')
+        ->prefix('/api/ugc/vlegacy/');
 };

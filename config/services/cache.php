@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use Doctrine\Common\Cache\Cache;
-use Doctrine\Common\Cache\Psr6\DoctrineProvider;
 use Redis;
 
 return static function (ContainerConfigurator $configurator): void {
@@ -13,67 +11,61 @@ return static function (ContainerConfigurator $configurator): void {
 
     $services
         ->defaults()
-            ->autowire(true)
-            ->autoconfigure(true)
+            ->autowire()
+            ->autoconfigure()
     ;
 
     $services
         ->set('DamRedis', Redis::class)
         ->call('connect', [
-            env('string:REDIS_HOST'),
-            env('int:REDIS_PORT'),
+            env('REDIS_HOST')->string(),
+            env('REDIS_PORT')->int(),
         ])
         ->call('select', [
-            env('int:REDIS_DB')
+            env('REDIS_DB')->int()
         ])
         ->call('setOption', [
             Redis::OPT_PREFIX,
-            'core_dam_' . env('string:APP_ENV') . '_',
+            'core_dam_' . env('APP_ENV')->string() . '_',
         ])
     ;
 
     $services
         ->set('VersionedCacheRedis', Redis::class)
         ->call('connect', [
-            env('string:REDIS_CACHE_HOST'),
-            env('int:REDIS_CACHE_PORT'),
+            env('REDIS_CACHE_HOST')->string(),
+            env('REDIS_CACHE_PORT')->int(),
         ])
         ->call('select', [
-            env('int:REDIS_CACHE_DB')
+            env('REDIS_CACHE_DB')->int()
         ])
         ->call('setOption', [
             Redis::OPT_PREFIX,
-            'core_dam_cache_' . env('string:APP_ENV') . '_' . env('string:APP_VERSION') . '_',
+            'core_dam_cache_' . env('APP_ENV')->string() . '_' . env('APP_VERSION')->string() . '_',
         ])
     ;
 
     $services
         ->set('CacheRedis', Redis::class)
         ->call('connect', [
-            env('string:REDIS_CACHE_HOST'),
-            env('int:REDIS_CACHE_PORT'),
+            env('REDIS_CACHE_HOST')->string(),
+            env('REDIS_CACHE_PORT')->int(),
         ])
         ->call('select', [
-            env('int:REDIS_CACHE_DB')
+            env('REDIS_CACHE_DB')->int()
         ])
         ->call('setOption', [
             Redis::OPT_PREFIX,
-            'core_dam_cache_' . env('string:APP_ENV') . '_',
+            'core_dam_cache_' . env('APP_ENV')->string() . '_',
         ])
     ;
 
     $services
         ->set('SharedTokenStorageRedis', Redis::class)
         ->call('connect', [
-            env('string:REDIS_HOST'),
-            env('int:REDIS_PORT'),
+            env('REDIS_HOST')->string(),
+            env('REDIS_PORT')->int(),
         ])
         ->call('select', [0])
-    ;
-
-    $services
-        ->set(Cache::class)
-        ->factory([DoctrineProvider::class, 'wrap'])
-        ->arg('$pool', service('doctrine.redis_cache_pool'))
     ;
 };

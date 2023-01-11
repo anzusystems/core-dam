@@ -59,7 +59,7 @@ services:
       - mysql_local_data:/var/lib/mysql:cached
     ports:
       - ${MYSQL_DOCKER_PORT:-3353}:3306
-    hostname: mysql-core
+    hostname: mysql-core-dam
     networks:
       - ${DOCKER_NETWORK_NAME:-petitpress_network}
 
@@ -69,7 +69,7 @@ services:
       - redis_local_data:/data:cached
     ports:
       - ${REDIS_DOCKER_PORT:-6571}:6379
-    hostname: redis-core
+    hostname: redis-core-dam
     networks:
       - ${DOCKER_NETWORK_NAME:-petitpress_network}
 
@@ -88,7 +88,7 @@ services:
       - elasticsearch_local_data:/usr/share/elasticsearch/data:cached
     ports:
       - ${ELASTICSEARCH_DOCKER_PORT:-9225}:9200
-    hostname: elasticsearch-core
+    hostname: elasticsearch-core-dam
     networks:
       - ${DOCKER_NETWORK_NAME:-petitpress_network}
 
@@ -102,7 +102,7 @@ services:
       - mongo_local_data:/data/db:cached
     ports:
       - ${MONGO_DOCKER_PORT:-27517}:27017
-    hostname: mongo-core
+    hostname: mongo-core-dam
     networks:
       - ${DOCKER_NETWORK_NAME:-petitpress_network}
 
@@ -115,7 +115,7 @@ services:
       - local-proxy:smsgw.sme.localhost
     ports:
       - ${PUBSUB_DOCKER_PORT:-8238}:8538
-    hostname: pubsub-core
+    hostname: pubsub-core-dam
     networks:
       - ${DOCKER_NETWORK_NAME:-petitpress_network}
 

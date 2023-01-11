@@ -11,15 +11,14 @@ return static function (ContainerConfigurator $configurator): void {
 
     $services
         ->defaults()
-            ->autowire(true)
-            ->autoconfigure(true);
+            ->autowire()
+            ->autoconfigure();
 
-    $services->set('anzu.google_storage.env_client')
-        ->class(StorageClient::class)
+    $services->set('anzu.google_storage.env_client', StorageClient::class)
         ->args([
             [
-                'projectId' => 'anzu-devel-pp',
-                'keyFilePath' => env('resolve:string:GOOGLE_BUCKET_CREDENTIALS')
+                'projectId' => 'anzu-devel-pp', // TODO why it's hardcoded?
+                'keyFilePath' => env('GOOGLE_BUCKET_CREDENTIALS')->resolve()->string()
             ]
         ])
     ;

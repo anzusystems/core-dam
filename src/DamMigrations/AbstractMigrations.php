@@ -5,17 +5,22 @@ declare(strict_types=1);
 
 namespace App\DamMigrations;
 
+use App\Model\MigrateConfig;
 use Doctrine\DBAL\Connection;
 use RuntimeException;
 use Symfony\Contracts\Service\Attribute\Required;
 
 abstract class AbstractMigrations
 {
+    protected const CMS_LICENCE_ID = 100_000;
+    protected const BLOG_EXT_SYSTEM_ID = 4;
+
     protected readonly Connection $damLegacyConnection;
     protected readonly Connection $defaultConnection;
     protected readonly Connection $artemisConnection;
     protected readonly Connection $coreConnection;
     protected readonly Connection $blogConnection;
+    protected array $userIdBySsoIdCache = [];
 
     #[Required]
     public function setArtemisConnection(Connection $artemisConnection): void
@@ -47,8 +52,14 @@ abstract class AbstractMigrations
         $this->blogConnection = $blogConnection;
     }
 
+    abstract public function migrate(MigrateConfig $migrateConfig): void;
+
     protected function getUserIdBySsoId(int $ssoId): int
     {
+        if (isset($this->userIdBySsoIdCache[$ssoId])) {
+            return $this->userIdBySsoIdCache[$ssoId];
+        }
+
         $id = $this->defaultConnection->fetchOne(
             'SELECT * FROM user where sso_id = ?', [$ssoId]
         );
@@ -57,6 +68,8 @@ abstract class AbstractMigrations
             throw new RuntimeException(sprintf('User ssoId (%s) missing', $ssoId));
         }
 
-        return (int) $id;
+        $this->userIdBySsoIdCache[$ssoId] = (int) $id;
+
+        return $this->userIdBySsoIdCache[$ssoId];
     }
 }

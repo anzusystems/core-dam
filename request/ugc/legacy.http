@@ -1,0 +1,7 @@
+### Auth UGC user
+POST http://core-blog.sme.localhost/force/login/18949
+Content-Type: application/json
+
+### Get image list
+GET {{host}}/api/ugc/vlegacy/image
+Content-Type: application/json

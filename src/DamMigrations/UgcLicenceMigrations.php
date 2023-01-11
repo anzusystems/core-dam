@@ -6,33 +6,30 @@ declare(strict_types=1);
 namespace App\DamMigrations;
 
 use AnzuSystems\CoreDamBundle\Command\Traits\OutputUtilTrait;
-use AnzuSystems\CoreDamBundle\Model\Enum\PodcastImportMode;
-use AnzuSystems\CoreDamBundle\Model\Enum\PodcastLastImportStatus;
-use App\App;
 use App\Entity\User;
-use DateTimeImmutable;
-use Doctrine\DBAL\Connection;
+use App\Model\MigrateConfig;
 use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Result;
-use JetBrains\PhpStorm\ArrayShape;
-use Symfony\Component\Uid\Uuid;
 
-final class LicenceMigrations extends AbstractMigrations
+final class UgcLicenceMigrations extends AbstractMigrations
 {
     use OutputUtilTrait;
 
     /**
      * @throws Exception
      */
-    public function migrate(): void
+    public function migrate(MigrateConfig $migrateConfig): void
     {
+        if ($migrateConfig->isNotUgc()) {
+            return;
+        }
         $res = $this->getGroups();
 
         $progressBar = $this->outputUtil->createProgressBar($this->totalCount());
+        $progressBar->setFormat('debug');
         $progressBar->start();
 
-        while ($row = $res->fetchAssociative())
-        {
+        while ($row = $res->fetchAssociative()) {
             if ($this->hasLicence($row['id'])) {
                 continue;
             }
@@ -60,7 +57,7 @@ final class LicenceMigrations extends AbstractMigrations
     private function totalCount(): int
     {
         return (int) $this->damLegacyConnection->fetchOne(
-            'SELECT count(id) FROM licence_group'
+            'SELECT COUNT(id) FROM licence_group'
         );
     }
 
@@ -73,6 +70,7 @@ final class LicenceMigrations extends AbstractMigrations
                 'ext_system_id' => $row['ext_system_id'],
                 'ext_id' => $row['ext_id'],
                 'name' => $this->getExtSystemName($row),
+                // 'limited' => $row['limited'], // TODO
                 'created_at' => $row['created_at'],
                 'modified_at' => $row['modified_at'],
                 'created_by_id' => User::ID_CONSOLE,
@@ -83,11 +81,7 @@ final class LicenceMigrations extends AbstractMigrations
 
     private function getExtSystemName(array $row): string
     {
-        if (4 === $row['ext_system_id']) {
-            return 'Blog system - '. $row['id'];
-        }
-
-        return $row['ext_system_id'] . ' - '. $row['ext_id'];
+        return 'Blog system - '. $row['id'];
     }
 
     private function getGroups(): Result

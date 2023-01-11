@@ -120,6 +120,7 @@ anzu_systems_core_dam:
           - { width: 200, height: 200, tags: ['roi_example'], title: '1:1' }  # admin roi example 1:1
 #          - { width: 0, height: 600, tags: ['list'] }          #
           - { width: 1920, height: 0, tags: ['detail'] }        # admin DAM image crop
+          - { width: 0, height: 600, tags: ['detail'] }        # UGC DAM image preview
       web_cms:
         domains: [ web_cms ]
         quality_whitelist: [ 90 ]
