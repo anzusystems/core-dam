@@ -15,6 +15,7 @@ anzu_systems_core_dam:
     app_redis: DamRedis
     cache_redis: CacheRedis
     user_auth_type: oauth2
+    limited_asset_licence_files_count: 100
     notifications:
       gps_config:
         transport: rest
