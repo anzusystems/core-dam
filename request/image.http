@@ -1,9 +1,9 @@
 ### Create assest with associated image file
-POST {{host}}/api/adm/v1/image/licence/1
+POST {{host}}/api/adm/v1/image/licence/100000
 Content-Type: application/json
 
 {
-  "mimeType": "image/jpe",
+  "mimeType": "image/jpeg",
   "checksum": "123456",
   "size": 323386
 }

@@ -7,7 +7,7 @@ namespace App\Model\Ugc\Legacy\Embeds;
 use AnzuSystems\CoreDamBundle\Entity\ImageFile;
 use AnzuSystems\SerializerBundle\Attributes\Serialize;
 
-final class ImageAttributes
+final class ImageAttributesDto
 {
     #[Serialize]
     private int $rationWidth = 0;

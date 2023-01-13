@@ -15,6 +15,7 @@ anzu_systems_core_dam:
     app_redis: DamRedis
     cache_redis: CacheRedis
     user_auth_type: oauth2
+    limited_asset_licence_files_count: 100
     notifications:
       gps_config:
         transport: rest
@@ -120,7 +121,8 @@ anzu_systems_core_dam:
           - { width: 200, height: 200, tags: ['roi_example'], title: '1:1' }  # admin roi example 1:1
 #          - { width: 0, height: 600, tags: ['list'] }          #
           - { width: 1920, height: 0, tags: ['detail'] }        # admin DAM image crop
-          - { width: 0, height: 600, tags: ['detail'] }        # UGC DAM image preview
+          - { width: 0, height: 600 }        # UGC DAM image preview
+          - { width: 500, height: 281 }        # UGC DAM image preview after upload
       web_cms:
         domains: [ web_cms ]
         quality_whitelist: [ 90 ]

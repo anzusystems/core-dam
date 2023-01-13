@@ -8,7 +8,7 @@ use AnzuSystems\CoreDamBundle\Entity\ImageFile;
 use AnzuSystems\CoreDamBundle\Model\Enum\AssetFileProcessStatus;
 use AnzuSystems\SerializerBundle\Attributes\Serialize;
 
-final class ImageAssetFlags
+final class ImageAssetFlagsDto
 {
     #[Serialize]
     private bool $isDuplicate = false;

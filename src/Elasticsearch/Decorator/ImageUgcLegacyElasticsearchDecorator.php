@@ -59,6 +59,7 @@ final readonly class ImageUgcLegacyElasticsearchDecorator
             ->setOffset($apiUgcLegacyParams->getOffset())
             ->setLimit($apiUgcLegacyParams->getLimit())
             ->setCreatedAtFrom($apiUgcLegacyParams->getCreatedAtFrom())
-            ->setCreatedAtUntil($apiUgcLegacyParams->getCreatedAtUntil());
+            ->setCreatedAtUntil($apiUgcLegacyParams->getCreatedAtUntil())
+        ;
     }
 }
