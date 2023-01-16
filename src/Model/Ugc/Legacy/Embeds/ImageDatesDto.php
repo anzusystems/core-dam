@@ -8,7 +8,7 @@ use AnzuSystems\CoreDamBundle\Entity\ImageFile;
 use AnzuSystems\SerializerBundle\Attributes\Serialize;
 use DateTimeImmutable;
 
-final class ImageDates
+final class ImageDatesDto
 {
     #[Serialize]
     private DateTimeImmutable $uploadedAt;

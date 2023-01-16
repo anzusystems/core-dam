@@ -6,10 +6,13 @@ namespace App\Model\Ugc\Legacy\Embeds;
 
 use AnzuSystems\CoreDamBundle\Entity\ImageFile;
 use AnzuSystems\SerializerBundle\Attributes\Serialize;
+use App\Exception\ValidationException;
+use Symfony\Component\Validator\Constraints as Assert;
 
 final class ImageFileAttributesDto
 {
     #[Serialize]
+    #[Assert\NotBlank(message: ValidationException::ERROR_FIELD_EMPTY)]
     private string $partialChecksum = '';
 
     #[Serialize]
@@ -19,9 +22,11 @@ final class ImageFileAttributesDto
     private string $slugOriginFileName = '';
 
     #[Serialize]
+    #[Assert\NotBlank(message: ValidationException::ERROR_FIELD_EMPTY)]
     private string $mimeType = '';
 
     #[Serialize]
+    #[Assert\NotBlank(message: ValidationException::ERROR_FIELD_EMPTY)]
     private int $size = 0;
 
     public static function getInstance(ImageFile $imageFile): self

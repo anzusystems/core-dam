@@ -13,12 +13,12 @@ use AnzuSystems\CoreDamBundle\Entity\AssetLicence;
 final readonly class AssetLicenceDecorator
 {
     public function __construct(
-        private AssetLicence $assetLicence,
+        private AssetLicence $licence,
     ) {
     }
 
-    public function getAssetLicence(): AssetLicence
+    public function getLicence(): AssetLicence
     {
-        return $this->assetLicence;
+        return $this->licence;
     }
 }

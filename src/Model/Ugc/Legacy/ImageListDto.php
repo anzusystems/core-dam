@@ -9,12 +9,12 @@ use AnzuSystems\CoreDamBundle\Model\Enum\ImageCropTag;
 use AnzuSystems\SerializerBundle\Attributes\Serialize;
 use AnzuSystems\SerializerBundle\Handler\Handlers\EntityIdHandler;
 use App\Entity\User;
-use App\Model\Ugc\Legacy\Embeds\ImageAssetFlags;
-use App\Model\Ugc\Legacy\Embeds\ImageAttributes;
-use App\Model\Ugc\Legacy\Embeds\ImageAuthor;
-use App\Model\Ugc\Legacy\Embeds\ImageDates;
+use App\Model\Ugc\Legacy\Embeds\ImageAssetFlagsDto;
+use App\Model\Ugc\Legacy\Embeds\ImageAttributesDto;
+use App\Model\Ugc\Legacy\Embeds\ImageAuthorDto;
+use App\Model\Ugc\Legacy\Embeds\ImageDatesDto;
 use App\Model\Ugc\Legacy\Embeds\ImageFileAttributesDto;
-use App\Model\Ugc\Legacy\Embeds\ImageProcess;
+use App\Model\Ugc\Legacy\Embeds\ImageProcessDto;
 use App\Model\Ugc\Legacy\Embeds\ImageTagsDto;
 use App\Model\Ugc\Legacy\Embeds\ImageTextsDto;
 use App\Serializer\Handler\Handlers\LegacyUgcImageLinksHandler;
@@ -23,43 +23,18 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 class ImageListDto
 {
-    #[Serialize(serializedName: 'id', handler: EntityIdHandler::class)]
     protected ImageFile $imageFile;
-
-    #[Serialize]
     protected ImageTagsDto $tags;
-
-    #[Serialize]
     protected ImageTextsDto $texts;
-
-    #[Serialize]
     protected ImageFileAttributesDto $fileAttributes;
-
-    #[Serialize]
-    protected ImageDates $dates;
-
-    #[Serialize]
-    protected ImageProcess $process;
-
-    #[Serialize]
-    protected ImageAssetFlags $assetFlags;
-
-    #[Serialize(type: ImageAuthor::class)]
+    protected ImageDatesDto $dates;
+    protected ImageProcessDto $process;
+    protected ImageAssetFlagsDto $assetFlags;
     protected ArrayCollection $authors;
-
-    #[Serialize]
-    protected ImageAttributes $imageAttributes;
-
-    #[Serialize]
+    protected ImageAttributesDto $imageAttributes;
     protected DateTimeImmutable $createdAt;
-
-    #[Serialize]
     protected DateTimeImmutable $modifiedAt;
-
-    #[Serialize(handler: EntityIdHandler::class)]
     protected User $createdBy;
-
-    #[Serialize(handler: EntityIdHandler::class)]
     protected User $modifiedBy;
 
     public static function getInstance(ImageFile $imageFile): static
@@ -67,7 +42,7 @@ class ImageListDto
         $authors = new ArrayCollection();
         $author = $imageFile->getAsset()->getMetadata()->getCustomData()['author'] ?? '';
         if ($author) {
-            $authors->add(ImageAuthor::getInstance($author));
+            $authors->add(ImageAuthorDto::getInstance($author));
         }
 
         return (new static())
@@ -75,11 +50,11 @@ class ImageListDto
             ->setTags(ImageTagsDto::getInstance($imageFile))
             ->setTexts(ImageTextsDto::getInstance($imageFile))
             ->setFileAttributes(ImageFileAttributesDto::getInstance($imageFile))
-            ->setDates(ImageDates::getInstance($imageFile))
-            ->setProcess(ImageProcess::getInstance($imageFile))
-            ->setAssetFlags(ImageAssetFlags::getInstance($imageFile))
+            ->setDates(ImageDatesDto::getInstance($imageFile))
+            ->setProcess(ImageProcessDto::getInstance($imageFile))
+            ->setAssetFlags(ImageAssetFlagsDto::getInstance($imageFile))
             ->setAuthors($authors)
-            ->setImageAttributes(ImageAttributes::getInstance($imageFile))
+            ->setImageAttributes(ImageAttributesDto::getInstance($imageFile))
             ->setCreatedAt($imageFile->getCreatedAt())
             ->setModifiedAt($imageFile->getModifiedAt())
             ->setCreatedBy($imageFile->getCreatedBy())
@@ -87,6 +62,7 @@ class ImageListDto
         ;
     }
 
+    #[Serialize(serializedName: 'id', handler: EntityIdHandler::class)]
     public function getImageFile(): ImageFile
     {
         return $this->imageFile;
@@ -99,6 +75,7 @@ class ImageListDto
         return $this;
     }
 
+    #[Serialize]
     public function getTags(): ImageTagsDto
     {
         return $this->tags;
@@ -111,6 +88,7 @@ class ImageListDto
         return $this;
     }
 
+    #[Serialize]
     public function getTexts(): ImageTextsDto
     {
         return $this->texts;
@@ -123,6 +101,7 @@ class ImageListDto
         return $this;
     }
 
+    #[Serialize]
     public function getFileAttributes(): ImageFileAttributesDto
     {
         return $this->fileAttributes;
@@ -135,42 +114,46 @@ class ImageListDto
         return $this;
     }
 
-    public function getDates(): ImageDates
+    #[Serialize]
+    public function getDates(): ImageDatesDto
     {
         return $this->dates;
     }
 
-    public function setDates(ImageDates $dates): self
+    public function setDates(ImageDatesDto $dates): self
     {
         $this->dates = $dates;
 
         return $this;
     }
 
-    public function getProcess(): ImageProcess
+    #[Serialize]
+    public function getProcess(): ImageProcessDto
     {
         return $this->process;
     }
 
-    public function setProcess(ImageProcess $process): self
+    public function setProcess(ImageProcessDto $process): self
     {
         $this->process = $process;
 
         return $this;
     }
 
-    public function getAssetFlags(): ImageAssetFlags
+    #[Serialize]
+    public function getAssetFlags(): ImageAssetFlagsDto
     {
         return $this->assetFlags;
     }
 
-    public function setAssetFlags(ImageAssetFlags $assetFlags): self
+    public function setAssetFlags(ImageAssetFlagsDto $assetFlags): self
     {
         $this->assetFlags = $assetFlags;
 
         return $this;
     }
 
+    #[Serialize(type: ImageAuthorDto::class)]
     public function getAuthors(): ArrayCollection
     {
         return $this->authors;
@@ -183,18 +166,20 @@ class ImageListDto
         return $this;
     }
 
-    public function getImageAttributes(): ImageAttributes
+    #[Serialize]
+    public function getImageAttributes(): ImageAttributesDto
     {
         return $this->imageAttributes;
     }
 
-    public function setImageAttributes(ImageAttributes $imageAttributes): self
+    public function setImageAttributes(ImageAttributesDto $imageAttributes): self
     {
         $this->imageAttributes = $imageAttributes;
 
         return $this;
     }
 
+    #[Serialize]
     public function getCreatedAt(): DateTimeImmutable
     {
         return $this->createdAt;
@@ -207,6 +192,7 @@ class ImageListDto
         return $this;
     }
 
+    #[Serialize]
     public function getModifiedAt(): DateTimeImmutable
     {
         return $this->modifiedAt;
@@ -219,6 +205,7 @@ class ImageListDto
         return $this;
     }
 
+    #[Serialize(handler: EntityIdHandler::class)]
     public function getCreatedBy(): User
     {
         return $this->createdBy;
@@ -230,6 +217,8 @@ class ImageListDto
 
         return $this;
     }
+
+    #[Serialize(handler: EntityIdHandler::class)]
 
     public function getModifiedBy(): User
     {
