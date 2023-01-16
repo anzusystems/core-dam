@@ -1,0 +1,50 @@
+### Login admin
+POST {{host}}/force/login/3
+Content-Type: application/json
+
+{
+  "username": "dam_admin@anzusystems.dev",
+  "password": "admin"
+}
+
+> {%
+    client.test("Request executed successfully", function() {
+        client.assert(response.status === 200, "Response status is not 200");
+    });
+%}
+
+### Get asset ID
+GET {{host}}/api/adm/v1/image/0d584443-2718-470a-b9b1-92d2d9c7447c
+Content-Type: application/json
+
+> {%
+    client.global.set('assetId', response.body.asset);
+    client.test("Request executed successfully", function() {
+        client.assert(response.status === 200, "Response status is not 200");
+    });
+%}
+
+### Update asset category
+PUT {{host}}/api/adm/v1/asset/{{assetId}}
+Content-Type: application/json
+
+{
+  "id": "{{assetId}}",
+  "distributionCategory": "1ed8ff65-932c-6278-8115-3bfb48fd44b0"
+}
+
+> {%
+    client.test("Request executed successfully", function() {
+        client.assert(response.status === 200, "Response status is not 200");
+    });
+%}
+
+### Get asset detail
+GET {{host}}/api/adm/v1/asset/{{assetId}}
+Content-Type: application/json
+
+> {%
+    client.test("Request executed successfully", function() {
+        client.assert(response.status === 200, "Response status is not 200");
+    });
+%}
