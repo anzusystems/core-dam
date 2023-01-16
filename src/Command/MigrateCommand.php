@@ -59,8 +59,8 @@ final class MigrateCommand extends Command
         $this->admUserMigrations->migrate($migrateConfig);
         $this->ugcUserMigrations->migrate($migrateConfig);
         $this->assetImageMigrations->migrate($migrateConfig);
-//        $this->legacyDamPodcastMigrations->migrate($migrateConfig);
-//        $this->audioCategoryMigrations->migrate($migrateConfig);
+        $this->legacyDamPodcastMigrations->migrate($migrateConfig);
+        $this->audioCategoryMigrations->migrate($migrateConfig);
 
         return Command::SUCCESS;
     }
