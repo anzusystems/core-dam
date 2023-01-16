@@ -242,7 +242,7 @@ abstract class AbstractAssetMigrations extends AbstractMigrations
             LEFT JOIN region_of_interest i_roi ON i_roi.image_id = i.id
             LEFT JOIN image_licence il ON i.id = il.image_id
             LEFT JOIN licence_group lg ON il.licence_group_id = lg.id
-            WHERE a.process_process_state = :processState AND a.dtype = :type AND lg.ext_id = 718
+            WHERE a.process_process_state = :processState AND a.dtype = :type -- AND lg.ext_id = 718
         ';
         $sql .= $migrateConfig->isUgc()
             ? ' AND i.image_type = "ugc"'
