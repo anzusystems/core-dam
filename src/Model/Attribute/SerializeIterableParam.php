@@ -11,6 +11,7 @@ final readonly class SerializeIterableParam
 {
     public function __construct(
         public string $type,
+        public ?int $maxItems = null,
     ) {
     }
 }

@@ -12,28 +12,14 @@ use App\Model\Ugc\Legacy\ImageUpdateDto;
 
 final class ImageUgcLegacyManager extends AbstractManager
 {
+    private const TEXTS_DESCRIPTION_WRITER_MAPPING = [
+        TextsWriterConfiguration::SOURCE_PROPERTY_PATH_KEY => 'texts.description',
+        TextsWriterConfiguration::DESTINATION_PROPERTY_PATH_KEY => 'asset.metadata.customData[description]',
+    ];
 
-    //          title:
-    //            source_property_path: 'title'
-    //            destination_property_path: 'metadata.customData[title]'
-    //            normalizers:
-    //              - { type: string, options: { length: 64 } }
-    //              - { type: html, options: { words_wrap: 0 } }
-    //          description:
-    //            source_property_path: 'description'
-    //            destination_property_path: 'metadata.customData[description]'
-    //            normalizers:
-    //              - { type: string, options: { length: 5000 } }
-
-    private const TEXTS_WRITER_MAPPING = [
-        [
-            'source_property_path' => 'texts.description',
-            'destination_property_path' => 'asset.metadata.customData[description]',
-        ],
-        [
-            'source_property_path' => 'title',
-            'destination_property_path' => 'metadata.customData[title]',
-        ],
+    private const AUTHOR_WRITER_MAPPING = [
+        TextsWriterConfiguration::SOURCE_PROPERTY_PATH_KEY => 'author.customAuthor',
+        TextsWriterConfiguration::DESTINATION_PROPERTY_PATH_KEY => 'asset.metadata.customData[author]',
     ];
 
     public function __construct(
@@ -41,13 +27,20 @@ final class ImageUgcLegacyManager extends AbstractManager
     ) {
     }
 
-    public function updateUgcImage(ImageFile $imageFile, ImageUpdateDto $newImageFile, bool $flush = true): ImageFile
+    public function updateUgcImage(ImageFile $imageFile, ImageUpdateDto $updateImageFile, bool $flush = true): ImageFile
     {
         $this->textsWriter->writeValues(
-            from: $newImageFile,
+            from: $updateImageFile,
             to: $imageFile,
-            config: [TextsWriterConfiguration::getFromArrayConfiguration(self::TEXTS_WRITER_MAPPING)],
+            config: [
+                TextsWriterConfiguration::getFromArrayConfiguration(self::TEXTS_DESCRIPTION_WRITER_MAPPING),
+                TextsWriterConfiguration::getFromArrayConfiguration(self::AUTHOR_WRITER_MAPPING),
+            ],
         );
+        $imageFile->getAsset()->getAssetFlags()->setDescribed(true);
+        $this->trackModification($imageFile);
+        $this->trackModification($imageFile->getAsset());
+        $this->flush($flush);
 
         return $imageFile;
     }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Domain\AssetFile;
 
 use AnzuSystems\CommonBundle\Exception\ValidationException;
+use AnzuSystems\Contracts\Exception\AnzuException;
 use AnzuSystems\CoreDamBundle\Domain\AssetFile\AssetFileFacade;
 use AnzuSystems\CoreDamBundle\Domain\AssetFile\AssetFileFactory;
 use AnzuSystems\CoreDamBundle\Domain\AssetFile\AssetFileManager;
@@ -16,13 +17,15 @@ use AnzuSystems\CoreDamBundle\Entity\ImageFile;
 use AnzuSystems\CoreDamBundle\Model\Dto\Image\ImageAdmCreateDto;
 use AnzuSystems\CoreDamBundle\Repository\AbstractAssetFileRepository;
 use AnzuSystems\CoreDamBundle\Repository\ImageFileRepository;
+use AnzuSystems\CoreDamBundle\Security\AccessDenier;
 use App\Exception\DuplicateImageFileException;
 use App\Model\Ugc\Legacy\ImageCreateDto;
+use App\Model\Ugc\Legacy\ImageUpdateDto;
+use App\Security\Voter\UgcVoter;
+use App\Validator\IterableValidator;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\NonUniqueResultException;
 use RuntimeException;
-use Symfony\Component\Validator\ConstraintViolationList;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * @extends AssetFileFacade<ImageFile>
@@ -34,7 +37,9 @@ final class ImageUgcLegacyFacade extends AssetFileFacade
         private readonly ImageFactory $imageFactory,
         private readonly ImageFileRepository $imageFileRepository,
         private readonly ImageFacade $imageFacade,
-        private readonly ValidatorInterface $validator
+        private readonly AccessDenier $accessDenier,
+        private readonly ImageUgcLegacyManager $imageUgcLegacyManager,
+        private readonly IterableValidator $iterableValidator,
     ) {
     }
 
@@ -73,22 +78,53 @@ final class ImageUgcLegacyFacade extends AssetFileFacade
     }
 
     /**
+     * @param ArrayCollection<int, ImageUpdateDto> $imageUpdateFiles
+     *
+     * @throws AnzuException
      * @throws ValidationException
      */
-    public function updateBulk(ArrayCollection $newImageFiles, bool $onlyUndescribed): ArrayCollection
+    public function updateBulk(ArrayCollection $imageUpdateFiles, bool $onlyUndescribed): ArrayCollection
     {
-        $violationList = new ConstraintViolationList();
-        $violationList->addAll(
-            $this->validator->validate($newImageFiles)
-        );
-        if ($violationList->count()) {
-            throw new ValidationException($violationList);
+        $this->iterableValidator->validateDtoItems($imageUpdateFiles);
+        $updatedImages = new ArrayCollection();
+        foreach ($imageUpdateFiles as $imageUpdateFile) {
+            $updatedImage = $this->update($imageUpdateFile, $onlyUndescribed, false);
+            $updatedImages->add($updatedImage);
+        }
+        if (false === $updatedImages->isEmpty()) {
+            $this->imageUgcLegacyManager->flush();
+            foreach ($updatedImages as $updatedImage) {
+                $this->indexManager->index($updatedImage->getAsset());
+            }
+        }
+        return $updatedImages;
+    }
+
+    /**
+     * @throws AnzuException
+     */
+    public function update(ImageUpdateDto $imageUpdateDto, bool $onlyUndescribed, bool $flush = true): ImageFile
+    {
+        if ($flush) {
+            $this->entityValidator->validateDto($imageUpdateDto);
+        }
+        $oldImageFile = $this->imageFileRepository->find($imageUpdateDto->getId());
+        if (null === $oldImageFile) {
+            throw new AnzuException(sprintf('Image file (%s) not found', $imageUpdateDto->getId()));
+        }
+        $this->accessDenier->denyUnlessGranted(UgcVoter::DAM_UGC_ACCESS, $oldImageFile);
+
+        $updatedImage = null;
+        if (false === $onlyUndescribed || $oldImageFile->getAsset()->getAssetFlags()->isNotDescribed()) {
+            $updatedImage = $this->imageUgcLegacyManager->updateUgcImage($oldImageFile, $imageUpdateDto, $flush);
         }
 
-        $test = null;
-        $result = new ArrayCollection();
+        if ($flush && $updatedImage instanceof ImageFile) {
+            $this->imageUgcLegacyManager->flush();
+            $this->indexManager->index($updatedImage->getAsset());
+        }
 
-        return $result;
+        return $updatedImage ?? $oldImageFile;
     }
 
     protected function getManager(): AssetFileManager

@@ -9,6 +9,7 @@ use AnzuSystems\CommonBundle\Model\OpenApi\Parameter\OAParameterPath;
 use AnzuSystems\CommonBundle\Model\OpenApi\Request\OARequest;
 use AnzuSystems\CommonBundle\Model\OpenApi\Response\OAResponse;
 use AnzuSystems\CommonBundle\Model\OpenApi\Response\OAResponseValidation;
+use AnzuSystems\Contracts\Exception\AnzuException;
 use AnzuSystems\Contracts\Exception\AppReadOnlyModeException;
 use AnzuSystems\CoreDamBundle\App;
 use AnzuSystems\CoreDamBundle\Controller\Api\AbstractApiController;
@@ -132,26 +133,39 @@ final class ImageController extends AbstractApiController
         );
     }
 
-    #[ParamConverter('newImageFile', converter: SerializerParamConverter::class)]
+    /**
+     * @throws AnzuException
+     */
+    #[ParamConverter('imageUpdateDto', converter: SerializerParamConverter::class)]
     #[Route(path: '/image/{imageFile}', name: 'update', methods: [Request::METHOD_PUT])]
-    public function update(ImageFile $imageFile, ImageUpdateDto $newImageFile): JsonResponse
+    public function update(ImageFile $imageFile, ImageUpdateDto $imageUpdateDto): JsonResponse
     {
+        App::throwOnReadOnlyMode();
+        $this->denyAccessUnlessGranted(UgcVoter::DAM_UGC_ACCESS, $imageFile);
+        $imageUpdateDto->setId((string) $imageFile->getId());
+
         return $this->okResponse(
-            ImageDetailDto::getInstance($imageFile)
+            ImageDetailDto::getInstance(
+                $this->imageFacade->update($imageUpdateDto, false),
+            )
         );
     }
 
     /**
-     * @throws ValidationException
+     * @throws AnzuException
      */
     #[Route(path: '/image/bulk-update', name: 'update_bulk', methods: [Request::METHOD_PATCH])]
     #[Route(path: '/image/bulk-update-undescribed', name: 'update_bulk_undescribed', defaults: ['onlyUndescribed' => true], methods: [Request::METHOD_PATCH])]
     public function updateBulk(
-        #[SerializeIterableParam(type: ImageUpdateDto::class)] ArrayCollection $newImageFiles,
+        #[SerializeIterableParam(type: ImageUpdateDto::class, maxItems: 10)] ArrayCollection $newImageFiles,
         bool $onlyUndescribed = false,
     ): JsonResponse {
+        App::throwOnReadOnlyMode();
+
         return $this->okResponse(
-            $this->imageFacade->updateBulk($newImageFiles, $onlyUndescribed)
+            $this->imageFacade
+                ->updateBulk($newImageFiles, $onlyUndescribed)
+                ->map(static fn (ImageFile $imageFile): ImageDetailDto => ImageDetailDto::getInstance($imageFile)),
         );
     }
 

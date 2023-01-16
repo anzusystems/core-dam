@@ -37,12 +37,10 @@ final class UgcUserMigrations extends AbstractMigrations
                 continue;
             }
 
-            $licences = $this->getLicenceIds($row['id']);
+            $licenceIds = $this->getLicenceIds($row['id']);
             $this->defaultConnection->beginTransaction();
-            if (false === $this->hasUser($row['id'])) {
-                $this->insertUser($email, $row);
-            }
-            $this->insertLicences($row['id'], $licences);
+            $this->insertUser($email, $row, $licenceIds);
+            $this->insertLicences($row['id'], $licenceIds);
             $this->defaultConnection->commit();
 
             $progressBar->advance();
@@ -54,9 +52,7 @@ final class UgcUserMigrations extends AbstractMigrations
 
     private function totalCount(): int
     {
-        return (int) $this->damLegacyConnection->fetchOne('
-            SELECT COUNT(id) FROM user WHERE JSON_LENGTH(permissions) = 0 AND roles = JSON_ARRAY(\'ROLE_USER\')
-        ');
+        return (int) $this->damLegacyConnection->fetchOne('SELECT COUNT(id) FROM user');
     }
 
     private function getEmail(int $userId): ?string
@@ -68,20 +64,30 @@ final class UgcUserMigrations extends AbstractMigrations
         return is_string($email) ? $email : 'dam-' . $userId . '@anzusystems.dev'; // TODO remove
     }
 
-    private function hasUser(int $userId): bool
+    private function hasUser(int $ssoUserId): bool
     {
         $res = $this->defaultConnection->fetchOne(
             'SELECT id FROM user WHERE sso_id = ?',
             [
-                $userId
+                $ssoUserId
             ]
         );
 
         return is_int($res);
     }
 
-    private function insertUser(string $email, array $row): void
+    private function insertUser(string $email, array $row, array $licenceIds): void
     {
+        if ($this->hasUser($row['id'])) {
+            $this->defaultConnection->executeQuery('
+                UPDATE `user` 
+                SET roles = JSON_ARRAY_APPEND(roles, "$", "ROLE_UGC") 
+                WHERE sso_id = ? AND JSON_CONTAINS(roles, \'"ROLE_ADMIN"\', "$") = 0
+            ', [$row['id']]);
+
+            return;
+        }
+
         $this->defaultConnection->insert(
             'user',
             [
@@ -90,7 +96,7 @@ final class UgcUserMigrations extends AbstractMigrations
                 'modified_at' => $row['modified_at'],
                 'created_by_id' => User::ID_CONSOLE,
                 'modified_by_id' => User::ID_CONSOLE,
-                'roles' => $row['roles'],
+                'roles' => json_encode(['ROLE_UGC']),
                 'enabled' => $row['enabled'],
                 'email' => $email,
                 'first_name' => '',
@@ -99,6 +105,7 @@ final class UgcUserMigrations extends AbstractMigrations
                 'permissions' => '{}',
                 'allowed_asset_external_providers' => '[]',
                 'allowed_distribution_services' => '[]',
+                'selected_licence_id' => $licenceIds[0] ?? null,
             ]
         );
 
@@ -144,8 +151,7 @@ final class UgcUserMigrations extends AbstractMigrations
     private function getDamUsers(): Result
     {
         return $this->damLegacyConnection->executeQuery('
-            SELECT id, created_at, modified_at, roles, permissions, enabled, api_token, ext_system_id
-            FROM user WHERE JSON_LENGTH(permissions) = 0 AND roles = JSON_ARRAY(\'ROLE_USER\')
+            SELECT id, created_at, modified_at, roles, permissions, enabled, api_token, ext_system_id FROM user
         ');
     }
 }

@@ -10,6 +10,7 @@ use AnzuSystems\CoreDamBundle\Elasticsearch\ElasticSearch;
 use AnzuSystems\CoreDamBundle\Elasticsearch\SearchDto\AssetAdmSearchDto;
 use AnzuSystems\CoreDamBundle\Entity\Asset;
 use AnzuSystems\CoreDamBundle\Entity\AssetLicence;
+use AnzuSystems\CoreDamBundle\Model\Enum\AssetStatus;
 use AnzuSystems\CoreDamBundle\Model\Enum\AssetType;
 use AnzuSystems\CoreDamBundle\Validator\EntityValidator;
 use AnzuSystems\SerializerBundle\Exception\SerializerException;
@@ -55,6 +56,7 @@ final readonly class ImageUgcLegacyElasticsearchDecorator
             ->setType([AssetType::Image->toString()])
             ->setText($apiUgcLegacyParams->getText())
             ->setLicences([$licence])
+            ->setStatus([AssetStatus::WithFile->toString()])
             ->setOrder(['modifiedAt' => 'desc'])
             ->setOffset($apiUgcLegacyParams->getOffset())
             ->setLimit($apiUgcLegacyParams->getLimit())

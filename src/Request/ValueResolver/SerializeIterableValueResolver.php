@@ -11,6 +11,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ValueResolverInterface;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
+use Symfony\Component\Routing\Exception\InvalidArgumentException;
 
 final readonly class SerializeIterableValueResolver implements ValueResolverInterface
 {
@@ -29,8 +30,15 @@ final readonly class SerializeIterableValueResolver implements ValueResolverInte
             return [];
         }
 
+        /** @var ArrayCollection $items */
+        $items = $this->serializer->deserializeIterable($request->getContent(), $attribute->type, new ArrayCollection());
+        if ($attribute->maxItems && $items->count() > $attribute->maxItems) {
+            throw new InvalidArgumentException('max_items_reached');
+        }
+
+
         return [
-            $this->serializer->deserializeIterable($request->getContent(), $attribute->type, new ArrayCollection())
+            $items,
         ];
     }
 }

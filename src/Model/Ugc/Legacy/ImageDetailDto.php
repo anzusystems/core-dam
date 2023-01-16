@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Model\Ugc\Legacy;
 
 use AnzuSystems\CoreDamBundle\Entity\RegionOfInterest;
+use AnzuSystems\CoreDamBundle\Model\Dto\RegionOfInterest\RegionOfInterestAdmDetailDto;
 use AnzuSystems\SerializerBundle\Attributes\Serialize;
 use AnzuSystems\SerializerBundle\Handler\Handlers\EntityIdHandler;
 use Doctrine\Common\Collections\Collection;
@@ -19,7 +20,7 @@ class ImageDetailDto extends ImageListDto
     }
 
     #[Serialize]
-    public function getDefaultRegionOfInterest(): ?RegionOfInterest
+    public function getDefaultRegionOfInterest(): ?RegionOfInterestAdmDetailDto
     {
         $criteria = Criteria::create()
             ->where(Criteria::expr()->eq('position', RegionOfInterest::FIRST_ROI_POSITION))
@@ -27,6 +28,6 @@ class ImageDetailDto extends ImageListDto
 
         $regionOfInterest = $this->getRegionsOfInterest()->matching($criteria)->first();
 
-        return $regionOfInterest ?: null;
+        return $regionOfInterest ? RegionOfInterestAdmDetailDto::getInstance($regionOfInterest) : null;
     }
 }

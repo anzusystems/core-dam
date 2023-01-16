@@ -65,6 +65,10 @@ final class UgcAuthenticator extends AbstractUgcAuthenticator
         if (false === $user->isEnabled()) {
             throw new AuthenticationException(sprintf('User (%d) is not active or is disabled!', (int) $user->getId()));
         }
+        $email = $credentials->claims()->get('eml');
+        if ($email && $user->getEmail() !== $email) { // update user email address on a next crud action if changed
+            $user->setEmail($email);
+        }
 
         return true;
     }

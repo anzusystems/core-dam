@@ -70,7 +70,7 @@ final class UgcLicenceMigrations extends AbstractMigrations
                 'ext_system_id' => $row['ext_system_id'],
                 'ext_id' => $row['ext_id'],
                 'name' => $this->getExtSystemName($row),
-                // 'limited' => $row['limited'], // TODO
+                 'limited_files' => $row['limited'],
                 'created_at' => $row['created_at'],
                 'modified_at' => $row['modified_at'],
                 'created_by_id' => User::ID_CONSOLE,
