@@ -39,7 +39,7 @@ anzu_systems_core_dam:
         artemis_podcast_cms:
             type: artemisDistribution
             title: Artemis CMS
-            module: App\Distribution\Modules\ArtemisVideoDistributionModule
+            module: App\Distribution\Modules\ArtemisAudioDistributionModule
             options:
                 endpoint: '%env(string:DISTRIBUTION_ARTEMIS_CMS_ENDPOINT)%'
                 api_token: '%env(string:DISTRIBUTION_ARTEMIS_CMS_API_TOKEN)%'

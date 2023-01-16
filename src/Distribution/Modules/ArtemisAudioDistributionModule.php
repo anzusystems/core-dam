@@ -10,6 +10,9 @@ use AnzuSystems\CoreDamBundle\Distribution\DistributionModuleInterface;
 use AnzuSystems\CoreDamBundle\Entity\CustomDistribution;
 use AnzuSystems\CoreDamBundle\Entity\Distribution;
 use AnzuSystems\CoreDamBundle\Model\Enum\AssetType;
+use AnzuSystems\CoreDamBundle\Repository\AudioFileRepository;
+use App\Distribution\Modules\Artemis\ArtemisAudioDtoFactory;
+use App\HttpClient\ArtemisClient;
 
 final class ArtemisAudioDistributionModule extends AbstractDistributionModule implements DistributionModuleInterface
 {
@@ -17,21 +20,29 @@ final class ArtemisAudioDistributionModule extends AbstractDistributionModule im
     private const ARTICLE_ADMIN_URL = 'articleAdminUrl';
     private const MEDIA_ADMIN_URL = 'mediaAdminUrl';
 
+    public function __construct(
+        private readonly ArtemisClient $artemisRubricClient,
+        private readonly AudioFileRepository $audioFileRepository,
+        private readonly ArtemisAudioDtoFactory $artemisAudioDtoFactory,
+    ) {
+    }
+
     /**
      * @param CustomDistribution $distribution
      */
     public function distribute(Distribution $distribution): void
     {
-        // todo implement
-        $distribution->setExtId('123');
-        $customDistributionData = [self::MEDIA_ADMIN_URL => 'https://url.sme.sk',];
-
-        if ($distribution->getCustomData()['createArticle'] ?? false) {
-            $customDistributionData[self::ARTICLE_WEB_URL] =  'https://url.sme.sk';
-            $customDistributionData[self::ARTICLE_ADMIN_URL] =  'https://url.sme.sk';
+        $assetFile = $this->assetFileRepository->find($distribution->getAssetFileId());
+        if (null === $assetFile) {
+            return;
         }
 
-        $distribution->setDistributionData($customDistributionData);
+        $mediaDto = $this->artemisAudioDtoFactory->createMediaDto(
+            $assetFile,
+            $distribution
+        );
+
+//        $this->artemisRubricClient->createMedia($mediaDto);
     }
 
     public function redistribute(Distribution $distribution): void
@@ -42,7 +53,7 @@ final class ArtemisAudioDistributionModule extends AbstractDistributionModule im
     public function supportsAssetType(): array
     {
         return [
-            AssetType::Video
+            AssetType::Audio
         ];
     }
 

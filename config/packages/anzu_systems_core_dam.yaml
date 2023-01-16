@@ -114,12 +114,11 @@ anzu_systems_core_dam:
         domains: [ admin ]
         quality_whitelist: [ ]
         crops:
-#          - { width: 1920, height: 1080, tags: ['detail'] }    #
           - { width: 300, height: 200, tags: ['roi_example'], title: '3:2' }  # admin roi example 3:2
-#          - { width: 160, height: 90, tags: ['list'] }         #
+          - { width: 160, height: 90, tags: ['list'] }         #
           - { width: 0, height: 200, tags: ['list'] }           # admin DAM listing
           - { width: 200, height: 200, tags: ['roi_example'], title: '1:1' }  # admin roi example 1:1
-#          - { width: 0, height: 600, tags: ['list'] }          #
+          - { width: 0, height: 600, tags: ['list'] }          #
           - { width: 1920, height: 0, tags: ['detail'] }        # admin DAM image crop
           - { width: 0, height: 600 }        # UGC DAM image preview
           - { width: 500, height: 281 }        # UGC DAM image preview after upload
@@ -174,16 +173,31 @@ anzu_systems_core_dam:
         enabled: true
         title: ['customData:title']
         custom_metadata_pinned_amount: 3
+        public_domain_name: '%env(resolve:string:AUDIO_CMS_WEB)%'
         storage_name: 'cms.audio'
+        public_storage: 'cms.public_audio'
         chunk_storage_name: 'cms.audio'
         size_limit: '%env(byte_size:APP_CMS_AUDIO_MAX_SIZE)%'
         distribution:
           distribution_services: [ artemis_podcast_cms ]
           distribution_requirements:
-            artemis_cms:
+            artemis_podcast_cms:
               title: 'Artemis Podcasty'
               blocked_by: [ ]
               strategy: none
+              distribution_metadata_map:
+                title:
+                  source_property_path: 'metadata.customData[title]'
+                  destination_property_path: 'customData[title]'
+                description:
+                  source_property_path: 'metadata.customData[description]'
+                  destination_property_path: 'customData[description]'
+                keywords:
+                  source_property_path: 'keywords_as_string_array'
+                  destination_property_path: 'customData[keywords]'
+                authors:
+                  source_property_path: 'authors_as_string_array'
+                  destination_property_path: 'customData[authors]'
               category_select:
                 enabled: true
                 required: true
@@ -226,23 +240,47 @@ anzu_systems_core_dam:
               blocked_by: []
               strategy: none
               distribution_metadata_map:
-                title: ['customData:title', 'customData:headline']
-                description: ['customData:description']
+                title:
+                  source_property_path: 'metadata.customData[title]'
+                  destination_property_path: 'texts.title'
+                description:
+                  source_property_path: 'metadata.customData[description]'
+                  destination_property_path: 'texts.description'
+                keywords:
+                  source_property_path: 'keywords_as_string_array'
+                  destination_property_path: 'texts.keywords'
               category_select:
                 enabled: true
                 required: false
             youtube_cms_fici:
               title: 'Youtube Fičí'
               distribution_metadata_map:
-                title: [ 'customData:title', 'customData:headline' ]
-                description: [ 'customData:description' ]
+                title:
+                  source_property_path: 'metadata.customData[title]'
+                  destination_property_path: 'texts.title'
+                description:
+                  source_property_path: 'metadata.customData[description]'
+                  destination_property_path: 'texts.description'
+                keywords:
+                  source_property_path: 'keywords_as_string_array'
+                  destination_property_path: 'texts.keywords'
               blocked_by: [ ]
               strategy: none
             jw_cms:
               title: 'JwVideo'
               distribution_metadata_map:
-                title: [ 'customData:title', 'customData:headline' ]
-                description: [ 'customData:description' ]
+                title:
+                  source_property_path: 'metadata.customData[title]'
+                  destination_property_path: 'texts.title'
+                description:
+                  source_property_path: 'metadata.customData[description]'
+                  destination_property_path: 'texts.description'
+                keywords:
+                  source_property_path: 'keywords_as_string_array'
+                  destination_property_path: 'texts.keywords'
+                author:
+                  source_property_path: 'authors_as_string_array[0]'
+                  destination_property_path: 'texts.null_author'
               blocked_by: [ ]
               strategy: none
               category_select:

@@ -1,5 +1,5 @@
 ### Login admin
-POST {{host}}/api/auth/login
+GET {{host}}/force/login/3
 Content-Type: application/json
 
 {

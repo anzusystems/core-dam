@@ -6,6 +6,10 @@ anzu_systems_core_dam:
             fallback_storage: cms.audio_fallback
             options:
                 directory: '%kernel.project_dir%/var/mnt/data/audio'
+        cms.public_audio:
+            adapter: 'local'
+            options:
+                directory: '%kernel.project_dir%/var/mnt/data/public-audio'
         cms.image:
             adapter: 'local'
             fallback_enabled: '%env(bool:CMS_IMAGE_FALLBACK_ENABLED)%'

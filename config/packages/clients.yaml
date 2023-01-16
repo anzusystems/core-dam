@@ -1,0 +1,14 @@
+framework:
+    http_client:
+        max_host_connections: 10
+        default_options:
+            max_redirects: 5
+            timeout: 3600
+            max_duration: 3600
+        scoped_clients:
+            artemis.api_client:
+                base_uri: '%env(DISTRIBUTION_ARTEMIS_CMS_ENDPOINT)%'
+                headers:
+                    token: '%env(DISTRIBUTION_ARTEMIS_CMS_API_TOKEN)%'
+                local_cert: '%env(resolve:DISTRIBUTION_ARTEMIS_CMS_API_CERT_PATH)%'
+                local_pk: '%env(resolve:DISTRIBUTION_ARTEMIS_CMS_API_KEY_PATH)%'
