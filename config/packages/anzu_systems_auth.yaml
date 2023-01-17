@@ -19,6 +19,7 @@ anzu_systems_auth:
             authorize_url: '%env(AUTH_OAUTH2_AUTHORIZE_URL)%'
             access_token_url: '%env(AUTH_OAUTH2_ACCESS_TOKEN_URL)%'
             redirect_url: '%env(AUTH_OAUTH2_REDIRECT_URL)%'
+            user_info_url: '%env(AUTH_OAUTH2_USER_INFO_URL)%'
             client_id: anzusystems-dam
             client_secret: '%env(AUTH_OAUTH2_CLIENT_SECRET)%'
             public_cert: '%env(base64:AUTH_OAUTH2_JWT_PUBLIC_CERT)%'

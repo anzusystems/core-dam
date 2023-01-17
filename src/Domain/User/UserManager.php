@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\User;
 
+use AnzuSystems\AuthBundle\Model\SsoUserDto;
 use AnzuSystems\Contracts\Entity\AnzuUser;
 use AnzuSystems\CoreDamBundle\Domain\AbstractManager;
 use AnzuSystems\CoreDamBundle\Entity\AssetLicence;
@@ -107,6 +108,20 @@ final class UserManager extends AbstractManager
         $user->setSelectedLicence($currentUserDto->getSelectedLicence());
 
         return $this->updateExisting($user, $flush);
+    }
+
+    public function createFromSsoUserInfo(SsoUserDto $ssoUserDto, array $roles = [User::ROLE_UGC], bool $flush = false): User
+    {
+        $user = (new User())
+            ->setSsoId($ssoUserDto->getId())
+            ->setEmail($ssoUserDto->getEmail())
+            ->setRoles($roles)
+        ;
+        $this->trackCreation($user);
+        $this->entityManager->persist($user);
+        $this->flush($flush);
+
+        return $user;
     }
 
     /**

@@ -2,24 +2,16 @@
 
 declare(strict_types=1);
 
-
 namespace App\DamMigrations;
 
-use AnzuSystems\CoreDamBundle\Command\Traits\OutputUtilTrait;
 use AnzuSystems\CoreDamBundle\Model\Enum\AssetType;
 use App\App;
 use DateTimeImmutable;
-use Doctrine\DBAL\Exception;
 use Symfony\Component\Uid\Uuid;
 use App\Model\MigrateConfig;
 
 final class AudioCategoryMigrations extends AbstractMigrations
 {
-    use OutputUtilTrait;
-
-    /**
-     * @throws Exception
-     */
     public function migrate(MigrateConfig $migrateConfig): void
     {
         $categorySelectId = $this->getOrCreateCategorySelect();

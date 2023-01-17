@@ -15,6 +15,7 @@ doctrine:
         auto_generate_proxy_classes: true
         resolve_target_entities:
             AnzuSystems\CoreDamBundle\Entity\DamUser: App\Entity\User
+            AnzuSystems\Contracts\Entity\AnzuUser: App\Entity\User
         entity_managers:
             default:
                 connection: default

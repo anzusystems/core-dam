@@ -5,7 +5,6 @@ declare(strict_types=1);
 
 namespace App\DamMigrations;
 
-use AnzuSystems\CoreDamBundle\Command\Traits\OutputUtilTrait;
 use AnzuSystems\CoreDamBundle\Model\Enum\AssetType;
 use App\Model\MigrateConfig;
 use Doctrine\DBAL\Exception;
@@ -13,8 +12,6 @@ use Doctrine\DBAL\Result;
 
 abstract class AbstractAssetMigrations extends AbstractMigrations
 {
-    use OutputUtilTrait;
-
     public const ASSET_TYPE_DISC = 'imagefile';
 
     /**

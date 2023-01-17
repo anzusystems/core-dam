@@ -49,7 +49,7 @@ security:
         sys:
             pattern: ^/api/sys/
             stateless: true
-            provider: app_user_provider_id
+            provider: app_user_provider_sso_id
             custom_authenticators:
                 - AnzuSystems\AuthBundle\Security\Authentication\ApiTokenAuthenticator
 
