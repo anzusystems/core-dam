@@ -7,8 +7,8 @@ anzu_systems_core_dam:
     distribution_auth_redirect_url: '%env(resolve:string:DISTRIBUTION_AUTH_REDIRECT_URL)%'
     default_ext_system_id: 1
     default_asset_licence_id: 100000
-    allow_select_ext_system: false
-    allow_select_licence: false
+    allow_select_ext_system: true
+    allow_select_licence: true
     admin_allow_list_name: 'admin'
     max_bulk_item_count: 10
     acl_check_enabled: true
