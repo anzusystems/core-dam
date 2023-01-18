@@ -52,7 +52,7 @@ final class UgcUserMigrations extends AbstractMigrations
             $this->defaultConnection->executeQuery('
                 UPDATE `user` 
                 SET roles = JSON_ARRAY_APPEND(roles, "$", "ROLE_UGC") 
-                WHERE sso_id = ? AND JSON_CONTAINS(roles, \'"ROLE_ADMIN"\', "$") = 0
+                WHERE sso_id = ? AND JSON_CONTAINS(roles, \'"ROLE_ADMIN"\', "$") = 0 AND JSON_CONTAINS(roles, \'"ROLE_UGC"\', "$") = 0
             ', [$row['id']]);
 
             return;
@@ -86,21 +86,15 @@ final class UgcUserMigrations extends AbstractMigrations
     {
         $userId = $this->getUserIdBySsoId($ssoUserId);
         foreach ($licenceIds as $licenceId) {
-            $this->defaultConnection->insert(
-                'user_asset_licence',
-                [
-                    'user_id' => $userId,
-                    'asset_licence_id' => $licenceId,
-                ]
+            $this->defaultConnection->executeQuery(
+                'INSERT INTO user_asset_licence (user_id, asset_licence_id) VALUES (?, ?) ON DUPLICATE KEY UPDATE user_id = user_id',
+                [$userId, $licenceId]
             );
         }
 
-        $this->defaultConnection->insert(
-            'users_to_ext_systems',
-            [
-                'user_id' => $userId,
-                'ext_system_id' => self::BLOG_EXT_SYSTEM_ID,
-            ]
+        $this->defaultConnection->executeQuery(
+            'INSERT INTO users_to_ext_systems (user_id, ext_system_id) VALUES (?, ?) ON DUPLICATE KEY UPDATE user_id = user_id',
+            [$userId, self::BLOG_EXT_SYSTEM_ID]
         );
     }
 

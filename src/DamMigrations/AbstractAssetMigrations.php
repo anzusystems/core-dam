@@ -9,7 +9,6 @@ use AnzuSystems\CoreDamBundle\Model\Enum\AssetType;
 use App\Model\MigrateConfig;
 use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Result;
-use Symfony\Component\Uid\Uuid;
 
 abstract class AbstractAssetMigrations extends AbstractMigrations
 {
