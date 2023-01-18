@@ -48,10 +48,10 @@ final class LegacyUgcImageLinksHandler extends AbstractHandler
                 return [];
             }
 
-            $cropAllowItem = array_filter(
+            $cropAllowItem = array_values(array_filter(
                 $this->configurationProvider->getImageAdminSizeList($type),
                 static fn (CropAllowItem $cropAllowItem) => 200 === $cropAllowItem->getHeight() && 0 === $cropAllowItem->getWidth()
-            )[0] ?? null;
+            ))[0] ?? null;
 
             if ($cropAllowItem instanceof CropAllowItem) {
                 return $this->serializeCropAllowItem($value, $cropAllowItem);
