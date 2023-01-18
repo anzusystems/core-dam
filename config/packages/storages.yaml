@@ -50,7 +50,6 @@ anzu_systems_core_dam:
             adapter: 'local'
             options:
                 directory: '%kernel.project_dir%/var/mnt/data/blog-chunk'
-
         cms.image_fallback:
             adapter: 'gcloud'
             options:
