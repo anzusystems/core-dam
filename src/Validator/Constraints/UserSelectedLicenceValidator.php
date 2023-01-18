@@ -33,6 +33,13 @@ final class UserSelectedLicenceValidator extends ConstraintValidator
 
         /** @var User $user */
         $user = $this->currentAnzuUserProvider->getCurrentUser();
+        if ($user->hasRole(User::ROLE_ADMIN)) {
+            return;
+        }
+        if ($user->getAdminToExtSystems()->contains($value->getSelectedLicence()->getExtSystem())) {
+            return;
+        }
+
         if (false === $user->getAssetLicences()->contains($value->getSelectedLicence())) {
             $this->context
                 ->buildViolation($constraint->message)
