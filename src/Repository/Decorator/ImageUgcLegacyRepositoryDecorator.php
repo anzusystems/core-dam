@@ -35,7 +35,6 @@ final readonly class ImageUgcLegacyRepositoryDecorator
         $data = $this->assetRepo->findByLicenceAndIds($licence, $apiUgcLegacyParams->getIds());
 
         return (new ApiResponseList())
-            ->setBigTable(false)
             ->setTotalCount(count($data))
             ->setData(array_map(
                 fn (Asset $asset) => ImageListDto::getInstance($asset->getMainFile()),
