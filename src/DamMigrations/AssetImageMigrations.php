@@ -82,7 +82,7 @@ final class AssetImageMigrations extends AbstractAssetMigrations
     private function insertRegionIfInterest(array $row): void
     {
         $this->rois[] =   [
-            'id' => uuid_create(),
+            'id' => $row['id'],
             'image_id' => $row['id'],
             'point_x' => $row['roi_point_x'],
             'point_y' => $row['roi_point_y'],
