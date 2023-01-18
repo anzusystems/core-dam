@@ -42,6 +42,8 @@ class User extends DamUser implements
     public const ID_ADMIN = 3;
     public const ID_BASIC_USER = 4;
 
+    public const ROLE_UGC = 'ROLE_UGC';
+
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'AUTO')]
     #[ORM\Column(type: Types::INTEGER)]
@@ -186,6 +188,11 @@ class User extends DamUser implements
     public function hasRole(string $role): bool
     {
         return in_array($role, $this->roles, true);
+    }
+
+    public function hasNotRole(string $role): bool
+    {
+        return false === $this->hasRole($role);
     }
 
     public function addRole(string $role): self

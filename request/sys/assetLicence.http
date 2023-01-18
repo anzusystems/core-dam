@@ -1,0 +1,12 @@
+### Upsert asset licence
+PUT {{host}}/api/sys/v1/asset-licence
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{blogSysUserApiToken}}
+
+{
+  "extId": "test",
+  "limited": true,
+  "users": [2, 3]
+}
+

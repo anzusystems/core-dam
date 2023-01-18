@@ -44,4 +44,8 @@ return static function (RoutingConfigurator $routes): void {
     $routes
         ->import(__DIR__ . '/../../src/Controller/Api/Ugc/VLegacy', type: 'attribute')
         ->prefix('/api/ugc/vlegacy/');
+
+    $routes
+        ->import(__DIR__ . '/../../src/Controller/Api/Sys/V1', type: 'attribute')
+        ->prefix('/api/sys/v1/');
 };

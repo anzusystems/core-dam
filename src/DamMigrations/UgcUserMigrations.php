@@ -2,10 +2,8 @@
 
 declare(strict_types=1);
 
-
 namespace App\DamMigrations;
 
-use AnzuSystems\CoreDamBundle\Command\Traits\OutputUtilTrait;
 use App\Entity\User;
 use App\Model\MigrateConfig;
 use Doctrine\DBAL\Exception;
@@ -13,8 +11,6 @@ use Doctrine\DBAL\Result;
 
 final class UgcUserMigrations extends AbstractMigrations
 {
-    use OutputUtilTrait;
-
     /**
      * @throws Exception
      */
@@ -32,11 +28,6 @@ final class UgcUserMigrations extends AbstractMigrations
 
         while ($row = $res->fetchAssociative()) {
             $email = $this->getEmail($row['id']);
-            if (null === $email) {
-                $this->outputUtil->error(sprintf('User id (%s) missing', $row['id']));
-                continue;
-            }
-
             $licenceIds = $this->getLicenceIds($row['id']);
             $this->defaultConnection->beginTransaction();
             $this->insertUser($email, $row, $licenceIds);
@@ -53,27 +44,6 @@ final class UgcUserMigrations extends AbstractMigrations
     private function totalCount(): int
     {
         return (int) $this->damLegacyConnection->fetchOne('SELECT COUNT(id) FROM user');
-    }
-
-    private function getEmail(int $userId): ?string
-    {
-        $email =
-            $this->blogConnection->fetchOne('SELECT email FROM user where id = ?', [$userId])
-            ?? $this->coreConnection->fetchOne('SELECT email FROM user where id = ?', [$userId]);
-
-        return is_string($email) ? $email : 'dam-' . $userId . '@anzusystems.dev'; // TODO remove
-    }
-
-    private function hasUser(int $ssoUserId): bool
-    {
-        $res = $this->defaultConnection->fetchOne(
-            'SELECT id FROM user WHERE sso_id = ?',
-            [
-                $ssoUserId
-            ]
-        );
-
-        return is_int($res);
     }
 
     private function insertUser(string $email, array $row, array $licenceIds): void

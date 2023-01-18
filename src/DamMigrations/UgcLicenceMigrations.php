@@ -5,7 +5,6 @@ declare(strict_types=1);
 
 namespace App\DamMigrations;
 
-use AnzuSystems\CoreDamBundle\Command\Traits\OutputUtilTrait;
 use App\Entity\User;
 use App\Model\MigrateConfig;
 use Doctrine\DBAL\Exception;
@@ -13,8 +12,6 @@ use Doctrine\DBAL\Result;
 
 final class UgcLicenceMigrations extends AbstractMigrations
 {
-    use OutputUtilTrait;
-
     /**
      * @throws Exception
      */
