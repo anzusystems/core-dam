@@ -146,7 +146,7 @@ abstract class AbstractMigrations
         }
 
         $sql = sprintf(
-            'INSERT INTO %s (%s) VALUES %s;',
+            'INSERT INTO %s (%s) VALUES %s AS new_row ON DUPLICATE KEY UPDATE id = new_row.id;',
             $table,
             implode(', ', array_keys($data[0])),
             implode(', ', $rows)

@@ -35,11 +35,7 @@ abstract class AbstractAssetMigrations extends AbstractMigrations
 
         $i = 0;
         while ($row = $res->fetchAssociative()) {
-            if ($this->hasAsset($row['id'])) {
-                continue;
-            }
             $i++;
-
             $this->insertAssetMetadata($row);
             $this->insertAssetFileMetadata($row);
             $this->insertAssetFile($row);
@@ -276,18 +272,6 @@ abstract class AbstractAssetMigrations extends AbstractMigrations
             'processState' => 'processed',
             'type' => $this->getLegacyDamAssetType(),
         ]);
-    }
-
-    private function hasAsset(string $assetMetadataId): bool
-    {
-        $res = $this->defaultConnection->fetchOne(
-            'SELECT id FROM asset WHERE id = ?',
-            [
-                $assetMetadataId
-            ]
-        );
-
-        return is_string($res);
     }
 
     private function totalCount(MigrateConfig $migrateConfig): int
