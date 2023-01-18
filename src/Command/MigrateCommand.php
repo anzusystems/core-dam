@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Command;
 
+use App\DamMigrations\AuthorMigrations;
+use App\DamMigrations\KeywordMigrations;
 use App\DamMigrations\LegacyDamPodcastMigrations;
 use App\DamMigrations\AdmUserMigrations;
 use App\DamMigrations\UgcLicenceMigrations;
@@ -33,6 +35,8 @@ final class MigrateCommand extends Command
         private readonly UgcUserMigrations $ugcUserMigrations,
         private readonly AssetImageMigrations $assetImageMigrations,
         private readonly AudioCategoryMigrations $audioCategoryMigrations,
+        private readonly AuthorMigrations $authorMigrations,
+        private readonly KeywordMigrations $keywordMigrations,
     ) {
         parent::__construct();
     }
@@ -54,10 +58,12 @@ final class MigrateCommand extends Command
         $migrateConfig = new MigrateConfig(
             ugc: (bool) $input->getOption(self::UGC_OPT),
         );
-
+//
         $this->ugcLicenceMigrations->migrate($migrateConfig);
         $this->admUserMigrations->migrate($migrateConfig);
         $this->ugcUserMigrations->migrate($migrateConfig);
+        $this->authorMigrations->migrate($migrateConfig);
+        $this->keywordMigrations->migrate($migrateConfig);
         $this->assetImageMigrations->migrate($migrateConfig);
         $this->legacyDamPodcastMigrations->migrate($migrateConfig);
         $this->audioCategoryMigrations->migrate($migrateConfig);

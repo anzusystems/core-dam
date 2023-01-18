@@ -9,6 +9,10 @@ use AnzuSystems\CoreDamBundle\FileSystem\NameGenerator\NameGenerator;
 
 final class AssetImageMigrations extends AbstractAssetMigrations
 {
+    private array $imageFiles = [];
+    private array $rois = [];
+    private array $optimalResizes = [];
+
     public function __construct(
         private readonly NameGenerator $nameGenerator,
     ) {
@@ -16,7 +20,21 @@ final class AssetImageMigrations extends AbstractAssetMigrations
 
     public const ASSET_TYPE_DISC = 'imagefile';
 
-    protected function migrateAssetTypeSpecific(array $row): void
+    protected function insertAssetTypeSpecific(): void
+    {
+        $this->insertBulk($this->defaultConnection, 'image_file', $this->imageFiles);
+        $this->insertBulk($this->defaultConnection, 'region_of_interest', $this->rois);
+        $this->insertBulk($this->defaultConnection, 'image_file_optimal_resize', $this->optimalResizes);
+    }
+
+    protected function clearAssetTypeSpecific(): void
+    {
+        $this->imageFiles = [];
+        $this->rois = [];
+        $this->optimalResizes = [];
+    }
+
+    protected function prepareAssetTypeSpecific(array $row): void
     {
         $this->insertImageFile($row);
         $this->insertRegionIfInterest($row);
@@ -49,40 +67,34 @@ final class AssetImageMigrations extends AbstractAssetMigrations
 
     private function insertImageFile(array $row): void
     {
-        $this->defaultConnection->insert(
-            'image_file',
-            [
-                'id' => $row['id'],
-                'image_attributes_ratio_width' => $row['image_attributes_ratio_width'],
-                'image_attributes_ratio_height' => $row['image_attributes_ratio_height'],
-                'image_attributes_width' => $row['image_attributes_width'],
-                'image_attributes_height' => $row['image_attributes_height'],
-                'image_attributes_rotation' => $row['image_attributes_rotation'],
-                'image_attributes_most_dominant_color' => '#000000',
-                'asset_id' => $row['id'],
-            ]
-        );
+        $this->imageFiles[] = [
+            'id' => $row['id'],
+            'image_attributes_ratio_width' => $row['image_attributes_ratio_width'],
+            'image_attributes_ratio_height' => $row['image_attributes_ratio_height'],
+            'image_attributes_width' => $row['image_attributes_width'],
+            'image_attributes_height' => $row['image_attributes_height'],
+            'image_attributes_rotation' => $row['image_attributes_rotation'],
+            'image_attributes_most_dominant_color' => '#000000',
+            'asset_id' => $row['id'],
+        ];
     }
 
     private function insertRegionIfInterest(array $row): void
     {
-        $this->defaultConnection->insert(
-            'region_of_interest',
-            [
-                'id' => uuid_create(),
-                'image_id' => $row['id'],
-                'point_x' => $row['roi_point_x'],
-                'point_y' => $row['roi_point_y'],
-                'percentage_width' => $row['roi_percentage_width'],
-                'percentage_height' => $row['roi_percentage_height'],
-                'title' => 'Default',
-                'position' => 0,
-                'created_at' => $row['created_at'],
-                'modified_at' => $row['modified_at'],
-                'created_by_id' => $this->getUserIdBySsoId($row['created_by_id']),
-                'modified_by_id' => $this->getUserIdBySsoId($row['modified_by_id'])
-            ]
-        );
+        $this->rois[] =   [
+            'id' => uuid_create(),
+            'image_id' => $row['id'],
+            'point_x' => $row['roi_point_x'],
+            'point_y' => $row['roi_point_y'],
+            'percentage_width' => $row['roi_percentage_width'],
+            'percentage_height' => $row['roi_percentage_height'],
+            'title' => 'Default',
+            'position' => 0,
+            'created_at' => $row['created_at'],
+            'modified_at' => $row['modified_at'],
+            'created_by_id' => $this->getUserIdBySsoId($row['created_by_id']),
+            'modified_by_id' => $this->getUserIdBySsoId($row['modified_by_id'])
+        ];
     }
 
     private function insertImageFileOptimalResize(
@@ -92,17 +104,14 @@ final class AssetImageMigrations extends AbstractAssetMigrations
         int $height,
         string $path,
     ): void {
-        $this->defaultConnection->insert(
-            'image_file_optimal_resize',
-            [
-                'id' => uuid_create(),
-                'image_id' => $imageId,
-                'requested_size' => $requestedSize,
-                'width' => $width,
-                'height' => $height,
-                'file_path' => $path,
-                'original' => 1, // TODO check
-            ]
-        );
+        $this->optimalResizes[] =  [
+            'id' => uuid_create(),
+            'image_id' => $imageId,
+            'requested_size' => $requestedSize,
+            'width' => $width,
+            'height' => $height,
+            'file_path' => $path,
+            'original' => 1, // TODO check
+        ];
     }
 }

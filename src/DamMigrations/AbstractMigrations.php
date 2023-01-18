@@ -11,6 +11,7 @@ use AnzuSystems\AuthBundle\HttpClient\OAuth2HttpClient;
 use AnzuSystems\CoreDamBundle\Command\Traits\OutputUtilTrait;
 use App\Model\MigrateConfig;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Result;
 use RuntimeException;
 use Symfony\Contracts\Service\Attribute\Required;
 
@@ -120,5 +121,43 @@ abstract class AbstractMigrations
         $this->userIdBySsoIdCache[$ssoId] = (int) $id;
 
         return $this->userIdBySsoIdCache[$ssoId];
+    }
+
+    protected function insertBulk(Connection $connection, string $table, array $data): ?Result
+    {
+        if (empty($data)) {
+            return null;
+        }
+
+        $rows = [];
+        $params = [];
+
+        $i = 0;
+        foreach ($data as $row) {
+            $tokens = [];
+            foreach ($row as $column => $value) {
+                $key = ':' . $column . '_' . $i;
+                $tokens[] = $key;
+                $params[$key] = $value;
+            }
+
+            $rows[] = '(' .implode(', ', $tokens) . ')';
+            $i++;
+        }
+
+        $sql = sprintf(
+            'INSERT INTO %s (%s) VALUES %s;',
+            $table,
+            implode(', ', array_keys($data[0])),
+            implode(', ', $rows)
+        );
+
+        $statement = $connection->prepare($sql);
+
+        foreach ($params as $name => $value) {
+            $statement->bindValue($name, $value);
+        }
+
+        return $statement->executeQuery();
     }
 }

@@ -9,10 +9,18 @@ use AnzuSystems\CoreDamBundle\Model\Enum\AssetType;
 use App\Model\MigrateConfig;
 use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Result;
+use Symfony\Component\Uid\Uuid;
 
 abstract class AbstractAssetMigrations extends AbstractMigrations
 {
     public const ASSET_TYPE_DISC = 'imagefile';
+    private const BULK_SIZE = 100;
+
+    private array $assetMetadata = [];
+    private array $assetFileMetadata = [];
+    private array $assetFile = [];
+    private array $asset = [];
+    private array $slots = [];
 
     /**
      * @throws Exception
@@ -25,158 +33,174 @@ abstract class AbstractAssetMigrations extends AbstractMigrations
         $progressBar->setFormat('debug');
         $progressBar->start();
 
+        $i = 0;
         while ($row = $res->fetchAssociative()) {
             if ($this->hasAsset($row['id'])) {
                 continue;
             }
-            $this->defaultConnection->beginTransaction();
+            $i++;
+
             $this->insertAssetMetadata($row);
             $this->insertAssetFileMetadata($row);
             $this->insertAssetFile($row);
             $this->insertAsset($row);
-            $this->migrateAssetTypeSpecific($row);
+            $this->prepareAssetTypeSpecific($row);
             $this->insertAssetSlot($row);
-            $this->defaultConnection->commit();
+
+            if (0 === $i % self::BULK_SIZE) {
+                $this->flushAndClear();
+            }
 
             $progressBar->advance();
         }
+
+        $this->flushAndClear();
 
         $progressBar->finish();
         $this->writeln('');
     }
 
-    abstract protected function migrateAssetTypeSpecific(array $row): void;
+    public function flushAndClear(): void {
+        $this->defaultConnection->beginTransaction();
+
+        $this->insertBulk($this->defaultConnection, 'asset_metadata', $this->assetMetadata);
+        $this->insertBulk($this->defaultConnection, 'asset_file_metadata', $this->assetFileMetadata);
+        $this->insertBulk($this->defaultConnection, 'asset_file', $this->assetFile);
+        $this->insertBulk($this->defaultConnection, 'asset', $this->asset);
+        $this->insertAssetTypeSpecific();
+        $this->insertBulk($this->defaultConnection, 'asset_slot', $this->slots);
+
+        $this->assetMetadata = [];
+        $this->assetFileMetadata = [];
+        $this->assetFile = [];
+        $this->asset = [];
+        $this->slots = [];
+        $this->clearAssetTypeSpecific();
+
+        $this->defaultConnection->commit();
+    }
+
+    abstract protected function prepareAssetTypeSpecific(array $row): void;
+    
+    abstract protected function insertAssetTypeSpecific(): void;
+
+    abstract protected function clearAssetTypeSpecific(): void;
 
     protected function insertAssetMetadata(array $row): void
     {
-        $this->defaultConnection->insert(
-            'asset_metadata',
-            [
-                'id' => $row['id'],
-                'keyword_suggestions' => '{}',
-                'author_suggestions' => '{}',
-                'custom_data' => json_encode(array_filter([
-                    'description' => trim($row['texts_description']),
-                    'author' => trim($row['custom_author'] ?? ''),
-                ])),
-                'created_at' => $row['created_at'],
-                'modified_at' => $row['modified_at'],
-                'created_by_id' => $this->getUserIdBySsoId($row['created_by_id']),
-                'modified_by_id' => $this->getUserIdBySsoId($row['modified_by_id'])
-            ]
-        );
+        $this->assetMetadata[] =  [
+            'id' => $row['id'],
+            'keyword_suggestions' => '{}',
+            'author_suggestions' => '{}',
+            'custom_data' => json_encode(array_filter([
+                'description' => trim($row['texts_description']),
+                'author' => trim($row['custom_author'] ?? ''),
+            ])),
+            'created_at' => $row['created_at'],
+            'modified_at' => $row['modified_at'],
+            'created_by_id' => $this->getUserIdBySsoId($row['created_by_id']),
+            'modified_by_id' => $this->getUserIdBySsoId($row['modified_by_id'])
+        ];
     }
 
     protected function insertAssetFileMetadata(array $row): void
     {
-        $this->defaultConnection->insert(
-            'asset_file_metadata',
-            [
-                'id' => $row['id'],
-                'exif_data' => json_encode(array_filter([
-                    'Headline' => trim($row['tags_headline']),
-                    'Title' => trim($row['tags_title']),
-                    'Description' => trim($row['tags_description']),
-                    'Creator' => trim($row['tags_creator']),
-                    'Event' => trim($row['tags_tag_event']),
-                    'PersonInImage' => trim($row['tags_person_shown']),
-                    'Keywords' => implode(', ', array_filter(
-                        array_map('trim',
-                            json_decode($row['tags_keywords'], true)
-                        )
-                    )),
-                    'Author' => trim($row['tags_author']),
-                    'Orientation' => trim($row['tags_orientation']),
-                    'Color Space' => trim($row['tags_color_space']),
-                ])),
-                'created_at' => $row['created_at'],
-                'modified_at' => $row['modified_at'],
-                'created_by_id' => $this->getUserIdBySsoId($row['created_by_id']),
-                'modified_by_id' => $this->getUserIdBySsoId($row['modified_by_id'])
-            ]
-        );
+        $this->assetFileMetadata[] = [
+            'id' => $row['id'],
+            'exif_data' => json_encode(array_filter([
+                'Headline' => trim($row['tags_headline']),
+                'Title' => trim($row['tags_title']),
+                'Description' => trim($row['tags_description']),
+                'Creator' => trim($row['tags_creator']),
+                'Event' => trim($row['tags_tag_event']),
+                'PersonInImage' => trim($row['tags_person_shown']),
+                'Keywords' => implode(', ', array_filter(
+                    array_map('trim',
+                        json_decode($row['tags_keywords'], true)
+                    )
+                )),
+                'Author' => trim($row['tags_author']),
+                'Orientation' => trim($row['tags_orientation']),
+                'Color Space' => trim($row['tags_color_space']),
+            ])),
+            'created_at' => $row['created_at'],
+            'modified_at' => $row['modified_at'],
+            'created_by_id' => $this->getUserIdBySsoId($row['created_by_id']),
+            'modified_by_id' => $this->getUserIdBySsoId($row['modified_by_id'])
+        ];
     }
 
     protected function insertAssetFile(array $row): void
     {
-        $this->defaultConnection->insert(
-            'asset_file',
-            [
-                'id' => $row['id'],
-                'metadata_id' => $row['id'],
-                'licence_id' => $row['licence_id'],
-                'asset_attributes_checksum' => $row['file_attributes_checksum'],
-                'asset_attributes_origin_asset_id' => '',
-                'asset_attributes_file_path' => $row['file_attributes_file_path'],
-                'asset_attributes_origin_file_name' => $row['file_attributes_origin_file_name'],
-                'asset_attributes_mime_type' => $row['file_attributes_extension'],
-                'asset_attributes_size' => $row['file_attributes_size'],
-                'asset_attributes_uploaded_size' => $row['file_attributes_size'],
-                'asset_attributes_origin_url' => $row['file_attributes_origin_url'],
-                'asset_attributes_status' => 'processed',
-                'asset_attributes_fail_reason' => 'none',
-                'flags_processed_metadata' => 1,
-                'asset_attributes_create_strategy' => 'chunk',
-                'dtype' => static::ASSET_TYPE_DISC,
-                'created_at' => $row['created_at'],
-                'modified_at' => $row['modified_at'],
-                'created_by_id' => $this->getUserIdBySsoId($row['created_by_id']),
-                'modified_by_id' => $this->getUserIdBySsoId($row['modified_by_id'])
-            ]
-        );
+        $this->assetFile[] = [
+            'id' => $row['id'],
+            'metadata_id' => $row['id'],
+            'licence_id' => $row['licence_id'],
+            'asset_attributes_checksum' => $row['file_attributes_checksum'],
+            'asset_attributes_origin_asset_id' => '',
+            'asset_attributes_file_path' => $row['file_attributes_file_path'],
+            'asset_attributes_origin_file_name' => $row['file_attributes_origin_file_name'],
+            'asset_attributes_mime_type' => $row['file_attributes_extension'],
+            'asset_attributes_size' => $row['file_attributes_size'],
+            'asset_attributes_uploaded_size' => $row['file_attributes_size'],
+            'asset_attributes_origin_url' => $row['file_attributes_origin_url'],
+            'asset_attributes_status' => 'processed',
+            'asset_attributes_fail_reason' => 'none',
+            'flags_processed_metadata' => 1,
+            'asset_attributes_create_strategy' => 'chunk',
+            'dtype' => static::ASSET_TYPE_DISC,
+            'created_at' => $row['created_at'],
+            'modified_at' => $row['modified_at'],
+            'created_by_id' => $this->getUserIdBySsoId($row['created_by_id']),
+            'modified_by_id' => $this->getUserIdBySsoId($row['modified_by_id'])
+        ];
     }
 
     private function insertAsset(array $row): void
     {
-        $this->defaultConnection->insert(
-            'asset',
-            [
-                'id' => $row['id'],
-                'metadata_id' => $row['id'],
-                'licence_id' => $row['licence_id'],
-                'distribution_category_id' => null, // TODO
-                'texts_display_title' => $row['id'], // TODO
-                'dates_uploaded_at' => $row['dates_uploaded_at'],
-                'dates_expire_at' => null, // TODO
-                'dates_publish_at' => $row['publish_at'] ?? null,
-                'asset_flags_described' => $row['asset_flags_is_described'],
-                'asset_flags_visible' => 1, // TODO
-                'asset_flags_generated_by_system' => 1, // TODO
-                'asset_flags_autocompleted_metadata' => 1, // TODO
-                'asset_flags_auto_delete_unprocessed' => 0, // TODO
-                'attributes_asset_type' => match (static::ASSET_TYPE_DISC) {
-                    AssetImageMigrations::ASSET_TYPE_DISC => AssetType::Image->toString(),
-                },
-                'attributes_status' => 'with_file',
-                'main_file_id' => $row['id'],
-                'created_at' => $row['created_at'],
-                'modified_at' => $row['modified_at'],
-                'created_by_id' => $this->getUserIdBySsoId($row['created_by_id']),
-                'modified_by_id' => $this->getUserIdBySsoId($row['modified_by_id'])
-            ]
-        );
+        $this->asset[] = [
+            'id' => $row['id'],
+            'metadata_id' => $row['id'],
+            'licence_id' => $row['licence_id'],
+            'distribution_category_id' => null, // TODO
+            'texts_display_title' => $row['id'], // TODO
+            'dates_uploaded_at' => $row['dates_uploaded_at'],
+            'dates_expire_at' => null, // TODO
+            'dates_publish_at' => $row['publish_at'] ?? null,
+            'asset_flags_described' => $row['asset_flags_is_described'],
+            'asset_flags_visible' => 1, // TODO
+            'asset_flags_generated_by_system' => 1, // TODO
+            'asset_flags_autocompleted_metadata' => 1, // TODO
+            'asset_flags_auto_delete_unprocessed' => 0, // TODO
+            'attributes_asset_type' => match (static::ASSET_TYPE_DISC) {
+                AssetImageMigrations::ASSET_TYPE_DISC => AssetType::Image->toString(),
+            },
+            'attributes_status' => 'with_file',
+            'main_file_id' => $row['id'],
+            'created_at' => $row['created_at'],
+            'modified_at' => $row['modified_at'],
+            'created_by_id' => $this->getUserIdBySsoId($row['created_by_id']),
+            'modified_by_id' => $this->getUserIdBySsoId($row['modified_by_id'])
+        ];
     }
 
     protected function insertAssetSlot(array $row): void
     {
-        $this->defaultConnection->insert(
-            'asset_slot',
-            [
-                'id' => $row['id'],
-                'asset_id' => $row['id'],
-                'image_id' => 'imagefile' === static::ASSET_TYPE_DISC ? $row['id'] : null,
-                'audio_id' => 'audiofile' === static::ASSET_TYPE_DISC ? $row['id'] : null,
-                'video_id' => 'videofile' === static::ASSET_TYPE_DISC ? $row['id'] : null,
-                'document_id' => null,
-                'name' => 'default',
-                'flags_is_default' => 1,
-                'flags_is_main' => 1,
-                'created_at' => $row['created_at'],
-                'modified_at' => $row['modified_at'],
-                'created_by_id' => $this->getUserIdBySsoId($row['created_by_id']),
-                'modified_by_id' => $this->getUserIdBySsoId($row['modified_by_id'])
-            ]
-        );
+        $this->slots[] = [
+            'id' => $row['id'],
+            'asset_id' => $row['id'],
+            'image_id' => 'imagefile' === static::ASSET_TYPE_DISC ? $row['id'] : null,
+            'audio_id' => 'audiofile' === static::ASSET_TYPE_DISC ? $row['id'] : null,
+            'video_id' => 'videofile' === static::ASSET_TYPE_DISC ? $row['id'] : null,
+            'document_id' => null,
+            'name' => 'default',
+            'flags_is_default' => 1,
+            'flags_is_main' => 1,
+            'created_at' => $row['created_at'],
+            'modified_at' => $row['modified_at'],
+            'created_by_id' => $this->getUserIdBySsoId($row['created_by_id']),
+            'modified_by_id' => $this->getUserIdBySsoId($row['modified_by_id'])
+        ];
     }
 
     protected function getAssets(MigrateConfig $migrateConfig): Result
@@ -244,6 +268,8 @@ abstract class AbstractAssetMigrations extends AbstractMigrations
         $sql .= $migrateConfig->isUgc()
             ? ' AND i.image_type = "ugc"'
             : ' AND i.image_type != "ugc"';
+
+        $sql . ' LIMIT 1';
 
         return $this->damLegacyConnection->executeQuery($sql, [
             'defaultLicenceId' => self::CMS_LICENCE_ID,
