@@ -65,7 +65,7 @@ final class UgcImpAuthenticator extends AbstractUgcAuthenticator
 
     private function getUser(string $userIdentifier, Plain $credentials): User
     {
-        $originalUserId = $credentials->claims()->get('imp');
+        $originalUserId = (string) $credentials->claims()->get('imp');
         $originalUser = $this->userRepo->findOneBySsoUserId($originalUserId);
         if (null === $originalUser) {
             throw new UserNotFoundException(sprintf('Original user with SSO ID (%s) not found!', $originalUserId));
