@@ -112,7 +112,7 @@ final class LegacyDamPodcastMigrations extends AbstractMigrations
                 'created_at' => App::getAppDate()->format(DateTimeImmutable::ATOM),
                 'modified_at' => App::getAppDate()->format(DateTimeImmutable::ATOM),
                 'texts_description' => $row['description'],
-                'attributes_rss_url' => $row['rss_feed'],
+                'attributes_rss_url' => (string) $row['rss_feed'], // todo validate
                 'licence_id' => $licenceId,
                 'attributes_last_import_status' => PodcastLastImportStatus::notImported->toString(),
                 'attributes_mode' => PodcastImportMode::import->toString(),
