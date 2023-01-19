@@ -169,6 +169,19 @@ anzu_systems_core_dam:
               - { type: string, options: { length: 5000 } }
       audio:
         enabled: true
+        keywords:
+          enabled: true
+          required: false
+          autocomplete_from_exif_metadata_tags:
+            Keywords: ','
+            Subjects: ','
+        authors:
+          enabled: true
+          required: false
+          autocomplete_from_exif_metadata_tags:
+            Artist: ','
+            Owners: ','
+            OwnerName: ~
         title: ['customData:title']
         custom_metadata_pinned_amount: 3
         public_domain_name: '%env(resolve:string:AUDIO_CMS_WEB)%'
@@ -228,6 +241,19 @@ anzu_systems_core_dam:
             destination_property_path: 'texts.description'
       video:
         enabled: true
+        keywords:
+          enabled: true
+          required: false
+          autocomplete_from_exif_metadata_tags:
+            Keywords: ','
+            Subjects: ','
+        authors:
+          enabled: true
+          required: false
+          autocomplete_from_exif_metadata_tags:
+            Artist: ','
+            Owners: ','
+            OwnerName: ~
         title: ['customData:title']
         custom_metadata_pinned_amount: 3
         storage_name: 'cms.video'
