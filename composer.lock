@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/anzusystems/auth-bundle.git",
-                "reference": "16888497cf81f76743be01cf2c3799b90b881083"
+                "reference": "bf320efa6bb6183685e2070f86355d1cdbe1ac21"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/anzusystems/auth-bundle/zipball/16888497cf81f76743be01cf2c3799b90b881083",
-                "reference": "16888497cf81f76743be01cf2c3799b90b881083",
+                "url": "https://api.github.com/repos/anzusystems/auth-bundle/zipball/bf320efa6bb6183685e2070f86355d1cdbe1ac21",
+                "reference": "bf320efa6bb6183685e2070f86355d1cdbe1ac21",
                 "shasum": ""
             },
             "require": {
@@ -62,7 +62,7 @@
                 "issues": "https://github.com/anzusystems/auth-bundle/issues",
                 "source": "https://github.com/anzusystems/auth-bundle/tree/user_info"
             },
-            "time": "2023-01-17T14:22:22+00:00"
+            "time": "2023-01-19T15:05:02+00:00"
         },
         {
             "name": "anzusystems/common-bundle",
