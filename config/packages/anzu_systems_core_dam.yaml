@@ -187,9 +187,13 @@ anzu_systems_core_dam:
                 title:
                   source_property_path: 'metadata.customData[title]'
                   destination_property_path: 'customData[title]'
+                  normalizers:
+                    - { type: string, options: { empty_string: true } }
                 description:
                   source_property_path: 'metadata.customData[description]'
                   destination_property_path: 'customData[description]'
+                  normalizers:
+                    - { type: string, options: { empty_string: true } }
                 keywords:
                   source_property_path: 'keywords_as_string_array'
                   destination_property_path: 'customData[keywords]'
@@ -241,9 +245,13 @@ anzu_systems_core_dam:
                 title:
                   source_property_path: 'metadata.customData[title]'
                   destination_property_path: 'texts.title'
+                  normalizers:
+                    - { type: string, options: { empty_string: true } }
                 description:
                   source_property_path: 'metadata.customData[description]'
                   destination_property_path: 'texts.description'
+                  normalizers:
+                    - { type: string, options: { empty_string: true } }
                 keywords:
                   source_property_path: 'keywords_as_string_array'
                   destination_property_path: 'texts.keywords'
@@ -256,9 +264,13 @@ anzu_systems_core_dam:
                 title:
                   source_property_path: 'metadata.customData[title]'
                   destination_property_path: 'texts.title'
+                  normalizers:
+                    - { type: string, options: { empty_string: true } }
                 description:
                   source_property_path: 'metadata.customData[description]'
                   destination_property_path: 'texts.description'
+                  normalizers:
+                    - { type: string, options: { empty_string: true } }
                 keywords:
                   source_property_path: 'keywords_as_string_array'
                   destination_property_path: 'texts.keywords'
@@ -270,9 +282,13 @@ anzu_systems_core_dam:
                 title:
                   source_property_path: 'metadata.customData[title]'
                   destination_property_path: 'texts.title'
+                  normalizers:
+                    - { type: string, options: { empty_string: true } }
                 description:
                   source_property_path: 'metadata.customData[description]'
                   destination_property_path: 'texts.description'
+                  normalizers:
+                    - { type: string, options: { empty_string: true } }
                 keywords:
                   source_property_path: 'keywords_as_string_array'
                   destination_property_path: 'texts.keywords'
