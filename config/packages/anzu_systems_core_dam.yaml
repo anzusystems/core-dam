@@ -115,10 +115,8 @@ anzu_systems_core_dam:
         quality_whitelist: [ ]
         crops:
           - { width: 300, height: 200, tags: ['roi_example'], title: '3:2' }  # admin roi example 3:2
-          - { width: 160, height: 90, tags: ['list'] }         #
           - { width: 0, height: 200, tags: ['list'] }           # admin DAM listing
           - { width: 200, height: 200, tags: ['roi_example'], title: '1:1' }  # admin roi example 1:1
-          - { width: 0, height: 600, tags: ['list'] }          #
           - { width: 1920, height: 0, tags: ['detail'] }        # admin DAM image crop
           - { width: 0, height: 600 }        # UGC DAM image preview
           - { width: 500, height: 281 }        # UGC DAM image preview after upload
