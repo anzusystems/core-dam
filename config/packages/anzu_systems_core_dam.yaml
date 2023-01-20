@@ -119,13 +119,23 @@ anzu_systems_core_dam:
           - { width: 200, height: 200, tags: ['roi_example'], title: '1:1' }  # admin roi example 1:1
           - { width: 1920, height: 0, tags: ['detail'] }        # admin DAM image crop
           - { width: 0, height: 600 }        # UGC DAM image preview
-          - { width: 500, height: 281 }        # UGC DAM image preview after upload
+          - { width: 500, height: 281 }      # UGC DAM image preview after upload
       web_cms:
         domains: [ web_cms ]
         quality_whitelist: [ 90 ]
         crops:
           - { width: 800, height: 450 }   # anzu web general
           - { width: 350, height: 197 }   # anzu web box item photo
+          - { width: 100, height: 100 }   # blog web listing small image set
+          - { width: 200, height: 200 }   # blog web listing small image set
+          - { width: 972, height: 648 }   # blog web listing small image set
+          - { width: 450, height: 300 }   # blog web listing small image set
+          - { width: 1024, height: 0 }   # blog web article detail image set (automatic height)
+          - { width: 970, height: 0 }   # blog web article detail image set (automatic height)
+          - { width: 608, height: 0 }   # blog web article detail image set (automatic height)
+          - { width: 448, height: 0 }   # blog web article detail image set (automatic height)
+          - { width: 288, height: 0 }   # blog web article detail image set (automatic height)
+          - { width: 300, height: 300 }   # blog mobile app
   ext_systems:
     cms:
       id: 1
