@@ -261,7 +261,7 @@ abstract class AbstractAssetMigrations extends AbstractMigrations
             WHERE a.process_process_state = :processState AND a.dtype = :type -- AND lg.ext_id = 718
         ';
         $sql .= $migrateConfig->isUgc()
-            ? ' AND i.image_type = "ugc"'
+            ? ''
             : ' AND i.image_type != "ugc"';
 
         $sql . ' LIMIT 1';
@@ -276,7 +276,7 @@ abstract class AbstractAssetMigrations extends AbstractMigrations
     private function totalCount(MigrateConfig $migrateConfig): int
     {
         $sql = 'SELECT count(a.id) FROM asset a LEFT JOIN image i ON i.id = a.id WHERE a.dtype = ?';
-        $sql .= $migrateConfig->isUgc() ? ' AND i.image_type = "ugc"' : ' AND i.image_type != "ugc"';
+        $sql .= $migrateConfig->isUgc() ? '' : ' AND i.image_type != "ugc"';
 
         return (int) $this->damLegacyConnection->fetchOne(
             $sql,
