@@ -84,8 +84,9 @@ spec:
             - name: healthcheck
               containerPort: 9999
           livenessProbe:
-            tcpSocket:
+            httpGet:
               port: application
+              path: /api/pub/v1/configuration
             initialDelaySeconds: 30
             periodSeconds: 5
             timeoutSeconds: 10
