@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use AnzuSystems\CoreDamBundle\Entity\Distribution;
-use AnzuSystems\CoreDamBundle\Entity\Embeds\JwTexts;
-use AnzuSystems\CoreDamBundle\Repository\JwDistributionRepository;
 use AnzuSystems\SerializerBundle\Attributes\Serialize;
 use App\Entity\Embeds\ArtemisAudioTexts;
 use App\Repository\ArtemisAudioDistributionRepository;

@@ -10,7 +10,6 @@ use AnzuSystems\CommonBundle\Model\OpenApi\Parameter\OAParameterPath;
 use AnzuSystems\CommonBundle\Model\OpenApi\Request\OARequest;
 use AnzuSystems\CommonBundle\Model\OpenApi\Response\OAResponse;
 use AnzuSystems\CommonBundle\Model\OpenApi\Response\OAResponseValidation;
-use AnzuSystems\CommonBundle\Request\ParamConverter\ApiFilterParamConverter;
 use AnzuSystems\Contracts\Exception\AppReadOnlyModeException;
 use AnzuSystems\CoreDamBundle\App;
 use AnzuSystems\CoreDamBundle\Controller\Api\AbstractApiController;
@@ -20,12 +19,10 @@ use AnzuSystems\CoreDamBundle\Entity\RegionOfInterest;
 use AnzuSystems\CoreDamBundle\Model\Dto\RegionOfInterest\RegionOfInterestAdmDetailDto;
 use AnzuSystems\CoreDamBundle\Model\Dto\RegionOfInterest\RegionOfInterestAdmListDto;
 use AnzuSystems\CoreDamBundle\Repository\Decorator\RegionOfInterestRepositoryDecorator;
-use AnzuSystems\CoreDamBundle\Security\Permission\DamPermissions;
-use AnzuSystems\SerializerBundle\Request\ParamConverter\SerializerParamConverter;
+use AnzuSystems\SerializerBundle\Attributes\SerializeParam;
 use App\Security\Voter\UgcVoter;
 use Doctrine\ORM\Exception\ORMException;
 use OpenApi\Attributes as OA;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -46,7 +43,6 @@ final class RegionOfInterestController extends AbstractApiController
      * @throws ORMException
      */
     #[Route('/image/{imageFile}/roi', name: 'get_list', methods: [Request::METHOD_GET])]
-    #[ParamConverter('apiParams', converter: ApiFilterParamConverter::class)]
     #[OAParameterPath('image'), OAResponse([RegionOfInterestAdmListDto::class])]
     public function getList(ImageFile $imageFile, ApiParams $apiParams): JsonResponse
     {
@@ -78,14 +74,13 @@ final class RegionOfInterestController extends AbstractApiController
      * @throws AppReadOnlyModeException
      */
     #[Route(path: '/roi/{regionOfInterest}', name: 'update', methods: [Request::METHOD_PUT])]
-    #[ParamConverter('roiDto', class: RegionOfInterestAdmDetailDto::class, converter: SerializerParamConverter::class)]
     #[
         OAParameterPath('regionOfInterest'),
         OARequest(RegionOfInterestAdmDetailDto::class),
         OAResponse(RegionOfInterestAdmDetailDto::class),
         OAResponseValidation
     ]
-    public function update(RegionOfInterest $regionOfInterest, RegionOfInterestAdmDetailDto $roiDto): JsonResponse
+    public function update(RegionOfInterest $regionOfInterest, #[SerializeParam] RegionOfInterestAdmDetailDto $roiDto): JsonResponse
     {
         App::throwOnReadOnlyMode();
         $this->denyAccessUnlessGranted(UgcVoter::DAM_UGC_ACCESS, $regionOfInterest);

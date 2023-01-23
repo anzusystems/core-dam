@@ -8,7 +8,6 @@ return [
     Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle::class => ['all' => true],
     PetitPress\GpsMessengerBundle\GpsMessengerBundle::class => ['all' => true],
     Symfony\Bundle\MonologBundle\MonologBundle::class => ['all' => true],
-    Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle::class => ['all' => true],
     AnzuSystems\CoreDamBundle\AnzuSystemsCoreDamBundle::class => ['all' => true],
     AnzuSystems\CommonBundle\AnzuSystemsCommonBundle::class => ['all' => true],
     AnzuSystems\AuthBundle\AnzuSystemsAuthBundle::class => ['all' => true],

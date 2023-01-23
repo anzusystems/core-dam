@@ -13,14 +13,14 @@ use AnzuSystems\Contracts\Entity\Traits\TimeTrackingTrait;
 use AnzuSystems\CoreDamBundle\Entity\Traits\UserTrackingTrait;
 use AnzuSystems\SerializerBundle\Attributes\Serialize;
 use AnzuSystems\SerializerBundle\Handler\Handlers\EntityIdHandler;
-use App\Security\Permission\DamPermissions;
 use App\Repository\PermissionGroupRepository;
+use App\Security\Permission\DamPermissions;
+use App\Validator\Constraints as AppAssert;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
-use App\Validator\Constraints as AppAssert;
 
 #[ORM\Entity(repositoryClass: PermissionGroupRepository::class)]
 class PermissionGroup implements IdentifiableInterface, UserTrackingInterface, TimeTrackingInterface

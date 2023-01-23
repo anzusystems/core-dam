@@ -13,11 +13,10 @@ use AnzuSystems\CoreDamBundle\Entity\AssetLicence;
 use AnzuSystems\CoreDamBundle\Entity\ExtSystem;
 use AnzuSystems\CoreDamBundle\Repository\AssetLicenceRepository;
 use AnzuSystems\CoreDamBundle\Repository\ExtSystemRepository;
-use AnzuSystems\SerializerBundle\Request\ParamConverter\SerializerParamConverter;
+use AnzuSystems\SerializerBundle\Attributes\SerializeParam;
 use App\Domain\AssetLicence\AssetLicenceFacade;
 use App\Model\Domain\AssetLicence\UpsertAssertLicenceDto;
 use OpenApi\Attributes as OA;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -35,11 +34,10 @@ final class AssetLicenceController extends AbstractApiController
     /**
      * @throws ValidationException
      */
-    #[ParamConverter('upsertAssertLicenceDto', converter: SerializerParamConverter::class)]
     #[Route('licence-group', 'upsert_legacy', methods: [Request::METHOD_PUT])]
     #[Route('asset-licence', 'upsert', methods: [Request::METHOD_PUT])]
     #[OAResponse(AssetLicence::class), OAResponseValidation, OAResponseCreated]
-    public function upsertLicence(UpsertAssertLicenceDto $upsertAssertLicenceDto): JsonResponse
+    public function upsertLicence(#[SerializeParam] UpsertAssertLicenceDto $upsertAssertLicenceDto): JsonResponse
     {
         /** @var ExtSystem $extSystem */
         $extSystem = $this->extSystemRepository->findOneBySlug($upsertAssertLicenceDto->getExtSystemSlug());
