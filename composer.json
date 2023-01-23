@@ -8,7 +8,7 @@
         "ext-iconv": "*",
         "ext-redis": "^5.3",
         "anzusystems/auth-bundle": "^1.1",
-        "anzusystems/core-dam-bundle": "dev-update",
+        "anzusystems/core-dam-bundle": "dev-develop",
         "doctrine/doctrine-migrations-bundle": "^3.2",
         "doctrine/orm": "2.13.1",
         "league/flysystem-google-cloud-storage": "^3.0",
