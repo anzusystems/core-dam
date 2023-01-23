@@ -6,8 +6,7 @@ namespace App\Request\ValueResolver;
 
 use AnzuSystems\CoreDamBundle\Entity\ExtSystem;
 use AnzuSystems\CoreDamBundle\Repository\AssetLicenceRepository;
-use App\Model\AssetLicenceDecorator;
-use App\Model\Attribute\AssetLicenceByBlogIdParam;
+use App\Model\Attributes\AssetLicenceByBlogIdParam;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Exception\ORMException;
 use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
@@ -49,6 +48,6 @@ final readonly class AssetLicenceByBlogIdValueResolver implements ValueResolverI
             throw new NotFoundHttpException();
         }
 
-        return [new AssetLicenceDecorator($licence)];
+        return [$licence];
     }
 }

@@ -14,21 +14,20 @@ use AnzuSystems\Contracts\Exception\AppReadOnlyModeException;
 use AnzuSystems\CoreDamBundle\App;
 use AnzuSystems\CoreDamBundle\Controller\Api\AbstractApiController;
 use AnzuSystems\CoreDamBundle\Domain\Image\ImageStatusFacade;
+use AnzuSystems\CoreDamBundle\Entity\AssetLicence;
 use AnzuSystems\CoreDamBundle\Entity\Chunk;
 use AnzuSystems\CoreDamBundle\Entity\ImageFile;
+use AnzuSystems\CoreDamBundle\Model\Attributes\SerializeIterableParam;
 use AnzuSystems\CoreDamBundle\Model\Dto\Asset\AssetAdmFinishDto;
 use AnzuSystems\CoreDamBundle\Model\Dto\Chunk\ChunkAdmCreateDto;
 use AnzuSystems\CoreDamBundle\Model\Dto\Image\ImageFileAdmDetailDto;
-use AnzuSystems\CoreDamBundle\Request\ParamConverter\ChunkParamConverter;
+use AnzuSystems\SerializerBundle\Attributes\SerializeParam;
 use AnzuSystems\SerializerBundle\Exception\SerializerException;
-use AnzuSystems\SerializerBundle\Request\ParamConverter\SerializerParamConverter;
 use App\ApiFilter\ApiUgcLegacyParams;
 use App\Domain\AssetFile\ImageUgcLegacyFacade;
 use App\Domain\Chunk\ChunkUgcLegacyFacade;
 use App\Exception\DuplicateImageFileException;
-use App\Model\AssetLicenceDecorator;
-use App\Model\Attribute\AssetLicenceByBlogIdParam;
-use App\Model\Attribute\SerializeIterableParam;
+use App\Model\Attributes\AssetLicenceByBlogIdParam;
 use App\Model\Ugc\Legacy\ChunkCreatedDto;
 use App\Model\Ugc\Legacy\ImageCreateDto;
 use App\Model\Ugc\Legacy\ImageDetailDto;
@@ -38,7 +37,6 @@ use App\Repository\Decorator\ImageUgcLegacyRepositoryDecorator;
 use App\Security\Voter\UgcVoter;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\NonUniqueResultException;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -60,13 +58,11 @@ final class ImageController extends AbstractApiController
      */
     #[Route('/blog/{blogId}/image', name: 'list', methods: [Request::METHOD_GET])]
     #[Route('/blog/{blogId}/image/search', name: 'search', methods: [Request::METHOD_GET])]
-    #[ParamConverter('blogId', isOptional: true)]
     #[OAResponse([ImageListDto::class])]
     public function searchList(
-        #[AssetLicenceByBlogIdParam(name: 'blogId')] AssetLicenceDecorator $licenceDecorator,
+        #[AssetLicenceByBlogIdParam(name: 'blogId')] AssetLicence $licence,
         ApiUgcLegacyParams $apiUgcLegacyParams,
     ): JsonResponse {
-        $licence = $licenceDecorator->getLicence();
         $this->denyAccessUnlessGranted(UgcVoter::DAM_UGC_ACCESS, $licence);
 
         return $this->okResponse(
@@ -89,14 +85,12 @@ final class ImageController extends AbstractApiController
      * @throws NonUniqueResultException
      */
     #[Route('/blog/{blogId}/image', name: 'create', methods: [Request::METHOD_POST])]
-    #[ParamConverter('imageCreateDto', converter: SerializerParamConverter::class)]
     #[OAResponse(ImageDetailDto::class)]
     public function create(
-        ImageCreateDto $imageCreateDto,
-        #[AssetLicenceByBlogIdParam(name: 'blogId')] AssetLicenceDecorator $licenceDecorator,
+        #[SerializeParam] ImageCreateDto $imageCreateDto,
+        #[AssetLicenceByBlogIdParam(name: 'blogId')] AssetLicence $licence,
     ): JsonResponse {
         App::throwOnReadOnlyMode();
-        $licence = $licenceDecorator->getLicence();
         $this->denyAccessUnlessGranted(UgcVoter::DAM_UGC_ACCESS, $licence);
 
         try {
@@ -119,7 +113,6 @@ final class ImageController extends AbstractApiController
      * @throws AppReadOnlyModeException
      */
     #[Route(path: '/image/{imageFile}/chunk', name: 'add_chunk', methods: [Request::METHOD_POST])]
-    #[ParamConverter('chunk', converter: ChunkParamConverter::class)]
     #[OAParameterPath('image'), OARequest(ChunkAdmCreateDto::class), OAResponse(Chunk::class), OAResponseValidation]
     public function addChunk(ImageFile $imageFile, ChunkAdmCreateDto $chunk): JsonResponse
     {
@@ -136,9 +129,8 @@ final class ImageController extends AbstractApiController
     /**
      * @throws AnzuException
      */
-    #[ParamConverter('imageUpdateDto', converter: SerializerParamConverter::class)]
     #[Route(path: '/image/{imageFile}', name: 'update', methods: [Request::METHOD_PUT])]
-    public function update(ImageFile $imageFile, ImageUpdateDto $imageUpdateDto): JsonResponse
+    public function update(ImageFile $imageFile, #[SerializeParam] ImageUpdateDto $imageUpdateDto): JsonResponse
     {
         App::throwOnReadOnlyMode();
         $this->denyAccessUnlessGranted(UgcVoter::DAM_UGC_ACCESS, $imageFile);
@@ -191,11 +183,11 @@ final class ImageController extends AbstractApiController
      *
      * @throws ValidationException
      * @throws AppReadOnlyModeException
+     * @throws SerializerException
      */
     #[Route(path: '/image/{imageFile}/uploaded', name: 'finish_upload', methods: [Request::METHOD_PATCH])]
-    #[ParamConverter('assetFinishDto', converter: SerializerParamConverter::class)]
     #[OAParameterPath('imageFile'), OARequest(AssetAdmFinishDto::class), OAResponse(ImageFileAdmDetailDto::class), OAResponseValidation]
-    public function finishUpload(AssetAdmFinishDto $assetFinishDto, ImageFile $imageFile): JsonResponse
+    public function finishUpload(#[SerializeParam] AssetAdmFinishDto $assetFinishDto, ImageFile $imageFile): JsonResponse
     {
         App::throwOnReadOnlyMode();
         $this->denyAccessUnlessGranted(UgcVoter::DAM_UGC_ACCESS, $imageFile);

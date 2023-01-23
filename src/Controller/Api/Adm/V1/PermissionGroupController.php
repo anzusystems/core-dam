@@ -11,11 +11,10 @@ use AnzuSystems\CommonBundle\Model\OpenApi\Response\OAResponse;
 use AnzuSystems\CommonBundle\Model\OpenApi\Response\OAResponseCreated;
 use AnzuSystems\CommonBundle\Model\OpenApi\Response\OAResponseDeleted;
 use AnzuSystems\CommonBundle\Model\OpenApi\Response\OAResponseValidation;
-use AnzuSystems\CommonBundle\Request\ParamConverter\ApiFilterParamConverter;
 use AnzuSystems\Contracts\Exception\AppReadOnlyModeException;
 use AnzuSystems\CoreDamBundle\Controller\Api\AbstractApiController;
 use AnzuSystems\CoreDamBundle\Model\OpenApi\Request\OARequest;
-use AnzuSystems\SerializerBundle\Request\ParamConverter\SerializerParamConverter;
+use AnzuSystems\SerializerBundle\Attributes\SerializeParam;
 use App\App;
 use App\Domain\PermissionGroup\PermissionGroupFacade;
 use App\Entity\PermissionGroup;
@@ -25,7 +24,6 @@ use App\Security\Permission\DamPermissions;
 use App\Security\Permission\UserPermissionResolver;
 use Doctrine\ORM\Exception\ORMException;
 use OpenApi\Attributes as OA;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -69,7 +67,6 @@ final class PermissionGroupController extends AbstractApiController
      * @throws ORMException
      */
     #[Route('/permission-group', 'get_list', methods: [Request::METHOD_GET])]
-    #[ParamConverter('apiParams', converter: ApiFilterParamConverter::class)]
     #[OAResponse([PermissionGroup::class])]
     public function getList(ApiParams $apiParams): JsonResponse
     {
@@ -81,10 +78,9 @@ final class PermissionGroupController extends AbstractApiController
     }
 
     #[Route('/permission-group/preview', 'preview', methods: [Request::METHOD_POST])]
-    #[ParamConverter('permissionGroupColDto', converter: SerializerParamConverter::class)]
     #[OARequest(PermissionGroupCollectionDto::class)]
     #[OA\Response(response: Response::HTTP_OK, description: 'List of resolved permissions.')]
-    public function preview(PermissionGroupCollectionDto $permissionGroupColDto): JsonResponse
+    public function preview(#[SerializeParam] PermissionGroupCollectionDto $permissionGroupColDto): JsonResponse
     {
         return new JsonResponse(UserPermissionResolver::resolveForGroups($permissionGroupColDto->getPermissionGroups()));
     }
@@ -95,9 +91,8 @@ final class PermissionGroupController extends AbstractApiController
      * @throws ValidationException|AppReadOnlyModeException
      */
     #[Route('/permission-group', 'create', methods: [Request::METHOD_POST])]
-    #[ParamConverter('permissionGroup', converter: SerializerParamConverter::class)]
     #[OARequest(PermissionGroup::class), OAResponseCreated(PermissionGroup::class), OAResponseValidation]
-    public function create(PermissionGroup $permissionGroup): JsonResponse
+    public function create(#[SerializeParam] PermissionGroup $permissionGroup): JsonResponse
     {
         App::throwOnReadOnlyMode();
         $this->denyAccessUnlessGranted(DamPermissions::DAM_PERMISSION_GROUP_CREATE);
@@ -114,9 +109,8 @@ final class PermissionGroupController extends AbstractApiController
      * @throws ValidationException
      */
     #[Route('/permission-group/{permissionGroup}', 'update', ['permissionGroup' => '\d+'], methods: [Request::METHOD_PUT])]
-    #[ParamConverter('newPermissionGroup', converter: SerializerParamConverter::class)]
     #[OAParameterPath('permissionGroup'), OARequest(PermissionGroup::class), OAResponse(PermissionGroup::class), OAResponseValidation]
-    public function update(PermissionGroup $permissionGroup, PermissionGroup $newPermissionGroup): JsonResponse
+    public function update(PermissionGroup $permissionGroup, #[SerializeParam] PermissionGroup $newPermissionGroup): JsonResponse
     {
         App::throwOnReadOnlyMode();
         $this->denyAccessUnlessGranted(DamPermissions::DAM_PERMISSION_GROUP_UPDATE, $permissionGroup);

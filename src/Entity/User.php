@@ -75,18 +75,19 @@ class User extends DamUser implements
     #[ORM\Column(type: Types::JSON)]
     #[AppAssert\PermissionValid(requireAll: false)]
     #[Serialize(strategy: Serialize::KEYS_VALUES)]
-    private array $permissions;
+    protected array $permissions;
 
     #[ORM\ManyToMany(targetEntity: PermissionGroup::class, inversedBy: 'users', fetch: App::DOCTRINE_EXTRA_LAZY, indexBy: 'id')]
     #[ORM\JoinTable]
     #[Serialize(handler: EntityIdHandler::class, type: PermissionGroup::class)]
-    private Collection $permissionGroups;
+    protected Collection $permissionGroups;
 
     #[ORM\ManyToOne]
     private ?AssetLicence $selectedLicence;
 
     public function __construct()
     {
+        parent::__construct();
         $this->setId(null);
         $this->setSsoId(null);
         $this->setEmail('');

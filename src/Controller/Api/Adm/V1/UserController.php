@@ -10,12 +10,11 @@ use AnzuSystems\CommonBundle\Model\OpenApi\Parameter\OAParameterPath;
 use AnzuSystems\CommonBundle\Model\OpenApi\Response\OAResponse;
 use AnzuSystems\CommonBundle\Model\OpenApi\Response\OAResponseCreated;
 use AnzuSystems\CommonBundle\Model\OpenApi\Response\OAResponseValidation;
-use AnzuSystems\CommonBundle\Request\ParamConverter\ApiFilterParamConverter;
 use AnzuSystems\Contracts\Exception\AppReadOnlyModeException;
 use AnzuSystems\CoreDamBundle\Controller\Api\AbstractApiController;
 use AnzuSystems\CoreDamBundle\Model\OpenApi\Request\OARequest;
+use AnzuSystems\SerializerBundle\Attributes\SerializeParam;
 use AnzuSystems\SerializerBundle\Exception\SerializerException;
-use AnzuSystems\SerializerBundle\Request\ParamConverter\SerializerParamConverter;
 use App\App;
 use App\Domain\User\UserFacade;
 use App\Entity\User;
@@ -27,7 +26,6 @@ use App\Repository\UserRepository;
 use App\Security\Permission\DamPermissions;
 use Doctrine\ORM\Exception\ORMException;
 use OpenApi\Attributes as OA;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -55,9 +53,8 @@ final class UserController extends AbstractApiController
      * @throws ValidationException
      */
     #[Route('/current', 'update_current', methods: [Request::METHOD_PATCH])]
-    #[ParamConverter('updateDto', converter: SerializerParamConverter::class)]
     #[OARequest(UpdateCurrentUserDto::class), OAResponse(User::class), OAResponseValidation]
-    public function updateCurrent(UpdateCurrentUserDto $updateDto): JsonResponse
+    public function updateCurrent(#[SerializeParam] UpdateCurrentUserDto $updateDto): JsonResponse
     {
         $user = $this->userFacade->updateFromCurrentUserDto($this->getUser(), $updateDto);
 
@@ -82,7 +79,6 @@ final class UserController extends AbstractApiController
      * @throws ORMException
      */
     #[Route('', 'get_list', methods: [Request::METHOD_GET])]
-    #[ParamConverter('apiParams', converter: ApiFilterParamConverter::class)]
     #[OAResponse([User::class])]
     public function getList(ApiParams $apiParams): JsonResponse
     {
@@ -100,9 +96,8 @@ final class UserController extends AbstractApiController
      * @throws AppReadOnlyModeException
      */
     #[Route('', 'create', methods: [Request::METHOD_POST])]
-    #[ParamConverter('createUserDto', converter: SerializerParamConverter::class)]
     #[OARequest(CreateUserDto::class), OAResponseCreated(User::class), OAResponseValidation]
-    public function create(CreateUserDto $createUserDto): JsonResponse
+    public function create(#[SerializeParam] CreateUserDto $createUserDto): JsonResponse
     {
         App::throwOnReadOnlyMode();
         $this->denyAccessUnlessGranted(DamPermissions::DAM_USER_CREATE);
@@ -120,9 +115,8 @@ final class UserController extends AbstractApiController
      * @throws SerializerException
      */
     #[Route('/{user}', 'update', ['user' => '\d+'], methods: [Request::METHOD_PUT])]
-    #[ParamConverter('updateUserDto', converter: SerializerParamConverter::class)]
     #[OAParameterPath('user'), OARequest(UpdateUserDto::class), OAResponse(User::class), OAResponseValidation]
-    public function update(User $user, UpdateUserDto $updateUserDto): JsonResponse
+    public function update(User $user, #[SerializeParam] UpdateUserDto $updateUserDto): JsonResponse
     {
         App::throwOnReadOnlyMode();
         $this->denyAccessUnlessGranted(DamPermissions::DAM_USER_UPDATE, $user);

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Model\Attribute;
+namespace App\Model\Attributes;
 
 use Attribute;
 
