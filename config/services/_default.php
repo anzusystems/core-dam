@@ -6,14 +6,16 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 return static function (ContainerConfigurator $configurator): void {
     $configurator->parameters()
-        ->set('serializer_date_format', 'Y-m-d\\TH:i:s.u\\Z');
+        ->set('serializer_date_format', 'Y-m-d\\TH:i:s.u\\Z')
+        ->set('empty_string', '');
 
     $services = $configurator->services();
 
     $services
         ->defaults()
-            ->autowire(true)
-            ->autoconfigure(true)
+            ->autowire()
+            ->autoconfigure()
+            ->bind('$privateUgcCert', env('AUTH_UGC_JWT_PRIVATE_CERT')->default('empty_string')->base64())
     ;
 
     $services

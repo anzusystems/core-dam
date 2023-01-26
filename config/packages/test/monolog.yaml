@@ -1,0 +1,16 @@
+parameters:
+    # This is needed because we overload a base monolog definition without using this env.
+    # Container compilation would fail without using this env.
+    anzu_mongodb_app_log: '%env(string:MONGODB_DB)%'
+    anzu_mongodb_audit_log: '%env(string:MONGODB_DB)%'
+
+monolog:
+    handlers:
+        app:
+            type: 'null'
+            process_psr_3_messages: false
+        audit:
+            type: 'null'
+            process_psr_3_messages: false
+        syslog:
+            type: 'null'

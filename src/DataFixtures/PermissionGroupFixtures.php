@@ -8,6 +8,8 @@ use AnzuSystems\CommonBundle\DataFixtures\Fixtures\AbstractFixtures;
 use App\Domain\PermissionGroup\PermissionGroupManager;
 use App\Entity\PermissionGroup;
 use App\Security\Permission\DamPermissions;
+use App\Security\Permission\Grants;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Console\Helper\ProgressBar;
 
 /**
@@ -19,12 +21,18 @@ final class PermissionGroupFixtures extends AbstractFixtures
 
     public function __construct(
         private readonly PermissionGroupManager $permissionGroupManager,
+        private readonly UserFixtures $userFixtures,
     ) {
     }
 
     public static function getIndexKey(): string
     {
         return PermissionGroup::class;
+    }
+
+    public static function getDependencies(): array
+    {
+        return [UserFixtures::class];
     }
 
     public function load(ProgressBar $progressBar): void
@@ -41,11 +49,17 @@ final class PermissionGroupFixtures extends AbstractFixtures
      */
     private function getData(): iterable
     {
+        $users = new ArrayCollection([
+            $this->userFixtures->getOneFromRegistry(UserFixtures::USER_ONE_SSO_ID),
+            $this->userFixtures->getOneFromRegistry(UserFixtures::USER_TWO_SSO_ID),
+        ]);
+
         $permissionGroup = new PermissionGroup();
         $permissionGroup
             ->setTitle(self::BASIC_GROUP_TITLE)
             ->setDescription('Basic permission group for DAM access.')
-            ->setPermissions(DamPermissions::default())
+            ->setPermissions(DamPermissions::default(Grants::GRANT_ALLOW))
+            ->setUsers($users)
         ;
 
         yield $permissionGroup;

@@ -62,6 +62,7 @@ final class ImageController extends AbstractApiController
     public function searchList(
         #[AssetLicenceByBlogIdParam(name: 'blogId')] AssetLicence $licence,
         ApiUgcLegacyParams $apiUgcLegacyParams,
+        Request $request,
     ): JsonResponse {
         $this->denyAccessUnlessGranted(UgcVoter::DAM_UGC_ACCESS, $licence);
 

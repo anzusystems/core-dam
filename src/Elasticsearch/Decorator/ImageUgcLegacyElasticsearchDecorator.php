@@ -57,7 +57,7 @@ final readonly class ImageUgcLegacyElasticsearchDecorator
             ->setText($apiUgcLegacyParams->getText())
             ->setLicences([$licence])
             ->setStatus([AssetStatus::WithFile->toString()])
-            ->setOrder(['modifiedAt' => 'desc'])
+            ->setOrder(['modifiedAt' => 'desc', '_id' => 'desc'])
             ->setOffset($apiUgcLegacyParams->getOffset())
             ->setLimit($apiUgcLegacyParams->getLimit())
             ->setCreatedAtFrom($apiUgcLegacyParams->getCreatedAtFrom())

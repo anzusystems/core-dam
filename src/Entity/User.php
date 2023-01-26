@@ -40,7 +40,6 @@ class User extends DamUser implements
     public const ID_ANONYMOUS = 1;
     public const ID_CONSOLE = 2;
     public const ID_ADMIN = 3;
-    public const ID_BASIC_USER = 4;
 
     public const ROLE_UGC = 'ROLE_UGC';
 
