@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
+use Symfony\Component\Uid\Command\GenerateUuidCommand;
+
 return static function (ContainerConfigurator $configurator): void {
     $configurator->parameters()
         ->set('serializer_date_format', 'Y-m-d\\TH:i:s.u\\Z')
@@ -26,4 +28,6 @@ return static function (ContainerConfigurator $configurator): void {
             param('kernel.project_dir') . '/src/Kernel.php',
         ])
     ;
+
+    $services->set(GenerateUuidCommand::class);
 };

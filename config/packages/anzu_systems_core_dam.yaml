@@ -376,7 +376,7 @@ anzu_systems_core_dam:
         size_limit: '%env(byte_size:APP_CMS_DOCUMENT_MAX_SIZE)%'
         file_slots: ~
     blog:
-      id: 2
+      id: 4
       image:
         enabled: true
         title: ['customData:title']

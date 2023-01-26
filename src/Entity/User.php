@@ -54,13 +54,6 @@ class User extends DamUser implements
     protected ?string $ssoId = null;
 
     /**
-     * Unique Email of user.
-     */
-    #[ORM\Column(type: Types::STRING, length: 180)]
-    #[Serialize]
-    private string $email;
-
-    /**
      * Authorization token for system users. Required to access /api/sys/* endpoints.
      */
     #[ORM\Column(type: Types::STRING, nullable: true)]

@@ -16,8 +16,8 @@ final class UserFixtures extends AbstractFixtures
 {
     public const USER_ONE_SSO_ID = '10001040';
     public const USER_TWO_SSO_ID = '10001043';
-    public const ID_USER_ONE = 4;
-    public const ID_USER_TWO = 5;
+    public const ID_USER_CMS_ONE = 4;
+    public const ID_USER_CMS_UGC_TWO = 5;
 
     public function __construct(
         private readonly UserManager $userManager,
@@ -72,7 +72,7 @@ final class UserFixtures extends AbstractFixtures
             ->setAssetLicences(new ArrayCollection([$defaultCmsLicence]))
         ;
 
-        yield self::ID_USER_ONE => $user;
+        yield self::ID_USER_CMS_ONE => $user;
 
         $user = new CreateUserDto();
         $user
@@ -83,7 +83,7 @@ final class UserFixtures extends AbstractFixtures
             ->setAssetLicences(new ArrayCollection([$defaultCmsLicence, $defaultBlogLicence]))
         ;
 
-        yield self::ID_USER_TWO => $user;
+        yield self::ID_USER_CMS_UGC_TWO => $user;
     }
 
     private function afterPersistAction(User $user): void
