@@ -13,9 +13,10 @@ use AnzuSystems\CoreDamBundle\Model\Enum\AssetType;
 
 final class ArtemisVideoDistributionModule extends AbstractDistributionModule implements DistributionModuleInterface
 {
-    private const ARTICLE_WEB_URL = 'articleWebUrl';
-    private const ARTICLE_ADMIN_URL = 'articleAdminUrl';
-    private const MEDIA_ADMIN_URL = 'mediaAdminUrl';
+    public const ARTICLE_WEB_URL = 'articleWebUrl';
+    public const ARTICLE_ADMIN_URL = 'articleAdminUrl';
+    public const MEDIA_ADMIN_URL = 'mediaAdminUrl';
+    public const ARTICLE_ID = 'articleId';
 
     /**
      * @param CustomDistribution $distribution

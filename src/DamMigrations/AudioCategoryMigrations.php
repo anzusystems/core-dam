@@ -7,20 +7,82 @@ namespace App\DamMigrations;
 use AnzuSystems\CoreDamBundle\Model\Enum\AssetType;
 use App\App;
 use DateTimeImmutable;
+use Doctrine\DBAL\Exception;
 use Symfony\Component\Uid\Uuid;
 use App\Model\MigrateConfig;
+use Throwable;
 
 final class AudioCategoryMigrations extends AbstractMigrations
 {
     public function migrate(MigrateConfig $migrateConfig): void
     {
-        $categorySelectId = $this->getOrCreateCategorySelect();
+        $this->migrateAudioCategories();
+        $this->migrateVideoCategories();
+    }
 
-        foreach ($this->getCategories() as $category) {
-            $categoryId = $this->getOrCreateCategory($category);
-            $optionId = $this->getOrCreateOption($categorySelectId, $category);
-            $this->assignOptionToCategory($categoryId, $optionId);
+    /**
+     * @throws Exception
+     */
+    private function migrateAudioCategories(): void
+    {
+        $this->outputUtil->info('Migrate Audio categories');
+        $progressBar = $this->outputUtil->createProgressBar();
+        $progressBar->start();
+
+        try {
+            $this->defaultConnection->beginTransaction();
+
+            $categorySelectId = $this->getOrCreateCategorySelect(AssetType::Audio, 'artemis_podcast_cms');
+            foreach ($this->getCategories() as $category) {
+                $categoryId = $this->getOrCreateCategory($category, AssetType::Audio);
+                $optionId = $this->getOrCreateOption($categorySelectId, (string)$category['rubricId'], (string)$category['rubricTitle']);
+                $this->assignOptionToCategory($categoryId, $optionId);
+                $progressBar->advance();
+            }
+
+            $this->defaultConnection->commit();
+        } catch (Throwable) {
+            $this->defaultConnection->rollBack();
         }
+
+        $progressBar->finish();
+        $this->outputUtil->writeln('');
+    }
+
+    private function migrateVideoCategories(): void
+    {
+        $this->outputUtil->info('Migrate Video categories');
+        $progressBar = $this->outputUtil->createProgressBar();
+        $progressBar->start();
+
+        try {
+            $ytCmsMainSelectId = $this->getOrCreateCategorySelect(AssetType::Video, 'youtube_cms_main');
+            $jwCmsSelectId = $this->getOrCreateCategorySelect(AssetType::Video, 'jw_cms');
+            $artemisCmsSelectId = $this->getOrCreateCategorySelect(AssetType::Video, 'artemis_cms');
+
+            foreach ($this->getVideoCategories() as $videoCategory) {
+                $categoryId = $this->getOrCreateCategory($videoCategory, AssetType::Video);
+
+                if ($videoCategory['youtube_category_id']) {
+                    $optionId = $this->getOrCreateOption($ytCmsMainSelectId, (string)$videoCategory['youtube_category_id'], (string)$videoCategory['ytTitle']);
+                    $this->assignOptionToCategory($categoryId, $optionId);
+                }
+                if ($videoCategory['jw_video_category_id']) {
+                    $optionId = $this->getOrCreateOption($jwCmsSelectId, (string)$videoCategory['jw_video_category_id'], (string)$videoCategory['jvcTitle']);
+                    $this->assignOptionToCategory($categoryId, $optionId);
+                }
+                if ($videoCategory['artemis_rubric_id']) {
+                    $optionId = $this->getOrCreateOption($artemisCmsSelectId, (string)$videoCategory['artemis_rubric_id'], (string)$videoCategory['rubricTitle']);
+                    $this->assignOptionToCategory($categoryId, $optionId);
+                }
+                $progressBar->advance();
+            }
+        } catch (Throwable) {
+            $this->defaultConnection->rollBack();
+        }
+
+        $progressBar->finish();
+        $this->outputUtil->writeln('');
     }
 
     private function assignOptionToCategory(string $categoryId, string $optionId): void
@@ -44,13 +106,13 @@ final class AudioCategoryMigrations extends AbstractMigrations
         }
     }
 
-    public function getOrCreateOption(string $categorySelectId, array $row): string
+    public function getOrCreateOption(string $categorySelectId, string $value, string $title): string
     {
         $optionId = $this->defaultConnection->fetchOne(
             'SELECT id FROM distribution_category_option WHERE select_id = ? AND value = ?',
             [
                 $categorySelectId,
-                $row['rubricId']
+                $value
             ]
         );
 
@@ -65,24 +127,21 @@ final class AudioCategoryMigrations extends AbstractMigrations
                     'created_by_id' => App::getUserIdConsole(),
                     'modified_by_id' => App::getUserIdConsole(),
                     'select_id' => $categorySelectId,
-                    'name' => $row['rubricTitle'],
-                    'value' => $row['rubricId'],
+                    'name' => $title,
+                    'value' => $value,
                     'position' => 0,
                     'assignable' => 1
                 ]
             );
 
-            return (string) $id;
+            return (string)$id;
         }
 
         return $optionId;
     }
 
-    public function getOrCreateCategorySelect(): string
+    public function getOrCreateCategorySelect(AssetType $type, string $serviceSlug): string
     {
-        $type = AssetType::Audio->toString();
-        $serviceSlug = 'artemis_podcast_cms';
-
         $categorySelectId = $this->defaultConnection->fetchOne(
             '
             SELECT
@@ -92,7 +151,7 @@ final class AudioCategoryMigrations extends AbstractMigrations
                 service_slug = ? and type = ? and ext_system_id = ?',
             [
                 $serviceSlug,
-                $type,
+                $type->toString(),
                 self::CMS_EXT_SYSTEM_ID
             ]
         );
@@ -108,25 +167,26 @@ final class AudioCategoryMigrations extends AbstractMigrations
                     'created_by_id' => App::getUserIdConsole(),
                     'modified_by_id' => App::getUserIdConsole(),
                     'service_slug' => $serviceSlug,
-                    'type' => $type,
+                    'type' => $type->toString(),
                     'ext_system_id' => self::CMS_EXT_SYSTEM_ID
                 ]
             );
 
-            return (string) $id;
+            return (string)$id;
         }
 
         return (string)$categorySelectId;
     }
 
     public function getOrCreateCategory(
-        array $row
+        array $row,
+        AssetType $type
     ): string {
         $id = $this->defaultConnection->fetchOne(
             'SELECT id FROM distribution_category where name = ? AND type = ? AND ext_system_id = ?',
             [
                 $row['title'],
-                AssetType::Audio->toString(),
+                $type->toString(),
                 self::CMS_EXT_SYSTEM_ID
             ]
         );
@@ -142,12 +202,12 @@ final class AudioCategoryMigrations extends AbstractMigrations
                     'created_by_id' => $this->getUserIdBySsoId((int)$row['created_by_id']),
                     'modified_by_id' => $this->getUserIdBySsoId((int)$row['modified_by_id']),
                     'name' => $row['title'],
-                    'type' => AssetType::Audio->toString(),
+                    'type' => $type->toString(),
                     'ext_system_id' => self::CMS_EXT_SYSTEM_ID
                 ]
             );
 
-            return (string) $id;
+            return (string)$id;
         }
 
         return $id;
@@ -170,6 +230,35 @@ final class AudioCategoryMigrations extends AbstractMigrations
                 ar.section_id as sectionId
             FROM audio_category ac
             INNER JOIN artemis_rubric ar ON ar.id = ac.artemis_rubric_id
+        '
+        );
+    }
+
+    private function getVideoCategories(): array
+    {
+        return $this->damLegacyConnection->fetchAllAssociative(
+            '
+            SELECT 
+                vc.id, 
+                vc.title, 
+                vc.youtube_category_id, 
+                vc.jw_video_category_id, 
+                vc.artemis_rubric_id, 
+                vc.created_by_id, 
+                vc.modified_by_id, 
+                vc.created_at, 
+                vc.modified_at, 
+                ar.title as rubricTitle,
+                ar.distribution_id as rubricId,
+                ar.section_id as sectionId,
+                jvc.title as jvcTitle,
+                yc.distribution_id as ytDistributionId,
+                yc.title as ytTitle,
+                yc.assignable as ytAssignable
+            FROM video_category vc
+            INNER JOIN artemis_rubric ar ON ar.id = vc.artemis_rubric_id
+            INNER JOIN jw_video_category jvc ON jvc.id = vc.jw_video_category_id
+            INNER JOIN youtube_category yc ON yc.id = vc.youtube_category_id
         '
         );
     }

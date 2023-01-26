@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Command;
 
+use App\DamMigrations\AssetAudioFreeMigrations;
+use App\DamMigrations\AssetAudioPremiumMigrations;
+use App\DamMigrations\AssetVideoMigrations;
 use App\DamMigrations\AuthorMigrations;
 use App\DamMigrations\KeywordMigrations;
 use App\DamMigrations\LegacyDamPodcastMigrations;
@@ -37,6 +40,9 @@ final class MigrateCommand extends Command
         private readonly AudioCategoryMigrations $audioCategoryMigrations,
         private readonly AuthorMigrations $authorMigrations,
         private readonly KeywordMigrations $keywordMigrations,
+        private readonly AssetAudioPremiumMigrations $assetAudioPremiumMigrations,
+        private readonly AssetAudioFreeMigrations $assetAudioFreeMigrations,
+        private readonly AssetVideoMigrations $assetVideoMigrations,
     ) {
         parent::__construct();
     }
@@ -58,7 +64,7 @@ final class MigrateCommand extends Command
         $migrateConfig = new MigrateConfig(
             ugc: (bool) $input->getOption(self::UGC_OPT),
         );
-//
+
         $this->ugcLicenceMigrations->migrate($migrateConfig);
         $this->admUserMigrations->migrate($migrateConfig);
         $this->ugcUserMigrations->migrate($migrateConfig);
@@ -67,6 +73,9 @@ final class MigrateCommand extends Command
         $this->assetImageMigrations->migrate($migrateConfig);
         $this->legacyDamPodcastMigrations->migrate($migrateConfig);
         $this->audioCategoryMigrations->migrate($migrateConfig);
+        $this->assetAudioPremiumMigrations->migrate($migrateConfig);
+        $this->assetAudioFreeMigrations->migrate($migrateConfig);
+        $this->assetVideoMigrations->migrate($migrateConfig);
 
         return Command::SUCCESS;
     }

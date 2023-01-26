@@ -11,6 +11,7 @@ use AnzuSystems\AuthBundle\HttpClient\OAuth2HttpClient;
 use AnzuSystems\CoreDamBundle\Command\Traits\OutputUtilTrait;
 use App\Model\MigrateConfig;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Result;
 use RuntimeException;
 use Symfony\Contracts\Service\Attribute\Required;
@@ -31,6 +32,7 @@ abstract class AbstractMigrations
     protected readonly Connection $blogConnection;
     protected readonly OAuth2HttpClient $OAuth2HttpClient;
     protected array $userIdBySsoIdCache = [];
+    protected array $bulkCache = [];
 
     #[Required]
     public function setArtemisConnection(Connection $artemisConnection): void
@@ -123,7 +125,34 @@ abstract class AbstractMigrations
         return $this->userIdBySsoIdCache[$ssoId];
     }
 
-    protected function insertBulk(Connection $connection, string $table, array $data): ?Result
+    protected function prepareBulkInsert(string $table, array $data, array $duplicateKeyUpdate = ['id = new_row.id']): void
+    {
+        if (false === isset($this->bulkCache[$table])) {
+            $this->bulkCache[$table] = [
+                'duplicateUpdate' => $duplicateKeyUpdate,
+                'data' => []
+            ];
+        }
+
+        $this->bulkCache[$table]['data'][] = $data;
+    }
+
+    /**
+     * @throws Exception
+     */
+    protected function flush(): void
+    {
+        $this->defaultConnection->beginTransaction();
+
+        foreach ($this->bulkCache as $table => $values) {
+            $this->insertBulk($this->defaultConnection, $table, $values['data'], $values['duplicateUpdate']);
+        }
+
+        $this->bulkCache = [];
+        $this->defaultConnection->commit();
+    }
+
+    protected function insertBulk(Connection $connection, string $table, array $data, array $duplicateKeyUpdate): ?Result
     {
         if (empty($data)) {
             return null;
@@ -145,8 +174,14 @@ abstract class AbstractMigrations
             $i++;
         }
 
+        $sql = 'INSERT INTO %s (%s) VALUES %s AS new_row';
+        if (false === empty($duplicateKeyUpdate)) {
+            $sql .= ' ON DUPLICATE KEY UPDATE ' . implode(', ', $duplicateKeyUpdate);
+        }
+        $sql .= ';';
+
         $sql = sprintf(
-            'INSERT INTO %s (%s) VALUES %s AS new_row ON DUPLICATE KEY UPDATE id = new_row.id;',
+            $sql,
             $table,
             implode(', ', array_keys($data[0])),
             implode(', ', $rows)
@@ -159,5 +194,19 @@ abstract class AbstractMigrations
         }
 
         return $statement->executeQuery();
+    }
+
+    protected function getRunnableSql(string $sql, array $params): string
+    {
+        $runnableSql = $sql;
+        foreach ($params as $name => $value) {
+            if (is_string($value)) {
+                $value = "'".$value."'";
+            }
+
+            $runnableSql = str_replace($name, (string) $value, $runnableSql);
+        }
+
+        return $runnableSql;
     }
 }

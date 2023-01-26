@@ -47,7 +47,6 @@ final class ArtemisClient
      */
     public function createMedia(ArtemisMediaDto $mediaDto)
     {
-        dump($this->serializer->serialize($mediaDto));
         try {
             $response = $this->artemisApiClient->request(
                 Request::METHOD_POST,
@@ -59,17 +58,11 @@ final class ArtemisClient
 
             return $response->getContent();
         } catch (ServerException $exception) {
-            dump($response->getStatusCode());
-            dump($exception->getMessage());
 //            throw $this->artemisExceptionHelper->artemisEndPointFailed(
 //                $this->artemisMediaDtoFactory->serializeMediaDtoToJson($mediaDto),
 //                $exception
 //            );
         } catch (HttpExceptionInterface $exception) {
-
-            dump($response->getStatusCode());
-            dump($exception->getMessage());
-//            dump($exception->getResponse()->getContent(false));
 
 //            $artemisError = $this->artemisMediaDtoFactory->deserializeArtemisErrorDto($exception->getResponse()->getContent(false));
 //

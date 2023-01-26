@@ -74,8 +74,6 @@ final class TestCommand extends Command
                 ])
         );
 
-        dump($res);
-
 //        $res = $this->artemisRubricClient->getRubricsBySectionId(119);
 //        $mediaDto = new ArtemisMediaDto();
 //        $mediaDto

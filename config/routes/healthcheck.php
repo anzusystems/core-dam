@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Symfony\Component\Routing\Loader\Configurator;
 
-use AnzuSystems\CommonBundle\Controller\LogController;
 use Symfony\Component\HttpFoundation\Request;
 use  AnzuSystems\CommonBundle\Controller\HealthCheckController;
 
