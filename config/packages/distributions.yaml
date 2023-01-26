@@ -1,5 +1,10 @@
 anzu_systems_core_dam:
     distribution_services:
+        podcast_rss_main:
+            type: podcastRssDistribution
+            title: Podcast
+            module: AnzuSystems\CoreDamBundle\Distribution\Modules\RssDistributionModule
+            options: []
         youtube_cms_main:
             type: youtubeDistribution
             title: Youtube CMS

@@ -6,13 +6,10 @@ declare(strict_types=1);
 namespace App\DamMigrations;
 
 use AnzuSystems\CoreDamBundle\FileSystem\NameGenerator\NameGenerator;
+use App\Model\MigrateConfig;
 
 final class AssetImageMigrations extends AbstractAssetMigrations
 {
-    private array $imageFiles = [];
-    private array $rois = [];
-    private array $optimalResizes = [];
-
     public function __construct(
         private readonly NameGenerator $nameGenerator,
     ) {
@@ -20,21 +17,7 @@ final class AssetImageMigrations extends AbstractAssetMigrations
 
     public const ASSET_TYPE_DISC = 'imagefile';
 
-    protected function insertAssetTypeSpecific(): void
-    {
-        $this->insertBulk($this->defaultConnection, 'image_file', $this->imageFiles);
-        $this->insertBulk($this->defaultConnection, 'region_of_interest', $this->rois);
-        $this->insertBulk($this->defaultConnection, 'image_file_optimal_resize', $this->optimalResizes);
-    }
-
-    protected function clearAssetTypeSpecific(): void
-    {
-        $this->imageFiles = [];
-        $this->rois = [];
-        $this->optimalResizes = [];
-    }
-
-    protected function prepareAssetTypeSpecific(array $row): void
+    protected function prepareAssetTypeSpecific(array $row, ?string $assetId = null): void
     {
         $this->insertImageFile($row);
         $this->insertRegionIfInterest($row);
@@ -67,7 +50,7 @@ final class AssetImageMigrations extends AbstractAssetMigrations
 
     private function insertImageFile(array $row): void
     {
-        $this->imageFiles[] = [
+        $this->prepareBulkInsert('image_file', [
             'id' => $row['id'],
             'image_attributes_ratio_width' => $row['image_attributes_ratio_width'],
             'image_attributes_ratio_height' => $row['image_attributes_ratio_height'],
@@ -76,12 +59,12 @@ final class AssetImageMigrations extends AbstractAssetMigrations
             'image_attributes_rotation' => $row['image_attributes_rotation'],
             'image_attributes_most_dominant_color' => '#000000',
             'asset_id' => $row['id'],
-        ];
+        ]);
     }
 
     private function insertRegionIfInterest(array $row): void
     {
-        $this->rois[] =   [
+        $this->prepareBulkInsert('region_of_interest', [
             'id' => $row['id'],
             'image_id' => $row['id'],
             'point_x' => $row['roi_point_x'],
@@ -94,7 +77,7 @@ final class AssetImageMigrations extends AbstractAssetMigrations
             'modified_at' => $row['modified_at'],
             'created_by_id' => $this->getUserIdBySsoId($row['created_by_id']),
             'modified_by_id' => $this->getUserIdBySsoId($row['modified_by_id'])
-        ];
+        ]);
     }
 
     private function insertImageFileOptimalResize(
@@ -104,7 +87,7 @@ final class AssetImageMigrations extends AbstractAssetMigrations
         int $height,
         string $path,
     ): void {
-        $this->optimalResizes[] =  [
+        $this->prepareBulkInsert('image_file_optimal_resize', [
             'id' => uuid_create(),
             'image_id' => $imageId,
             'requested_size' => $requestedSize,
@@ -112,6 +95,32 @@ final class AssetImageMigrations extends AbstractAssetMigrations
             'height' => $height,
             'file_path' => $path,
             'original' => 1, // TODO check
+        ]);
+    }
+
+    protected function getSelectConditions(MigrateConfig $migrateConfig): array
+    {
+        if ($migrateConfig->isUgc()) {
+            return [
+                'i.image_type = "ugc"'
+            ];
+        }
+
+        return [
+            'i.image_type != "ugc"'
         ];
+    }
+
+    protected function getSlotName(): string
+    {
+       return self::SLOT_NAME;
+    }
+
+    protected function getCustomData(array $row): string
+    {
+        return json_encode(array_filter([
+            'description' => trim($row['texts_description']),
+            'author' => trim($row['custom_author'] ?? ''),
+        ]));
     }
 }

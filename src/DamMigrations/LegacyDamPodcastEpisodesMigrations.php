@@ -45,6 +45,28 @@ final class LegacyDamPodcastEpisodesMigrations extends AbstractMigrations
 
     public function migrate(MigrateConfig $migrateConfig): void
     {
-
+//        dd($this->getEpisodes()[0]);
     }
+//
+//    private function aa(): array
+//    {
+//        $sql = '
+//            SELECT * FROM
+//        ';
+//
+//        return $this->damLegacyConnection->fetchAllAssociative(
+//
+//        );
+//    }
+//
+//    private function getEpisodes(): array
+//    {
+//        $sql = '
+//            SELECT * FROM artemis_media
+//        ';
+//
+//        return $this->artemisConnection->fetchAllAssociative(
+//            $sql
+//        );
+//    }
 }
