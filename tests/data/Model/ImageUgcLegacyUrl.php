@@ -10,32 +10,32 @@ final readonly class ImageUgcLegacyUrl
 {
     public static function getCreatePath(int $licenceId = AssetLicenceFixtures::BLOG_EXT_ID): string
     {
-        return "/api/ugc/vlegacy/blog/{$licenceId}/image";
+        return "/api/ugc/vlegacy/blog/$licenceId/image";
     }
 
     public static function getCreateChunkPath(string $imageFileId): string
     {
-        return "/api/ugc/vlegacy/image/{$imageFileId}/chunk";
+        return "/api/ugc/vlegacy/image/$imageFileId/chunk";
     }
 
     public static function getFinishUploadPath(string $imageFileId): string
     {
-        return "/api/ugc/vlegacy/image/{$imageFileId}/uploaded";
+        return "/api/ugc/vlegacy/image/$imageFileId/uploaded";
     }
 
     public static function getImageRotatePath(string $imageFileId, int $rotate): string
     {
-        return "/api/ugc/vlegacy/image/{$imageFileId}/rotate/{$rotate}";
+        return "/api/ugc/vlegacy/image/$imageFileId/rotate/$rotate";
     }
 
     public static function getSingleImagePath(string $imageFileId): string
     {
-        return "/api/ugc/vlegacy/image/{$imageFileId}";
+        return "/api/ugc/vlegacy/image/$imageFileId";
     }
 
     public static function getUpdateImagePath(string $imageFileId): string
     {
-        return "/api/ugc/vlegacy/image/{$imageFileId}";
+        return "/api/ugc/vlegacy/image/$imageFileId";
     }
 
     public static function getUpdateBulkImagePath(): string
@@ -50,6 +50,6 @@ final readonly class ImageUgcLegacyUrl
 
     public static function getImageSearchListPath(int $licenceId = AssetLicenceFixtures::BLOG_EXT_ID): string
     {
-        return "/api/ugc/vlegacy/blog/{$licenceId}/image";
+        return "/api/ugc/vlegacy/blog/$licenceId/image";
     }
 }

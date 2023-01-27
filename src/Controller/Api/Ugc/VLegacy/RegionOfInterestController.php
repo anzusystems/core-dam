@@ -85,6 +85,7 @@ final class RegionOfInterestController extends AbstractApiController
         App::throwOnReadOnlyMode();
         $this->denyAccessUnlessGranted(UgcVoter::DAM_UGC_ACCESS, $regionOfInterest);
         $roiDto->setImage($regionOfInterest->getImage());
+        $roiDto->setTitle($regionOfInterest->getTitle()); // Legacy UGC doesn't send title
 
         return $this->okResponse(
             RegionOfInterestAdmDetailDto::getInstance(

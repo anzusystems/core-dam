@@ -15,6 +15,7 @@ use App\Tests\Controller\Api\AbstractApiControllerTest;
 use App\Tests\data\Model\ImageUgcLegacyUrl;
 use Exception;
 use League\Flysystem\Filesystem;
+use League\Flysystem\FilesystemException;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Response;
@@ -79,6 +80,9 @@ final class ImageControllerTest extends AbstractApiControllerTest
         $this->assertSame(ImageFixtures::IMAGE_2_ID, $id);
     }
 
+    /**
+     * @throws FilesystemException
+     */
     public function testUpload(): void
     {
         $client = $this->getClient(UserFixtures::ID_USER_CMS_UGC_TWO, true);
@@ -99,7 +103,7 @@ final class ImageControllerTest extends AbstractApiControllerTest
         {
             $this->assertFileInFilesystemExists($filesystem, $resize->getFilePath());
         }
-        $this->assertEquals(2, count($filesystem->listContents($originImagePath->getDir())->toArray()));
+        $this->assertCount(2, $filesystem->listContents($originImagePath->getDir())->toArray());
 
         // 2. Test to rotate uploaded file
         $rotate = 90;
@@ -118,7 +122,7 @@ final class ImageControllerTest extends AbstractApiControllerTest
         {
             $this->assertFileInFilesystemExists($filesystem, $resize->getFilePath());
         }
-        $this->assertEquals(2, count($filesystem->listContents($originImagePath->getDir())->toArray()));
+        $this->assertCount(2, $filesystem->listContents($originImagePath->getDir())->toArray());
     }
 
     public function testUpdateImage(): void
@@ -144,22 +148,22 @@ final class ImageControllerTest extends AbstractApiControllerTest
         $response = $client->patch(ImageUgcLegacyUrl::getUpdateBulkImagePath() , [
             [
                 'id' => ImageFixtures::IMAGE_2_ID,
-                'texts' => ['description' => "{$updatedDescription} 2"],
-                'author' => ['customAuthor' => "{$updatedAuthor} 2"],
+                'texts' => ['description' => "$updatedDescription 2"],
+                'author' => ['customAuthor' => "$updatedAuthor 2"],
             ],
             [
                 'id' => ImageFixtures::IMAGE_1_ID,
-                'texts' => ['description' => "{$updatedDescription} 1"],
-                'author' => ['customAuthor' => "{$updatedAuthor} 1"],
+                'texts' => ['description' => "$updatedDescription 1"],
+                'author' => ['customAuthor' => "$updatedAuthor 1"],
             ],
         ]);
         $json = $this->assertResponseAndGetJsonContent($response);
         $this->assertSame($json[0]['id'], ImageFixtures::IMAGE_2_ID);
-        $this->assertSame($json[0]['texts']['description'], "{$updatedDescription} 2");
-        $this->assertSame($json[0]['authors'][0]['customAuthor'], "{$updatedAuthor} 2");
+        $this->assertSame($json[0]['texts']['description'], "$updatedDescription 2");
+        $this->assertSame($json[0]['authors'][0]['customAuthor'], "$updatedAuthor 2");
         $this->assertSame($json[1]['id'], ImageFixtures::IMAGE_1_ID);
-        $this->assertSame($json[1]['texts']['description'], "{$updatedDescription} 1");
-        $this->assertSame($json[1]['authors'][0]['customAuthor'], "{$updatedAuthor} 1");
+        $this->assertSame($json[1]['texts']['description'], "$updatedDescription 1");
+        $this->assertSame($json[1]['authors'][0]['customAuthor'], "$updatedAuthor 1");
 
         $imageEntity = $this->entityManager->find(ImageFile::class, ImageFixtures::IMAGE_1_ID);
         $imageEntity->getAsset()->getAssetFlags()->setDescribed(false);
@@ -174,17 +178,17 @@ final class ImageControllerTest extends AbstractApiControllerTest
             ],
             [
                 'id' => ImageFixtures::IMAGE_1_ID,
-                'texts' => ['description' => "{$updatedDescription} 1-1"],
-                'author' => ['customAuthor' => "{$updatedAuthor} 1-1"],
+                'texts' => ['description' => "$updatedDescription 1-1"],
+                'author' => ['customAuthor' => "$updatedAuthor 1-1"],
             ],
         ]);
         $json = $this->assertResponseAndGetJsonContent($response);
         $this->assertSame($json[0]['id'], ImageFixtures::IMAGE_2_ID);
-        $this->assertSame($json[0]['texts']['description'], "{$updatedDescription} 2");
-        $this->assertSame($json[0]['authors'][0]['customAuthor'], "{$updatedAuthor} 2");
+        $this->assertSame($json[0]['texts']['description'], "$updatedDescription 2");
+        $this->assertSame($json[0]['authors'][0]['customAuthor'], "$updatedAuthor 2");
         $this->assertSame($json[1]['id'], ImageFixtures::IMAGE_1_ID);
-        $this->assertSame($json[1]['texts']['description'], "{$updatedDescription} 1-1");
-        $this->assertSame($json[1]['authors'][0]['customAuthor'], "{$updatedAuthor} 1-1");
+        $this->assertSame($json[1]['texts']['description'], "$updatedDescription 1-1");
+        $this->assertSame($json[1]['authors'][0]['customAuthor'], "$updatedAuthor 1-1");
     }
 
     private function uploadImage(ApiClient $apiClient, string $fileName): array
@@ -234,7 +238,7 @@ final class ImageControllerTest extends AbstractApiControllerTest
         ApiClient $apiClient,
         UploadedFile $file,
         string $imageFileId,
-    ): Response {
+    ): void {
         $response = $apiClient->postChunkFile(
             ImageUgcLegacyUrl::getCreateChunkPath($imageFileId),
             $file,
@@ -254,7 +258,6 @@ final class ImageControllerTest extends AbstractApiControllerTest
             )
         );
 
-        return $response;
     }
 
     private function finishUpload(
@@ -290,24 +293,9 @@ final class ImageControllerTest extends AbstractApiControllerTest
         return new UploadedFile($file->getRealPath(), $file->getFilename());
     }
 
-    private function assertListResponse(array $json, ?int $expectedItemsCount = null): void
-    {
-        $this->assertArrayHasKey('totalCount', $json);
-        $this->assertArrayHasKey('data', $json);
-        $this->assertIsArray($json['data']);
-        if (is_int($expectedItemsCount)) {
-            $this->assertCount($expectedItemsCount, $json['data']);
-        }
-    }
-
-    private function assertResponseAndGetJsonContent(Response $response, int $expectedStatusCode = Response::HTTP_OK): array
-    {
-        $this->assertSame($expectedStatusCode, $response->getStatusCode());
-        $this->assertJson($response->getContent());
-
-        return json_decode($response->getContent(), true);
-    }
-
+    /**
+     * @throws FilesystemException
+     */
     protected function assertFileInFilesystemExists(Filesystem $filesystem, string $filePath): void
     {
         $this->assertTrue(

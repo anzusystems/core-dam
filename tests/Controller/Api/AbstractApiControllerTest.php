@@ -9,6 +9,7 @@ use AnzuSystems\SerializerBundle\Serializer;
 use App\Tests\ApiClient;
 use App\Tests\Controller\AbstractControllerTest;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
+use Symfony\Component\HttpFoundation\Response;
 
 abstract class AbstractApiControllerTest extends AbstractControllerTest
 {
@@ -52,5 +53,23 @@ abstract class AbstractApiControllerTest extends AbstractControllerTest
     protected function getService(string $id): object
     {
         return static::getContainer()->get($id);
+    }
+
+    protected function assertListResponse(array $json, ?int $expectedItemsCount = null): void
+    {
+        $this->assertArrayHasKey('totalCount', $json);
+        $this->assertArrayHasKey('data', $json);
+        $this->assertIsArray($json['data']);
+        if (is_int($expectedItemsCount)) {
+            $this->assertCount($expectedItemsCount, $json['data']);
+        }
+    }
+
+    protected function assertResponseAndGetJsonContent(Response $response): array
+    {
+        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
+        $this->assertJson($response->getContent());
+
+        return json_decode($response->getContent(), true);
     }
 }
