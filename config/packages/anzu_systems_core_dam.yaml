@@ -162,6 +162,7 @@ anzu_systems_core_dam:
       asset_external_providers:
         unsplash_cms:
           title: Unsplash
+          import_author_id: 0185f3e8-7f5e-750e-9075-29cdd412b988
       image:
         enabled: true
         title: ['customData:title']
