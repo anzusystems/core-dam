@@ -11,6 +11,7 @@ use AnzuSystems\Contracts\Entity\Interfaces\UserTrackingInterface;
 use AnzuSystems\Contracts\Entity\Traits\IdentityTrait;
 use AnzuSystems\Contracts\Entity\Traits\TimeTrackingTrait;
 use AnzuSystems\CoreDamBundle\Entity\Traits\UserTrackingTrait;
+use AnzuSystems\CoreDamBundle\Validator\Constraints\UniqueEntity;
 use AnzuSystems\SerializerBundle\Attributes\Serialize;
 use AnzuSystems\SerializerBundle\Handler\Handlers\EntityIdHandler;
 use App\Repository\PermissionGroupRepository;
@@ -23,6 +24,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: PermissionGroupRepository::class)]
+#[UniqueEntity(fields: ['title'])]
 class PermissionGroup implements IdentifiableInterface, UserTrackingInterface, TimeTrackingInterface
 {
     use IdentityTrait;

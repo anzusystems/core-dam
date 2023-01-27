@@ -10,6 +10,7 @@ use AnzuSystems\CoreDamBundle\Domain\AbstractManager;
 use AnzuSystems\CoreDamBundle\Entity\AssetLicence;
 use AnzuSystems\CoreDamBundle\Entity\ExtSystem;
 use App\Entity\User;
+use App\Model\Domain\User\AbstractUpsertUserDto;
 use App\Model\Domain\User\CreateUserDto;
 use App\Model\Domain\User\UpdateCurrentUserDto;
 use App\Model\Domain\User\UpdateUserDto;
@@ -32,10 +33,11 @@ final class UserManager extends AbstractManager
         return $user;
     }
 
-    public function createFromDto(CreateUserDto $createUserDto, bool $flush = true): User
+    public function createFromDto(CreateUserDto $createUserDto, bool $flush = true, ?int $id = null): User
     {
         $user = new User();
         $user
+            ->setId($id)
             ->setEnabled($createUserDto->isEnabled())
             ->setFirstName($createUserDto->getFirstName())
             ->setLastName($createUserDto->getLastName())
@@ -48,6 +50,7 @@ final class UserManager extends AbstractManager
         if ($createUserDto->isSuperAdmin()) {
             $user->setRoles([AnzuUser::ROLE_ADMIN]);
         }
+        $user = $this->assignLicencesAndExtSystems($user, $createUserDto);
 
         return $this->create($user, $flush);
     }
@@ -62,9 +65,17 @@ final class UserManager extends AbstractManager
             ->setAllowedAssetExternalProviders($updateUserDto->getAllowedAssetExternalProviders())
             ->setAllowedDistributionServices($updateUserDto->getAllowedDistributionServices())
         ;
+        $user = $this->assignLicencesAndExtSystems($user, $updateUserDto);
+        $user = $this->toggleSuperAdminRole($user, $updateUserDto->isSuperAdmin());
+
+        return $this->updateExisting($user, $flush);
+    }
+
+    private function assignLicencesAndExtSystems(User $user, AbstractUpsertUserDto $userDto): User
+    {
         $this->colUpdate(
             oldCollection: $user->getAdminToExtSystems(),
-            newCollection: $updateUserDto->getAdminToExtSystems(),
+            newCollection: $userDto->getAdminToExtSystems(),
             addElementFn: function (Collection $oldCollection, ExtSystem $newExtSystem) use ($user) {
                 $newExtSystem->getAdminUsers()->add($user);
                 $oldCollection->add($newExtSystem);
@@ -76,7 +87,7 @@ final class UserManager extends AbstractManager
         );
         $this->colUpdate(
             oldCollection: $user->getAssetLicences(),
-            newCollection: $updateUserDto->getAssetLicences(),
+            newCollection: $userDto->getAssetLicences(),
             addElementFn: function (Collection $oldCollection, AssetLicence $newAssetLicence) use ($user) {
                 $newAssetLicence->getUsers()->add($user);
                 $oldCollection->add($newAssetLicence);
@@ -98,9 +109,8 @@ final class UserManager extends AbstractManager
                 }
             }
         );
-        $user = $this->toggleSuperAdminRole($user, $updateUserDto->isSuperAdmin());
 
-        return $this->updateExisting($user, $flush);
+        return $user;
     }
 
     public function updateFromCurrentUserDto(User $user, UpdateCurrentUserDto $currentUserDto, bool $flush = true): User

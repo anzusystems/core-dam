@@ -7,4 +7,5 @@ framework:
         enabled: false
     php_errors:
         log: '%env(int:PHP_ERROR_REPORTING)%'
-
+    uid:
+        default_uuid_version: 7

@@ -40,7 +40,6 @@ class User extends DamUser implements
     public const ID_ANONYMOUS = 1;
     public const ID_CONSOLE = 2;
     public const ID_ADMIN = 3;
-    public const ID_BASIC_USER = 4;
 
     public const ROLE_UGC = 'ROLE_UGC';
 
@@ -53,13 +52,6 @@ class User extends DamUser implements
     #[ORM\Column(type: Types::STRING, nullable: true)]
     #[Serialize]
     protected ?string $ssoId = null;
-
-    /**
-     * Unique Email of user.
-     */
-    #[ORM\Column(type: Types::STRING, length: 180)]
-    #[Serialize]
-    private string $email;
 
     /**
      * Authorization token for system users. Required to access /api/sys/* endpoints.

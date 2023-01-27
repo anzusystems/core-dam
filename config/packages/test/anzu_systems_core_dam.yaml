@@ -1,0 +1,6 @@
+anzu_systems_core_dam:
+  settings:
+    app_redis: DamRedis
+    cache_redis: CacheRedis
+    notifications:
+      enabled: false

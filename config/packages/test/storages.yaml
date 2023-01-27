@@ -1,0 +1,14 @@
+anzu_systems_core_dam:
+    storages:
+        blog.image:
+            adapter: 'local'
+            options:
+                directory: '%kernel.project_dir%/var/mnt/data/blog_image_test'
+        blog.crop:
+            adapter: 'local'
+            options:
+                directory: '%kernel.project_dir%/var/mnt/data/blog-crop-test'
+        blog.chunk:
+            adapter: 'local'
+            options:
+                directory: '%kernel.project_dir%/var/mnt/data/blog-chunk-test'

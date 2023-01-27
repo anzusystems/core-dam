@@ -20,6 +20,9 @@ final class PermissionGroupManager extends AbstractManager
     public function create(PermissionGroup $permissionGroup, bool $flush = true): PermissionGroup
     {
         $this->trackCreation($permissionGroup);
+        $permissionGroup->getUsers()->forAll(
+            fn (int $key, User $user) => $user->getPermissionGroups()->add($permissionGroup)
+        );
         $this->entityManager->persist($permissionGroup);
         $this->flush($flush);
 

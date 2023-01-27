@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Domain\Chunk;
 
 use AnzuSystems\CommonBundle\Exception\ValidationException;
+use AnzuSystems\CoreDamBundle\Domain\AssetFile\AssetFileCounter;
 use AnzuSystems\CoreDamBundle\Domain\AssetFile\FileProcessor\MetadataProcessor;
 use AnzuSystems\CoreDamBundle\Domain\Chunk\ChunkFactory;
 use AnzuSystems\CoreDamBundle\Domain\Chunk\ChunkFileManager;
@@ -13,6 +14,7 @@ use AnzuSystems\CoreDamBundle\Entity\AssetFile;
 use AnzuSystems\CoreDamBundle\Entity\Chunk;
 use AnzuSystems\CoreDamBundle\Model\Dto\Chunk\ChunkAdmCreateDto;
 use AnzuSystems\CoreDamBundle\Validator\EntityValidator;
+use Psr\Cache\InvalidArgumentException;
 use RuntimeException;
 use Throwable;
 
@@ -24,11 +26,13 @@ final readonly class ChunkUgcLegacyFacade
         private ChunkFactory $chunkFactory,
         private ChunkFileManager $chunkFileManager,
         private MetadataProcessor $metadataProcessor,
+        private AssetFileCounter $assetFileCounter,
     ) {
     }
 
     /**
      * @throws ValidationException
+     * @throws InvalidArgumentException
      */
     public function create(ChunkAdmCreateDto $createDto, AssetFile $assetFile): Chunk
     {
@@ -39,12 +43,12 @@ final readonly class ChunkUgcLegacyFacade
         $this->chunkManager->setNotifyTo($assetFile);
         $uploadedFile = $createDto->getFile();
 
+        $uploadedSize = (int) $createDto->getFile()->getSize();
+
         try {
             $this->chunkManager->beginTransaction();
             $this->chunkFileManager->saveChunk($chunk, $uploadedFile);
-            $assetFile->getAssetAttributes()->setUploadedSize(
-                $assetFile->getAssetAttributes()->getUploadedSize() + $createDto->getSize()
-            );
+            $this->assetFileCounter->incrUploadedSize($assetFile, $uploadedSize);
             $this->chunkManager->create($chunk);
 
             if ($chunk->isFirstChunk()) {
@@ -55,6 +59,7 @@ final readonly class ChunkUgcLegacyFacade
 
             return $chunk;
         } catch (Throwable $exception) {
+            $this->assetFileCounter->resetUploadedSize($assetFile);
             $this->chunkManager->rollback();
 
             throw new RuntimeException('chunk_create_failed', 0, $exception);
