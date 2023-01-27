@@ -8,10 +8,6 @@ security:
             entity:
                 class: App\Entity\User
                 property: id
-        app_user_provider_sso_id:
-            entity:
-                class: App\Entity\User
-                property: ssoId
     role_hierarchy:
         ROLE_ADMIN: [ROLE_USER, ROLE_SYS_API, ROLE_UGC]
         ROLE_USER: ~
@@ -41,7 +37,7 @@ security:
         ugc:
             pattern: ^/api/ugc/
             stateless: true
-            provider: app_user_provider_sso_id
+            provider: app_user_provider_id
             entry_point: App\Security\Authenticator\UgcAuthenticator
             custom_authenticators:
                 - App\Security\Authenticator\UgcAuthenticator
@@ -49,7 +45,7 @@ security:
         sys:
             pattern: ^/api/sys/
             stateless: true
-            provider: app_user_provider_sso_id
+            provider: app_user_provider_id
             custom_authenticators:
                 - AnzuSystems\AuthBundle\Security\Authentication\ApiTokenAuthenticator
 

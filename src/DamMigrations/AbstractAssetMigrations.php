@@ -115,8 +115,8 @@ abstract class AbstractAssetMigrations extends AbstractMigrations
             'custom_data' => $this->getCustomData($row),
             'created_at' => $row['created_at'],
             'modified_at' => $row['modified_at'],
-            'created_by_id' => $this->getUserIdBySsoId($row['created_by_id']),
-            'modified_by_id' => $this->getUserIdBySsoId($row['modified_by_id'])
+            'created_by_id' => $row['created_by_id'],
+            'modified_by_id' => $row['modified_by_id'],
         ]);
     }
 
@@ -142,8 +142,8 @@ abstract class AbstractAssetMigrations extends AbstractMigrations
             ])),
             'created_at' => $row['created_at'],
             'modified_at' => $row['modified_at'],
-            'created_by_id' => $this->getUserIdBySsoId($row['created_by_id']),
-            'modified_by_id' => $this->getUserIdBySsoId($row['modified_by_id'])
+            'created_by_id' => $row['created_by_id'],
+            'modified_by_id' => $row['modified_by_id']
         ]);
     }
 
@@ -167,8 +167,8 @@ abstract class AbstractAssetMigrations extends AbstractMigrations
             'dtype' => static::ASSET_TYPE_DISC,
             'created_at' => $row['created_at'],
             'modified_at' => $row['modified_at'],
-            'created_by_id' => $this->getUserIdBySsoId($row['created_by_id']),
-            'modified_by_id' => $this->getUserIdBySsoId($row['modified_by_id'])
+            'created_by_id' => $row['created_by_id'],
+            'modified_by_id' => $row['modified_by_id'],
         ]);
     }
 
@@ -193,8 +193,8 @@ abstract class AbstractAssetMigrations extends AbstractMigrations
             'main_file_id' => $row['id'],
             'created_at' => $row['created_at'],
             'modified_at' => $row['modified_at'],
-            'created_by_id' => $this->getUserIdBySsoId($row['created_by_id']),
-            'modified_by_id' => $this->getUserIdBySsoId($row['modified_by_id'])
+            'created_by_id' => $row['created_by_id'],
+            'modified_by_id' => $row['modified_by_id'],
         ]);
     }
 
@@ -217,8 +217,8 @@ abstract class AbstractAssetMigrations extends AbstractMigrations
             'flags_is_main' => 1,
             'created_at' => $row['created_at'],
             'modified_at' => $row['modified_at'],
-            'created_by_id' => $this->getUserIdBySsoId($row['created_by_id']),
-            'modified_by_id' => $this->getUserIdBySsoId($row['modified_by_id'])
+            'created_by_id' => $row['created_by_id'],
+            'modified_by_id' => $row['modified_by_id'],
         ]);
     }
 
@@ -403,9 +403,9 @@ abstract class AbstractAssetMigrations extends AbstractMigrations
     {
         return [
             'id' => (string) Uuid::v6(),
-            'created_by_id' => $this->getUserIdBySsoId($distributionRow['distributed_by_id']),
-            'modified_by_id' => $this->getUserIdBySsoId($distributionRow['distributed_by_id']),
-            'notify_to_id' => $this->getUserIdBySsoId($distributionRow['distributed_by_id']),
+            'created_by_id' => $distributionRow['distributed_by_id'],
+            'modified_by_id' => $distributionRow['distributed_by_id'],
+            'notify_to_id' => $distributionRow['distributed_by_id'],
             'created_at' => $videoRow['created_at'],
             'modified_at' => $videoRow['modified_at'],
             'publish_at' => null,

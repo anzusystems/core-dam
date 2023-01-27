@@ -75,8 +75,8 @@ final class AssetImageMigrations extends AbstractAssetMigrations
             'position' => 0,
             'created_at' => $row['created_at'],
             'modified_at' => $row['modified_at'],
-            'created_by_id' => $this->getUserIdBySsoId($row['created_by_id']),
-            'modified_by_id' => $this->getUserIdBySsoId($row['modified_by_id'])
+            'created_by_id' => $row['created_by_id'],
+            'modified_by_id' => $row['modified_by_id'],
         ]);
     }
 

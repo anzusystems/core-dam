@@ -24,6 +24,6 @@ final class UserRepository extends AbstractAnzuRepository implements OAuth2AuthU
 
     public function findOneBySsoUserId(string $ssoUserId): ?AnzuAuthUserInterface
     {
-        return $this->findOneBy(['ssoId' => $ssoUserId]);
+        return $this->find((int) $ssoUserId);
     }
 }

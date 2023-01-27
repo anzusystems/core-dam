@@ -26,7 +26,6 @@ use App\Validator\Constraints as AppAssert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_email', fields: ['email'])]
-#[ORM\UniqueConstraint(name: 'UNIQ_ssoId', fields: ['ssoId'])]
 class User extends DamUser implements
     AnzuAuthUserInterface,
     ApiTokenUserInterface,
@@ -37,21 +36,17 @@ class User extends DamUser implements
     use TimeTrackingTrait;
     use PersonNameTrait;
 
-    public const ID_ANONYMOUS = 1;
-    public const ID_CONSOLE = 2;
-    public const ID_ADMIN = 3;
+    public const ID_ANONYMOUS = 1_763_600;
+    public const ID_CONSOLE = 1_000_000;
+    public const ID_ADMIN = 10_001_039;
 
     public const ROLE_UGC = 'ROLE_UGC';
 
     #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: 'AUTO')]
+    #[ORM\GeneratedValue(strategy: 'NONE')]
     #[ORM\Column(type: Types::INTEGER)]
     #[Serialize]
     protected ?int $id = null;
-
-    #[ORM\Column(type: Types::STRING, nullable: true)]
-    #[Serialize]
-    protected ?string $ssoId = null;
 
     /**
      * Authorization token for system users. Required to access /api/sys/* endpoints.
@@ -81,7 +76,6 @@ class User extends DamUser implements
     {
         parent::__construct();
         $this->setId(null);
-        $this->setSsoId(null);
         $this->setEmail('');
         $this->setPermissions([]);
         $this->setApiToken(null);
@@ -92,18 +86,6 @@ class User extends DamUser implements
         $this->setAdminToExtSystems(new ArrayCollection());
         $this->setUserToExtSystems(new ArrayCollection());
         $this->setSelectedLicence(null);
-    }
-
-    public function getSsoId(): ?string
-    {
-        return $this->ssoId;
-    }
-
-    public function setSsoId(?string $ssoId): self
-    {
-        $this->ssoId = $ssoId;
-
-        return $this;
     }
 
     public function getEmail(): string

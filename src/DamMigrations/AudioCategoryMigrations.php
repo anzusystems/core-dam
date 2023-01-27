@@ -199,8 +199,8 @@ final class AudioCategoryMigrations extends AbstractMigrations
                     'id' => $id,
                     'created_at' => $row['created_at'],
                     'modified_at' => $row['modified_at'],
-                    'created_by_id' => $this->getUserIdBySsoId((int)$row['created_by_id']),
-                    'modified_by_id' => $this->getUserIdBySsoId((int)$row['modified_by_id']),
+                    'created_by_id' => $row['created_by_id'],
+                    'modified_by_id' => $row['modified_by_id'],
                     'name' => $row['title'],
                     'type' => $type->toString(),
                     'ext_system_id' => self::CMS_EXT_SYSTEM_ID

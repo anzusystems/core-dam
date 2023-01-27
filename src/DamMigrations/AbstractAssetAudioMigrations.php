@@ -52,8 +52,8 @@ abstract class AbstractAssetAudioMigrations extends AbstractAssetMigrations
                     'asset_id' => $assetId ?? $row['id'],
                     'created_at' => $row['created_at'],
                     'modified_at' => $row['modified_at'],
-                    'created_by_id' => $this->getUserIdBySsoId($row['created_by_id']),
-                    'modified_by_id' => $this->getUserIdBySsoId($row['modified_by_id']),
+                    'created_by_id' => $row['created_by_id'],
+                    'modified_by_id' => $row['modified_by_id'],
                     'position' => 0, // todo reorder position
                     'dates_publication_date' => $row['audio_dates_publish_at'],
                     'attributes_ext_id' => $rssDistrib['distribution_id'] ?? '',

@@ -21,7 +21,7 @@ final class UserControllerTest extends AbstractApiControllerTest
         $data = json_decode($response->getContent(), true);
         $this->assertArrayHasKey('email', $data);
         $this->assertArrayHasKey('superAdmin', $data);
-        $this->assertArrayHasKey('ssoId', $data);
+        $this->assertArrayHasKey('id', $data);
 
         $userFromDb = $this->getService(UserRepository::class)->find(App::getUserIdAdmin());
 
@@ -34,8 +34,8 @@ final class UserControllerTest extends AbstractApiControllerTest
             actual: $data['superAdmin'],
         );
         $this->assertSame(
-            expected: $userFromDb->getSsoId(),
-            actual: $data['ssoId'],
+            expected: $userFromDb->getId(),
+            actual: $data['id'],
         );
     }
 }

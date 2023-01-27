@@ -13,7 +13,6 @@ use App\Model\MigrateConfig;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Result;
-use RuntimeException;
 use Symfony\Contracts\Service\Attribute\Required;
 
 abstract class AbstractMigrations
@@ -31,7 +30,6 @@ abstract class AbstractMigrations
     protected readonly Connection $coreConnection;
     protected readonly Connection $blogConnection;
     protected readonly OAuth2HttpClient $OAuth2HttpClient;
-    protected array $userIdBySsoIdCache = [];
     protected array $bulkCache = [];
 
     #[Required]
@@ -97,32 +95,13 @@ abstract class AbstractMigrations
     protected function hasUser(int $userId): bool
     {
         $res = $this->defaultConnection->fetchOne(
-            'SELECT id FROM user WHERE sso_id = ?',
+            'SELECT id FROM user WHERE id = ?',
             [
                 $userId
             ]
         );
 
         return is_int($res);
-    }
-
-    protected function getUserIdBySsoId(int $ssoId): int
-    {
-        if (isset($this->userIdBySsoIdCache[$ssoId])) {
-            return $this->userIdBySsoIdCache[$ssoId];
-        }
-
-        $id = $this->defaultConnection->fetchOne(
-            'SELECT * FROM user where sso_id = ?', [$ssoId]
-        );
-
-        if (false === $id) {
-            throw new RuntimeException(sprintf('User ssoId (%s) missing', $ssoId));
-        }
-
-        $this->userIdBySsoIdCache[$ssoId] = (int) $id;
-
-        return $this->userIdBySsoIdCache[$ssoId];
     }
 
     protected function prepareBulkInsert(string $table, array $data, array $duplicateKeyUpdate = ['id = new_row.id']): void
