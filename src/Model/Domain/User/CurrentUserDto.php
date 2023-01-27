@@ -18,6 +18,7 @@ final class CurrentUserDto
 {
     protected string $resourceName = User::class;
 
+    #[Serialize(serializedName: 'id', handler: EntityIdHandler::class)]
     private User $user;
 
     public static function getInstance(User $user): self
@@ -50,12 +51,6 @@ final class CurrentUserDto
     public function getLastName(): string
     {
         return $this->user->getLastName();
-    }
-
-    #[Serialize]
-    public function getSsoId(): ?string
-    {
-        return $this->user->getSsoId();
     }
 
     #[Serialize]

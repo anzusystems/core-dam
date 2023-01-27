@@ -28,7 +28,7 @@ final class RegionOfInterestControllerTest extends AbstractApiControllerTest
 
     public function testList(): void
     {
-        $client = $this->getClient(UserFixtures::ID_USER_CMS_UGC_TWO, true);
+        $client = $this->getClient(UserFixtures::USER_TWO_SSO_ID, true);
         $response = $client->get(RegionOfInterestUgcLegacyUrl::getListPath(ImageFixtures::IMAGE_1_ID));
         $json = $this->assertResponseAndGetJsonContent($response);
         $this->assertListResponse($json, 1);
@@ -37,7 +37,7 @@ final class RegionOfInterestControllerTest extends AbstractApiControllerTest
 
     public function testGetOne(): void
     {
-        $client = $this->getClient(UserFixtures::ID_USER_CMS_UGC_TWO, true);
+        $client = $this->getClient(UserFixtures::USER_TWO_SSO_ID, true);
         $response = $client->get(RegionOfInterestUgcLegacyUrl::getOnePath($this->regionOfInterest->getId()));
         $json = $this->assertResponseAndGetJsonContent($response);
         $this->assertSame($this->regionOfInterest->getId(), $json['id']);
@@ -49,7 +49,7 @@ final class RegionOfInterestControllerTest extends AbstractApiControllerTest
 
     public function testUpdate(): void
     {
-        $client = $this->getClient(UserFixtures::ID_USER_CMS_UGC_TWO, true);
+        $client = $this->getClient(UserFixtures::USER_TWO_SSO_ID, true);
         $response = $client->put(RegionOfInterestUgcLegacyUrl::getUpdatePath($this->regionOfInterest->getId()), [
             'id' => $this->regionOfInterest->getId(),
             'pointX' => 1,

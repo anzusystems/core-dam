@@ -52,7 +52,7 @@ final class UgcUserMigrations extends AbstractMigrations
             $this->defaultConnection->executeQuery('
                 UPDATE `user` 
                 SET roles = JSON_ARRAY_APPEND(roles, "$", "ROLE_UGC") 
-                WHERE sso_id = ? AND JSON_CONTAINS(roles, \'"ROLE_ADMIN"\', "$") = 0 AND JSON_CONTAINS(roles, \'"ROLE_UGC"\', "$") = 0
+                WHERE id = ? AND JSON_CONTAINS(roles, \'"ROLE_ADMIN"\', "$") = 0 AND JSON_CONTAINS(roles, \'"ROLE_UGC"\', "$") = 0
             ', [$row['id']]);
 
             return;
@@ -61,7 +61,7 @@ final class UgcUserMigrations extends AbstractMigrations
         $this->defaultConnection->insert(
             'user',
             [
-                'sso_id' => $row['id'],
+                'id' => $row['id'],
                 'created_at' => $row['created_at'],
                 'modified_at' => $row['modified_at'],
                 'created_by_id' => User::ID_CONSOLE,
@@ -78,13 +78,10 @@ final class UgcUserMigrations extends AbstractMigrations
                 'selected_licence_id' => $licenceIds[0] ?? null,
             ]
         );
-
-        $this->userIdBySsoIdCache[(int) $row['id']] ??= (int) $this->defaultConnection->lastInsertId('user');
     }
 
-    private function insertLicences(int $ssoUserId, array $licenceIds): void
+    private function insertLicences(int $userId, array $licenceIds): void
     {
-        $userId = $this->getUserIdBySsoId($ssoUserId);
         foreach ($licenceIds as $licenceId) {
             $this->defaultConnection->executeQuery(
                 'INSERT INTO user_asset_licence (user_id, asset_licence_id) VALUES (?, ?) ON DUPLICATE KEY UPDATE user_id = user_id',

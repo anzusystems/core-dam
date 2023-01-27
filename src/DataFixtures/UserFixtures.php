@@ -14,10 +14,8 @@ use Symfony\Component\Console\Helper\ProgressBar;
 
 final class UserFixtures extends AbstractFixtures
 {
-    public const USER_ONE_SSO_ID = '10001040';
-    public const USER_TWO_SSO_ID = '10001043';
-    public const ID_USER_CMS_ONE = 4;
-    public const ID_USER_CMS_UGC_TWO = 5;
+    public const USER_ONE_SSO_ID = 10_001_040;
+    public const USER_TWO_SSO_ID = 10_001_043;
 
     public function __construct(
         private readonly UserManager $userManager,
@@ -43,10 +41,10 @@ final class UserFixtures extends AbstractFixtures
 
     public function load(ProgressBar $progressBar): void
     {
-        foreach ($progressBar->iterate($this->getData()) as $userId => $createUser) {
-            $createUser = $this->userManager->createFromDto($createUser, false, $userId);
+        foreach ($progressBar->iterate($this->getData()) as $createUser) {
+            $createUser = $this->userManager->createFromDto($createUser, false);
             $this->afterPersistAction($createUser);
-            $this->addToRegistry($createUser, $createUser->getSsoId());
+            $this->addToRegistry($createUser, $createUser->getId());
         }
         $this->userManager->flush();
     }
@@ -65,30 +63,30 @@ final class UserFixtures extends AbstractFixtures
 
         $user = new CreateUserDto();
         $user
+            ->setId(self::USER_ONE_SSO_ID)
             ->setFirstName('User 1.')
             ->setLastName('Anzu')
             ->setEmail('user1.anzu@smeonline.sk')
-            ->setSsoId(self::USER_ONE_SSO_ID)
             ->setAssetLicences(new ArrayCollection([$defaultCmsLicence]))
         ;
 
-        yield self::ID_USER_CMS_ONE => $user;
+        yield $user;
 
         $user = new CreateUserDto();
         $user
+            ->setId(self::USER_TWO_SSO_ID)
             ->setFirstName('User 2.')
             ->setLastName('Anzu')
             ->setEmail('user2.anzu@smeonline.sk')
-            ->setSsoId(self::USER_TWO_SSO_ID)
             ->setAssetLicences(new ArrayCollection([$defaultCmsLicence, $defaultBlogLicence]))
         ;
 
-        yield self::ID_USER_CMS_UGC_TWO => $user;
+        yield $user;
     }
 
     private function afterPersistAction(User $user): void
     {
-        switch ($user->getSsoId()) {
+        switch ($user->getId()) {
             case self::USER_ONE_SSO_ID:
                 break;
             case self::USER_TWO_SSO_ID:

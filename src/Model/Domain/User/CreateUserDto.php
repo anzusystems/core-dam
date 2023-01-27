@@ -11,21 +11,34 @@ use App\Validator\Constraints\UniqueEntityDto;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[UniqueEntityDto(entity: User::class, fields: ['email'])]
-#[UniqueEntityDto(entity: User::class, fields: ['ssoId'])]
+#[UniqueEntityDto(entity: User::class, fields: ['id'])]
 final class CreateUserDto extends AbstractUpsertUserDto
 {
+    #[Serialize]
+    #[Assert\NotBlank(message: ValidationException::ERROR_FIELD_EMPTY)]
+    private int $id;
+
     #[Serialize]
     #[Assert\Email(message: ValidationException::ERROR_FIELD_INVALID)]
     private string $email;
 
-    #[Serialize]
-    private string $ssoId;
-
     public function __construct()
     {
         parent::__construct();
+        $this->setId(0);
         $this->setEmail('');
-        $this->setSsoId('');
+    }
+
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    public function setId(int $id): self
+    {
+        $this->id = $id;
+
+        return $this;
     }
 
     public function getEmail(): string
@@ -36,18 +49,6 @@ final class CreateUserDto extends AbstractUpsertUserDto
     public function setEmail(string $email): self
     {
         $this->email = $email;
-
-        return $this;
-    }
-
-    public function getSsoId(): string
-    {
-        return $this->ssoId;
-    }
-
-    public function setSsoId(string $ssoId): self
-    {
-        $this->ssoId = $ssoId;
 
         return $this;
     }

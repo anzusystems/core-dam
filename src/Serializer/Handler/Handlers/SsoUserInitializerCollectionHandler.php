@@ -33,7 +33,7 @@ final class SsoUserInitializerCollectionHandler extends AbstractHandler
         }
 
         if ($value instanceof Collection) {
-            return $value->map(static fn (User $user): string => $user->getSsoId())->getValues();
+            return $value->map(static fn (User $user): int => (int) $user->getId())->getValues();
         }
 
         throw new SerializerException('Unsupported value for ' . self::class . '::' . __FUNCTION__);

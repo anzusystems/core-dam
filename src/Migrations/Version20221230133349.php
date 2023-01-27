@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Migrations;
 
+use App\App;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
@@ -13,6 +14,7 @@ final class Version20221230133349 extends AbstractMigration
     {
         $generateUuid = fn () => uuid_create();
         $blogCustomFormId = $generateUuid();
+        $userId = App::getUserIdConsole();
         $this->addSql("INSERT INTO custom_form (
                 id, 
                 created_by_id, 
@@ -24,8 +26,8 @@ final class Version20221230133349 extends AbstractMigration
                 asset_type
               ) VALUES (
                 '{$blogCustomFormId}', 
-                1, 
-                1, 
+                '{$userId}', 
+                '{$userId}', 
                 4, 
                 NOW(), 
                 NOW(), 
@@ -54,8 +56,8 @@ final class Version20221230133349 extends AbstractMigration
             ) VALUES (
                 '{$generateUuid()}', 
                 '{$blogCustomFormId}', 
-                1, 
-                1, 
+                '{$userId}', 
+                '{$userId}', 
                 'Description', 
                 'description', 
                 '[\"Description\", \"ImageDescription\"]', 
@@ -72,8 +74,8 @@ final class Version20221230133349 extends AbstractMigration
             ), (
                 '{$generateUuid()}', 
                 '{$blogCustomFormId}', 
-                1, 
-                1, 
+                '{$userId}', 
+                '{$userId}', 
                 'Author', 
                 'author', 
                 '[\"Author\"]', 

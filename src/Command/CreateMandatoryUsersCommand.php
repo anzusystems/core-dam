@@ -7,6 +7,7 @@ namespace App\Command;
 use AnzuSystems\CommonBundle\Domain\User\CurrentAnzuUserProvider;
 use AnzuSystems\Contracts\AnzuApp;
 use AnzuSystems\Contracts\Entity\AnzuUser;
+use App\App;
 use App\Domain\User\UserManager;
 use App\Entity\User;
 use Doctrine\ORM\Id\AssignedGenerator;
@@ -45,7 +46,7 @@ final class CreateMandatoryUsersCommand extends Command
             ->addOption(
                 name: self::ADMIN_USER_SSO_ID_ARG,
                 mode: InputArgument::OPTIONAL,
-                default: '673348',
+                default: App::getUserIdAdmin(),
             );
     }
 
@@ -72,13 +73,13 @@ final class CreateMandatoryUsersCommand extends Command
 
         if (null === $anonymousUser) {
             $output->writeln('<info>Anonymous user (' . $anonymousUserId . ') not found. Creating...</info>');
-            $email = $this->askForEmail($input, $output, 'dam_anonymous@anzusystems.dev');
+            $email = $this->askForEmail($input, $output, 'anzu.app.anonym@smeonline.sk');
 
             $anonymousUser = new User();
-            $anonymousUser->setId($anonymousUserId);
+            $anonymousUser->setId((int) $anonymousUserId);
             $anonymousUser->setEmail($email);
             $anonymousUser->setFirstName('Anonymous');
-            $anonymousUser->setLastName('DAM');
+            $anonymousUser->setLastName('Anzu');
             $anonymousUser->setEnabled(false);
 
             $this->userManager->getEntityManager()->persist($anonymousUser);
@@ -94,13 +95,13 @@ final class CreateMandatoryUsersCommand extends Command
 
         if (null === $consoleUser) {
             $output->writeln('<info>Console user (' . $consoleUserId . ') not found. Creating...</info>');
-            $email = $this->askForEmail($input, $output, 'dam_console@anzusystems.dev');
+            $email = $this->askForEmail($input, $output, 'anzu.app.console@smeonline.sk');
 
             $consoleUser = new User();
-            $consoleUser->setId($consoleUserId);
+            $consoleUser->setId((int) $consoleUserId);
             $consoleUser->setEmail($email);
             $consoleUser->setFirstName('Console');
-            $consoleUser->setLastName('DAM');
+            $consoleUser->setLastName('Anzu');
             $consoleUser->setEnabled(false);
 
             $this->userManager->create($consoleUser);
@@ -113,19 +114,18 @@ final class CreateMandatoryUsersCommand extends Command
 
         if (null === $adminUser) {
             $output->writeln('<info>Admin user (' . $adminUserId . ') not found. Creating...</info>');
-            $email = $this->askForEmail($input, $output, 'dam_admin@anzusystems.dev');
+            $email = $this->askForEmail($input, $output, 'admin.anzu@smeonline.sk');
 
             $ssoId = $input->getOption(self::ADMIN_USER_SSO_ID_ARG);
             $output->writeln('SSO ID for admin user is: ' . $ssoId);
 
             $adminUser = new User();
-            $adminUser->setId($adminUserId);
+            $adminUser->setId((int) $ssoId);
             $adminUser->setEmail($email);
             $adminUser->setFirstName('Admin');
-            $adminUser->setLastName('DAM');
+            $adminUser->setLastName('Anzu');
             $adminUser->setEnabled(true);
             $adminUser->setRoles([User::ROLE_ADMIN]);
-            $adminUser->setSsoId($ssoId);
 
             $this->userManager->create($adminUser);
         }

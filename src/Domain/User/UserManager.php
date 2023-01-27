@@ -33,16 +33,15 @@ final class UserManager extends AbstractManager
         return $user;
     }
 
-    public function createFromDto(CreateUserDto $createUserDto, bool $flush = true, ?int $id = null): User
+    public function createFromDto(CreateUserDto $createUserDto, bool $flush = true): User
     {
         $user = new User();
         $user
-            ->setId($id)
+            ->setId($createUserDto->getId())
             ->setEnabled($createUserDto->isEnabled())
             ->setFirstName($createUserDto->getFirstName())
             ->setLastName($createUserDto->getLastName())
             ->setEmail($createUserDto->getEmail())
-            ->setSsoId($createUserDto->getSsoId())
             ->setAdminToExtSystems($createUserDto->getAdminToExtSystems())
             ->setAllowedAssetExternalProviders($createUserDto->getAllowedAssetExternalProviders())
             ->setAllowedDistributionServices($createUserDto->getAllowedDistributionServices())
@@ -123,7 +122,7 @@ final class UserManager extends AbstractManager
     public function createFromSsoUserInfo(SsoUserDto $ssoUserDto, array $roles = [User::ROLE_UGC], bool $flush = false): User
     {
         $user = (new User())
-            ->setSsoId($ssoUserDto->getId())
+            ->setId((int) $ssoUserDto->getId())
             ->setEmail($ssoUserDto->getEmail())
             ->setRoles($roles)
         ;

@@ -34,7 +34,7 @@ final readonly class JwtUgcUtil
             ->identifiedBy(uuid_create())
             ->issuedAt(new DateTimeImmutable())
             ->expiresAt(new DateTimeImmutable('+1 year'))
-            ->relatedTo((string) $user->getSsoId())
+            ->relatedTo((string) $user->getId())
             ->withClaim('eml', $user->getEmail())
             ->withClaim('cnf', true) // confirmed user
         ;
