@@ -83,18 +83,22 @@ spec:
               containerPort: 8080
             - name: healthcheck
               containerPort: 9999
-          livenessProbe:
-            httpGet:
-              port: application
-              path: /api/pub/v1/configuration
-            initialDelaySeconds: 30
+          startupProbe:
+            exec:
+              command: ["/bin/bash", "-c", "/usr/local/bin/health application"]
+            initialDelaySeconds: 10
+            failureThreshold: 20
             periodSeconds: 5
             timeoutSeconds: 10
+          livenessProbe:
+            exec:
+              command: ["/bin/bash", "-c", "/usr/local/bin/health php_fpm"]
+            periodSeconds: 2
+            timeoutSeconds: 5
           readinessProbe:
             httpGet:
               port: healthcheck
               path: /status-nginx
-            initialDelaySeconds: 30
             periodSeconds: 5
         - name: container-stop-log
           image: busybox

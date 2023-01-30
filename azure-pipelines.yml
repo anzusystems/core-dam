@@ -1,0 +1,49 @@
+# Anzu-Core-Dam project Azure Pipelines Continuous Integration definition
+# Run tests on the project as parallel jobs:
+#   a) Doctrine validation and PHPUnit tests
+#   b) Security, ECS and PSALM Checks
+
+# Disable automatic pipeline trigger
+trigger: none
+
+variables:
+  # Common mysql connection configuration
+  MYSQL_DATABASE_NAME: 'core_dam'
+  MYSQL_DATABASE_PASSWORD: 'root'
+  # Common redis connection configuration
+  REDIS_HOST: 'redis'
+  REDIS_PORT: '6379'
+  # Common mongo connection configuration
+  MONGO_HOST: 'mongodb://mongo:27017'
+  # Application specific environment variables (see .env file on which variables are overwritten)
+  APP_ENV: 'test'
+  DB_CORE_DAM_URL: 'mysql://root:$(MYSQL_DATABASE_PASSWORD)@mysql:3306/$(MYSQL_DATABASE_NAME)?serverVersion=8.0'
+  PHP_MEMORY_LIMIT: '512M'
+  REDIS_DB: '11'
+  REDIS_CACHE_HOST: '$(REDIS_HOST)'
+  REDIS_CACHE_PORT: '$(REDIS_PORT)'
+  REDIS_CACHE_DB: '11'
+  ANZU_MONGODB_APP_LOG_URI: '$(MONGO_HOST)'
+  ANZU_MONGODB_AUDIT_LOG_URI: '$(MONGO_HOST)'
+  ELASTIC_HOSTS: '["http://elasticsearch:9200"]'
+
+# Checkout azure ci template repository
+resources:
+  repositories:
+    - repository: templates
+      type: git
+      name: DevOps/azure-ci-template
+
+extends:
+  template: composer-ci.yaml@templates
+  parameters:
+    containerDockerImageVersion: php82
+    mysqlDockerDatabaseName: $(MYSQL_DATABASE_NAME)
+    mysqlDockerRootPassword: $(MYSQL_DATABASE_PASSWORD)
+    testServiceElasticsearchEnabled: true
+    testServiceMongoEnabled: true
+    runDoctrineValidate: true
+    runPhpUnit: true
+    runSecurityCheck: true
+    runEcsCheck: true
+    runPsalmCheck: true
