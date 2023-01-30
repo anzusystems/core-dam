@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-
 namespace App\DamMigrations\Cache;
 
 final class KeywordCache extends AbstractCache

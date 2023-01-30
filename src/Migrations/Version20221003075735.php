@@ -23,7 +23,8 @@ final class Version20221003075735 extends AbstractMigration
             "INSERT INTO `ext_system` (id, `name`, `slug`, created_by_id, modified_by_id, created_at, modified_at) VALUES
             (1, 'CMS system', 'cms', '{$idConsole}', '{$idConsole}', NOW(), NOW()),
             (4, 'Blog system', 'blog', '{$idConsole}', '{$idConsole}', NOW(), NOW());
-        ");
+        "
+        );
     }
 
     public function down(Schema $schema): void

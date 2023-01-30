@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace App\Command;
 
+use App\DamMigrations\AdmUserMigrations;
 use App\DamMigrations\AssetAudioFreeMigrations;
 use App\DamMigrations\AssetAudioPremiumMigrations;
+use App\DamMigrations\AssetImageMigrations;
 use App\DamMigrations\AssetVideoMigrations;
+use App\DamMigrations\AudioCategoryMigrations;
 use App\DamMigrations\AuthorMigrations;
 use App\DamMigrations\KeywordMigrations;
 use App\DamMigrations\LegacyDamPodcastMigrations;
-use App\DamMigrations\AdmUserMigrations;
 use App\DamMigrations\UgcLicenceMigrations;
 use App\DamMigrations\UgcUserMigrations;
-use App\DamMigrations\AssetImageMigrations;
-use App\DamMigrations\AudioCategoryMigrations;
 use App\Model\MigrateConfig;
 use Exception;
 use Symfony\Component\Console\Attribute\AsCommand;

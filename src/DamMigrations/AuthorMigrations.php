@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-
 namespace App\DamMigrations;
 
 use AnzuSystems\CoreDamBundle\Command\Traits\OutputUtilTrait;
@@ -54,7 +53,7 @@ final class AuthorMigrations extends AbstractMigrations
             $this->defaultConnection->insert(
                 'author',
                 [
-                    'id' =>  Uuid::v6(),
+                    'id' => Uuid::v6(),
                     'ext_system_id' => self::CMS_EXT_SYSTEM_ID,
                     'created_by_id' => App::getUserIdConsole(),
                     'modified_by_id' => App::getUserIdConsole(),
@@ -63,7 +62,7 @@ final class AuthorMigrations extends AbstractMigrations
                     'type' => AuthorType::Internal->toString(),
                     'created_at' => App::getAppDate()->format(DateTimeImmutable::ATOM),
                     'modified_at' => App::getAppDate()->format(DateTimeImmutable::ATOM),
-                    'flags_reviewed' => 1
+                    'flags_reviewed' => 1,
                 ]
             );
         }

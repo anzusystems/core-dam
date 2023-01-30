@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-
 namespace App\Distribution\Modules;
 
 use AnzuSystems\CoreDamBundle\Distribution\AbstractDistributionModule;
@@ -25,11 +24,11 @@ final class ArtemisVideoDistributionModule extends AbstractDistributionModule im
     {
         // todo implement
         $distribution->setExtId('123');
-        $customDistributionData = [self::MEDIA_ADMIN_URL => 'https://url.sme.sk',];
+        $customDistributionData = [self::MEDIA_ADMIN_URL => 'https://url.sme.sk'];
 
         if ($distribution->getCustomData()['createArticle'] ?? false) {
-            $customDistributionData[self::ARTICLE_WEB_URL] =  'https://url.sme.sk';
-            $customDistributionData[self::ARTICLE_ADMIN_URL] =  'https://url.sme.sk';
+            $customDistributionData[self::ARTICLE_WEB_URL] = 'https://url.sme.sk';
+            $customDistributionData[self::ARTICLE_ADMIN_URL] = 'https://url.sme.sk';
         }
 
         $distribution->setDistributionData($customDistributionData);
@@ -37,13 +36,12 @@ final class ArtemisVideoDistributionModule extends AbstractDistributionModule im
 
     public function redistribute(Distribution $distribution): void
     {
-        // TODO: Implement redistribute() method.
     }
 
     public function supportsAssetType(): array
     {
         return [
-            AssetType::Video
+            AssetType::Video,
         ];
     }
 

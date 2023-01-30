@@ -22,6 +22,7 @@ final class ArtemisSectionDto
     public function setId(int $id): self
     {
         $this->id = $id;
+
         return $this;
     }
 
@@ -33,6 +34,7 @@ final class ArtemisSectionDto
     public function setTitle(string $title): self
     {
         $this->title = $title;
+
         return $this;
     }
 }

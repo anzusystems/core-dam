@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Validator\Constraints;
 
-use App\Security\Permission\Grants;
 use App\Security\Permission\DamPermissions;
+use App\Security\Permission\Grants;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 

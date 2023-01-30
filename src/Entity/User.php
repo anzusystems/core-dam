@@ -16,13 +16,13 @@ use AnzuSystems\CoreDamBundle\Entity\Traits\PersonNameTrait;
 use AnzuSystems\CoreDamBundle\Entity\Traits\UserTrackingTrait;
 use AnzuSystems\SerializerBundle\Attributes\Serialize;
 use AnzuSystems\SerializerBundle\Handler\Handlers\EntityIdHandler;
-use App\Security\Permission\UserPermissionResolver;
 use App\Repository\UserRepository;
+use App\Security\Permission\UserPermissionResolver;
+use App\Validator\Constraints as AppAssert;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use App\Validator\Constraints as AppAssert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_email', fields: ['email'])]
@@ -49,12 +49,6 @@ class User extends DamUser implements
     protected ?int $id = null;
 
     /**
-     * Authorization token for system users. Required to access /api/sys/* endpoints.
-     */
-    #[ORM\Column(type: Types::STRING, nullable: true)]
-    private ?string $apiToken;
-
-    /**
      * List of permissions which belongs to user.
      *
      * @var array<string, int>
@@ -68,6 +62,12 @@ class User extends DamUser implements
     #[ORM\JoinTable]
     #[Serialize(handler: EntityIdHandler::class, type: PermissionGroup::class)]
     protected Collection $permissionGroups;
+
+    /**
+     * Authorization token for system users. Required to access /api/sys/* endpoints.
+     */
+    #[ORM\Column(type: Types::STRING, nullable: true)]
+    private ?string $apiToken;
 
     #[ORM\ManyToOne]
     private ?AssetLicence $selectedLicence;

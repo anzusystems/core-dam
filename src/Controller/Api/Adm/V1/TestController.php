@@ -22,7 +22,7 @@ final class TestController extends AbstractApiController
         private readonly ImagePositionFacade $assetFilePositionFacade,
     ) {
     }
-    
+
     #[Route('', 'get_current', methods: [Request::METHOD_GET])]
     public function getCurrent(): JsonResponse
     {
@@ -34,19 +34,19 @@ final class TestController extends AbstractApiController
         $asset1 = $image11->getAsset();
         $asset2 = $image2->getAsset();
 
-//        $this->assetFilePositionFacade->setMainFile($asset1, $image3);
+        //        $this->assetFilePositionFacade->setMainFile($asset1, $image3);
 
-//        $this->assetFilePositionFacade->setToSlot($asset1, $image2, 'free');
-//        $this->assetFilePositionFacade->setToPosition($asset1, $image12, 'extra');
-//        $this->assetFilePositionFacade->setToPosition($asset2, $image11, 'extra');
+        //        $this->assetFilePositionFacade->setToSlot($asset1, $image2, 'free');
+        //        $this->assetFilePositionFacade->setToPosition($asset1, $image12, 'extra');
+        //        $this->assetFilePositionFacade->setToPosition($asset2, $image11, 'extra');
 
         return $this->okResponse([
             $asset1->getSlots()->map(
                 fn (AssetSlot $assetSlot): AssetSlotAdmListDto => AssetSlotAdmListDto::getInstance($assetSlot)
             )->toArray(),
-//            $asset2->getSlots()->map(
-//                fn (AssetSlot $assetSlot): AssetSlotAdmListDto => AssetSlotAdmListDto::getInstance($assetSlot)
-//            )->toArray()
+            //            $asset2->getSlots()->map(
+            //                fn (AssetSlot $assetSlot): AssetSlotAdmListDto => AssetSlotAdmListDto::getInstance($assetSlot)
+            //            )->toArray()
         ]);
     }
 }

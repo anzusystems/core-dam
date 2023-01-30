@@ -85,6 +85,7 @@ class ArtemisAudioTexts
     public function setAuthors(array $authors): self
     {
         $this->authors = $authors;
+
         return $this;
     }
 }

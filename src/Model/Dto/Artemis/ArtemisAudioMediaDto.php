@@ -40,6 +40,7 @@ class ArtemisAudioMediaDto extends ArtemisMediaDto
     public function setMediaServiceId(int $mediaServiceId): self
     {
         $this->mediaServiceId = $mediaServiceId;
+
         return $this;
     }
 
@@ -51,6 +52,7 @@ class ArtemisAudioMediaDto extends ArtemisMediaDto
     public function setDirectSourceUrl(string $directSourceUrl): self
     {
         $this->directSourceUrl = $directSourceUrl;
+
         return $this;
     }
 
@@ -62,6 +64,7 @@ class ArtemisAudioMediaDto extends ArtemisMediaDto
     public function setPremiumDirectSourceUrl(string $premiumDirectSourceUrl): self
     {
         $this->premiumDirectSourceUrl = $premiumDirectSourceUrl;
+
         return $this;
     }
 
@@ -73,6 +76,7 @@ class ArtemisAudioMediaDto extends ArtemisMediaDto
     public function setAnzuMediaId(string $anzuMediaId): self
     {
         $this->anzuMediaId = $anzuMediaId;
+
         return $this;
     }
 
@@ -84,6 +88,7 @@ class ArtemisAudioMediaDto extends ArtemisMediaDto
     public function setMediaChannel(ArtemisMediaChannel $mediaChannel): self
     {
         $this->mediaChannel = $mediaChannel;
+
         return $this;
     }
 }

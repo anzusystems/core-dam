@@ -33,6 +33,7 @@ class ArtemisAudioDistribution extends Distribution
     public function setTexts(ArtemisAudioTexts $texts): self
     {
         $this->texts = $texts;
+
         return $this;
     }
 }

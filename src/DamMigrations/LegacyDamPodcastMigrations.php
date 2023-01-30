@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-
 namespace App\DamMigrations;
 
 use AnzuSystems\CoreDamBundle\Model\Enum\PodcastImportMode;
@@ -88,10 +87,10 @@ final class LegacyDamPodcastMigrations extends AbstractMigrations
                 'attributes_rss_url' => (string) $row['rss_feed'],
                 'attributes_mode' => empty($row['rss_feed'])
                     ? PodcastImportMode::notImport->toString()
-                    : PodcastImportMode::import->toString()
+                    : PodcastImportMode::import->toString(),
             ],
             [
-                'id' => $id
+                'id' => $id,
             ]
         );
     }
@@ -100,12 +99,11 @@ final class LegacyDamPodcastMigrations extends AbstractMigrations
         #[ArrayShape(self::ARTEMIS_SHAPE)]
         array $row,
         int $licenceId
-    ): void
-    {
+    ): void {
         $this->defaultConnection->insert(
             'podcast',
             [
-                'id' =>  Uuid::v6(),
+                'id' => Uuid::v6(),
                 'texts_title' => $row['title'],
                 'created_by_id' => User::ID_CONSOLE,
                 'modified_by_id' => User::ID_CONSOLE,
@@ -124,12 +122,11 @@ final class LegacyDamPodcastMigrations extends AbstractMigrations
         #[ArrayShape(self::LEGACY_DAM_SHAPE)]
         array $row,
         int $licenceId,
-    ): void
-    {
+    ): void {
         $this->defaultConnection->insert(
             'podcast',
             [
-                'id' =>  Uuid::v6(),
+                'id' => Uuid::v6(),
                 'texts_title' => $row['title'],
                 'created_at' => $row['created_at'],
                 'modified_at' => $row['modified_at'],

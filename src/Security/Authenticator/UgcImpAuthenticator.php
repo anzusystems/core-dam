@@ -92,9 +92,8 @@ final class UgcImpAuthenticator extends AbstractUgcAuthenticator
             throw new AuthenticationException(sprintf('User (%d) is not active or is disabled!', (int) $user->getId()));
         }
 
-
         $grantForUgcImp = $this->originalUser->getResolvedPermissions()[DamPermissions::DAM_USER_UGC_IMPERSONATE] ?? null;
-        $hasPermission = $this->originalUser->hasRole(User::ROLE_ADMIN) || $grantForUgcImp === Grants::GRANT_ALLOW;
+        $hasPermission = $this->originalUser->hasRole(User::ROLE_ADMIN) || Grants::GRANT_ALLOW === $grantForUgcImp;
         if ($hasPermission && $this->originalUser->isEnabled()) {
             return true;
         }

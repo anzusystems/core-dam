@@ -8,12 +8,12 @@ use AnzuSystems\CoreDamBundle\Domain\CustomDistribution\CustomDistributionFacade
 use AnzuSystems\CoreDamBundle\Domain\Distribution\DistributionFacade;
 use AnzuSystems\CoreDamBundle\Entity\CustomDistribution;
 use AnzuSystems\CoreDamBundle\Repository\AudioFileRepository;
-use App\DamMigrations\LegacyDamPodcastMigrations;
 use App\DamMigrations\AdmUserMigrations;
-use App\DamMigrations\UgcLicenceMigrations;
-use App\DamMigrations\UgcUserMigrations;
 use App\DamMigrations\AssetImageMigrations;
 use App\DamMigrations\AudioCategoryMigrations;
+use App\DamMigrations\LegacyDamPodcastMigrations;
+use App\DamMigrations\UgcLicenceMigrations;
+use App\DamMigrations\UgcUserMigrations;
 use App\HttpClient\ArtemisClient;
 use App\Model\Dto\Artemis\ArtemisAudioMediaDto;
 use App\Model\Dto\Artemis\ArtemisImageDto;
@@ -58,77 +58,76 @@ final class TestCommand extends Command
             (new CustomDistribution())
                 ->setDistributionService('artemis_podcast_cms')
                 ->setCustomData([
-                    "title" => "783: Kids These Days",
-                    "description" => "Custom audio description",
-                    "keywords" => [
-                        "News",
-                        "Podcast",
-                        "Politics"
+                    'title' => '783: Kids These Days',
+                    'description' => 'Custom audio description',
+                    'keywords' => [
+                        'News',
+                        'Podcast',
+                        'Politics',
                     ],
-                    "authors" => [
-                        "Aarne Ormonde",
-                        "Larry Queen",
-                        "Malka Raisa"
+                    'authors' => [
+                        'Aarne Ormonde',
+                        'Larry Queen',
+                        'Malka Raisa',
                     ],
-                    "createArticle" => true
+                    'createArticle' => true,
                 ])
         );
 
-//        $res = $this->artemisRubricClient->getRubricsBySectionId(119);
-//        $mediaDto = new ArtemisMediaDto();
-//        $mediaDto
-//            ->setImage((
-//                new ArtemisImageDto)
-//                    ->setTitle('Title')
-//                    ->setUrl('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRspepjfyrVKhFNfHSjgVfgX_UP-w2vBXzqqg&usqp=CAU')
-//            )
-//            ->setTitle('Test media')
-//            ->setRubric(
-//                (new ArtemisMediaRubricDto())->setId(6978)
-//            )
-//            ->setAuthors([
-//                (new ArtemisMediaAuthorDto())
-//                    ->setFullName( 'Ondrej Podstupka')
-//            ])
-//            ->setTags([
-//                (new ArtemisMediaTagDto())
-//                    ->setTitle('novy tagissssss')
-//            ])
-//        ;
+        //        $res = $this->artemisRubricClient->getRubricsBySectionId(119);
+        //        $mediaDto = new ArtemisMediaDto();
+        //        $mediaDto
+        //            ->setImage((
+        //                new ArtemisImageDto)
+        //                    ->setTitle('Title')
+        //                    ->setUrl('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRspepjfyrVKhFNfHSjgVfgX_UP-w2vBXzqqg&usqp=CAU')
+        //            )
+        //            ->setTitle('Test media')
+        //            ->setRubric(
+        //                (new ArtemisMediaRubricDto())->setId(6978)
+        //            )
+        //            ->setAuthors([
+        //                (new ArtemisMediaAuthorDto())
+        //                    ->setFullName( 'Ondrej Podstupka')
+        //            ])
+        //            ->setTags([
+        //                (new ArtemisMediaTagDto())
+        //                    ->setTitle('novy tagissssss')
+        //            ])
+        //        ;
 
-//        $mediaDto = new ArtemisAudioMediaDto();
-//        $mediaDto
-//            ->setImage((
-//            new ArtemisImageDto)
-//                ->setTitle('Title')
-//                ->setUrl('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRspepjfyrVKhFNfHSjgVfgX_UP-w2vBXzqqg&usqp=CAU')
-//            )
-//            ->setTitle('Test media')
-//            ->setAnzuMediaId('123')
-//            ->setExternalId('123')
-//
-//            ->setDirectSourceUrl('https://anchor.fm/s/40c6e0cc/podcast/play/63101018/https%3A%2F%2Fd3ctxlq1ktw2nl.cloudfront.net%2Fstaging%2F2023-0-5%2F76665c8c-7765-6587-57ec-42627834a9c2.mp3')
-//            ->setPremiumDirectSourceUrl('')
-//            ->setCreateArticle(true)
-//            ->setMediaChannel(
-//                (new ArtemisMediaChannel())->setAnzuId('nehehehe')
-//            )
-//            ->setRubric(
-//                (new ArtemisMediaRubricDto())->setId(6978)
-//            )
-//            ->setAuthors([
-//                (new ArtemisMediaAuthorDto())
-//                    ->setFullName( 'Ondrej Podstupka')
-//            ])
-//            ->setTags([
-//                (new ArtemisMediaTagDto())
-//                    ->setTitle('novy tagissssss')
-//            ])
-//        ;
-//
-//        $resp = $this->artemisRubricClient->createMedia($mediaDto);
-//        dump($resp);
-
+        //        $mediaDto = new ArtemisAudioMediaDto();
+        //        $mediaDto
+        //            ->setImage((
+        //            new ArtemisImageDto)
+        //                ->setTitle('Title')
+        //                ->setUrl('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRspepjfyrVKhFNfHSjgVfgX_UP-w2vBXzqqg&usqp=CAU')
+        //            )
+        //            ->setTitle('Test media')
+        //            ->setAnzuMediaId('123')
+        //            ->setExternalId('123')
+        //
+        //            ->setDirectSourceUrl('https://anchor.fm/s/40c6e0cc/podcast/play/63101018/https%3A%2F%2Fd3ctxlq1ktw2nl.cloudfront.net%2Fstaging%2F2023-0-5%2F76665c8c-7765-6587-57ec-42627834a9c2.mp3')
+        //            ->setPremiumDirectSourceUrl('')
+        //            ->setCreateArticle(true)
+        //            ->setMediaChannel(
+        //                (new ArtemisMediaChannel())->setAnzuId('nehehehe')
+        //            )
+        //            ->setRubric(
+        //                (new ArtemisMediaRubricDto())->setId(6978)
+        //            )
+        //            ->setAuthors([
+        //                (new ArtemisMediaAuthorDto())
+        //                    ->setFullName( 'Ondrej Podstupka')
+        //            ])
+        //            ->setTags([
+        //                (new ArtemisMediaTagDto())
+        //                    ->setTitle('novy tagissssss')
+        //            ])
+        //        ;
+        //
+        //        $resp = $this->artemisRubricClient->createMedia($mediaDto);
+        //        dump($resp);
 
         return Command::SUCCESS;
     }

@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-
 namespace App\DamMigrations;
 
 use AnzuSystems\CoreDamBundle\Distribution\Modules\JwVideo\JwVideoDtoFactory;
@@ -18,13 +17,12 @@ use Symfony\Component\Uid\Uuid;
 
 final class AssetVideoMigrations extends AbstractAssetMigrations
 {
+    public const ASSET_TYPE_DISC = 'videofile';
+    protected const SLOT_NAME = 'default';
     private const JW_DISTRIBUTION_SERVICE = 'jw_cms';
     private const YT_DISTRIBUTION_MAIN_SERVICE = 'youtube_cms_main';
     private const YT_DISTRIBUTION_FICI_SERVICE = 'youtube_cms_fici';
     private const YT_DISTRIBUTION_ARTEMIS_SERVICE = 'artemis_cms';
-
-    public const ASSET_TYPE_DISC = 'videofile';
-    protected const SLOT_NAME = 'default';
 
     public function __construct(
         private readonly JwVideoDtoFactory $jwVideoDtoFactory,
@@ -96,6 +94,14 @@ final class AssetVideoMigrations extends AbstractAssetMigrations
         $this->insertArtemisDistribution($row, $keywords, $authors);
     }
 
+    protected function getCustomData(array $row): string
+    {
+        return json_encode(array_filter([
+            'description' => trim($row['texts_description']),
+            'title' => trim($row['texts_title']),
+        ]));
+    }
+
     private function insertJwVideoDistribution(array $row, array $keywords, array $authors): void
     {
         $sql = '
@@ -105,7 +111,10 @@ final class AssetVideoMigrations extends AbstractAssetMigrations
             WHERE video_id = :videoId and process_state = :processState
         ';
 
-        $res = $this->damLegacyConnection->fetchAssociative($sql, ['videoId' => $row['id'], 'processState' => 'distributed']);
+        $res = $this->damLegacyConnection->fetchAssociative($sql, [
+            'videoId' => $row['id'],
+            'processState' => 'distributed',
+        ]);
         if (false === $res) {
             return;
         }
@@ -113,10 +122,10 @@ final class AssetVideoMigrations extends AbstractAssetMigrations
         $data = $this->getBaseDistribution($row, $res);
         $data['dtype'] = 'jwdistribution';
         $data['distribution_service'] = self::JW_DISTRIBUTION_SERVICE;
-        $data['texts_title'] =  $row['texts_title'];
-        $data['texts_description'] =  $row['texts_description'];
+        $data['texts_title'] = $row['texts_title'];
+        $data['texts_description'] = $row['texts_description'];
         $data['texts_author'] = $authors[0] ?? '';
-        $data['texts_keywords'] =  json_encode($keywords);
+        $data['texts_keywords'] = json_encode($keywords);
         $data['distribution_data'] = json_encode([
             JwDistribution::THUMBNAIL_DATA => $this->jwVideoDtoFactory->createThumbnailUrl($res['distribution_id']),
         ]);
@@ -142,7 +151,7 @@ final class AssetVideoMigrations extends AbstractAssetMigrations
         $data = $this->getBaseDistribution($row, $res);
         $data['dtype'] = 'customdistribution';
         $data['distribution_service'] = self::YT_DISTRIBUTION_ARTEMIS_SERVICE;
-        $data['distribution_data'] =  json_encode([
+        $data['distribution_data'] = json_encode([
             ArtemisVideoDistributionModule::ARTICLE_WEB_URL => $res['media_meta_article_url'],
             ArtemisVideoDistributionModule::ARTICLE_ADMIN_URL => $res['media_meta_article_admin_url'],
             ArtemisVideoDistributionModule::MEDIA_ADMIN_URL => $res['media_meta_media_url'],
@@ -178,8 +187,8 @@ final class AssetVideoMigrations extends AbstractAssetMigrations
             YoutubeDistribution::THUMBNAIL_HEIGHT => $res['thumbnail_height'],
             YoutubeDistribution::THUMBNAIL_DATA => $res['thumbnail_url'],
         ]);
-        $data['texts_title'] =  $res['texts_title'];
-        $data['texts_description'] =  $res['texts_description'];
+        $data['texts_title'] = $res['texts_title'];
+        $data['texts_description'] = $res['texts_description'];
         $data['texts_authors'] = json_encode($authors);
         $data['texts_keywords'] = json_encode($keywords);
         $data['privacy'] = $res['privacy'];
@@ -202,7 +211,7 @@ final class AssetVideoMigrations extends AbstractAssetMigrations
         // todo 'preview_image_id'
         $gcd = Math::getGreatestCommonDivisor($row['video_attributes_width'], $row['video_attributes_height']);
 
-        $this->prepareBulkInsert('video_file',[
+        $this->prepareBulkInsert('video_file', [
             'id' => $row['id'],
             'asset_id' => $assetId ?? $row['id'],
             'attributes_ratio_width' => (int) ($row['video_attributes_width'] / $gcd),
@@ -215,13 +224,4 @@ final class AssetVideoMigrations extends AbstractAssetMigrations
             'attributes_bitrate' => 0, // todo
         ]);
     }
-
-    protected function getCustomData(array $row): string
-    {
-        return json_encode(array_filter([
-            'description' => trim($row['texts_description']),
-            'title' => trim($row['texts_title']),
-        ]));
-    }
-
 }
