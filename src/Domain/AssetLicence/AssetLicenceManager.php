@@ -7,6 +7,7 @@ namespace App\Domain\AssetLicence;
 use AnzuSystems\CoreDamBundle\Domain\AbstractManager;
 use AnzuSystems\CoreDamBundle\Domain\AssetLicence\AssetLicenceManager as BaseAssetLicenceManager;
 use AnzuSystems\CoreDamBundle\Entity\AssetLicence;
+use App\Entity\User;
 use App\Model\Domain\AssetLicence\UpsertAssertLicenceDto;
 
 final class AssetLicenceManager extends AbstractManager
@@ -53,6 +54,9 @@ final class AssetLicenceManager extends AbstractManager
             }
             if (false === $user->getAssetLicences()->containsKey((int) $licence->getId())) {
                 $user->getAssetLicences()->set((int) $licence->getId(), $licence);
+            }
+            if ($user->hasNotRole(User::ROLE_UGC)) {
+                $user->addRole(User::ROLE_UGC);
             }
         }
     }
