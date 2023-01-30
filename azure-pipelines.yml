@@ -38,6 +38,7 @@ extends:
   template: composer-ci.yaml@templates
   parameters:
     containerDockerImageVersion: php82
+    containerDockerImageVariant: cli-ci-node-vipsffmpeg-xdebug
     mysqlDockerDatabaseName: $(MYSQL_DATABASE_NAME)
     mysqlDockerRootPassword: $(MYSQL_DATABASE_PASSWORD)
     testServiceElasticsearchEnabled: true
