@@ -17,13 +17,12 @@ use App\Entity\User;
  */
 final class UserRepository extends AbstractAnzuRepository implements OAuth2AuthUserRepositoryInterface
 {
-    protected function getEntityClass(): string
-    {
-        return User::class;
-    }
-
     public function findOneBySsoUserId(string $ssoUserId): ?AnzuAuthUserInterface
     {
         return $this->find((int) $ssoUserId);
+    }
+    protected function getEntityClass(): string
+    {
+        return User::class;
     }
 }

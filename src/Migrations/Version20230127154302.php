@@ -29,10 +29,10 @@ final class Version20230127154302 extends AbstractMigration
                 created_at,
                 modified_at
             ) VALUES (
-                '$id',
-                '$extSystemId',
-                '$userId',      
-                '$userId',      
+                '{$id}',
+                '{$extSystemId}',
+                '{$userId}',      
+                '{$userId}',      
                 'Unsplash',      
                 '',      
                 'agency',      
@@ -46,6 +46,6 @@ final class Version20230127154302 extends AbstractMigration
     public function down(Schema $schema): void
     {
         $id = self::UNSPLASH_AUTHOR_ID;
-        $this->addSql("DELETE FROM author WHERE id = '$id' LIMIT 1");
+        $this->addSql("DELETE FROM author WHERE id = '{$id}' LIMIT 1");
     }
 }

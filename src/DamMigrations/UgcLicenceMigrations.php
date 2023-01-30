@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-
 namespace App\DamMigrations;
 
 use App\Entity\User;
@@ -44,7 +43,7 @@ final class UgcLicenceMigrations extends AbstractMigrations
         $res = $this->defaultConnection->fetchOne(
             'SELECT id FROM asset_licence WHERE id = ?',
             [
-                $licenceId
+                $licenceId,
             ]
         );
 
@@ -67,18 +66,18 @@ final class UgcLicenceMigrations extends AbstractMigrations
                 'ext_system_id' => $row['ext_system_id'],
                 'ext_id' => $row['ext_id'],
                 'name' => $this->getExtSystemName($row),
-                 'limited_files' => $row['limited'],
+                'limited_files' => $row['limited'],
                 'created_at' => $row['created_at'],
                 'modified_at' => $row['modified_at'],
                 'created_by_id' => User::ID_CONSOLE,
-                'modified_by_id' => User::ID_CONSOLE
+                'modified_by_id' => User::ID_CONSOLE,
             ]
         );
     }
 
     private function getExtSystemName(array $row): string
     {
-        return 'Blog system - '. $row['id'];
+        return 'Blog system - ' . $row['id'];
     }
 
     private function getGroups(): Result

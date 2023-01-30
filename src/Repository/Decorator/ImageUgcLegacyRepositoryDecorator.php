@@ -41,6 +41,5 @@ final readonly class ImageUgcLegacyRepositoryDecorator
                 $imageFiles->getValues()
             ))
         ;
-
     }
 }

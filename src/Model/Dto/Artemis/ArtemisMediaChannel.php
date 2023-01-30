@@ -19,6 +19,7 @@ final class ArtemisMediaChannel
     public function setAnzuId(string $anzuId): self
     {
         $this->anzuId = $anzuId;
+
         return $this;
     }
 }

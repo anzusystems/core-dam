@@ -97,6 +97,7 @@ final class ImageUgcLegacyFacade extends AssetFileFacade
                 $this->indexManager->index($updatedImage->getAsset());
             }
         }
+
         return $updatedImages;
     }
 

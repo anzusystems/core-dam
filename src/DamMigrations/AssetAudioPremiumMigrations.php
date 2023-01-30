@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-
 namespace App\DamMigrations;
 
 use App\Model\MigrateConfig;
@@ -16,7 +15,7 @@ final class AssetAudioPremiumMigrations extends AbstractAssetAudioMigrations
     protected function getSelectConditions(MigrateConfig $migrateConfig): array
     {
         return [
-            'au.audio_public_stream_is_public = true'
+            'au.audio_public_stream_is_public = true',
         ];
     }
 

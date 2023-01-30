@@ -58,18 +58,17 @@ final class ArtemisClient
 
             return $response->getContent();
         } catch (ServerException $exception) {
-//            throw $this->artemisExceptionHelper->artemisEndPointFailed(
-//                $this->artemisMediaDtoFactory->serializeMediaDtoToJson($mediaDto),
-//                $exception
-//            );
+            //            throw $this->artemisExceptionHelper->artemisEndPointFailed(
+            //                $this->artemisMediaDtoFactory->serializeMediaDtoToJson($mediaDto),
+            //                $exception
+            //            );
         } catch (HttpExceptionInterface $exception) {
-
-//            $artemisError = $this->artemisMediaDtoFactory->deserializeArtemisErrorDto($exception->getResponse()->getContent(false));
-//
-//            throw $this->artemisExceptionHelper->failedToDistributeMediaToArtemis(
-//                $artemisError->getTitle(),
-//                $exception
-//            );
+            //            $artemisError = $this->artemisMediaDtoFactory->deserializeArtemisErrorDto($exception->getResponse()->getContent(false));
+            //
+            //            throw $this->artemisExceptionHelper->failedToDistributeMediaToArtemis(
+            //                $artemisError->getTitle(),
+            //                $exception
+            //            );
         }
     }
 }

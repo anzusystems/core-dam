@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Domain\AssetLicence;
 
 use AnzuSystems\CoreDamBundle\Domain\AbstractManager;
+use AnzuSystems\CoreDamBundle\Domain\AssetLicence\AssetLicenceManager as BaseAssetLicenceManager;
 use AnzuSystems\CoreDamBundle\Entity\AssetLicence;
 use App\Model\Domain\AssetLicence\UpsertAssertLicenceDto;
-use AnzuSystems\CoreDamBundle\Domain\AssetLicence\AssetLicenceManager as BaseAssetLicenceManager;
 
 final class AssetLicenceManager extends AbstractManager
 {

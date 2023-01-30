@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-
 namespace App\DamMigrations;
 
 use AnzuSystems\AuthBundle\Exception\UnsuccessfulAccessTokenRequestException;
@@ -97,7 +96,7 @@ abstract class AbstractMigrations
         $res = $this->defaultConnection->fetchOne(
             'SELECT id FROM user WHERE id = ?',
             [
-                $userId
+                $userId,
             ]
         );
 
@@ -109,7 +108,7 @@ abstract class AbstractMigrations
         if (false === isset($this->bulkCache[$table])) {
             $this->bulkCache[$table] = [
                 'duplicateUpdate' => $duplicateKeyUpdate,
-                'data' => []
+                'data' => [],
             ];
         }
 
@@ -149,7 +148,7 @@ abstract class AbstractMigrations
                 $params[$key] = $value;
             }
 
-            $rows[] = '(' .implode(', ', $tokens) . ')';
+            $rows[] = '(' . implode(', ', $tokens) . ')';
             $i++;
         }
 
@@ -180,7 +179,7 @@ abstract class AbstractMigrations
         $runnableSql = $sql;
         foreach ($params as $name => $value) {
             if (is_string($value)) {
-                $value = "'".$value."'";
+                $value = "'" . $value . "'";
             }
 
             $runnableSql = str_replace($name, (string) $value, $runnableSql);

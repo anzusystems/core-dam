@@ -25,8 +25,8 @@ final class ArtemisAudioDistributionDto
 
     public static function createFromCustomData(array $array): self
     {
-        return (new self())
-            ;
+        return new self()
+        ;
     }
 
     public function getTitle(): string
@@ -37,6 +37,7 @@ final class ArtemisAudioDistributionDto
     public function setTitle(string $title): self
     {
         $this->title = $title;
+
         return $this;
     }
 
@@ -48,6 +49,7 @@ final class ArtemisAudioDistributionDto
     public function setAuthors(array $authors): self
     {
         $this->authors = $authors;
+
         return $this;
     }
 
@@ -59,6 +61,7 @@ final class ArtemisAudioDistributionDto
     public function setKeywords(array $keywords): self
     {
         $this->keywords = $keywords;
+
         return $this;
     }
 
@@ -70,6 +73,7 @@ final class ArtemisAudioDistributionDto
     public function setPublicUrlLink(string $publicUrlLink): self
     {
         $this->publicUrlLink = $publicUrlLink;
+
         return $this;
     }
 
@@ -81,6 +85,7 @@ final class ArtemisAudioDistributionDto
     public function setCreateArticle(bool $createArticle): self
     {
         $this->createArticle = $createArticle;
+
         return $this;
     }
 }

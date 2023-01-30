@@ -92,6 +92,7 @@ final class UserFixtures extends AbstractFixtures
             case self::USER_TWO_SSO_ID:
                 $user
                     ->setRoles([User::ROLE_UGC, User::ROLE_USER]);
+
                 break;
         }
     }

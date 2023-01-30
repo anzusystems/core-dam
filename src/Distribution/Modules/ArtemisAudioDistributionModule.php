@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-
 namespace App\Distribution\Modules;
 
 use AnzuSystems\CoreDamBundle\Distribution\AbstractDistributionModule;
@@ -42,18 +41,17 @@ final class ArtemisAudioDistributionModule extends AbstractDistributionModule im
             $distribution
         );
 
-//        $this->artemisRubricClient->createMedia($mediaDto);
+        //        $this->artemisRubricClient->createMedia($mediaDto);
     }
 
     public function redistribute(Distribution $distribution): void
     {
-        // TODO: Implement redistribute() method.
     }
 
     public function supportsAssetType(): array
     {
         return [
-            AssetType::Audio
+            AssetType::Audio,
         ];
     }
 

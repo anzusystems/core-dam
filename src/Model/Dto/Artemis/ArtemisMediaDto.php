@@ -61,6 +61,7 @@ class ArtemisMediaDto
     public function setExternalId(string $externalId): self
     {
         $this->externalId = $externalId;
+
         return $this;
     }
 
@@ -72,6 +73,7 @@ class ArtemisMediaDto
     public function setId(?int $id): self
     {
         $this->id = $id;
+
         return $this;
     }
 
@@ -83,6 +85,7 @@ class ArtemisMediaDto
     public function setCreateArticle(bool $createArticle): self
     {
         $this->createArticle = $createArticle;
+
         return $this;
     }
 
@@ -94,6 +97,7 @@ class ArtemisMediaDto
     public function setTitle(string $title): self
     {
         $this->title = $title;
+
         return $this;
     }
 
@@ -105,6 +109,7 @@ class ArtemisMediaDto
     public function setDescription(string $description): self
     {
         $this->description = $description;
+
         return $this;
     }
 
@@ -116,6 +121,7 @@ class ArtemisMediaDto
     public function setDuration(int $duration): self
     {
         $this->duration = $duration;
+
         return $this;
     }
 
@@ -127,6 +133,7 @@ class ArtemisMediaDto
     public function setType(ArtemisMediaType $type): self
     {
         $this->type = $type;
+
         return $this;
     }
 
@@ -138,6 +145,7 @@ class ArtemisMediaDto
     public function setYoutubeId(?string $youtubeId): self
     {
         $this->youtubeId = $youtubeId;
+
         return $this;
     }
 
@@ -149,6 +157,7 @@ class ArtemisMediaDto
     public function setJwId(?string $jwId): self
     {
         $this->jwId = $jwId;
+
         return $this;
     }
 
@@ -160,6 +169,7 @@ class ArtemisMediaDto
     public function setTags(array $tags): self
     {
         $this->tags = $tags;
+
         return $this;
     }
 
@@ -171,6 +181,7 @@ class ArtemisMediaDto
     public function setAuthors(array $authors): self
     {
         $this->authors = $authors;
+
         return $this;
     }
 
@@ -182,6 +193,7 @@ class ArtemisMediaDto
     public function setRubric(ArtemisMediaRubricDto $rubric): self
     {
         $this->rubric = $rubric;
+
         return $this;
     }
 
@@ -193,6 +205,7 @@ class ArtemisMediaDto
     public function setImage(?ArtemisImageDto $image): self
     {
         $this->image = $image;
+
         return $this;
     }
 }

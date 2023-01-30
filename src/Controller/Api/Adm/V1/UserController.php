@@ -39,7 +39,7 @@ final class UserController extends AbstractApiController
         private readonly UserRepository $userRepo,
     ) {
     }
-    
+
     #[Route('/current', 'get_current', methods: [Request::METHOD_GET])]
     #[OAResponse(User::class)]
     public function getCurrent(): JsonResponse

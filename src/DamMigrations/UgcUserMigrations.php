@@ -100,7 +100,8 @@ final class UgcUserMigrations extends AbstractMigrations
      */
     private function getLicenceIds(int $sooUserId): array
     {
-        return $this->damLegacyConnection->executeQuery('
+        return $this->damLegacyConnection->executeQuery(
+            '
             SELECT
                licence_group_id
             FROM licence_group_has_user

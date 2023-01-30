@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-
 namespace App\Distribution\Modules\Artemis;
 
 use AnzuSystems\CoreDamBundle\Distribution\AbstractDistributionDtoFactory;
@@ -21,7 +20,8 @@ final class ArtemisAudioDtoFactory extends AbstractDistributionDtoFactory
     {
         $mediaDto = new ArtemisAudioMediaDto();
         $mediaDto
-            ->setImage((
+            ->setImage(
+                (
                 new ArtemisImageDto()
             )
                 ->setTitle('Title')
@@ -41,11 +41,11 @@ final class ArtemisAudioDtoFactory extends AbstractDistributionDtoFactory
             )
             ->setAuthors([
                 (new ArtemisMediaAuthorDto())
-                    ->setFullName( 'Ondrej Podstupka')
+                    ->setFullName('Ondrej Podstupka'),
             ])
             ->setTags([
                 (new ArtemisMediaTagDto())
-                    ->setTitle('novy tagissssss')
+                    ->setTitle('novy tagissssss'),
             ])
         ;
 

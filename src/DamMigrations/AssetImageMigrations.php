@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-
 namespace App\DamMigrations;
 
 use AnzuSystems\CoreDamBundle\FileSystem\NameGenerator\NameGenerator;
@@ -10,12 +9,11 @@ use App\Model\MigrateConfig;
 
 final class AssetImageMigrations extends AbstractAssetMigrations
 {
+    public const ASSET_TYPE_DISC = 'imagefile';
     public function __construct(
         private readonly NameGenerator $nameGenerator,
     ) {
     }
-
-    public const ASSET_TYPE_DISC = 'imagefile';
 
     protected function prepareAssetTypeSpecific(array $row, ?string $assetId = null): void
     {
@@ -46,6 +44,32 @@ final class AssetImageMigrations extends AbstractAssetMigrations
             height: $row['image_attributes_height'],
             path: $this->nameGenerator->alternatePath($row['file_attributes_file_path'], 'original')->getRelativePath(),
         );
+    }
+
+    protected function getSelectConditions(MigrateConfig $migrateConfig): array
+    {
+        if ($migrateConfig->isUgc()) {
+            return [
+                'i.image_type = "ugc"',
+            ];
+        }
+
+        return [
+            'i.image_type != "ugc"',
+        ];
+    }
+
+    protected function getSlotName(): string
+    {
+        return self::SLOT_NAME;
+    }
+
+    protected function getCustomData(array $row): string
+    {
+        return json_encode(array_filter([
+            'description' => trim($row['texts_description']),
+            'author' => trim($row['custom_author'] ?? ''),
+        ]));
     }
 
     private function insertImageFile(array $row): void
@@ -96,31 +120,5 @@ final class AssetImageMigrations extends AbstractAssetMigrations
             'file_path' => $path,
             'original' => 1, // TODO check
         ]);
-    }
-
-    protected function getSelectConditions(MigrateConfig $migrateConfig): array
-    {
-        if ($migrateConfig->isUgc()) {
-            return [
-                'i.image_type = "ugc"'
-            ];
-        }
-
-        return [
-            'i.image_type != "ugc"'
-        ];
-    }
-
-    protected function getSlotName(): string
-    {
-       return self::SLOT_NAME;
-    }
-
-    protected function getCustomData(array $row): string
-    {
-        return json_encode(array_filter([
-            'description' => trim($row['texts_description']),
-            'author' => trim($row['custom_author'] ?? ''),
-        ]));
     }
 }

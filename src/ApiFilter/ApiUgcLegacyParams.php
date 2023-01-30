@@ -52,12 +52,12 @@ final class ApiUgcLegacyParams
         $this->text = (string) $request->query->get(self::TEXT, self::DEFAULTS[self::TEXT]);
         $this->offset = $request->query->getInt(self::OFFSET, self::DEFAULTS[self::OFFSET]);
         $this->limit = $request->query->getInt(self::LIMIT, self::DEFAULTS[self::LIMIT]);
-        if ($this->limit !== self::ALLOWED_LIMIT) {
+        if (self::ALLOWED_LIMIT !== $this->limit) {
             $this->limit = self::ALLOWED_LIMIT;
         }
         $filterInIds = $request->query->all(self::FILTER_IN)[self::ID] ?? '';
         if ($filterInIds) {
-            $this->ids = explode(',',$filterInIds);
+            $this->ids = explode(',', $filterInIds);
         }
 
         try {

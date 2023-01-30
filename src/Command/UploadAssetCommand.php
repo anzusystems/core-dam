@@ -67,7 +67,7 @@ final class UploadAssetCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $licenceId = (int)$input->getArgument(self::LICENCE_ID_ARG);
+        $licenceId = (int) $input->getArgument(self::LICENCE_ID_ARG);
         $licence = $this->assetLicenceRepository->find($licenceId);
 
         if (false === ($licence instanceof AssetLicence)) {
@@ -76,7 +76,7 @@ final class UploadAssetCommand extends Command
             return Command::FAILURE;
         }
 
-        $filePath = $this->nameGenerator->getPath((string)$input->getArgument(self::FILE_PATH_ARG));
+        $filePath = $this->nameGenerator->getPath((string) $input->getArgument(self::FILE_PATH_ARG));
 
         try {
             $file = new UploadedFile($filePath->getFullPath(), $filePath->getFileName());
@@ -102,8 +102,8 @@ final class UploadAssetCommand extends Command
 
         $assetFile = $this->imageFacade->createAssetFile(
             createDto: (new ImageAdmCreateDto())
-                ->setMimeType((string)$file->getMimeType())
-                ->setSize((int)$file->getSize())
+                ->setMimeType((string) $file->getMimeType())
+                ->setSize((int) $file->getSize())
                 ->setChecksum($checksum),
             assetLicence: $licence
         );
@@ -117,7 +117,7 @@ final class UploadAssetCommand extends Command
         );
 
         $chunk = $this->chunkFacade->create(
-            createDto: (new ChunkAdmCreateDto)
+            createDto: (new ChunkAdmCreateDto())
                 ->setOffset(0)
                 ->setSize($file->getSize())
                 ->setFile($file),

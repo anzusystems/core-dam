@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-
 namespace App\DamMigrations;
 
 use AnzuSystems\CoreDamBundle\Model\Enum\DistributionFailReason;
@@ -108,7 +107,7 @@ abstract class AbstractAssetMigrations extends AbstractMigrations
 
     protected function insertAssetMetadata(array $row): void
     {
-        $this->prepareBulkInsert('asset_metadata',[
+        $this->prepareBulkInsert('asset_metadata', [
             'id' => $row['id'],
             'keyword_suggestions' => '{}',
             'author_suggestions' => '{}',
@@ -122,7 +121,7 @@ abstract class AbstractAssetMigrations extends AbstractMigrations
 
     protected function insertAssetFileMetadata(array $row): void
     {
-        $this->prepareBulkInsert('asset_file_metadata',[
+        $this->prepareBulkInsert('asset_file_metadata', [
             'id' => $row['id'],
             'exif_data' => json_encode(array_filter([
                 'Headline' => trim($row['tags_headline']),
@@ -132,7 +131,8 @@ abstract class AbstractAssetMigrations extends AbstractMigrations
                 'Event' => trim($row['tags_tag_event']),
                 'PersonInImage' => trim($row['tags_person_shown']),
                 'Keywords' => implode(', ', array_filter(
-                    array_map('trim',
+                    array_map(
+                        'trim',
                         json_decode($row['tags_keywords'], true)
                     )
                 )),
@@ -143,13 +143,13 @@ abstract class AbstractAssetMigrations extends AbstractMigrations
             'created_at' => $row['created_at'],
             'modified_at' => $row['modified_at'],
             'created_by_id' => $row['created_by_id'],
-            'modified_by_id' => $row['modified_by_id']
+            'modified_by_id' => $row['modified_by_id'],
         ]);
     }
 
     protected function insertAssetFile(array $row): void
     {
-        $this->prepareBulkInsert('asset_file',[
+        $this->prepareBulkInsert('asset_file', [
             'id' => $row['id'],
             'metadata_id' => $row['id'],
             'licence_id' => $row['licence_id'],
@@ -172,40 +172,9 @@ abstract class AbstractAssetMigrations extends AbstractMigrations
         ]);
     }
 
-    private function insertAsset(array $row): void
-    {
-        $this->prepareBulkInsert('asset',[
-            'id' => $row['id'],
-            'metadata_id' => $row['id'],
-            'licence_id' => $row['licence_id'],
-            'distribution_category_id' => null, // TODO
-            'texts_display_title' => $this->getDisplayTitle($row), // TODO
-            'dates_uploaded_at' => $row['dates_uploaded_at'],
-            'dates_expire_at' => null, // TODO
-            'dates_publish_at' => $row['publish_at'] ?? null,
-            'asset_flags_described' => $row['asset_flags_is_described'],
-            'asset_flags_visible' => 1, // TODO
-            'asset_flags_generated_by_system' => 0, // TODO
-            'asset_flags_autocompleted_metadata' => 1, // TODO
-            'asset_flags_auto_delete_unprocessed' => 0, // TODO
-            'attributes_asset_type' => $this->getLegacyDamAssetType(),
-            'attributes_status' => 'with_file',
-            'main_file_id' => $row['id'],
-            'created_at' => $row['created_at'],
-            'modified_at' => $row['modified_at'],
-            'created_by_id' => $row['created_by_id'],
-            'modified_by_id' => $row['modified_by_id'],
-        ]);
-    }
-
-    private function getDisplayTitle(array $row): string
-    {
-        return $row['texts_title'] ?? $row['id'];
-    }
-
     protected function insertAssetSlot(array $row, ?string $assetId = null): void
     {
-        $this->prepareBulkInsert('asset_slot',[
+        $this->prepareBulkInsert('asset_slot', [
             'id' => $row['id'],
             'asset_id' => $assetId ?? $row['id'],
             'image_id' => 'imagefile' === static::ASSET_TYPE_DISC ? $row['id'] : null,
@@ -301,7 +270,7 @@ abstract class AbstractAssetMigrations extends AbstractMigrations
 
         $conditions = [
             'a.process_process_state = :processState',
-            'a.dtype = :type'
+            'a.dtype = :type',
         ];
         $conditions = array_merge($this->getSelectConditions($migrateConfig), $conditions);
         $sql .= ' WHERE ' . implode(' AND ', $conditions);
@@ -311,31 +280,6 @@ abstract class AbstractAssetMigrations extends AbstractMigrations
             'processState' => 'processed',
             'type' => $this->getLegacyDamAssetType(),
         ]);
-    }
-
-    private function totalCount(MigrateConfig $migrateConfig): int
-    {
-        $sql = '
-            SELECT count(a.id)
-            FROM asset a
-            LEFT JOIN image i ON i.id = a.id
-            LEFT JOIN video v ON v.id = a.id
-            LEFT JOIN audio au ON au.id = a.id
-         ';
-        $conditions = [
-            'a.process_process_state = :processState',
-            'a.dtype = :type'
-        ];
-        $conditions = array_merge($this->getSelectConditions($migrateConfig), $conditions);
-        $sql .= ' WHERE ' . implode(' AND ', $conditions);
-
-        return (int) $this->damLegacyConnection->fetchOne(
-            $sql,
-            [
-                'processState' => 'processed',
-                'type' => $this->getLegacyDamAssetType(),
-            ]
-        );
     }
 
     protected function insertKeywords(array $row, ?string $assetId = null): array
@@ -356,7 +300,7 @@ abstract class AbstractAssetMigrations extends AbstractMigrations
                 'asset_keyword',
                 [
                     'asset_id' => $assetId ?? $row['id'],
-                    'keyword_id' => $this->keywordCache->getKeyword($keyword['title'])
+                    'keyword_id' => $this->keywordCache->getKeyword($keyword['title']),
                 ],
                 [
                     'asset_keyword.asset_id = new_row.asset_id',
@@ -386,8 +330,8 @@ abstract class AbstractAssetMigrations extends AbstractMigrations
             $this->prepareBulkInsert(
                 'asset_author',
                 [
-                    'asset_id' => $assetId ??$row['id'],
-                    'author_id' => $this->authorCache->getAuthor($author['title'])
+                    'asset_id' => $assetId ?? $row['id'],
+                    'author_id' => $this->authorCache->getAuthor($author['title']),
                 ],
                 [
                     'asset_author.asset_id = new_row.asset_id',
@@ -418,7 +362,7 @@ abstract class AbstractAssetMigrations extends AbstractMigrations
             'distribution_data' => '[]',
             'custom_data' => '[]',
             'texts_title' => null,
-            'texts_description' =>null,
+            'texts_description' => null,
             'texts_author' => null,
             'texts_authors' => null,
             'texts_keywords' => null,
@@ -433,6 +377,67 @@ abstract class AbstractAssetMigrations extends AbstractMigrations
         ];
     }
 
+    protected function getSelectConditions(MigrateConfig $migrateConfig): array
+    {
+        return [];
+    }
+
+    private function insertAsset(array $row): void
+    {
+        $this->prepareBulkInsert('asset', [
+            'id' => $row['id'],
+            'metadata_id' => $row['id'],
+            'licence_id' => $row['licence_id'],
+            'distribution_category_id' => null, // TODO
+            'texts_display_title' => $this->getDisplayTitle($row), // TODO
+            'dates_uploaded_at' => $row['dates_uploaded_at'],
+            'dates_expire_at' => null, // TODO
+            'dates_publish_at' => $row['publish_at'] ?? null,
+            'asset_flags_described' => $row['asset_flags_is_described'],
+            'asset_flags_visible' => 1, // TODO
+            'asset_flags_generated_by_system' => 0, // TODO
+            'asset_flags_autocompleted_metadata' => 1, // TODO
+            'asset_flags_auto_delete_unprocessed' => 0, // TODO
+            'attributes_asset_type' => $this->getLegacyDamAssetType(),
+            'attributes_status' => 'with_file',
+            'main_file_id' => $row['id'],
+            'created_at' => $row['created_at'],
+            'modified_at' => $row['modified_at'],
+            'created_by_id' => $row['created_by_id'],
+            'modified_by_id' => $row['modified_by_id'],
+        ]);
+    }
+
+    private function getDisplayTitle(array $row): string
+    {
+        return $row['texts_title'] ?? $row['id'];
+    }
+
+    private function totalCount(MigrateConfig $migrateConfig): int
+    {
+        $sql = '
+            SELECT count(a.id)
+            FROM asset a
+            LEFT JOIN image i ON i.id = a.id
+            LEFT JOIN video v ON v.id = a.id
+            LEFT JOIN audio au ON au.id = a.id
+         ';
+        $conditions = [
+            'a.process_process_state = :processState',
+            'a.dtype = :type',
+        ];
+        $conditions = array_merge($this->getSelectConditions($migrateConfig), $conditions);
+        $sql .= ' WHERE ' . implode(' AND ', $conditions);
+
+        return (int) $this->damLegacyConnection->fetchOne(
+            $sql,
+            [
+                'processState' => 'processed',
+                'type' => $this->getLegacyDamAssetType(),
+            ]
+        );
+    }
+
     private function getLegacyDamAssetType(): string
     {
         return match (static::ASSET_TYPE_DISC) {
@@ -440,10 +445,5 @@ abstract class AbstractAssetMigrations extends AbstractMigrations
             AbstractAssetAudioMigrations::ASSET_TYPE_DISC => 'audio',
             AssetVideoMigrations::ASSET_TYPE_DISC => 'video',
         };
-    }
-
-    protected function getSelectConditions(MigrateConfig $migrateConfig): array
-    {
-        return [];
     }
 }

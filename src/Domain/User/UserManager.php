@@ -70,6 +70,47 @@ final class UserManager extends AbstractManager
         return $this->updateExisting($user, $flush);
     }
 
+    public function updateFromCurrentUserDto(User $user, UpdateCurrentUserDto $currentUserDto, bool $flush = true): User
+    {
+        $user->setSelectedLicence($currentUserDto->getSelectedLicence());
+
+        return $this->updateExisting($user, $flush);
+    }
+
+    public function createFromSsoUserInfo(SsoUserDto $ssoUserDto, array $roles = [User::ROLE_UGC], bool $flush = false): User
+    {
+        $user = (new User())
+            ->setId((int) $ssoUserDto->getId())
+            ->setEmail($ssoUserDto->getEmail())
+            ->setRoles($roles)
+        ;
+        $this->trackCreation($user);
+        $this->entityManager->persist($user);
+        $this->flush($flush);
+
+        return $user;
+    }
+
+    /**
+     * Update user with fields from new user and persist it.
+     */
+    public function updateExisting(User $user, bool $flush = true): User
+    {
+        $this->trackModification($user);
+        $this->flush($flush);
+
+        return $user;
+    }
+
+    /**
+     * Delete user from persistence.
+     */
+    public function delete(User $user, bool $flush = true): void
+    {
+        $this->entityManager->remove($user);
+        $this->flush($flush);
+    }
+
     private function assignLicencesAndExtSystems(User $user, AbstractUpsertUserDto $userDto): User
     {
         $this->colUpdate(
@@ -112,47 +153,6 @@ final class UserManager extends AbstractManager
         return $user;
     }
 
-    public function updateFromCurrentUserDto(User $user, UpdateCurrentUserDto $currentUserDto, bool $flush = true): User
-    {
-        $user->setSelectedLicence($currentUserDto->getSelectedLicence());
-
-        return $this->updateExisting($user, $flush);
-    }
-
-    public function createFromSsoUserInfo(SsoUserDto $ssoUserDto, array $roles = [User::ROLE_UGC], bool $flush = false): User
-    {
-        $user = (new User())
-            ->setId((int) $ssoUserDto->getId())
-            ->setEmail($ssoUserDto->getEmail())
-            ->setRoles($roles)
-        ;
-        $this->trackCreation($user);
-        $this->entityManager->persist($user);
-        $this->flush($flush);
-
-        return $user;
-    }
-
-    /**
-     * Update user with fields from new user and persist it.
-     */
-    public function updateExisting(User $user, bool $flush = true): User
-    {
-        $this->trackModification($user);
-        $this->flush($flush);
-
-        return $user;
-    }
-
-    /**
-     * Delete user from persistence.
-     */
-    public function delete(User $user, bool $flush = true): void
-    {
-        $this->entityManager->remove($user);
-        $this->flush($flush);
-    }
-
     private function toggleSuperAdminRole(User $user, bool $isSuperAdmin): User
     {
         if ($isSuperAdmin) {
@@ -165,6 +165,6 @@ final class UserManager extends AbstractManager
         return $user
             ->removeRole(AnzuUser::ROLE_ADMIN)
             ->addRole(AnzuUser::ROLE_USER)
-         ;
+        ;
     }
 }
