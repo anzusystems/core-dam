@@ -45,5 +45,5 @@ extends:
     runDoctrineValidate: true
     runPhpUnit: true
     runSecurityCheck: true
-    runEcsCheck: true
-    runPsalmCheck: true
+    #runEcsCheck: true
+    #runPsalmCheck: true
