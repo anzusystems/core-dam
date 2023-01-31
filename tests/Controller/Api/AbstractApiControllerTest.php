@@ -8,6 +8,7 @@ namespace App\Tests\Controller\Api;
 use AnzuSystems\SerializerBundle\Serializer;
 use App\Tests\ApiClient;
 use App\Tests\Controller\AbstractControllerTest;
+use App\Tests\data\Model\ApiClientFirewall;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -19,7 +20,7 @@ abstract class AbstractApiControllerTest extends AbstractControllerTest
     /** @psalm-var array<string|int, ApiClient> */
     private array $clients = [];
 
-    public function getClient(?int $userId = null, bool $ugcApi = false): ApiClient
+    public function getClient(?int $userId = null, ApiClientFirewall $firewall = ApiClientFirewall::Admin): ApiClient
     {
         $key = $userId ?? 'anonymous';
         if (false === isset($this->clients[$key])) {
@@ -27,7 +28,7 @@ abstract class AbstractApiControllerTest extends AbstractControllerTest
                 client: static::$client,
                 serializer: $this->serializer,
                 userId: $userId,
-                ugcApi: $ugcApi,
+                firewall: $firewall,
             );
         }
         return $this->clients[$key];
@@ -65,9 +66,9 @@ abstract class AbstractApiControllerTest extends AbstractControllerTest
         }
     }
 
-    protected function assertResponseAndGetJsonContent(Response $response): array
+    protected function assertResponseAndGetJsonContent(Response $response, int $expectedStatusCode = Response::HTTP_OK): array
     {
-        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
+        $this->assertSame($expectedStatusCode, $response->getStatusCode());
         $this->assertJson($response->getContent());
 
         return json_decode($response->getContent(), true);

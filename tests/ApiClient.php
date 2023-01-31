@@ -12,6 +12,7 @@ use AnzuSystems\Contracts\Exception\AnzuException;
 use AnzuSystems\SerializerBundle\Serializer;
 use App\Entity\User;
 use App\Security\Util\JwtUgcUtil;
+use App\Tests\data\Model\ApiClientFirewall;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -27,7 +28,7 @@ final readonly class ApiClient
         private KernelBrowser $client,
         private Serializer $serializer,
         private ?int $userId = null,
-        private bool $ugcApi = false,
+        private ApiClientFirewall $firewall = ApiClientFirewall::Admin,
     ) {
     }
 
@@ -140,10 +141,11 @@ final readonly class ApiClient
             throw new AnzuException(sprintf('User (%d) not found!', $this->userId));
         }
 
-        if ($this->ugcApi) {
-            return $this->client->getContainer()->get(JwtUgcUtil::class)->createForUser($user)->toString();
-        }
-
-        return $this->client->getContainer()->get(JwtUtil::class)->create($user->getAuthId())->toString();
+        return match ($this->firewall) {
+            ApiClientFirewall::Admin => $this->client->getContainer()->get(JwtUtil::class)->create($user->getAuthId())->toString(),
+            ApiClientFirewall::Ugc => $this->client->getContainer()->get(JwtUgcUtil::class)->createForUser($user)->toString(),
+            ApiClientFirewall::Sys => $this->firewall->getSysToken($this->userId),
+            default => null,
+        };
     }
 }

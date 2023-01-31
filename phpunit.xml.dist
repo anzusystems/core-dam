@@ -28,6 +28,9 @@
         <include>
             <directory suffix=".php">src</directory>
         </include>
+        <exclude>
+            <directory>src/DamMigrations</directory>
+        </exclude>
     </coverage>
 
     <listeners>

@@ -9,6 +9,7 @@ use AnzuSystems\CoreDamBundle\Repository\RegionOfInterestRepository;
 use App\DataFixtures\ImageFixtures;
 use App\DataFixtures\UserFixtures;
 use App\Tests\Controller\Api\AbstractApiControllerTest;
+use App\Tests\data\Model\ApiClientFirewall;
 use App\Tests\data\Model\RegionOfInterestUgcLegacyUrl;
 use Doctrine\ORM\NonUniqueResultException;
 
@@ -28,7 +29,7 @@ final class RegionOfInterestControllerTest extends AbstractApiControllerTest
 
     public function testList(): void
     {
-        $client = $this->getClient(UserFixtures::USER_TWO_SSO_ID, true);
+        $client = $this->getClient(UserFixtures::USER_TWO_SSO_ID, ApiClientFirewall::Ugc);
         $response = $client->get(RegionOfInterestUgcLegacyUrl::getListPath(ImageFixtures::IMAGE_1_ID));
         $json = $this->assertResponseAndGetJsonContent($response);
         $this->assertListResponse($json, 1);
@@ -37,7 +38,7 @@ final class RegionOfInterestControllerTest extends AbstractApiControllerTest
 
     public function testGetOne(): void
     {
-        $client = $this->getClient(UserFixtures::USER_TWO_SSO_ID, true);
+        $client = $this->getClient(UserFixtures::USER_TWO_SSO_ID, ApiClientFirewall::Ugc);
         $response = $client->get(RegionOfInterestUgcLegacyUrl::getOnePath($this->regionOfInterest->getId()));
         $json = $this->assertResponseAndGetJsonContent($response);
         $this->assertSame($this->regionOfInterest->getId(), $json['id']);
@@ -49,7 +50,7 @@ final class RegionOfInterestControllerTest extends AbstractApiControllerTest
 
     public function testUpdate(): void
     {
-        $client = $this->getClient(UserFixtures::USER_TWO_SSO_ID, true);
+        $client = $this->getClient(UserFixtures::USER_TWO_SSO_ID, ApiClientFirewall::Ugc);
         $response = $client->put(RegionOfInterestUgcLegacyUrl::getUpdatePath($this->regionOfInterest->getId()), [
             'id' => $this->regionOfInterest->getId(),
             'pointX' => 1,
