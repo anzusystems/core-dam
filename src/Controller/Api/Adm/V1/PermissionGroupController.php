@@ -5,28 +5,25 @@ declare(strict_types=1);
 namespace App\Controller\Api\Adm\V1;
 
 use AnzuSystems\CommonBundle\ApiFilter\ApiParams;
+use AnzuSystems\CommonBundle\Domain\PermissionGroup\PermissionGroupFacade;
 use AnzuSystems\CommonBundle\Exception\ValidationException;
 use AnzuSystems\CommonBundle\Model\OpenApi\Parameter\OAParameterPath;
+use AnzuSystems\CommonBundle\Model\OpenApi\Request\OARequest;
 use AnzuSystems\CommonBundle\Model\OpenApi\Response\OAResponse;
 use AnzuSystems\CommonBundle\Model\OpenApi\Response\OAResponseCreated;
 use AnzuSystems\CommonBundle\Model\OpenApi\Response\OAResponseDeleted;
 use AnzuSystems\CommonBundle\Model\OpenApi\Response\OAResponseValidation;
 use AnzuSystems\Contracts\Exception\AppReadOnlyModeException;
 use AnzuSystems\CoreDamBundle\Controller\Api\AbstractApiController;
-use AnzuSystems\CoreDamBundle\Model\OpenApi\Request\OARequest;
 use AnzuSystems\SerializerBundle\Attributes\SerializeParam;
 use App\App;
-use App\Domain\PermissionGroup\PermissionGroupFacade;
 use App\Entity\PermissionGroup;
-use App\Model\Domain\PermissionGroup\PermissionGroupCollectionDto;
 use App\Repository\PermissionGroupRepository;
 use App\Security\Permission\DamPermissions;
-use App\Security\Permission\UserPermissionResolver;
 use Doctrine\ORM\Exception\ORMException;
 use OpenApi\Attributes as OA;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('', 'adm_permissionGroup_v1_')]
@@ -40,24 +37,12 @@ final class PermissionGroupController extends AbstractApiController
     }
 
     /**
-     * Get list of all items.
-     */
-    #[Route('/permission-group/all-details', name: 'get_all', methods: [Request::METHOD_GET])]
-    #[OA\Response(response: Response::HTTP_OK, description: 'List of all permissions with details.')]
-    public function getAll(): JsonResponse
-    {
-        return new JsonResponse(DamPermissions::allDetail());
-    }
-
-    /**
      * Get one item.
      */
     #[Route('/permission-group/{permissionGroup}', 'get_one', ['permissionGroup' => '\d+'], methods: [Request::METHOD_GET])]
     #[OAParameterPath('permissionGroup'), OAResponse(PermissionGroup::class)]
     public function getOne(PermissionGroup $permissionGroup): JsonResponse
     {
-        $this->denyAccessUnlessGranted(DamPermissions::DAM_PERMISSION_GROUP_VIEW, $permissionGroup);
-
         return $this->okResponse($permissionGroup);
     }
 
@@ -70,25 +55,16 @@ final class PermissionGroupController extends AbstractApiController
     #[OAResponse([PermissionGroup::class])]
     public function getList(ApiParams $apiParams): JsonResponse
     {
-        $this->denyAccessUnlessGranted(DamPermissions::DAM_PERMISSION_GROUP_VIEW);
-
         return $this->okResponse(
             $this->permissionGroupRepo->findByApiParams($apiParams),
         );
     }
 
-    #[Route('/permission-group/preview', 'preview', methods: [Request::METHOD_POST])]
-    #[OARequest(PermissionGroupCollectionDto::class)]
-    #[OA\Response(response: Response::HTTP_OK, description: 'List of resolved permissions.')]
-    public function preview(#[SerializeParam] PermissionGroupCollectionDto $permissionGroupColDto): JsonResponse
-    {
-        return new JsonResponse(UserPermissionResolver::resolveForGroups($permissionGroupColDto->getPermissionGroups()));
-    }
-
     /**
      * Create item.
      *
-     * @throws ValidationException|AppReadOnlyModeException
+     * @throws ValidationException
+     * @throws AppReadOnlyModeException
      */
     #[Route('/permission-group', 'create', methods: [Request::METHOD_POST])]
     #[OARequest(PermissionGroup::class), OAResponseCreated(PermissionGroup::class), OAResponseValidation]
@@ -105,8 +81,7 @@ final class PermissionGroupController extends AbstractApiController
     /**
      * Update item.
      *
-     * @throws AppReadOnlyModeException
-     * @throws ValidationException
+     * @throws AppReadOnlyModeException|ValidationException
      */
     #[Route('/permission-group/{permissionGroup}', 'update', ['permissionGroup' => '\d+'], methods: [Request::METHOD_PUT])]
     #[OAParameterPath('permissionGroup'), OARequest(PermissionGroup::class), OAResponse(PermissionGroup::class), OAResponseValidation]

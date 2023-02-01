@@ -55,3 +55,207 @@ anzu_systems_common:
                 ssl: '%env(bool:ANZU_MONGODB_AUDIT_LOG_SSL)%'
                 collection: auditLogs
             logged_methods: ['POST', 'PUT', 'PATCH', 'DELETE']
+    permissions:
+        roles: [ROLE_USER, ROLE_UGC, ROLE_ADMIN, ROLE_DAM_ADMIN, ROLE_SYS_API]
+        config:
+            dam_asset:
+                create:
+                update:
+                view:
+                delete:
+            dam_video:
+                create:
+                update:
+                view:
+                delete:
+            dam_audio:
+                create:
+                update:
+                view:
+                delete:
+            dam_document:
+                create:
+                update:
+                view:
+                delete:
+            dam_image:
+                create:
+                update:
+                view:
+                delete:
+            dam_assetCustomForm:
+                create:
+                update:
+                view:
+            dam_assetCustomFormElement:
+                view:
+            dam_regionOfInterest:
+                create:
+                update:
+                view:
+                delete:
+            dam_extSystem:
+                create:
+                update:
+                view:
+                delete:
+                ui:
+            dam_assetLicence:
+                create:
+                update:
+                view:
+                delete:
+                ui:
+            dam_author:
+                create:
+                update:
+                view:
+                delete:
+                ui:
+            dam_keyword:
+                create:
+                update:
+                view:
+                delete:
+                ui:
+            dam_podcast:
+                create:
+                update:
+                view:
+                delete:
+                ui:
+            dam_podcastEpisode:
+                create:
+                update:
+                view:
+                delete:
+                ui:
+            dam_distributionCategory:
+                create:
+                update:
+                view:
+                delete:
+                ui:
+            dam_distributionCategorySelect:
+                update:
+                view:
+                ui:
+            dam_distribution:
+                access:
+            dam_assetExternalProvider:
+                access:
+            dam_user:
+                create:
+                update:
+                view:
+                ugcImpersonate:
+                ui:
+            dam_permissionGroup:
+                create:
+                update:
+                view:
+                delete:
+                ui:
+            dam_log:
+                ui:
+        translation:
+            roles:
+                ROLE_USER:
+                    en: User
+                    sk: Používateľ
+                ROLE_ADMIN:
+                    en: Super Admin
+                    sk: Super Administrátor
+                ROLE_DAM_ADMIN:
+                    en: DAM Admin
+                    sk: DAM Administrátor
+                ROLE_UGC:
+                    sk: UGC Používateľ
+                    en: UGC User
+                ROLE_SYS_API:
+                    en: System Api
+                    sk: Systémové Api
+            actions:
+                ui:
+                    en: View
+                    sk: Zobraz
+                update:
+                    en: Update
+                    sk: Uprav
+                create:
+                    en: Create
+                    sk: Vytvor
+                delete:
+                    en: Delete
+                    sk: Zmaž
+                list:
+                    en: List
+                    sk: List
+                access:
+                    en: Access
+                    sk: Prístup
+                ugcImpersonate:
+                    en: UGC Impersonate
+                    sk: UGC Impersonaluj
+            subjects:
+                dam_video:
+                    en: Video
+                    sk: Video
+                dam_audio:
+                    en: Audio
+                    sk: Audio
+                dam_document:
+                    en: Document
+                    sk: Dokument
+                dam_image:
+                    en: Image
+                    sk: Obrázok
+                dam_assetCustomForm:
+                    en: Custom Form
+                    sk: Vlastné polia
+                dam_assetCustomFormElement:
+                    en: Custom Form Element
+                    sk: Vlastné polia element
+                dam_regionOfInterest:
+                    en: Region of Interest
+                    sk: Región záujmu
+                dam_extSystem:
+                    en: External system
+                    sk: Externý systém
+                dam_assetLicence:
+                    en: Asset Licence
+                    sk: Asset Licencia
+                dam_author:
+                    en: Author
+                    sk: Autor
+                dam_keyword:
+                    en: Keyword
+                    sk: Kľúčové slovo
+                dam_podcast:
+                    en: Podcast
+                    sk: Podcast
+                dam_podcastEpisode:
+                    en: Podcast Episode
+                    sk: Podcastová epizóda
+                dam_distributionCategory:
+                    en: Distribution Category
+                    sk: Distribučná kategória
+                dam_distributionCategorySelect:
+                    en: Distribution Category Select
+                    sk: Distribučná kategória selekt
+                dam_distribution:
+                    en: Distribution
+                    sk: Distribúcia
+                dam_assetExternalProvider:
+                    en: Asset External Provider
+                    sk: Asset externý provider
+                dam_user:
+                    en: User
+                    sk: Používateľ
+                dam_permissionGroup:
+                    en: Group permission
+                    sk: Skupinové povolenie
+                dam_log:
+                    en: Log
+                    sk: Log
+

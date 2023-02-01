@@ -16,8 +16,6 @@ use Doctrine\Common\Collections\Collection;
 
 final class CurrentUserDto
 {
-    private string $resourceName = User::class;
-
     #[Serialize(serializedName: 'id', handler: EntityIdHandler::class)]
     private User $user;
 

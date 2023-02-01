@@ -11,6 +11,9 @@ use AnzuSystems\CoreDamBundle\Entity\AssetLicence;
 use AnzuSystems\CoreDamBundle\Entity\ExtSystem;
 use Symfony\Component\Console\Helper\ProgressBar;
 
+/**
+ * @extends AbstractFixtures<AssetLicence>
+ */
 final class AssetLicenceFixtures extends AbstractFixtures
 {
     public const BLOG_DEFAULT_ASSET_LICENCE_ID = BaseAssetLicenceFixtures::DEFAULT_LICENCE_ID + 1;

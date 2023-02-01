@@ -9,10 +9,11 @@ security:
                 class: App\Entity\User
                 property: id
     role_hierarchy:
-        ROLE_ADMIN: [ROLE_USER, ROLE_SYS_API, ROLE_UGC]
+        ROLE_ADMIN: [ROLE_DAM_ADMIN, ROLE_SYS_API, ROLE_UGC] # super admin
+        ROLE_DAM_ADMIN: [ROLE_USER] # dam admin
+        ROLE_UGC: [ROLE_USER]
         ROLE_USER: ~
         ROLE_SYS_API: ~
-        ROLE_UGC: ~
     password_hashers:
         App\Entity\User: 'auto'
     firewalls:
@@ -52,7 +53,7 @@ security:
     access_control:
         - { path: ^/api/pub/, roles: PUBLIC_ACCESS }
         - { path: ^/api/auth/, roles: PUBLIC_ACCESS }
-        - { path: ^/api/adm/, roles: ROLE_USER }
+        - { path: ^/api/adm/, roles: ROLE_DAM_ADMIN }
         - { path: ^/api/ugc/, roles: ROLE_UGC }
-        - { path: ^/adm/, roles: ROLE_USER }
+        - { path: ^/adm/, roles: ROLE_FORUM_ADMIN }
         - { path: ^/api/sys/, roles: ROLE_SYS_API }
