@@ -12,13 +12,13 @@ use AnzuSystems\Contracts\Entity\Traits\TimeTrackingTrait;
 use AnzuSystems\CoreDamBundle\App;
 use AnzuSystems\CoreDamBundle\Entity\AssetLicence;
 use AnzuSystems\CoreDamBundle\Entity\DamUser;
+use AnzuSystems\CoreDamBundle\Entity\PermissionGroup;
 use AnzuSystems\CoreDamBundle\Entity\Traits\PersonNameTrait;
 use AnzuSystems\CoreDamBundle\Entity\Traits\UserTrackingTrait;
+use AnzuSystems\CoreDamBundle\Validator\Constraints\UniqueEntity;
 use AnzuSystems\SerializerBundle\Attributes\Serialize;
 use AnzuSystems\SerializerBundle\Handler\Handlers\EntityIdHandler;
 use App\Repository\UserRepository;
-use App\Security\Permission\UserPermissionResolver;
-use App\Validator\Constraints as AppAssert;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -26,6 +26,8 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_email', fields: ['email'])]
+#[UniqueEntity(fields: ['id'])]
+#[UniqueEntity(fields: ['email'])]
 class User extends DamUser implements
     AnzuAuthUserInterface,
     ApiTokenUserInterface,
@@ -41,22 +43,6 @@ class User extends DamUser implements
     public const ID_ADMIN = 10_001_039;
 
     public const ROLE_UGC = 'ROLE_UGC';
-
-    #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: 'NONE')]
-    #[ORM\Column(type: Types::INTEGER)]
-    #[Serialize]
-    protected ?int $id = null;
-
-    /**
-     * List of permissions which belongs to user.
-     *
-     * @var array<string, int>
-     */
-    #[ORM\Column(type: Types::JSON)]
-    #[AppAssert\PermissionValid(requireAll: false)]
-    #[Serialize(strategy: Serialize::KEYS_VALUES)]
-    protected array $permissions;
 
     #[ORM\ManyToMany(targetEntity: PermissionGroup::class, inversedBy: 'users', fetch: App::DOCTRINE_EXTRA_LAZY, indexBy: 'id')]
     #[ORM\JoinTable]
@@ -75,29 +61,12 @@ class User extends DamUser implements
     public function __construct()
     {
         parent::__construct();
-        $this->setId(null);
-        $this->setEmail('');
-        $this->setPermissions([]);
         $this->setApiToken(null);
         $this->setEnabled(true);
-        $this->setRoles([self::ROLE_USER]);
-        $this->setPermissionGroups(new ArrayCollection());
         $this->setAssetLicences(new ArrayCollection());
         $this->setAdminToExtSystems(new ArrayCollection());
         $this->setUserToExtSystems(new ArrayCollection());
         $this->setSelectedLicence(null);
-    }
-
-    public function getEmail(): string
-    {
-        return $this->email;
-    }
-
-    public function setEmail(string $email): self
-    {
-        $this->email = $email;
-
-        return $this;
     }
 
     public function getApiToken(): ?string
@@ -110,49 +79,6 @@ class User extends DamUser implements
         $this->apiToken = $apiToken;
 
         return $this;
-    }
-
-    public function getPermissions(): array
-    {
-        return $this->permissions;
-    }
-
-    public function setPermissions(array $permissions): self
-    {
-        $this->permissions = $permissions;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, PermissionGroup>
-     */
-    public function getPermissionGroups(): Collection
-    {
-        return $this->permissionGroups;
-    }
-
-    public function setPermissionGroups(Collection $permissionGroups): self
-    {
-        $this->permissionGroups = $permissionGroups;
-
-        return $this;
-    }
-
-    #[Serialize(strategy: Serialize::KEYS_VALUES)]
-    public function getResolvedPermissions(): array
-    {
-        return UserPermissionResolver::resolve($this);
-    }
-
-    #[Serialize]
-    public function getPermissionGroupTitles(): array
-    {
-        return $this
-            ->getPermissionGroups()
-            ->map(fn (PermissionGroup $permissionGroup): string => $permissionGroup->getTitle())
-            ->toArray()
-        ;
     }
 
     public function getAuthId(): string
@@ -172,18 +98,8 @@ class User extends DamUser implements
 
     public function addRole(string $role): self
     {
-        if (false === $this->hasRole($role)) {
+        if ($this->hasNotRole($role)) {
             $this->roles[] = $role;
-        }
-
-        return $this;
-    }
-
-    public function removeRole(string $role): self
-    {
-        $foundKey = array_search($role, $this->roles, true);
-        if (is_int($foundKey)) {
-            unset($this->roles[$foundKey]);
         }
 
         return $this;

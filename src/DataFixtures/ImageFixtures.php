@@ -16,6 +16,9 @@ use AnzuSystems\CoreDamBundle\Repository\AssetLicenceRepository;
 use Generator;
 use Symfony\Component\Console\Helper\ProgressBar;
 
+/**
+ * @extends AbstractAssetFileFixtures<ImageFile>
+ */
 final class ImageFixtures extends AbstractAssetFileFixtures
 {
     public const DATA_PATH = __DIR__ . '/../../vendor/anzusystems/core-dam-bundle/src/Resources/fixtures/';

@@ -7,6 +7,7 @@ namespace App\Command;
 use AnzuSystems\CommonBundle\Domain\User\CurrentAnzuUserProvider;
 use AnzuSystems\Contracts\AnzuApp;
 use AnzuSystems\Contracts\Entity\AnzuUser;
+use AnzuSystems\Contracts\Model\User\UserDto;
 use App\App;
 use App\Domain\User\UserManager;
 use App\Entity\User;
@@ -74,17 +75,15 @@ final class CreateMandatoryUsersCommand extends Command
             $output->writeln('<info>Anonymous user (' . $anonymousUserId . ') not found. Creating...</info>');
             $email = $this->askForEmail($input, $output, 'anzu.app.anonym@smeonline.sk');
 
-            $anonymousUser = new User();
-            $anonymousUser->setId((int) $anonymousUserId);
+            $user = new User();
+            $anonymousUser = new UserDto();
+            $anonymousUser->setId($anonymousUserId);
             $anonymousUser->setEmail($email);
-            $anonymousUser->setFirstName('Anonymous');
-            $anonymousUser->setLastName('Anzu');
             $anonymousUser->setEnabled(false);
 
-            $this->userManager->getEntityManager()->persist($anonymousUser);
-            $this->currentAnzuUserProvider->setCurrentUser($anonymousUser);
+            $this->currentAnzuUserProvider->setCurrentUser($user);
 
-            $this->userManager->create($anonymousUser);
+            $this->userManager->createAnzuUser($user, $anonymousUser);
         }
 
         $consoleUser = $this->userManager->getEntityManager()->find(User::class, $consoleUserId);
@@ -96,14 +95,13 @@ final class CreateMandatoryUsersCommand extends Command
             $output->writeln('<info>Console user (' . $consoleUserId . ') not found. Creating...</info>');
             $email = $this->askForEmail($input, $output, 'anzu.app.console@smeonline.sk');
 
-            $consoleUser = new User();
-            $consoleUser->setId((int) $consoleUserId);
+            $user = new User();
+            $consoleUser = new UserDto();
+            $consoleUser->setId($consoleUserId);
             $consoleUser->setEmail($email);
-            $consoleUser->setFirstName('Console');
-            $consoleUser->setLastName('Anzu');
             $consoleUser->setEnabled(false);
 
-            $this->userManager->create($consoleUser);
+            $this->userManager->createAnzuUser($user, $consoleUser);
         }
 
         $adminUser = $this->userManager->getEntityManager()->find(User::class, $adminUserId);
@@ -118,15 +116,14 @@ final class CreateMandatoryUsersCommand extends Command
             $ssoId = $input->getOption(self::ADMIN_USER_SSO_ID_ARG);
             $output->writeln('SSO ID for admin user is: ' . $ssoId);
 
-            $adminUser = new User();
+            $user = new User();
+            $adminUser = new UserDto();
             $adminUser->setId((int) $ssoId);
             $adminUser->setEmail($email);
-            $adminUser->setFirstName('Admin');
-            $adminUser->setLastName('Anzu');
             $adminUser->setEnabled(true);
             $adminUser->setRoles([User::ROLE_ADMIN]);
 
-            $this->userManager->create($adminUser);
+            $this->userManager->createAnzuUser($user, $adminUser);
         }
 
         return self::SUCCESS;

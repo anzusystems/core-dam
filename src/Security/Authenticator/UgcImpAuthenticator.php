@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Security\Authenticator;
 
+use AnzuSystems\CoreDamBundle\Security\Permission\Grants;
 use App\Entity\User;
 use App\Model\UgcCookieConfiguration;
 use App\Repository\UserRepository;
 use App\Security\Authenticator\Token\UgcImpAuthenticationToken;
 use App\Security\Permission\DamPermissions;
-use App\Security\Permission\Grants;
 use Lcobucci\JWT\Configuration;
 use Lcobucci\JWT\Exception;
 use Lcobucci\JWT\Token\Plain;

@@ -5,13 +5,11 @@ declare(strict_types=1);
 namespace App\Domain\User;
 
 use AnzuSystems\AuthBundle\Model\SsoUserDto;
-use AnzuSystems\Contracts\Entity\AnzuUser;
-use AnzuSystems\CoreDamBundle\Domain\AbstractManager;
+use AnzuSystems\CommonBundle\Domain\User\AbstractUserManager;
+use AnzuSystems\Contracts\Model\User\UserDto;
 use AnzuSystems\CoreDamBundle\Entity\AssetLicence;
 use AnzuSystems\CoreDamBundle\Entity\ExtSystem;
 use App\Entity\User;
-use App\Model\Domain\User\AbstractUpsertUserDto;
-use App\Model\Domain\User\CreateUserDto;
 use App\Model\Domain\User\UpdateCurrentUserDto;
 use App\Model\Domain\User\UpdateUserDto;
 use Doctrine\Common\Collections\Collection;
@@ -19,53 +17,28 @@ use Doctrine\Common\Collections\Collection;
 /**
  * User persistence management.
  */
-final class UserManager extends AbstractManager
+final class UserManager extends AbstractUserManager
 {
-    /**
-     * Create a new user and persist it.
-     */
-    public function create(User $user, bool $flush = true): User
+    public function createFromSsoUserInfo(SsoUserDto $ssoUserDto, array $roles = [User::ROLE_UGC], bool $flush = false): User
     {
-        $this->trackCreation($user);
-        $this->entityManager->persist($user);
-        $this->flush($flush);
-
-        return $user;
-    }
-
-    public function createFromDto(CreateUserDto $createUserDto, bool $flush = true): User
-    {
-        $user = new User();
-        $user
-            ->setId($createUserDto->getId())
-            ->setEnabled($createUserDto->isEnabled())
-            ->setFirstName($createUserDto->getFirstName())
-            ->setLastName($createUserDto->getLastName())
-            ->setEmail($createUserDto->getEmail())
-            ->setAdminToExtSystems($createUserDto->getAdminToExtSystems())
-            ->setAllowedAssetExternalProviders($createUserDto->getAllowedAssetExternalProviders())
-            ->setAllowedDistributionServices($createUserDto->getAllowedDistributionServices())
+        $userDto = (new UserDto())
+            ->setId((int) $ssoUserDto->getId())
+            ->setEmail($ssoUserDto->getEmail())
+            ->setRoles($roles)
         ;
-        if ($createUserDto->isSuperAdmin()) {
-            $user->setRoles([AnzuUser::ROLE_ADMIN]);
-        }
-        $user = $this->assignLicencesAndExtSystems($user, $createUserDto);
 
-        return $this->create($user, $flush);
+        return $this->createAnzuUser(new User(), $userDto, $flush);
     }
 
-    public function updateFromDto(User $user, UpdateUserDto $updateUserDto, bool $flush = true): User
+    public function updateFromUserDto(User $user, UpdateUserDto $updateUserDto, bool $flush = true): User
     {
         $user
-            ->setEnabled($updateUserDto->isEnabled())
             ->setFirstName($updateUserDto->getFirstName())
             ->setLastName($updateUserDto->getLastName())
-            ->setPermissions($updateUserDto->getPermissions())
             ->setAllowedAssetExternalProviders($updateUserDto->getAllowedAssetExternalProviders())
             ->setAllowedDistributionServices($updateUserDto->getAllowedDistributionServices())
         ;
         $user = $this->assignLicencesAndExtSystems($user, $updateUserDto);
-        $user = $this->toggleSuperAdminRole($user, $updateUserDto->isSuperAdmin());
 
         return $this->updateExisting($user, $flush);
     }
@@ -77,31 +50,6 @@ final class UserManager extends AbstractManager
         return $this->updateExisting($user, $flush);
     }
 
-    public function createFromSsoUserInfo(SsoUserDto $ssoUserDto, array $roles = [User::ROLE_UGC], bool $flush = false): User
-    {
-        $user = (new User())
-            ->setId((int) $ssoUserDto->getId())
-            ->setEmail($ssoUserDto->getEmail())
-            ->setRoles($roles)
-        ;
-        $this->trackCreation($user);
-        $this->entityManager->persist($user);
-        $this->flush($flush);
-
-        return $user;
-    }
-
-    /**
-     * Update user with fields from new user and persist it.
-     */
-    public function updateExisting(User $user, bool $flush = true): User
-    {
-        $this->trackModification($user);
-        $this->flush($flush);
-
-        return $user;
-    }
-
     /**
      * Delete user from persistence.
      */
@@ -111,7 +59,18 @@ final class UserManager extends AbstractManager
         $this->flush($flush);
     }
 
-    private function assignLicencesAndExtSystems(User $user, AbstractUpsertUserDto $userDto): User
+    /**
+     * Update user with fields from new user and persist it.
+     */
+    private function updateExisting(User $user, bool $flush = true): User
+    {
+        $this->trackModification($user);
+        $this->flush($flush);
+
+        return $user;
+    }
+
+    private function assignLicencesAndExtSystems(User $user, UpdateUserDto $userDto): User
     {
         $this->colUpdate(
             oldCollection: $user->getAdminToExtSystems(),
@@ -151,20 +110,5 @@ final class UserManager extends AbstractManager
         );
 
         return $user;
-    }
-
-    private function toggleSuperAdminRole(User $user, bool $isSuperAdmin): User
-    {
-        if ($isSuperAdmin) {
-            return $user
-                ->removeRole(AnzuUser::ROLE_USER)
-                ->addRole(AnzuUser::ROLE_ADMIN)
-            ;
-        }
-
-        return $user
-            ->removeRole(AnzuUser::ROLE_ADMIN)
-            ->addRole(AnzuUser::ROLE_USER)
-        ;
     }
 }

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Tests\Controller\Api\Adm\V1;
 
 use App\App;
-use App\Entity\User;
 use App\Repository\UserRepository;
 use App\Tests\Controller\Api\AbstractApiControllerTest;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,7 +19,7 @@ final class UserControllerTest extends AbstractApiControllerTest
 
         $data = json_decode($response->getContent(), true);
         $this->assertArrayHasKey('email', $data);
-        $this->assertArrayHasKey('superAdmin', $data);
+        $this->assertArrayHasKey('roles', $data);
         $this->assertArrayHasKey('id', $data);
 
         $userFromDb = $this->getService(UserRepository::class)->find(App::getUserIdAdmin());
@@ -30,8 +29,8 @@ final class UserControllerTest extends AbstractApiControllerTest
             actual: $data['email'],
         );
         $this->assertSame(
-            expected: $userFromDb->hasRole(User::ROLE_ADMIN),
-            actual: $data['superAdmin'],
+            expected: $userFromDb->getRoles(),
+            actual: $data['roles'],
         );
         $this->assertSame(
             expected: $userFromDb->getId(),
