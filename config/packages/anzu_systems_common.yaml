@@ -95,16 +95,15 @@ anzu_systems_common:
                 view:
                 delete:
             dam_extSystem:
-                create:
                 update:
                 view:
-                delete:
+                list:
                 ui:
             dam_assetLicence:
                 create:
                 update:
+                list:
                 view:
-                delete:
                 ui:
             dam_author:
                 create:
@@ -198,6 +197,9 @@ anzu_systems_common:
                     en: UGC Impersonate
                     sk: UGC Impersonaluj
             subjects:
+                dam_asset:
+                    en: Asset
+                    sk: Asset
                 dam_video:
                     en: Video
                     sk: Video

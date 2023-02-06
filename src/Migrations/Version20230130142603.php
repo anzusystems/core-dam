@@ -28,7 +28,7 @@ final class Version20230130142603 extends AbstractMigration
                 allowed_asset_external_providers = JSON_ARRAY(),               
                 allowed_distribution_services = JSON_ARRAY(),               
                 email = 'sys_anzu_blog.anzu@smeonline.sk',               
-                enabled = 1,               
+                enabled = 0,               
                 first_name = 'Blog SYS',               
                 last_name = 'ANZU'               
         SQL);

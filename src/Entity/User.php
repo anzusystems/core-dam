@@ -12,8 +12,10 @@ use AnzuSystems\Contracts\Entity\Traits\TimeTrackingTrait;
 use AnzuSystems\CoreDamBundle\App;
 use AnzuSystems\CoreDamBundle\Entity\AssetLicence;
 use AnzuSystems\CoreDamBundle\Entity\DamUser;
+use AnzuSystems\CoreDamBundle\Entity\PermissionGroup;
 use AnzuSystems\CoreDamBundle\Entity\Traits\PersonNameTrait;
 use AnzuSystems\CoreDamBundle\Entity\Traits\UserTrackingTrait;
+use AnzuSystems\CoreDamBundle\Validator\Constraints\UniqueEntity;
 use AnzuSystems\SerializerBundle\Attributes\Serialize;
 use AnzuSystems\SerializerBundle\Handler\Handlers\EntityIdHandler;
 use App\Repository\UserRepository;
@@ -24,6 +26,8 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_email', fields: ['email'])]
+#[UniqueEntity(fields: ['id'])]
+#[UniqueEntity(fields: ['email'])]
 class User extends DamUser implements
     AnzuAuthUserInterface,
     ApiTokenUserInterface,

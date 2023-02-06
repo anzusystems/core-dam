@@ -7,6 +7,7 @@ namespace App\DataFixtures;
 use AnzuSystems\CommonBundle\DataFixtures\Fixtures\AbstractFixtures;
 use AnzuSystems\Contracts\Model\User\UserDto;
 use AnzuSystems\CoreDamBundle\DataFixtures\AssetLicenceFixtures as BaseAssetLicenceFixtures;
+use AnzuSystems\CoreDamBundle\DataFixtures\PermissionGroupFixtures;
 use App\Domain\User\UserManager;
 use App\Entity\User;
 use Doctrine\Common\Collections\ArrayCollection;

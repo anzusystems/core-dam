@@ -88,9 +88,9 @@ final class CurrentUserDto
     }
 
     #[Serialize]
-    public function isSuperAdmin(): bool
+    public function getRoles(): array
     {
-        return $this->user->hasRole(User::ROLE_ADMIN);
+        return $this->user->getRoles();
     }
 
     #[Serialize]

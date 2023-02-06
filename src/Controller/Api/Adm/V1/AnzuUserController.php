@@ -11,7 +11,6 @@ use AnzuSystems\CommonBundle\Model\OpenApi\Request\OARequest;
 use AnzuSystems\CommonBundle\Model\OpenApi\Response\OAResponse;
 use AnzuSystems\CommonBundle\Model\OpenApi\Response\OAResponseCreated;
 use AnzuSystems\CommonBundle\Model\OpenApi\Response\OAResponseValidation;
-use AnzuSystems\Contracts\Entity\AnzuUser;
 use AnzuSystems\Contracts\Exception\AppReadOnlyModeException;
 use AnzuSystems\Contracts\Model\User\UserDto;
 use AnzuSystems\CoreDamBundle\App;
@@ -43,7 +42,7 @@ final class AnzuUserController extends AbstractApiController
      */
     #[Route('/{user}', 'get_one', ['user' => '\d+'], methods: [Request::METHOD_GET])]
     #[OAParameterPath('user'), OAResponse(User::class)]
-    public function getOne(AnzuUser $user): JsonResponse
+    public function getOne(User $user): JsonResponse
     {
         return $this->okResponse($user);
     }
@@ -54,7 +53,7 @@ final class AnzuUserController extends AbstractApiController
      * @throws ORMException
      */
     #[Route('', 'User', methods: [Request::METHOD_GET])]
-    #[OAResponse([AnzuUser::class])]
+    #[OAResponse([User::class])]
     public function getList(ApiParams $apiParams): JsonResponse
     {
         return $this->okResponse(
