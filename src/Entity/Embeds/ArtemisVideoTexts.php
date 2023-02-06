@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Embeddable]
-class ArtemisAudioTexts
+class ArtemisVideoTexts
 {
     #[ORM\Column(type: Types::STRING, length: 128)]
     #[Assert\NotBlank(message: ValidationException::ERROR_FIELD_EMPTY)]
@@ -19,29 +19,11 @@ class ArtemisAudioTexts
     #[Serialize]
     private string $title;
 
-    #[ORM\Column(type: Types::STRING, length: 256)]
-    #[Assert\NotBlank(message: ValidationException::ERROR_FIELD_EMPTY)]
-    #[Assert\Length(max: 100, maxMessage: ValidationException::ERROR_FIELD_LENGTH_MAX)]
-    #[Serialize]
-    private string $extRssId;
-
     #[Assert\NotBlank(message: ValidationException::ERROR_FIELD_EMPTY)]
     #[Assert\Length(max: 5_000, maxMessage: ValidationException::ERROR_FIELD_LENGTH_MAX)]
     #[ORM\Column(type: Types::STRING, length: 5_000)]
     #[Serialize]
     private string $description;
-
-    #[Assert\Url(message: ValidationException::ERROR_FIELD_INVALID)]
-    #[Assert\Length(max: 5_000, maxMessage: ValidationException::ERROR_FIELD_LENGTH_MAX)]
-    #[ORM\Column(type: Types::STRING, length: 2_048)]
-    #[Serialize]
-    private string $freeUrl;
-
-    #[Assert\Url(message: ValidationException::ERROR_FIELD_INVALID)]
-    #[Assert\Length(max: 5_000, maxMessage: ValidationException::ERROR_FIELD_LENGTH_MAX)]
-    #[ORM\Column(type: Types::STRING, length: 2_048)]
-    #[Serialize]
-    private string $premiumUrl;
 
     #[ORM\Column(type: Types::JSON)]
     #[Serialize]
@@ -55,57 +37,13 @@ class ArtemisAudioTexts
     #[Serialize]
     private int $rubricId;
 
-    #[ORM\Column(type: Types::STRING, length: 36)]
-    #[Serialize]
-    private string $podcastId;
-
     public function __construct()
     {
         $this->setDescription('');
         $this->setTitle('');
         $this->setKeywords([]);
         $this->setAuthors([]);
-        $this->setPremiumUrl('');
-        $this->setFreeUrl('');
-        $this->setExtRssId('');
         $this->setRubricId(0);
-        $this->setPodcastId('');
-    }
-
-    public function getExtRssId(): string
-    {
-        return $this->extRssId;
-    }
-
-    public function setExtRssId(string $extRssId): self
-    {
-        $this->extRssId = $extRssId;
-
-        return $this;
-    }
-
-    public function getFreeUrl(): string
-    {
-        return $this->freeUrl;
-    }
-
-    public function setFreeUrl(string $freeUrl): self
-    {
-        $this->freeUrl = $freeUrl;
-
-        return $this;
-    }
-
-    public function getPremiumUrl(): string
-    {
-        return $this->premiumUrl;
-    }
-
-    public function setPremiumUrl(string $premiumUrl): self
-    {
-        $this->premiumUrl = $premiumUrl;
-
-        return $this;
     }
 
     public function getTitle(): string
@@ -164,18 +102,6 @@ class ArtemisAudioTexts
     public function setRubricId(int $rubricId): self
     {
         $this->rubricId = $rubricId;
-
-        return $this;
-    }
-
-    public function getPodcastId(): string
-    {
-        return $this->podcastId;
-    }
-
-    public function setPodcastId(string $podcastId): self
-    {
-        $this->podcastId = $podcastId;
 
         return $this;
     }

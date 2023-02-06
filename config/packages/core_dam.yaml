@@ -1,0 +1,57 @@
+core_dam:
+  artemis_audio_distribution:
+    audio_free_slot_name: 'free'
+    audio_premium_slot_name: 'paid'
+    default_rubric_id: 6978
+    custom_data_to_distribution_map:
+      title:
+        source_property_path: 'texts.title'
+        destination_property_path: 'customData[title]'
+      description:
+        source_property_path: 'texts.description'
+        destination_property_path: 'customData[description]'
+      keywords:
+        source_property_path: 'texts.keywords'
+        destination_property_path: 'customData[keywords]'
+      authors:
+        source_property_path: 'texts.authors'
+        destination_property_path: 'customData[authors]'
+      free_url:
+        source_property_path: 'texts.freeUrl'
+        destination_property_path: 'customData[freeUrl]'
+      premium_url:
+        source_property_path: 'texts.premiumUrl'
+        destination_property_path: 'customData[premiumUrl]'
+      create_article:
+        source_property_path: 'flags.createArticle'
+        destination_property_path: 'customData[createArticle]'
+      ext_rss_id:
+        source_property_path: 'texts.extRssId'
+        destination_property_path: 'customData[extRssId]'
+      rubric_id:
+        source_property_path: 'texts.rubricId'
+        destination_property_path: 'customData[rubricId]'
+      podcast_id:
+        source_property_path: 'texts.podcastId'
+        destination_property_path: 'customData[podcastId]'
+  artemis_video_distribution:
+    default_rubric_id: 6978 # todo
+    custom_data_to_distribution_map:
+      title:
+        source_property_path: 'texts.title'
+        destination_property_path: 'customData[title]'
+      description:
+        source_property_path: 'texts.description'
+        destination_property_path: 'customData[description]'
+      keywords:
+        source_property_path: 'texts.keywords'
+        destination_property_path: 'customData[keywords]'
+      authors:
+        source_property_path: 'texts.authors'
+        destination_property_path: 'customData[authors]'
+      create_article:
+        source_property_path: 'flags.createArticle'
+        destination_property_path: 'customData[createArticle]'
+      rubric_id:
+        source_property_path: 'texts.rubricId'
+        destination_property_path: 'customData[rubricId]'

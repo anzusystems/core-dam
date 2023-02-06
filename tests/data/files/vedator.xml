@@ -1,0 +1,87 @@
+<rss xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:wfw="http://wellformedweb.org/CommentAPI/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:googleplay="http://www.google.com/schemas/play-podcasts/1.0" xmlns:spotify="http://www.spotify.com/ns/rss" xmlns:podcast="https://podcastindex.org/namespace/1.0" xmlns:media="http://search.yahoo.com/mrss/" version="2.0">
+    <channel>
+        <title>Vedátorský podcast</title>
+        <atom:link href="https://feed.podbean.com/vedatorskypodcast/feed.xml" rel="self" type="application/rss+xml"/>
+        <link>https://vedatorskypodcast.podbean.com</link>
+        <description>Nachádza sa život mimo našej planéty? Aké ničivé sú sopky a ako znie vesmír? O takýchto otázkach diskutujú každý týždeň Jozef a Samuel.</description>
+        <pubDate>Tue, 24 Jan 2023 00:01:00 +0100</pubDate>
+        <generator>https://podbean.com/?v=5.5</generator>
+        <language>en</language>
+        <spotify:countryOfOrigin>sk</spotify:countryOfOrigin>
+        <copyright>Copyright 2020 All rights reserved.</copyright>
+        <category>Education</category>
+        <ttl>1440</ttl>
+        <itunes:type>episodic</itunes:type>
+        <itunes:subtitle/>
+        <itunes:summary>Nachádza sa život mimo našej planéty? Aké ničivé sú sopky a ako znie vesmír? O takýchto otázkach diskutujú každý týždeň Jozef a Samuel.</itunes:summary>
+        <itunes:author>vedatorskypodcast</itunes:author>
+        <itunes:category text="Education"/>
+        <itunes:category text="Science"/>
+        <itunes:owner>
+            <itunes:name>vedatorskypodcast</itunes:name>
+        </itunes:owner>
+        <itunes:block>No</itunes:block>
+        <itunes:explicit>no</itunes:explicit>
+        <itunes:new-feed-url>https://feed.podbean.com/vedatorskypodcast/feed.xml</itunes:new-feed-url>
+        <itunes:image href="https://deow9bq0xqvbj.cloudfront.net/image-logo/6452802/vedator_-_podcast_coverb5ozk.png"/>
+        <image>
+            <url>https://deow9bq0xqvbj.cloudfront.net/image-logo/6452802/vedator_-_podcast_coverb5ozk.png</url>
+            <title>Vedátorský podcast</title>
+            <link>https://vedatorskypodcast.podbean.com</link>
+            <width>144</width>
+            <height>144</height>
+        </image>
+        <item>
+            <title>Vedátorský podcast 163 – Kvarky</title>
+            <itunes:title>Vedátorský podcast 163 – Kvarky</itunes:title>
+            <link>https://vedatorskypodcast.podbean.com/e/vedatorsky-podcast-163-%e2%80%93-kvarky/</link>
+            <comments>https://vedatorskypodcast.podbean.com/e/vedatorsky-podcast-163-%e2%80%93-kvarky/#comments</comments>
+            <pubDate>Tue, 24 Jan 2023 00:01:00 +0100</pubDate>
+            <guid isPermaLink="false">vedatorskypodcast.podbean.com/79505d59-3e59-36c3-8a71-90801ed708f6</guid>
+            <description>
+                <![CDATA[ <p>Hmota sa skladá z molekúl a tie sa skladajú z atómov. Atómy sa skladajú z elektrónov a jadier a tie sa zas skladajú z protónov a neutrónov. Tak však naše poznanie nekončí. Z čoho sa skladajú protóny a neutróny? Ako to vieme? A prečo sa je fyzikálna častica pomenovaná po mliečnom produkte? O tom všetkom diskutujú Jozef a Samuel. Podcast vzniká v spolupráci so SME. Errata: V podcaste povieme, že hadrón je z gréckeho „ťažké“, správne má byť „hútne“.   Spomínané simulácie nájdete na stránke <a href='http://www.physics.adelaide.edu.au/cssm/lattice/'>http://www.physics.adelaide.edu.au/cssm/lattice/</a> Podcastové hrnčeky a ponožky nájdete na stránke <a href='https://vedator.space/podporte-nas/'>https://vedator.space/podporte-nas/</a> </p> <p>Vedátora môžete podporiť cez stránku Patreon <a href='https://www.patreon.com/Vedator_sk'>https://www.patreon.com/Vedator_sk</a></p> <p>Všetko ostatné nájdete tu <a href='https://linktr.ee/vedatorsk'>https://linktr.ee/vedatorsk</a> Vedátorský newsletter <a href='http://eepurl.com/gIm1y5'>http://eepurl.com/gIm1y5</a></p>       ]]>
+            </description>
+            <content:encoded>
+                <![CDATA[ <p>Hmota sa skladá z molekúl a tie sa skladajú z atómov. Atómy sa skladajú z elektrónov a jadier a tie sa zas skladajú z protónov a neutrónov. Tak však naše poznanie nekončí. Z čoho sa skladajú protóny a neutróny? Ako to vieme? A prečo sa je fyzikálna častica pomenovaná po mliečnom produkte? O tom všetkom diskutujú Jozef a Samuel. Podcast vzniká v spolupráci so SME. Errata: V podcaste povieme, že <em>hadrón</em> je z gréckeho „ťažké“, správne má byť „hútne“.   Spomínané simulácie nájdete na stránke <a href='http://www.physics.adelaide.edu.au/cssm/lattice/'>http://www.physics.adelaide.edu.au/cssm/lattice/</a> Podcastové hrnčeky a ponožky nájdete na stránke <a href='https://vedator.space/podporte-nas/'>https://vedator.space/podporte-nas/</a> </p> <p>Vedátora môžete podporiť cez stránku Patreon <a href='https://www.patreon.com/Vedator_sk'>https://www.patreon.com/Vedator_sk</a></p> <p>Všetko ostatné nájdete tu <a href='https://linktr.ee/vedatorsk'>https://linktr.ee/vedatorsk</a> Vedátorský newsletter <a href='http://eepurl.com/gIm1y5'>http://eepurl.com/gIm1y5</a></p>       ]]>
+            </content:encoded>
+            <enclosure url="https://mcdn.podbean.com/mf/web/reb5i9/ep_kvarky_163.mp3" length="35242419" type="audio/mpeg"/>
+            <itunes:subtitle>Hmota sa skladá z molekúl a tie sa skladajú z atómov. Atómy sa skladajú z elektrónov a jadier a tie sa zas skladajú z protónov a neutrónov. Tak však naše poznanie nekončí. Z čoho sa skladajú protóny a neutróny? Ako to vieme? A prečo sa je fyzikálna č...</itunes:subtitle>
+            <itunes:summary>
+                <![CDATA[ Hmota sa skladá z molekúl a tie sa skladajú z atómov. Atómy sa skladajú z elektrónov a jadier a tie sa zas skladajú z protónov a neutrónov. Tak však naše poznanie nekončí. Z čoho sa skladajú protóny a neutróny? Ako to vieme? A prečo sa je fyzikálna častica pomenovaná po mliečnom produkte? O tom všetkom diskutujú Jozef a Samuel.Podcast vzniká v spolupráci so SME.Errata: V podcaste povieme, že hadrón je z gréckeho „ťažké“, správne má byť „hútne“.  Spomínané simulácie nájdete na stránkehttp://www.physics.adelaide.edu.au/cssm/lattice/Podcastové hrnčeky a ponožky nájdete na stránke https://vedator.space/podporte-nas/ Vedátora môžete podporiť cez stránku Patreonhttps://www.patreon.com/Vedator_sk Všetko ostatné nájdete tu https://linktr.ee/vedatorskVedátorský newsletter http://eepurl.com/gIm1y5       ]]>
+            </itunes:summary>
+            <itunes:author>vedatorskypodcast</itunes:author>
+            <itunes:explicit>no</itunes:explicit>
+            <itunes:block>No</itunes:block>
+            <itunes:duration>34:17</itunes:duration>
+            <itunes:episode>195</itunes:episode>
+            <itunes:episodeType>full</itunes:episodeType>
+            <itunes:image href="https://deow9bq0xqvbj.cloudfront.net/image-logo/6452802/vedator_-_podcast_coverb5ozk.png"/>
+        </item>
+        <item>
+            <title>Vedátorský podcast 162 – Odborné vedecké články</title>
+            <itunes:title>Vedátorský podcast 162 – Odborné vedecké články</itunes:title>
+            <link>https://vedatorskypodcast.podbean.com/e/vedatorsky-podcast-162-%e2%80%93-odborne-vedecke-clanky/</link>
+            <comments>https://vedatorskypodcast.podbean.com/e/vedatorsky-podcast-162-%e2%80%93-odborne-vedecke-clanky/#comments</comments>
+            <pubDate>Tue, 17 Jan 2023 00:01:00 +0100</pubDate>
+            <guid isPermaLink="false">vedatorskypodcast.podbean.com/696a2c5e-61cf-354a-930b-4f5710215ffd</guid>
+            <description>
+                <![CDATA[ <p>Úlohou vedcov je objavovať svet. Keď sa im to podarí, chcú o tom informovať ostatných vedcov – vo forme odborného článku. Ako takéto články vyzerajú? Ako ich čítať? A v čom dnes nefungujú úplne správne? O tom všetkom diskutujú Jozef a Samuel. Podcast vzniká v spolupráci so SME.  Podcastové hrnčeky a ponožky nájdete na stránke <a href='https://vedator.space/podporte-nas/'>https://vedator.space/podporte-nas/</a> </p> <p>Vedátora môžete podporiť cez stránku Patreon <a href='https://www.patreon.com/Vedator_sk'>https://www.patreon.com/Vedator_sk</a></p> <p>Všetko ostatné nájdete tu <a href='https://linktr.ee/vedatorsk'>https://linktr.ee/vedatorsk</a> Vedátorský newsletter <a href='http://eepurl.com/gIm1y5'>http://eepurl.com/gIm1y5</a> </p>       ]]>
+            </description>
+            <content:encoded>
+                <![CDATA[ <p>Úlohou vedcov je objavovať svet. Keď sa im to podarí, chcú o tom informovať ostatných vedcov – vo forme odborného článku. Ako takéto články vyzerajú? Ako ich čítať? A v čom dnes nefungujú úplne správne? O tom všetkom diskutujú Jozef a Samuel. Podcast vzniká v spolupráci so SME.  Podcastové hrnčeky a ponožky nájdete na stránke <a href='https://vedator.space/podporte-nas/'>https://vedator.space/podporte-nas/</a> </p> <p>Vedátora môžete podporiť cez stránku Patreon <a href='https://www.patreon.com/Vedator_sk'>https://www.patreon.com/Vedator_sk</a></p> <p>Všetko ostatné nájdete tu <a href='https://linktr.ee/vedatorsk'>https://linktr.ee/vedatorsk</a> Vedátorský newsletter <a href='http://eepurl.com/gIm1y5'>http://eepurl.com/gIm1y5</a> </p>       ]]>
+            </content:encoded>
+            <enclosure url="https://mcdn.podbean.com/mf/web/sm7puk/ep_clanky.mp3" length="37672270" type="audio/mpeg"/>
+            <itunes:subtitle>Úlohou vedcov je objavovať svet. Keď sa im to podarí, chcú o tom informovať ostatných vedcov – vo forme odborného článku. Ako takéto články vyzerajú? Ako ich čítať? A v čom dnes nefungujú úplne správne? O tom všetkom diskutujú Jozef a Samuel.Podcast ...</itunes:subtitle>
+            <itunes:summary>
+                <![CDATA[ Úlohou vedcov je objavovať svet. Keď sa im to podarí, chcú o tom informovať ostatných vedcov – vo forme odborného článku. Ako takéto články vyzerajú? Ako ich čítať? A v čom dnes nefungujú úplne správne? O tom všetkom diskutujú Jozef a Samuel.Podcast vzniká v spolupráci so SME. Podcastové hrnčeky a ponožky nájdete na stránke https://vedator.space/podporte-nas/ Vedátora môžete podporiť cez stránku Patreonhttps://www.patreon.com/Vedator_sk Všetko ostatné nájdete tu https://linktr.ee/vedatorskVedátorský newsletter http://eepurl.com/gIm1y5       ]]>
+            </itunes:summary>
+            <itunes:author>vedatorskypodcast</itunes:author>
+            <itunes:explicit>no</itunes:explicit>
+            <itunes:block>No</itunes:block>
+            <itunes:duration>38:43</itunes:duration>
+            <itunes:episode>194</itunes:episode>
+            <itunes:episodeType>full</itunes:episodeType>
+            <itunes:image href="https://deow9bq0xqvbj.cloudfront.net/image-logo/6452802/vedator_-_podcast_coverb5ozk.png"/>
+        </item>
+    </channel>
+</rss>

@@ -16,6 +16,9 @@ class ArtemisMediaDto
     protected bool $createArticle = false;
 
     #[Serialize]
+    protected bool $bonus = false;
+
+    #[Serialize]
     protected string $externalId = '';
 
     #[Serialize]
@@ -25,7 +28,10 @@ class ArtemisMediaDto
     protected string $description = '';
 
     #[Serialize]
-    protected int $duration = 0;
+    protected ?int $duration = null;
+
+    #[Serialize]
+    protected ?int $premiumDirectSourceDuration = null;
 
     #[Serialize]
     protected ArtemisMediaType $type = ArtemisMediaType::Default;
@@ -113,18 +119,6 @@ class ArtemisMediaDto
         return $this;
     }
 
-    public function getDuration(): int
-    {
-        return $this->duration;
-    }
-
-    public function setDuration(int $duration): self
-    {
-        $this->duration = $duration;
-
-        return $this;
-    }
-
     public function getType(): ArtemisMediaType
     {
         return $this->type;
@@ -205,6 +199,42 @@ class ArtemisMediaDto
     public function setImage(?ArtemisImageDto $image): self
     {
         $this->image = $image;
+
+        return $this;
+    }
+
+    public function isBonus(): bool
+    {
+        return $this->bonus;
+    }
+
+    public function setBonus(bool $bonus): self
+    {
+        $this->bonus = $bonus;
+
+        return $this;
+    }
+
+    public function getDuration(): ?int
+    {
+        return $this->duration;
+    }
+
+    public function setDuration(?int $duration): self
+    {
+        $this->duration = $duration;
+
+        return $this;
+    }
+
+    public function getPremiumDirectSourceDuration(): ?int
+    {
+        return $this->premiumDirectSourceDuration;
+    }
+
+    public function setPremiumDirectSourceDuration(?int $premiumDirectSourceDuration): self
+    {
+        $this->premiumDirectSourceDuration = $premiumDirectSourceDuration;
 
         return $this;
     }
