@@ -1,0 +1,69 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Distribution\Modules\Factory;
+
+use AnzuSystems\CoreDamBundle\Distribution\AbstractDistributionDtoFactory;
+use AnzuSystems\CoreDamBundle\Entity\Asset;
+use AnzuSystems\CoreDamBundle\Entity\AssetFile;
+use AnzuSystems\CoreDamBundle\Entity\AudioFile;
+use AnzuSystems\CoreDamBundle\Entity\CustomDistribution;
+use AnzuSystems\CoreDamBundle\Entity\ImageFile;
+use AnzuSystems\CoreDamBundle\Entity\PodcastEpisode;
+use App\Entity\ArtemisAudioDistribution;
+use App\Model\Dto\Artemis\ArtemisAudioMediaDto;
+use App\Model\Dto\Artemis\ArtemisImageDto;
+use App\Model\Dto\Artemis\ArtemisMediaAuthorDto;
+use App\Model\Dto\Artemis\ArtemisMediaChannel;
+use App\Model\Dto\Artemis\ArtemisMediaRubricDto;
+use App\Model\Dto\Artemis\ArtemisMediaTagDto;
+
+final class ArtemisAudioDtoFactory extends AbstractArtemisDtoFactory
+{
+    public function createMediaDto(
+        AudioFile $assetFile,
+        ArtemisAudioDistribution $distribution,
+    ): ArtemisAudioMediaDto {
+        $mediaDto = new ArtemisAudioMediaDto();
+        $mediaDto
+            ->setTitle($distribution->getTexts()->getTitle())
+            ->setDescription($distribution->getTexts()->getDescription())
+            ->setAnzuMediaId($assetFile->getAsset()->getId()) // todo check
+            ->setPremiumSourceUrl($distribution->getTexts()->getPremiumUrl())
+            ->setDirectSourceUrl($distribution->getTexts()->getFreeUrl())
+            ->setCreateArticle($distribution->getFlags()->isCreateArticle())
+            ->setMediaChannel((new ArtemisMediaChannel())->setAnzuId($distribution->getTexts()->getPodcastId()))
+            ->setDuration($assetFile->getAttributes()->getDuration())
+            ->setPremiumDirectSourceDuration($assetFile->getAttributes()->getDuration()); // todo from premium asset
+
+        $mediaDto->setAuthors($this->transformAuthors($distribution->getTexts()->getAuthors()));
+        $mediaDto->setTags($this->transformKeywords($distribution->getTexts()->getKeywords()));
+        $mediaDto->setRubric((new ArtemisMediaRubricDto())->setId($distribution->getTexts()->getRubricId()));
+
+        $episodes = $assetFile->getAsset()->getEpisodes()->toArray();
+
+        $imagFile = $this->getImagePreview($assetFile->getAsset(), $distribution);
+        if ($imagFile) {
+            $mediaDto->setImage($this->getImage($imagFile));
+        }
+
+        return $mediaDto;
+    }
+
+    private function getImagePreview(Asset $asset, ArtemisAudioDistribution $distribution): ?ImageFile
+    {
+        $episodes = $asset->getEpisodes()->filter(
+            fn (PodcastEpisode $episode): bool => $episode->getPodcast()->getId() === $distribution->getTexts()->getPodcastId()
+        );
+
+        foreach ($episodes as $episode) {
+            $imageFile = $episode->getImagePreview()?->getImageFile() ?? $episode->getPodcast()->getImagePreview()?->getImageFile();
+            if ($imageFile) {
+                return $imageFile;
+            }
+        }
+
+        return null;
+    }
+}

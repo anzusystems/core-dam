@@ -12,21 +12,27 @@ final class ArtemisAudioDistributionDto
     private string $title = '';
 
     #[Serialize]
+    private string $description = '';
+
+    #[Serialize]
     private array $authors = [];
 
     #[Serialize]
     private array $keywords = [];
 
     #[Serialize]
-    private string $publicUrlLink = '';
-
-    #[Serialize]
     private bool $createArticle = false;
 
-    public static function createFromCustomData(array $array): self
+    public function getDescription(): string
     {
-        return new self()
-        ;
+        return $this->description;
+    }
+
+    public function setDescription(string $description): self
+    {
+        $this->description = $description;
+
+        return $this;
     }
 
     public function getTitle(): string

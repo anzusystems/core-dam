@@ -19,29 +19,16 @@ class ArtemisAudioMediaDto extends ArtemisMediaDto
     private string $directSourceUrl = '';
 
     #[Serialize]
-    private string $premiumDirectSourceUrl = '';
+    private string $premiumSourceUrl = '';
 
-
-    #[Serialize]
-    private int $mediaServiceId = 14;
+    #[Serialize(type: 'Y-m-d\TH:i:sP')]
+    private ?\DateTimeImmutable $publishedAt = null;
 
     public function __construct()
     {
         $this->setType(ArtemisMediaType::Audio);
         $this->setMediaChannel(new ArtemisMediaChannel());
         parent::__construct();
-    }
-
-    public function getMediaServiceId(): int
-    {
-        return $this->mediaServiceId;
-    }
-
-    public function setMediaServiceId(int $mediaServiceId): self
-    {
-        $this->mediaServiceId = $mediaServiceId;
-
-        return $this;
     }
 
     public function getDirectSourceUrl(): string
@@ -56,14 +43,14 @@ class ArtemisAudioMediaDto extends ArtemisMediaDto
         return $this;
     }
 
-    public function getPremiumDirectSourceUrl(): string
+    public function getPremiumSourceUrl(): string
     {
-        return $this->premiumDirectSourceUrl;
+        return $this->premiumSourceUrl;
     }
 
-    public function setPremiumDirectSourceUrl(string $premiumDirectSourceUrl): self
+    public function setPremiumSourceUrl(string $premiumSourceUrl): self
     {
-        $this->premiumDirectSourceUrl = $premiumDirectSourceUrl;
+        $this->premiumSourceUrl = $premiumSourceUrl;
 
         return $this;
     }
@@ -88,6 +75,18 @@ class ArtemisAudioMediaDto extends ArtemisMediaDto
     public function setMediaChannel(ArtemisMediaChannel $mediaChannel): self
     {
         $this->mediaChannel = $mediaChannel;
+
+        return $this;
+    }
+
+    public function getPublishedAt(): ?\DateTimeImmutable
+    {
+        return $this->publishedAt;
+    }
+
+    public function setPublishedAt(?\DateTimeImmutable $publishedAt): self
+    {
+        $this->publishedAt = $publishedAt;
 
         return $this;
     }

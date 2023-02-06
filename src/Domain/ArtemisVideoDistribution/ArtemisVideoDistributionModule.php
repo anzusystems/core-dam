@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Distribution\Modules;
+namespace App\Domain\ArtemisVideoDistribution;
 
 use AnzuSystems\CoreDamBundle\Distribution\AbstractDistributionModule;
 use AnzuSystems\CoreDamBundle\Distribution\CustomDistributionInterface;
@@ -13,7 +13,6 @@ use AnzuSystems\CoreDamBundle\Model\Enum\AssetType;
 use AnzuSystems\CoreDamBundle\Repository\VideoFileRepository;
 use AnzuSystems\SerializerBundle\Exception\SerializerException;
 use App\Distribution\Modules\Factory\ArtemisVideoDtoFactory;
-use App\Domain\ArtemisVideoDistribution\ArtemisVideoDistributionAdapter;
 use App\Entity\ArtemisVideoDistribution;
 use App\HttpClient\ArtemisClient;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;

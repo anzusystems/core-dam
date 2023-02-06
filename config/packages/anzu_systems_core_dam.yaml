@@ -117,7 +117,7 @@ anzu_systems_core_dam:
           - { width: 300, height: 200, tags: ['roi_example'], title: '3:2' }  # admin roi example 3:2
           - { width: 0, height: 200, tags: ['list'] }           # admin DAM listing
           - { width: 200, height: 200, tags: ['roi_example'], title: '1:1' }  # admin roi example 1:1
-          - { width: 1920, height: 0, tags: ['detail'] }        # admin DAM image crop
+          - { width: 1920, height: 0, tags: ['detail', 'artemis_distribution'] }        # admin DAM image crop
           - { width: 0, height: 600 }        # UGC DAM image preview
           - { width: 500, height: 281 }      # UGC DAM image preview after upload
           - { width: 972, height: 648 }   # blog web listing small image set (TODO remove when we change the domain on web-blog)
@@ -221,12 +221,8 @@ anzu_systems_core_dam:
         chunk_storage_name: 'cms.audio'
         size_limit: '%env(byte_size:APP_CMS_AUDIO_MAX_SIZE)%'
         distribution:
-          distribution_services: [ artemis_podcast_cms, podcast_rss_main ]
+          distribution_services: [ artemis_podcast_cms ]
           distribution_requirements:
-            podcast_rss_main:
-              title: 'Rss Podcasty'
-              blocked_by: [ ]
-              strategy: none
             artemis_podcast_cms:
               title: 'Artemis Podcasty'
               blocked_by: [ ]
@@ -234,20 +230,16 @@ anzu_systems_core_dam:
               distribution_metadata_map:
                 title:
                   source_property_path: 'metadata.customData[title]'
-                  destination_property_path: 'customData[title]'
-                  normalizers:
-                    - { type: string, options: { empty_string: true } }
+                  destination_property_path: 'texts.title'
                 description:
                   source_property_path: 'metadata.customData[description]'
-                  destination_property_path: 'customData[description]'
-                  normalizers:
-                    - { type: string, options: { empty_string: true } }
+                  destination_property_path: 'texts.description'
                 keywords:
                   source_property_path: 'keywords_as_string_array'
-                  destination_property_path: 'customData[keywords]'
+                  destination_property_path: 'texts.keywords'
                 authors:
                   source_property_path: 'authors_as_string_array'
-                  destination_property_path: 'customData[authors]'
+                  destination_property_path: 'texts.authors'
               category_select:
                 enabled: true
                 required: true
@@ -296,7 +288,7 @@ anzu_systems_core_dam:
         size_limit: '%env(byte_size:APP_CMS_VIDEO_MAX_SIZE)%'
         file_slots: ~
         distribution:
-          distribution_services: [ youtube_cms_main, youtube_cms_fici, jw_cms, artemis_cms ]
+          distribution_services: [ youtube_cms_main, youtube_cms_fici, jw_cms, artemis_video_cms ]
           distribution_requirements:
             youtube_cms_main:
               title: 'YouTube CMS'
@@ -361,10 +353,23 @@ anzu_systems_core_dam:
               category_select:
                 enabled: true
                 required: false
-            artemis_cms:
+            artemis_video_cms:
               title: 'Artemis'
               blocked_by: [youtube_cms_main, youtube_cms_fici, jw_cms]
               strategy: at_least_one # none, one_from_type, wait_for_all
+              distribution_metadata_map:
+                title:
+                  source_property_path: 'metadata.customData[title]'
+                  destination_property_path: 'texts.title'
+                description:
+                  source_property_path: 'metadata.customData[description]'
+                  destination_property_path: 'texts.description'
+                keywords:
+                  source_property_path: 'keywords_as_string_array'
+                  destination_property_path: 'texts.keywords'
+                authors:
+                  source_property_path: 'authors_as_string_array'
+                  destination_property_path: 'texts.authors'
               category_select:
                 enabled: true
                 required: true

@@ -1,5 +1,5 @@
 ### Login admin
-POST {{host}}/force/login/3
+POST {{host}}/force/login/10001039
 Content-Type: application/json
 
 {
@@ -73,4 +73,13 @@ Content-Type: application/json
     "imageFile": "0d584443-2718-470a-b9b1-92d2d9c7447c",
     "position": 0
   }
+}
+
+### Update VideoFile image preview
+PUT {{host}}/api/adm/v1/video/aa967cf4-0ea9-499e-be2a-13bf0b63eabe
+Content-Type: application/json
+
+{
+  "id": "aa967cf4-0ea9-499e-be2a-13bf0b63eabe",
+  "imagePreview": null
 }

@@ -8,12 +8,7 @@ use AnzuSystems\CoreDamBundle\Distribution\Modules\JwVideo\JwVideoDtoFactory;
 use AnzuSystems\CoreDamBundle\Entity\JwDistribution;
 use AnzuSystems\CoreDamBundle\Entity\YoutubeDistribution;
 use AnzuSystems\CoreDamBundle\Helper\Math;
-use AnzuSystems\CoreDamBundle\Model\Enum\DistributionFailReason;
-use AnzuSystems\CoreDamBundle\Model\Enum\DistributionProcessStatus;
-use App\DamMigrations\Cache\AuthorCache;
-use App\DamMigrations\Cache\KeywordCache;
-use App\Distribution\Modules\ArtemisVideoDistributionModule;
-use Symfony\Component\Uid\Uuid;
+use App\Domain\ArtemisVideoDistribution\ArtemisVideoDistributionModule;
 
 final class AssetVideoMigrations extends AbstractAssetMigrations
 {

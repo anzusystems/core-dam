@@ -7,6 +7,7 @@
         "ext-ctype": "*",
         "ext-iconv": "*",
         "ext-redis": "^5.3",
+        "ext-fileinfo": "*",
         "anzusystems/auth-bundle": "^1.1",
         "anzusystems/core-dam-bundle": "dev-develop",
         "doctrine/doctrine-migrations-bundle": "^3.2",
