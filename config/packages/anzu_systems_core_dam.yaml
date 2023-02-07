@@ -282,6 +282,10 @@ anzu_systems_core_dam:
             Owners: ','
             OwnerName: ~
         title: ['customData:title']
+        video_episode_entity_map:
+          title:
+            source_property_path: 'metadata.customData[title]'
+            destination_property_path: 'texts.title'
         custom_metadata_pinned_amount: 3
         storage_name: 'cms.video'
         chunk_storage_name: 'cms.video'
