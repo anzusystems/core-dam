@@ -46,42 +46,22 @@ final class UserFixtures extends AbstractFixtures
 
     public function load(ProgressBar $progressBar): void
     {
-        foreach ($progressBar->iterate($this->getData()) as $userDto) {
-            $user = $this->userManager->createAnzuUser(new User(), $userDto);
-            $this->afterPersistAction($user);
-            $this->addToRegistry($user, $user->getId());
+        /** @var UserDto $userDto */
+        foreach ($progressBar->iterate($this->getData()) as $userDto => $user) {
+            /** @var User $created */
+            $created = $this->userManager->createAnzuUser($user, $userDto);
+            $this->addToRegistry($created, (int) $created->getId());
+            $this->addToRegistry($created, $created->getId());
         }
         $this->userManager->flush();
     }
 
     /**
-     * @return iterable<int, UserDto>
+     * @return iterable<UserDto, User>
      */
     private function getData(): iterable
     {
         $permissionGroup = $this->permissionGroupFixtures->getOneFromRegistry(PermissionGroupFixtures::BASIC_GROUP_TITLE);
-
-        $user = new UserDto();
-        $user
-            ->setId(self::USER_ONE_SSO_ID)
-            ->setEmail('user1.anzu@smeonline.sk')
-            ->setPermissionGroups(new ArrayCollection([$permissionGroup]))
-        ;
-
-        yield $user;
-
-        $user = new UserDto();
-        $user
-            ->setId(self::USER_TWO_SSO_ID)
-            ->setEmail('user2.anzu@smeonline.sk')
-            ->setPermissionGroups(new ArrayCollection([$permissionGroup]))
-        ;
-
-        yield $user;
-    }
-
-    private function afterPersistAction(User $user): void
-    {
         $defaultCmsLicence = $this->baseAssetLicenceFixtures->getOneFromRegistry(
             key: BaseAssetLicenceFixtures::DEFAULT_LICENCE_ID
         );
@@ -89,18 +69,69 @@ final class UserFixtures extends AbstractFixtures
             key: AssetLicenceFixtures::BLOG_DEFAULT_ASSET_LICENCE_ID
         );
 
-        switch ($user->getId()) {
-            case self::USER_ONE_SSO_ID:
-                $user
-                    ->setAssetLicences(new ArrayCollection([$defaultCmsLicence]));
+        yield (new UserDto())
+            ->setId(self::USER_ONE_SSO_ID)
+            ->setEmail('user1.anzu@smeonline.sk')
+            ->setPermissionGroups(new ArrayCollection([$permissionGroup]))
+        => (new User())
+            ->setAssetLicences(new ArrayCollection([$defaultCmsLicence]))
+        ;
 
-                break;
-            case self::USER_TWO_SSO_ID:
-                $user
-                    ->setRoles([User::ROLE_UGC, User::ROLE_USER])
-                    ->setAssetLicences(new ArrayCollection([$defaultCmsLicence, $defaultBlogLicence]));
+        yield (new UserDto())
+            ->setId(self::USER_TWO_SSO_ID)
+            ->setEmail('user2.anzu@smeonline.sk')
+            ->setPermissionGroups(new ArrayCollection([$permissionGroup]))
+            ->setRoles([User::ROLE_UGC, User::ROLE_USER])
+        => (new User())
+            ->setAssetLicences(new ArrayCollection([$defaultCmsLicence, $defaultBlogLicence]))
+        ;
 
-                break;
-        }
+        yield (new UserDto())
+            ->setId(1_799_719)
+            ->setEmail('lubomir.stanko@petitpress.sk')
+            ->setRoles([User::ROLE_ADMIN])
+        => new User();
+
+        yield (new UserDto())
+            ->setId(1_791_571)
+            ->setEmail('lukas.budos@petitpress.sk')
+            ->setRoles([User::ROLE_ADMIN])
+        => new User();
+
+        yield (new UserDto())
+            ->setId(1_459_820)
+            ->setEmail('ronald.marfoldi@petitpress.sk')
+            ->setRoles([User::ROLE_ADMIN])
+        => new User();
+
+        yield (new UserDto())
+            ->setId(1_803_193)
+            ->setEmail('david.kapsdorfer@petitpress.sk')
+            ->setRoles([User::ROLE_ADMIN])
+        => new User();
+
+        yield (new UserDto())
+            ->setId(1_777_852)
+            ->setEmail('igor.petriska@petitpress.sk')
+            ->setRoles([User::ROLE_ADMIN])
+        => new User();
+
+        yield (new UserDto())
+            ->setId(1_651_144)
+            ->setEmail('stanislav.volar@petitpress.sk')
+            ->setRoles([User::ROLE_ADMIN])
+        => new User();
+
+        yield (new UserDto())
+            ->setId(1_476_581)
+            ->setEmail('tomas.hermanek@petitpress.sk')
+            ->setRoles([User::ROLE_ADMIN])
+        => new User();
+
+        yield (new UserDto())
+            ->setId(1_971_254)
+            ->setEmail('matej.mihalik@petitpress.sk')
+            ->setRoles([User::ROLE_ADMIN])
+        => new User();
     }
 }
