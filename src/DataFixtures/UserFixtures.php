@@ -81,8 +81,8 @@ final class UserFixtures extends AbstractFixtures
             ->setId(self::USER_TWO_SSO_ID)
             ->setEmail('user2.anzu@smeonline.sk')
             ->setPermissionGroups(new ArrayCollection([$permissionGroup]))
-        => (new User())
             ->setRoles([User::ROLE_UGC, User::ROLE_USER])
+        => (new User())
             ->setAssetLicences(new ArrayCollection([$defaultCmsLicence, $defaultBlogLicence]))
         ;
 
