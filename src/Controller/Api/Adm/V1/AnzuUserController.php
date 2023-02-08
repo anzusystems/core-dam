@@ -40,6 +40,16 @@ final class AnzuUserController extends AbstractApiController
     /**
      * Get one item.
      */
+    #[Route('/current', 'get_current', methods: [Request::METHOD_GET])]
+    #[OAResponse(User::class)]
+    public function getCurrent(): JsonResponse
+    {
+        return $this->okResponse($this->getUser());
+    }
+
+    /**
+     * Get one item.
+     */
     #[Route('/{user}', 'get_one', ['user' => '\d+'], methods: [Request::METHOD_GET])]
     #[OAParameterPath('user'), OAResponse(User::class)]
     public function getOne(User $user): JsonResponse
