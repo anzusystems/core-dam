@@ -83,3 +83,11 @@ Content-Type: application/json
   "id": "aa967cf4-0ea9-499e-be2a-13bf0b63eabe",
   "imagePreview": null
 }
+
+### Get distribution previews
+GET {{host}}/api/adm/v1/video/aa967cf4-0ea9-499e-be2a-13bf0b63eabe/distribution-preview
+Content-Type: application/json
+
+### Set VideoFile image preview from distribution
+PATCH {{host}}/api/adm/v1/video/aa967cf4-0ea9-499e-be2a-13bf0b63eabe/distribution-preview/1eda6eea-3f9c-6f18-b9ea-5dd60c895846
+Content-Type: application/json

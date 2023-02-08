@@ -1,5 +1,5 @@
 ### Login admin
-GET {{host}}/force/login/3
+GET {{host}}/force/login/10001039
 Content-Type: application/json
 
 {
@@ -101,6 +101,10 @@ Content-Type: application/json
 > {%
   client.global.set('jwId', response.body.id)
 %}
+
+### Jw redistribute
+PATCH {{host}}/api/adm/v1/jw-distribution/1eda6bc5-9504-6532-b3e7-91436bf639e9/redistribute
+Content-Type: application/json
 
 ### Custom distribution custom form
 GET {{host}}/api/adm/v1/asset-custom-form/distribution-service/artemis_cms/element
