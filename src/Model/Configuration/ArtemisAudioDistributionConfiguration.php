@@ -10,12 +10,14 @@ final class ArtemisAudioDistributionConfiguration
 {
     public const AUDIO_FREE_SLOT_NAME_KEY = 'audio_free_slot_name';
     public const AUDIO_PREMIUM_SLOT_NAME_KEY = 'audio_premium_slot_name';
+    public const AUDIO_BONUS_SLOT_NAME_KEY = 'audio_bonus_slot_name';
     public const DEFAULT_RUBRIC_ID = 'default_rubric_id';
     public const CUSTOM_DATA_TO_DISTRIBUTION_MAP = 'custom_data_to_distribution_map';
 
     public function __construct(
         private readonly string $audioFreeSlotName,
         private readonly string $audioPremiumSlotName,
+        private readonly string $audioBonusSlotName,
         private readonly int $defaultRubricId,
         private readonly array $customDataToDistributionMap,
     ) {
@@ -26,6 +28,7 @@ final class ArtemisAudioDistributionConfiguration
         return new self(
             $config[self::AUDIO_FREE_SLOT_NAME_KEY] ?? '',
             $config[self::AUDIO_PREMIUM_SLOT_NAME_KEY] ?? '',
+            $config[self::AUDIO_BONUS_SLOT_NAME_KEY] ?? '',
             $config[self::DEFAULT_RUBRIC_ID] ?? 0,
             array_map(
                 fn (array $episodeMapConfig): TextsWriterConfiguration => TextsWriterConfiguration::getFromArrayConfiguration($episodeMapConfig),
@@ -47,6 +50,11 @@ final class ArtemisAudioDistributionConfiguration
     public function getAudioPremiumSlotName(): string
     {
         return $this->audioPremiumSlotName;
+    }
+
+    public function getAudioBonusSlotName(): string
+    {
+        return $this->audioBonusSlotName;
     }
 
     /**

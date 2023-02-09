@@ -13,6 +13,7 @@ use AnzuSystems\CoreDamBundle\Entity\AudioFile;
 use AnzuSystems\CoreDamBundle\Entity\PodcastEpisode;
 use App\Configuration\ConfigurationProvider;
 use App\Entity\ArtemisAudioDistribution;
+use Doctrine\ORM\NonUniqueResultException;
 
 final class ArtemisAudioDistributionFactory extends AbstractDistributionDtoFactory
 {
@@ -26,6 +27,8 @@ final class ArtemisAudioDistributionFactory extends AbstractDistributionDtoFacto
 
     /**
      * Creates minimal version of Distribution used to automatic updates to CMS
+     *
+     * @throws NonUniqueResultException
      */
     public function createFromAudioAndEpisode(AudioFile $audioFile, PodcastEpisode $episode, string $service): ArtemisAudioDistribution
     {
@@ -39,8 +42,8 @@ final class ArtemisAudioDistributionFactory extends AbstractDistributionDtoFacto
         );
 
         $audioDistribution->getFlags()->setCreateArticle(false);
-        //        $audioDistribution->setEpisode($episode);
-        $audioDistribution->getTexts()->setPodcastId((string) $episode->getPodcast()->getId());
+        $audioDistribution->getTexts()->setEpisodeId((string) $episode->getId());
+
         $audioDistribution->setAssetId((string) $audioFile->getAsset()->getId());
         $audioDistribution->setAssetFileId((string) $audioFile->getId());
 
@@ -108,6 +111,8 @@ final class ArtemisAudioDistributionFactory extends AbstractDistributionDtoFacto
         $audioDistribution->getTexts()
             ->setFreeUrl($episode->getAttributes()->getRssUrl())
             ->setExtRssId($episode->getAttributes()->getRssId());
+
+        $audioDistribution->getTexts()->setEpisodeId((string) $episode->getId());
         $audioDistribution->getTexts()->setPodcastId((string) $episode->getPodcast()->getId());
     }
 

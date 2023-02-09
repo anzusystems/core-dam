@@ -44,18 +44,6 @@ abstract class AbstractApiControllerTest extends AbstractControllerTest
         $this->serializer = $this->getService(Serializer::class);
     }
 
-    /**
-     * @template T of object
-     *
-     * @param class-string<T>|string $id
-     *
-     * @return T
-     */
-    protected function getService(string $id): object
-    {
-        return static::getContainer()->get($id);
-    }
-
     protected function assertListResponse(array $json, ?int $expectedItemsCount = null): void
     {
         $this->assertArrayHasKey('totalCount', $json);

@@ -35,4 +35,5 @@ anzu_systems_core_dam:
             type: customDistribution
             title: Custom CMS
             module: App\Distribution\Modules\ArtemisVideoDistributionModule
+            redistribute_statuses: ['failed', 'waiting', 'distributed']
 

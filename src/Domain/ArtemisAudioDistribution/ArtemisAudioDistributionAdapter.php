@@ -4,21 +4,22 @@ declare(strict_types=1);
 
 namespace App\Domain\ArtemisAudioDistribution;
 
-use AnzuSystems\CoreDamBundle\Distribution\DistributionAdapterInterface;
+use AnzuSystems\CommonBundle\Exception\ValidationException;
 use AnzuSystems\CoreDamBundle\Domain\Asset\AssetTextsWriter;
 use AnzuSystems\CoreDamBundle\Entity\AssetFile;
 use AnzuSystems\CoreDamBundle\Entity\AudioFile;
 use AnzuSystems\CoreDamBundle\Entity\Distribution;
 use AnzuSystems\CoreDamBundle\Model\Dto\CustomDistribution\CustomDistributionAdmDto;
 use App\Configuration\ConfigurationProvider;
+use App\Domain\Distribution\AbstractDistributionAdapter;
 use App\Entity\ArtemisAudioDistribution;
 
-final class ArtemisAudioDistributionAdapter implements DistributionAdapterInterface
+final class ArtemisAudioDistributionAdapter extends AbstractDistributionAdapter
 {
     public function __construct(
-        private readonly AssetTextsWriter $textsWriter,
         private readonly ConfigurationProvider $configurationProvider,
         private readonly ArtemisAudioDistributionFactory $audioDistributionFactory,
+        private readonly AssetTextsWriter $textsWriter,
     ) {
     }
 
@@ -42,16 +43,26 @@ final class ArtemisAudioDistributionAdapter implements DistributionAdapterInterf
         return $this->audioDistributionFactory->createFromAudioFile($assetFile, $distributionService);
     }
 
+    /**
+     * @throws ValidationException
+     */
     public function createDistributionEntity(AssetFile $assetFile, CustomDistributionAdmDto $distributionDto): Distribution
     {
-        $distribution = (new ArtemisAudioDistribution());
-        $distribution->setDistributionService($distributionDto->getDistributionService());
+        $distribution = new ArtemisAudioDistribution();
+        $this->setBaseDistributionFields($assetFile, $distributionDto, $distribution);
+        $config = $this->configurationProvider->getAudioDistribution()->getCustomDataToDistributionMap();
 
         $this->textsWriter->writeValues(
             from: $distributionDto,
             to: $distribution,
-            config: $this->configurationProvider->getAudioDistribution()->getCustomDataToDistributionMap(),
+            config: $config,
             reversedConfig: true,
+        );
+
+        $this->validate(
+            distribution: $distribution,
+            distributionDto: $distributionDto,
+            config: $config,
         );
 
         return $distribution;

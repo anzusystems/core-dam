@@ -38,13 +38,6 @@ final class TestCommand extends Command
 {
     public function __construct(
         private readonly ArtemisClient $artemisRubricClient,
-        private readonly AudioFileRepository $audioFileRepository,
-        private readonly CustomDistributionFacade $customDistributionFacade,
-        private readonly DistributionFacade $distributionFacade,
-        private readonly HttpClientInterface $httpClient,
-        private readonly PodcastRepository $podcastRepository,
-        private readonly RssImportManager $importManager,
-        private readonly ArtemisAudioDistributionAutomat $automat,
     ) {
         parent::__construct();
     }

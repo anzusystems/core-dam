@@ -1,0 +1,18 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Validator\Constraints;
+
+use App\Exception\ValidationException;
+use Attribute;
+use Symfony\Component\Validator\Constraint;
+
+#[Attribute(Attribute::TARGET_CLASS)]
+final class ArtemisAudioConstraint extends Constraint
+{
+    public function getTargets(): string
+    {
+        return self::CLASS_CONSTRAINT;
+    }
+}

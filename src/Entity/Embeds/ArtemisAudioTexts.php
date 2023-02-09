@@ -57,6 +57,10 @@ class ArtemisAudioTexts
 
     #[ORM\Column(type: Types::STRING, length: 36)]
     #[Serialize]
+    private string $episodeId;
+
+    #[ORM\Column(type: Types::STRING, length: 36)]
+    #[Serialize]
     private string $podcastId;
 
     public function __construct()
@@ -69,6 +73,7 @@ class ArtemisAudioTexts
         $this->setFreeUrl('');
         $this->setExtRssId('');
         $this->setRubricId(0);
+        $this->setEpisodeId('');
         $this->setPodcastId('');
     }
 
@@ -164,6 +169,18 @@ class ArtemisAudioTexts
     public function setRubricId(int $rubricId): self
     {
         $this->rubricId = $rubricId;
+
+        return $this;
+    }
+
+    public function getEpisodeId(): string
+    {
+        return $this->episodeId;
+    }
+
+    public function setEpisodeId(string $episodeId): self
+    {
+        $this->episodeId = $episodeId;
 
         return $this;
     }

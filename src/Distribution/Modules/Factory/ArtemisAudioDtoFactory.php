@@ -4,20 +4,14 @@ declare(strict_types=1);
 
 namespace App\Distribution\Modules\Factory;
 
-use AnzuSystems\CoreDamBundle\Distribution\AbstractDistributionDtoFactory;
 use AnzuSystems\CoreDamBundle\Entity\Asset;
-use AnzuSystems\CoreDamBundle\Entity\AssetFile;
 use AnzuSystems\CoreDamBundle\Entity\AudioFile;
-use AnzuSystems\CoreDamBundle\Entity\CustomDistribution;
 use AnzuSystems\CoreDamBundle\Entity\ImageFile;
 use AnzuSystems\CoreDamBundle\Entity\PodcastEpisode;
 use App\Entity\ArtemisAudioDistribution;
 use App\Model\Dto\Artemis\ArtemisAudioMediaDto;
-use App\Model\Dto\Artemis\ArtemisImageDto;
-use App\Model\Dto\Artemis\ArtemisMediaAuthorDto;
 use App\Model\Dto\Artemis\ArtemisMediaChannel;
 use App\Model\Dto\Artemis\ArtemisMediaRubricDto;
-use App\Model\Dto\Artemis\ArtemisMediaTagDto;
 
 final class ArtemisAudioDtoFactory extends AbstractArtemisDtoFactory
 {
@@ -40,8 +34,6 @@ final class ArtemisAudioDtoFactory extends AbstractArtemisDtoFactory
         $mediaDto->setAuthors($this->transformAuthors($distribution->getTexts()->getAuthors()));
         $mediaDto->setTags($this->transformKeywords($distribution->getTexts()->getKeywords()));
         $mediaDto->setRubric((new ArtemisMediaRubricDto())->setId($distribution->getTexts()->getRubricId()));
-
-        $episodes = $assetFile->getAsset()->getEpisodes()->toArray();
 
         $imagFile = $this->getImagePreview($assetFile->getAsset(), $distribution);
         if ($imagFile) {

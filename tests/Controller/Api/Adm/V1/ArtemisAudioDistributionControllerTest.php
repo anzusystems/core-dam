@@ -6,6 +6,7 @@ namespace App\Tests\Controller\Api\Adm\V1;
 
 use AnzuSystems\CoreDamBundle\DataFixtures\AudioFixtures;
 use AnzuSystems\CoreDamBundle\DataFixtures\ImageFixtures;
+use AnzuSystems\CoreDamBundle\DataFixtures\PodcastEpisodeFixtures;
 use AnzuSystems\CoreDamBundle\DataFixtures\PodcastFixtures;
 use AnzuSystems\CoreDamBundle\Domain\AssetSlot\AssetSlotFactory;
 use AnzuSystems\CoreDamBundle\Domain\PodcastEpisode\PodcastEpisodeFactory;
@@ -26,16 +27,16 @@ final class ArtemisAudioDistributionControllerTest extends AbstractApiController
         'description' => 'Custom audio description',
         'keywords' => ['News', 'Podcast', 'Politics'],
         'authors' => ['Aarne Ormonde', 'Larry Queen', 'Malka Raisa'],
-        'freeUrl' => 'https://audio.sme.sk/rssurl',
+        'freeUrl' => 'http://core.dam.localhost/rssurl',
         'premiumUrl' => 'http://audio.smedata.localhost/public-path',
         'createArticle' => false,
         'extRssId' => '123',
         'rubricId' => 6978,
-        'podcastId' => PodcastFixtures::PODCAST_1
+        'podcastId' => PodcastFixtures::PODCAST_1,
+        'episodeId' => PodcastEpisodeFixtures::EPISODE_1_ID,
     ];
 
     private AssetSlotFactory $assetSlotFactory;
-    private PodcastEpisodeFactory $podcastEpisodeFactory;
     private ArtemisAudioDtoFactory $artemisAudioDtoFactory;
     private AudioFile $audioFile;
 
@@ -44,13 +45,12 @@ final class ArtemisAudioDistributionControllerTest extends AbstractApiController
         parent::setUp();
 
         $this->assetSlotFactory = $this->getService(AssetSlotFactory::class);
-        $this->podcastEpisodeFactory = $this->getService(PodcastEpisodeFactory::class);
         $this->artemisAudioDtoFactory = $this->getService(ArtemisAudioDtoFactory::class);
-        $this->setupAudioData();
     }
 
     public function testPreparePayload(): void
     {
+        $this->setupAudioData();
         $client = $this->getClient(App::getUserIdAdmin());
         $response = $client->get(sprintf(
             '/api/adm/v1/custom-distribution/asset-file/%s/prepare-payload/%s',
@@ -66,6 +66,7 @@ final class ArtemisAudioDistributionControllerTest extends AbstractApiController
     // todo
 //    public function testDistributeSuccess(): void
 //    {
+//        $this->setupAudioData();
 //        $client = $this->getClient(App::getUserIdAdmin());
 //
 //        $response = $client->post(
@@ -79,9 +80,9 @@ final class ArtemisAudioDistributionControllerTest extends AbstractApiController
 //            ]
 //        );
 //
-//        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
+//        $this->assertSame(Response::HTTP_OK, $response->getStatusCode(), (string) $response->getContent());
 //        $data = json_decode($response->getContent(), true);
-//        $this->assertSame(self::TEST_CUSTOM_DATA, $data['customData']);
+//        $this->assertEqualsCanonicalizing(self::TEST_CUSTOM_DATA, $data['customData']);
 //        /** @var ArtemisAudioDistribution $distribution */
 //        $distribution = $this->entityManager->getRepository(ArtemisAudioDistribution::class)->find($data['id']);
 //        $this->assertNotNull($distribution);
@@ -146,6 +147,7 @@ final class ArtemisAudioDistributionControllerTest extends AbstractApiController
                 'customData.rubricId' => ['error_field_empty'],
                 'customData.keywords' => ['error_field_empty'],
                 'customData.podcastId' => ['error_field_empty'],
+                'customData.episodeId' => ['error_field_empty'],
                 'customData.createArticle' => ['error_field_empty'],
             ],
             $data['fields'] ?? []
@@ -158,22 +160,14 @@ final class ArtemisAudioDistributionControllerTest extends AbstractApiController
         $this->assetSlotFactory->createRelation(
             asset: $this->audioFile->getAsset(),
             assetFile: $this->audioFile,
-            slotName: 'paid',
+            slotName: 'premium',
             flush: false
         );
         $this->audioFile->getAudioPublicLink()
             ->setPublic(true)
             ->setSlug('public')
             ->setPath('public-path');
-        $podcast = $this->entityManager->getRepository(Podcast::class)->find(PodcastFixtures::PODCAST_1);
-        $episode = $this->podcastEpisodeFactory->createEpisodeWithAsset(
-            asset: $this->audioFile->getAsset(),
-            podcast: $podcast,
-            flush: false
-        );
-        $episode->getAttributes()
-            ->setRssUrl('https://audio.sme.sk/rssurl')
-            ->setRssId('123');
+
         $this->entityManager->flush();
     }
 }

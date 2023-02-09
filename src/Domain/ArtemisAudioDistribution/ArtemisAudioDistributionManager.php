@@ -6,31 +6,44 @@ namespace App\Domain\ArtemisAudioDistribution;
 
 use AnzuSystems\CoreDamBundle\Domain\AbstractManager;
 use AnzuSystems\CoreDamBundle\Domain\AssetLicence\AssetLicenceManager as BaseAssetLicenceManager;
+use AnzuSystems\CoreDamBundle\Domain\Distribution\AbstractDistributionManager;
 use AnzuSystems\CoreDamBundle\Entity\AssetLicence;
 use AnzuSystems\CoreDamBundle\Entity\Author;
+use AnzuSystems\CoreDamBundle\Entity\Distribution;
 use App\Entity\ArtemisAudioDistribution;
 use App\Model\Domain\AssetLicence\UpsertAssertLicenceDto;
 
-final class ArtemisAudioDistributionManager extends AbstractManager
+final class ArtemisAudioDistributionManager extends AbstractDistributionManager
 {
-    public function __construct(
-    ) {
-    }
-
-    public function create(ArtemisAudioDistribution $distribution, bool $flush = true): ArtemisAudioDistribution
+    /**
+     * @param ArtemisAudioDistribution $distribution
+     * @param ArtemisAudioDistribution $newDistribution
+     */
+    public function update(Distribution $distribution, Distribution $newDistribution, bool $flush = true): Distribution
     {
-        $this->trackCreation($distribution);
-        $this->entityManager->persist($distribution);
+        $this->trackModification($distribution);
+
+        $distribution->getTexts()
+            ->setTitle($newDistribution->getTexts()->getTitle())
+            ->setExtRssId($newDistribution->getTexts()->getExtRssId())
+            ->setDescription($newDistribution->getTexts()->getDescription())
+            ->setFreeUrl($newDistribution->getTexts()->getFreeUrl())
+            ->setPremiumUrl($newDistribution->getTexts()->getPremiumUrl())
+            ->setAuthors($newDistribution->getTexts()->getAuthors())
+            ->setKeywords($newDistribution->getTexts()->getKeywords())
+            ->setRubricId($newDistribution->getTexts()->getRubricId())
+            ->setEpisodeId($newDistribution->getTexts()->getEpisodeId())
+            ->setPodcastId($newDistribution->getTexts()->getPodcastId());
+        $distribution->getFlags()
+            ->setCreateArticle($newDistribution->getFlags()->isCreateArticle());
+
         $this->flush($flush);
 
         return $distribution;
     }
 
-    public function delete(ArtemisAudioDistribution $distribution, bool $flush = true): bool
+    public static function getDefaultKeyName(): string
     {
-        $this->entityManager->remove($distribution);
-        $this->flush($flush);
-
-        return true;
+        return ArtemisAudioDistribution::class;
     }
 }

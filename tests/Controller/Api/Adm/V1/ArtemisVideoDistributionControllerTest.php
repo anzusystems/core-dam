@@ -4,23 +4,14 @@ declare(strict_types=1);
 
 namespace App\Tests\Controller\Api\Adm\V1;
 
-use AnzuSystems\CoreDamBundle\DataFixtures\AudioFixtures;
-use AnzuSystems\CoreDamBundle\DataFixtures\PodcastFixtures;
 use AnzuSystems\CoreDamBundle\DataFixtures\VideoFixtures;
-use AnzuSystems\CoreDamBundle\Domain\AssetSlot\AssetSlotFactory;
-use AnzuSystems\CoreDamBundle\Domain\Distribution\DistributionManager;
-use AnzuSystems\CoreDamBundle\Domain\PodcastEpisode\PodcastEpisodeFactory;
-use AnzuSystems\CoreDamBundle\Entity\AudioFile;
+use AnzuSystems\CoreDamBundle\Domain\Distribution\DistributionManagerProvider;
 use AnzuSystems\CoreDamBundle\Entity\JwDistribution;
-use AnzuSystems\CoreDamBundle\Entity\Podcast;
-use AnzuSystems\CoreDamBundle\Entity\PodcastEpisode;
 use AnzuSystems\CoreDamBundle\Entity\VideoFile;
 use AnzuSystems\CoreDamBundle\Entity\YoutubeDistribution;
 use AnzuSystems\CoreDamBundle\Model\Enum\DistributionProcessStatus;
-use AnzuSystems\CoreDamBundle\Repository\VideoFileRepository;
 use App\App;
 use App\Distribution\Modules\Factory\ArtemisVideoDtoFactory;
-use App\Entity\ArtemisAudioDistribution;
 use App\Entity\ArtemisVideoDistribution;
 use App\Model\Dto\Artemis\ArtemisMediaAuthorDto;
 use App\Model\Dto\Artemis\ArtemisMediaTagDto;
@@ -38,14 +29,14 @@ final class ArtemisVideoDistributionControllerTest extends AbstractApiController
         'rubricId' => 6978,
     ];
 
-    private DistributionManager $distributionManager;
+    private DistributionManagerProvider $distributionManagerProvider;
     private ArtemisVideoDtoFactory $artemisVideoDtoFactory;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->distributionManager = $this->getService(DistributionManager::class);
+        $this->distributionManagerProvider = $this->getService(DistributionManagerProvider::class);
         $this->artemisVideoDtoFactory = $this->getService(ArtemisVideoDtoFactory::class);
     }
 
@@ -86,7 +77,7 @@ final class ArtemisVideoDistributionControllerTest extends AbstractApiController
 //                ]
 //            ]
 //        );
-//        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
+//        $this->assertSame(Response::HTTP_OK, $response->getStatusCode(), (string) $response->getContent());
 //        $data = json_decode($response->getContent(), true);
 //        $this->assertSame(self::TEST_CUSTOM_DATA, $data['customData']);
 //        /** @var ArtemisVideoDistribution $distribution */
@@ -162,7 +153,7 @@ final class ArtemisVideoDistributionControllerTest extends AbstractApiController
             ->setDistributionService('youtube_cms_main')
         ;
 
-        return $this->distributionManager->create($ytDistribution);
+        return $this->distributionManagerProvider->get(YoutubeDistribution::class)->create($ytDistribution);
     }
 
     private function setupJwDistribution(VideoFile $videoFile): JwDistribution
@@ -175,6 +166,6 @@ final class ArtemisVideoDistributionControllerTest extends AbstractApiController
             ->setDistributionService('jw_cms')
         ;
 
-        return $this->distributionManager->create($jwDistribution);
+        return $this->distributionManagerProvider->get(YoutubeDistribution::class)->create($jwDistribution);
     }
 }

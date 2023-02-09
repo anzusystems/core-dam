@@ -31,6 +31,7 @@ class Configuration implements ConfigurationInterface
             ->children()
                 ->scalarNode(ArtemisAudioDistributionConfiguration::AUDIO_FREE_SLOT_NAME_KEY)->isRequired()->end()
                 ->scalarNode(ArtemisAudioDistributionConfiguration::AUDIO_PREMIUM_SLOT_NAME_KEY)->isRequired()->end()
+                ->scalarNode(ArtemisAudioDistributionConfiguration::AUDIO_BONUS_SLOT_NAME_KEY)->isRequired()->end()
                 ->integerNode(ArtemisAudioDistributionConfiguration::DEFAULT_RUBRIC_ID)->isRequired()->end()
                 ->append(BaseConfiguration::addTextMapperConfiguration(
                     ArtemisAudioDistributionConfiguration::CUSTOM_DATA_TO_DISTRIBUTION_MAP

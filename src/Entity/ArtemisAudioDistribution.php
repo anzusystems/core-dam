@@ -9,10 +9,12 @@ use AnzuSystems\SerializerBundle\Attributes\Serialize;
 use App\Entity\Embeds\ArtemisAudioFlags;
 use App\Entity\Embeds\ArtemisAudioTexts;
 use App\Repository\ArtemisAudioDistributionRepository;
+use App\Validator\Constraints as AppAssert;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ArtemisAudioDistributionRepository::class)]
+#[AppAssert\ArtemisAudioConstraint]
 class ArtemisAudioDistribution extends Distribution
 {
     #[ORM\Embedded(ArtemisAudioTexts::class)]

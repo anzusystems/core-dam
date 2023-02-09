@@ -76,6 +76,35 @@ Content-Type: application/json
   client.global.set('youtubeId', response.body.id)
 %}
 
+### Youtube redistribute
+PUT {{host}}/api/adm/v1/youtube-distribution/1eda8a3c-2f59-612a-9e41-65e77a866c4e/redistribute
+Content-Type: application/json
+
+{
+  "publishAt": null,
+  "distributionService": "youtube_cms_main",
+  "privacy": "private",
+  "playlist": "",
+  "language": "as",
+  "texts": {
+    "title": "title",
+    "description": "description",
+    "keywords": [
+      "aaa",
+      "bbb"
+    ]
+  },
+  "flags": {
+    "embeddable": true,
+    "forKids": true,
+    "notifySubscribers": true
+  }
+}
+
+> {%
+    client.global.set('youtubeId', response.body.id)
+%}
+
 ### Jw prepare distribution payload
 GET {{host}}/api/adm/v1/jw-distribution/asset-file/aa967cf4-0ea9-499e-be2a-13bf0b63eabe/prepare-payload/jw_cms
 Content-Type: application/json
@@ -99,12 +128,30 @@ Content-Type: application/json
 }
 
 > {%
-  client.global.set('jwId', response.body.id)
+  client.global.set('jwId', response.body.id);
 %}
 
 ### Jw redistribute
-PATCH {{host}}/api/adm/v1/jw-distribution/1eda6bc5-9504-6532-b3e7-91436bf639e9/redistribute
+PUT {{host}}/api/adm/v1/jw-distribution/1eda8a1e-2780-6d9a-a70c-cb28974b9ab6/redistribute
 Content-Type: application/json
+
+{
+  "texts": {
+    "title": "Video title updated",
+    "description": "Custom video description",
+    "author": "Aarne Ormonde",
+    "keywords": [
+      "News",
+      "Podcast",
+      "Politics"
+    ]
+  },
+  "distributionService": "jw_cms"
+}
+
+> {%
+    client.global.set('jwId', response.body.id)
+%}
 
 ### Custom distribution custom form
 GET {{host}}/api/adm/v1/asset-custom-form/distribution-service/artemis_cms/element

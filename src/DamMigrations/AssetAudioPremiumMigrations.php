@@ -8,7 +8,7 @@ use App\Model\MigrateConfig;
 
 final class AssetAudioPremiumMigrations extends AbstractAssetAudioMigrations
 {
-    protected const SLOT_NAME = 'paid';
+    protected const SLOT_NAME = 'premium';
     protected const PUBLIC_STREAM = true;
 
     // todo check title duplicate!

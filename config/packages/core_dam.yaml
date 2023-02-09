@@ -1,7 +1,8 @@
 core_dam:
   artemis_audio_distribution:
     audio_free_slot_name: 'free'
-    audio_premium_slot_name: 'paid'
+    audio_premium_slot_name: 'premium'
+    audio_bonus_slot_name: 'bonus'
     default_rubric_id: 6978
     custom_data_to_distribution_map:
       title:
@@ -31,6 +32,9 @@ core_dam:
       rubric_id:
         source_property_path: 'texts.rubricId'
         destination_property_path: 'customData[rubricId]'
+      episode_id:
+        source_property_path: 'texts.episodeId'
+        destination_property_path: 'customData[episodeId]'
       podcast_id:
         source_property_path: 'texts.podcastId'
         destination_property_path: 'customData[podcastId]'
