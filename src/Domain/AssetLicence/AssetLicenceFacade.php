@@ -5,15 +5,16 @@ declare(strict_types=1);
 namespace App\Domain\AssetLicence;
 
 use AnzuSystems\CommonBundle\Exception\ValidationException;
+use AnzuSystems\CommonBundle\Traits\ValidatorAwareTrait;
 use AnzuSystems\CoreDamBundle\Entity\AssetLicence;
-use AnzuSystems\CoreDamBundle\Validator\EntityValidator;
 use App\Model\Domain\AssetLicence\UpsertAssertLicenceDto;
 
-final readonly class AssetLicenceFacade
+final class AssetLicenceFacade
 {
+    use ValidatorAwareTrait;
+
     public function __construct(
-        private EntityValidator $validator,
-        private AssetLicenceManager $manager,
+        private readonly AssetLicenceManager $manager,
     ) {
     }
 
@@ -22,7 +23,7 @@ final readonly class AssetLicenceFacade
      */
     public function create(UpsertAssertLicenceDto $upsertAssertLicenceDto): AssetLicence
     {
-        $this->validator->validateDto($upsertAssertLicenceDto);
+        $this->validator->validate($upsertAssertLicenceDto);
 
         return $this->manager->createByDto($upsertAssertLicenceDto);
     }
@@ -32,7 +33,7 @@ final readonly class AssetLicenceFacade
      */
     public function update(AssetLicence $licence, UpsertAssertLicenceDto $upsertAssertLicenceDto): AssetLicence
     {
-        $this->validator->validateDto($upsertAssertLicenceDto);
+        $this->validator->validate($upsertAssertLicenceDto);
 
         return $this->manager->updateByDto($licence, $upsertAssertLicenceDto);
     }

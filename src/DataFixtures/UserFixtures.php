@@ -75,6 +75,7 @@ final class UserFixtures extends AbstractFixtures
             ->setPermissionGroups(new ArrayCollection([$permissionGroup]))
         => (new User())
             ->setAssetLicences(new ArrayCollection([$defaultCmsLicence]))
+            ->setUserToExtSystems(new ArrayCollection([$defaultCmsLicence->getExtSystem()]))
         ;
 
         yield (new UserDto())
@@ -84,6 +85,7 @@ final class UserFixtures extends AbstractFixtures
             ->setRoles([User::ROLE_UGC, User::ROLE_USER])
         => (new User())
             ->setAssetLicences(new ArrayCollection([$defaultCmsLicence, $defaultBlogLicence]))
+            ->setUserToExtSystems(new ArrayCollection([$defaultCmsLicence->getExtSystem(), $defaultBlogLicence->getExtSystem()]))
         ;
 
         yield (new UserDto())

@@ -10,9 +10,10 @@ use AnzuSystems\CommonBundle\Model\OpenApi\Parameter\OAParameterPath;
 use AnzuSystems\CommonBundle\Model\OpenApi\Request\OARequest;
 use AnzuSystems\CommonBundle\Model\OpenApi\Response\OAResponse;
 use AnzuSystems\CommonBundle\Model\OpenApi\Response\OAResponseCreated;
+use AnzuSystems\CommonBundle\Model\OpenApi\Response\OAResponseInfiniteList;
 use AnzuSystems\CommonBundle\Model\OpenApi\Response\OAResponseValidation;
+use AnzuSystems\CommonBundle\Model\User\UserDto;
 use AnzuSystems\Contracts\Exception\AppReadOnlyModeException;
-use AnzuSystems\Contracts\Model\User\UserDto;
 use AnzuSystems\CoreDamBundle\App;
 use AnzuSystems\CoreDamBundle\Controller\Api\AbstractApiController;
 use AnzuSystems\SerializerBundle\Attributes\SerializeParam;
@@ -63,7 +64,7 @@ final class AnzuUserController extends AbstractApiController
      * @throws ORMException
      */
     #[Route('', 'User', methods: [Request::METHOD_GET])]
-    #[OAResponse([User::class])]
+    #[OAResponseInfiniteList(User::class)]
     public function getList(ApiParams $apiParams): JsonResponse
     {
         return $this->okResponse(

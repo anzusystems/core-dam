@@ -5,26 +5,20 @@ declare(strict_types=1);
 namespace App\Domain\Distribution;
 
 use AnzuSystems\CommonBundle\Exception\ValidationException;
+use AnzuSystems\CommonBundle\Traits\ValidatorAwareTrait;
 use AnzuSystems\CoreDamBundle\Distribution\DistributionAdapterInterface;
-use AnzuSystems\CoreDamBundle\Domain\Asset\AssetTextsWriter;
 use AnzuSystems\CoreDamBundle\Entity\AssetFile;
 use AnzuSystems\CoreDamBundle\Entity\Distribution;
 use AnzuSystems\CoreDamBundle\Model\Dto\CustomDistribution\CustomDistributionAdmDto;
-use AnzuSystems\CoreDamBundle\Validator\EntityValidator;
 use App\Validator\ValidationTransformer;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Contracts\Service\Attribute\Required;
 
 abstract class AbstractDistributionAdapter implements DistributionAdapterInterface
 {
-    protected readonly EntityValidator $entityValidator;
-    protected readonly ValidationTransformer $validationTransformer;
+    use ValidatorAwareTrait;
 
-    #[Required]
-    public function setEntityValidator(EntityValidator $entityValidator): void
-    {
-        $this->entityValidator = $entityValidator;
-    }
+    protected readonly ValidationTransformer $validationTransformer;
 
     #[Required]
     public function setValidationTransformer(ValidationTransformer $validationTransformer): void
@@ -52,7 +46,7 @@ abstract class AbstractDistributionAdapter implements DistributionAdapterInterfa
         array $config,
     ): void {
         try {
-            $this->entityValidator->validate($distribution);
+            $this->validator->validate($distribution);
         } catch (ValidationException $exception) {
             throw new ValidationException(
                 (new ConstraintViolationList(

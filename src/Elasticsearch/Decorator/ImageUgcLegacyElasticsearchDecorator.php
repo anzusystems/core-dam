@@ -6,22 +6,23 @@ namespace App\Elasticsearch\Decorator;
 
 use AnzuSystems\CommonBundle\ApiFilter\ApiResponseList;
 use AnzuSystems\CommonBundle\Exception\ValidationException;
+use AnzuSystems\CommonBundle\Traits\ValidatorAwareTrait;
 use AnzuSystems\CoreDamBundle\Elasticsearch\ElasticSearch;
 use AnzuSystems\CoreDamBundle\Elasticsearch\SearchDto\AssetAdmSearchDto;
 use AnzuSystems\CoreDamBundle\Entity\Asset;
 use AnzuSystems\CoreDamBundle\Entity\AssetLicence;
 use AnzuSystems\CoreDamBundle\Model\Enum\AssetStatus;
 use AnzuSystems\CoreDamBundle\Model\Enum\AssetType;
-use AnzuSystems\CoreDamBundle\Validator\EntityValidator;
 use AnzuSystems\SerializerBundle\Exception\SerializerException;
 use App\ApiFilter\ApiUgcLegacyParams;
 use App\Model\Ugc\Legacy\ImageListDto;
 
-final readonly class ImageUgcLegacyElasticsearchDecorator
+final class ImageUgcLegacyElasticsearchDecorator
 {
+    use ValidatorAwareTrait;
+
     public function __construct(
-        private ElasticSearch $elasticSearch,
-        private EntityValidator $validator,
+        private readonly ElasticSearch $elasticSearch,
     ) {
     }
 
@@ -34,7 +35,7 @@ final readonly class ImageUgcLegacyElasticsearchDecorator
         ApiUgcLegacyParams $apiUgcLegacyParams,
     ): ApiResponseList {
         $searchDto = $this->createSearchDto($licence, $apiUgcLegacyParams);
-        $this->validator->validateDto($searchDto);
+        $this->validator->validate($searchDto);
 
         $list = $this->elasticSearch->searchInfiniteList($searchDto, $licence->getExtSystem());
         $data = array_map(

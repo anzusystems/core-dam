@@ -8,6 +8,7 @@ use AnzuSystems\CommonBundle\Exception\ValidationException;
 use AnzuSystems\CommonBundle\Model\OpenApi\Parameter\OAParameterPath;
 use AnzuSystems\CommonBundle\Model\OpenApi\Request\OARequest;
 use AnzuSystems\CommonBundle\Model\OpenApi\Response\OAResponse;
+use AnzuSystems\CommonBundle\Model\OpenApi\Response\OAResponseList;
 use AnzuSystems\CommonBundle\Model\OpenApi\Response\OAResponseValidation;
 use AnzuSystems\Contracts\Exception\AnzuException;
 use AnzuSystems\Contracts\Exception\AppReadOnlyModeException;
@@ -58,7 +59,7 @@ final class ImageController extends AbstractApiController
      */
     #[Route('/blog/{blogId}/image', name: 'list', methods: [Request::METHOD_GET])]
     #[Route('/blog/{blogId}/image/search', name: 'search', methods: [Request::METHOD_GET])]
-    #[OAResponse([ImageListDto::class])]
+    #[OAResponseList(ImageListDto::class)]
     public function searchList(
         #[AssetLicenceByBlogIdParam(name: 'blogId')] AssetLicence $licence,
         ApiUgcLegacyParams $apiUgcLegacyParams,

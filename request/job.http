@@ -1,0 +1,12 @@
+### Get job list
+GET {{host}}/api/adm/v1/job
+Content-Type: application/json
+
+### Create delete user data job
+POST {{host}}/api/adm/v1/job/user-data-delete
+Content-Type: application/json
+
+{
+  "targetUserId": 10001043,
+  "anonymizeUser": true
+}

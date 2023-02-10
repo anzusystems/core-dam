@@ -47,7 +47,7 @@ if (filter_var($_ENV['DROP_DATABASE'], FILTER_VALIDATE_BOOLEAN)) {
         __DIR__
     ));
     passthru(sprintf(
-        'php "%s/../bin/console" anzu:fixtures:generate --env=test',
+        'php "%s/../bin/console" anzusystems:fixtures:generate --env=test',
         __DIR__
     ));
     passthru(sprintf(

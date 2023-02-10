@@ -9,6 +9,7 @@ use AnzuSystems\CommonBundle\Exception\ValidationException;
 use AnzuSystems\CommonBundle\Model\OpenApi\Parameter\OAParameterPath;
 use AnzuSystems\CommonBundle\Model\OpenApi\Response\OAResponse;
 use AnzuSystems\CommonBundle\Model\OpenApi\Response\OAResponseCreated;
+use AnzuSystems\CommonBundle\Model\OpenApi\Response\OAResponseInfiniteList;
 use AnzuSystems\CommonBundle\Model\OpenApi\Response\OAResponseValidation;
 use AnzuSystems\Contracts\Exception\AppReadOnlyModeException;
 use AnzuSystems\CoreDamBundle\Controller\Api\AbstractApiController;
@@ -82,7 +83,7 @@ final class UserController extends AbstractApiController
      * @throws ORMException
      */
     #[Route('', 'get_list', methods: [Request::METHOD_GET])]
-    #[OAResponse([User::class])]
+    #[OAResponseInfiniteList(User::class)]
     public function getList(ApiParams $apiParams): JsonResponse
     {
         $this->denyAccessUnlessGranted(DamPermissions::DAM_USER_VIEW);
