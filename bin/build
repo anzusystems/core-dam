@@ -100,7 +100,7 @@ if [ -f /.dockerenv ]; then
 
     if ${FIXTURES_LOAD}; then
         echo "[INFO] Loading fixtures"
-        bin/console anzu:fixtures:generate
+        bin/console anzusystems:fixtures:generate
         bin/console anzu:elastic:rebuild asset
         bin/console anzu:elastic:rebuild keyword
         bin/console anzu:elastic:rebuild author

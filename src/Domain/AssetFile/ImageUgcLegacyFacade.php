@@ -58,7 +58,7 @@ final class ImageUgcLegacyFacade extends AssetFileFacade
      */
     public function create(ImageCreateDto $image, AssetLicence $licence): ImageFile
     {
-        $this->entityValidator->validateDto($image);
+        $this->validator->validate($image);
 
         $originAsset = $this->imageFileRepository->findProcessedByChecksumAndLicence(
             checksum: $image->getFileAttributes()->getPartialChecksum(),
@@ -107,7 +107,7 @@ final class ImageUgcLegacyFacade extends AssetFileFacade
     public function update(ImageUpdateDto $imageUpdateDto, bool $onlyUndescribed, bool $flush = true): ImageFile
     {
         if ($flush) {
-            $this->entityValidator->validateDto($imageUpdateDto);
+            $this->validator->validate($imageUpdateDto);
         }
         $oldImageFile = $this->imageFileRepository->find($imageUpdateDto->getId());
         if (null === $oldImageFile) {

@@ -157,6 +157,10 @@ anzu_systems_common:
                 ui:
             dam_log:
                 ui:
+            dam_job:
+                create:
+                delete:
+                ui:
         translation:
             roles:
                 ROLE_USER:
@@ -260,4 +264,7 @@ anzu_systems_common:
                 dam_log:
                     en: Log
                     sk: Log
+                dam_job:
+                    en: Job
+                    sk: Job
 

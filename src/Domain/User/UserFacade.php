@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Domain\User;
 
 use AnzuSystems\CommonBundle\Exception\ValidationException;
-use AnzuSystems\Contracts\Model\User\UserDto;
-use AnzuSystems\CoreDamBundle\Validator\EntityValidator;
+use AnzuSystems\CommonBundle\Model\User\UserDto;
+use AnzuSystems\CommonBundle\Traits\ValidatorAwareTrait;
 use AnzuSystems\SerializerBundle\Exception\SerializerException;
 use App\Entity\User;
 use App\Model\Domain\User\UpdateCurrentUserDto;
@@ -16,12 +16,13 @@ use App\Notification\UserNotificationDispatcher;
 /**
  * Complete User processing.
  */
-final readonly class UserFacade
+final class UserFacade
 {
+    use ValidatorAwareTrait;
+
     public function __construct(
-        private EntityValidator $validator,
-        private UserManager $manager,
-        private UserNotificationDispatcher $userNotificationDispatcher,
+        private readonly UserManager $manager,
+        private readonly UserNotificationDispatcher $userNotificationDispatcher,
     ) {
     }
 
@@ -33,7 +34,7 @@ final readonly class UserFacade
      */
     public function updateAnzuUser(User $user, UserDto $userDto): User
     {
-        $this->validator->validateDto($userDto);
+        $this->validator->validate($userDto);
         $this->manager->updateAnzuUser($user, $userDto);
         $this->userNotificationDispatcher->notifyUserUpdated((int) $user->getId());
 
@@ -47,7 +48,7 @@ final readonly class UserFacade
      */
     public function createAnzuUser(UserDto $userDto): User
     {
-        $this->validator->validateDto($userDto);
+        $this->validator->validate($userDto);
 
         $user = new User();
         $this->manager->createAnzuUser($user, $userDto);
@@ -63,7 +64,7 @@ final readonly class UserFacade
      */
     public function updateFromDto(User $user, UpdateUserDto $updateUserDto): User
     {
-        $this->validator->validateDto($updateUserDto);
+        $this->validator->validate($updateUserDto);
         $user = $this->manager->updateFromUserDto($user, $updateUserDto);
         $this->userNotificationDispatcher->notifyUserUpdated((int) $user->getId());
 
@@ -76,7 +77,7 @@ final readonly class UserFacade
      */
     public function updateFromCurrentUserDto(User $user, UpdateCurrentUserDto $currentUserDto): User
     {
-        $this->validator->validateDto($currentUserDto);
+        $this->validator->validate($currentUserDto);
         $user = $this->manager->updateFromCurrentUserDto($user, $currentUserDto);
         $this->userNotificationDispatcher->notifyUserUpdated((int) $user->getId());
 
