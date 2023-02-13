@@ -31,9 +31,10 @@ anzu_systems_core_dam:
             type: customDistribution
             title: Artemis CMS
             module: App\Distribution\Modules\ArtemisAudioDistributionModule
+            redistribute_statuses: ['failed',  'distributed']
         artemis_video_cms:
             type: customDistribution
-            title: Custom CMS
+            title: Artemis CMS
             module: App\Distribution\Modules\ArtemisVideoDistributionModule
-            redistribute_statuses: ['failed', 'waiting', 'distributed']
+            redistribute_statuses: ['failed',  'distributed']
 
