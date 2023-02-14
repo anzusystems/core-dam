@@ -17,6 +17,11 @@ final readonly class IterableValidator
     }
 
     /**
+     * @template T
+     * @template TKey of array-key
+     *
+     * @param ArrayCollection<TKey, T> $collection
+     *
      * @throws ValidationException
      */
     public function validateDtoItems(ArrayCollection $collection): void

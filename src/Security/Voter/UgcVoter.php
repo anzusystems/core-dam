@@ -35,6 +35,6 @@ final class UgcVoter extends Voter
             return true;
         }
 
-        return $user->getAssetLicences()->containsKey((string) $subject->getLicence()->getId());
+        return $user->getAssetLicences()->containsKey((int) $subject->getLicence()->getId());
     }
 }

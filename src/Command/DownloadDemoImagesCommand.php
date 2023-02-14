@@ -26,7 +26,7 @@ final class DownloadDemoImagesCommand extends Command
         parent::__construct();
     }
 
-    public function configure()
+    public function configure(): void
     {
         $this->addArgument(
             name: self::ARG_COUNT,

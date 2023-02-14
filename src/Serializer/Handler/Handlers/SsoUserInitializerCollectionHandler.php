@@ -7,6 +7,7 @@ namespace App\Serializer\Handler\Handlers;
 use AnzuSystems\AuthBundle\Exception\UnsuccessfulAccessTokenRequestException;
 use AnzuSystems\AuthBundle\Exception\UnsuccessfulUserInfoRequestException;
 use AnzuSystems\AuthBundle\HttpClient\OAuth2HttpClient;
+use AnzuSystems\Contracts\Entity\AnzuUser;
 use AnzuSystems\SerializerBundle\Exception\SerializerException;
 use AnzuSystems\SerializerBundle\Handler\Handlers\AbstractHandler;
 use AnzuSystems\SerializerBundle\Metadata\Metadata;
@@ -50,10 +51,12 @@ final class SsoUserInitializerCollectionHandler extends AbstractHandler
             return null;
         }
 
+        /** @var ArrayCollection<int, AnzuUser> $users */
         $users = new ArrayCollection();
         $updatedSome = false;
         if (is_array($value)) {
             foreach ($value as $id) {
+                /** @var User|null $user */
                 $user = $this->userRepository->findOneBySsoUserId((string) $id);
                 if ($user && $user->hasNotRole(User::ROLE_UGC)) {
                     $user->addRole(User::ROLE_UGC);

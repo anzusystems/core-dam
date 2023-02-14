@@ -8,7 +8,6 @@ use AnzuSystems\CoreDamBundle\Controller\Api\AbstractApiController;
 use AnzuSystems\CoreDamBundle\DataFixtures\ImageFixtures;
 use AnzuSystems\CoreDamBundle\Domain\Image\ImagePositionFacade;
 use AnzuSystems\CoreDamBundle\Entity\AssetSlot;
-use AnzuSystems\CoreDamBundle\Model\Dto\AssetFileMetadata\AssetSlotAdmListDto;
 use AnzuSystems\CoreDamBundle\Repository\ImageFileRepository;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;

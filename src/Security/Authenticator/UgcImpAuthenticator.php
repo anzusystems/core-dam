@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Security\Authenticator;
 
-use AnzuSystems\CoreDamBundle\Security\Permission\Grants;
+use AnzuSystems\Contracts\Security\Grant;
 use App\Entity\User;
 use App\Model\UgcCookieConfiguration;
 use App\Repository\UserRepository;
@@ -66,12 +66,14 @@ final class UgcImpAuthenticator extends AbstractUgcAuthenticator
     private function getUser(string $userIdentifier, Plain $credentials): User
     {
         $originalUserId = (string) $credentials->claims()->get('imp');
+        /** @var User|null $originalUser */
         $originalUser = $this->userRepo->findOneBySsoUserId($originalUserId);
         if (null === $originalUser) {
             throw new UserNotFoundException(sprintf('Original user with SSO ID (%s) not found!', $originalUserId));
         }
         $this->originalUser = $originalUser;
 
+        /** @var User|null $user */
         $user = $this->userRepo->findOneBySsoUserId($userIdentifier);
         if (false === ($user instanceof User)) {
             throw new UserNotFoundException(sprintf('User with SSO ID (%s) not found!', $originalUserId));
@@ -84,16 +86,12 @@ final class UgcImpAuthenticator extends AbstractUgcAuthenticator
     {
         $this->checkToken($this->jwtUgcImpConfiguration, $credentials, $user);
 
-        if (empty($this->originalUser)) {
-            throw new AuthenticationException('Original user should be set at this stage!');
-        }
-
         if (false === $user->isEnabled()) {
             throw new AuthenticationException(sprintf('User (%d) is not active or is disabled!', (int) $user->getId()));
         }
 
         $grantForUgcImp = $this->originalUser->getResolvedPermissions()[DamPermissions::DAM_USER_UGC_IMPERSONATE] ?? null;
-        $hasPermission = $this->originalUser->hasRole(User::ROLE_ADMIN) || Grants::GRANT_ALLOW === $grantForUgcImp;
+        $hasPermission = $this->originalUser->hasRole(User::ROLE_ADMIN) || Grant::ALLOW === $grantForUgcImp;
         if ($hasPermission && $this->originalUser->isEnabled()) {
             return true;
         }

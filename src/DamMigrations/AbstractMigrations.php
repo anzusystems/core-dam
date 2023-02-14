@@ -23,12 +23,12 @@ abstract class AbstractMigrations
 
     protected const CMS_EXT_SYSTEM_ID = 1;
 
-    protected readonly Connection $damLegacyConnection;
-    protected readonly Connection $defaultConnection;
-    protected readonly Connection $artemisConnection;
-    protected readonly Connection $coreConnection;
-    protected readonly Connection $blogConnection;
-    protected readonly OAuth2HttpClient $OAuth2HttpClient;
+    protected Connection $damLegacyConnection;
+    protected Connection $defaultConnection;
+    protected Connection $artemisConnection;
+    protected Connection $coreConnection;
+    protected Connection $blogConnection;
+    protected OAuth2HttpClient $OAuth2HttpClient;
     protected array $bulkCache = [];
 
     #[Required]

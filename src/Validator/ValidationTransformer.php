@@ -13,6 +13,8 @@ final class ValidationTransformer
      * @param array<string, array<int, string>> $errors
      * @param array<string, TextsWriterConfiguration> $config
      * @psalm-param class-string $rootClass
+     *
+     * @return array<int, ConstraintViolation>
      */
     public function transformValidation(array $errors, array $config, string $rootClass, bool $reversedConfig = false): array
     {

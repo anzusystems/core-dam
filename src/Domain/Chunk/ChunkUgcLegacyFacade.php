@@ -16,6 +16,7 @@ use AnzuSystems\CoreDamBundle\Entity\Chunk;
 use AnzuSystems\CoreDamBundle\Model\Dto\Chunk\ChunkAdmCreateDto;
 use Psr\Cache\InvalidArgumentException;
 use RuntimeException;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Throwable;
 
 final class ChunkUgcLegacyFacade
@@ -42,9 +43,10 @@ final class ChunkUgcLegacyFacade
         $chunk = $this->chunkFactory->createFromAdmDto($createDto);
         $this->chunkManager->setAssetFile($chunk, $assetFile);
         $this->chunkManager->setNotifyTo($assetFile);
+        /** @var UploadedFile $uploadedFile */
         $uploadedFile = $createDto->getFile();
 
-        $uploadedSize = (int) $createDto->getFile()->getSize();
+        $uploadedSize = (int) $uploadedFile->getSize();
 
         try {
             $this->chunkManager->beginTransaction();
@@ -53,7 +55,7 @@ final class ChunkUgcLegacyFacade
             $this->chunkManager->create($chunk);
 
             if ($chunk->isFirstChunk()) {
-                $this->metadataProcessor->process($assetFile, $createDto->getFile());
+                $this->metadataProcessor->process($assetFile, $uploadedFile);
             }
 
             $this->chunkManager->commit();

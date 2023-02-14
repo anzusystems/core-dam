@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Command;
 
 use AnzuSystems\CommonBundle\Domain\User\CurrentAnzuUserProvider;
+use AnzuSystems\CommonBundle\Model\User\UserDto;
 use AnzuSystems\Contracts\AnzuApp;
 use AnzuSystems\Contracts\Entity\AnzuUser;
-use AnzuSystems\Contracts\Model\User\UserDto;
 use App\App;
 use App\Domain\User\UserManager;
 use App\Entity\User;
@@ -60,6 +60,7 @@ final class CreateMandatoryUsersCommand extends Command
         $consoleUserId = AnzuApp::getUserIdConsole();
         $adminUserId = AnzuApp::getUserIdAdmin();
 
+        /** @var QuestionHelper questionHelper */
         $this->questionHelper = $this->getHelper('question');
 
         $userClassMetadata = $this->userManager->getEntityManager()->getClassMetadata(User::class);

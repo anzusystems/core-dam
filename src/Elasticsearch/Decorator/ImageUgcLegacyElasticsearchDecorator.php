@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Elasticsearch\Decorator;
 
+use AnzuSystems\CommonBundle\ApiFilter\ApiInfiniteResponseList;
 use AnzuSystems\CommonBundle\ApiFilter\ApiResponseList;
 use AnzuSystems\CommonBundle\Exception\ValidationException;
 use AnzuSystems\CommonBundle\Traits\ValidatorAwareTrait;
@@ -11,6 +12,7 @@ use AnzuSystems\CoreDamBundle\Elasticsearch\ElasticSearch;
 use AnzuSystems\CoreDamBundle\Elasticsearch\SearchDto\AssetAdmSearchDto;
 use AnzuSystems\CoreDamBundle\Entity\Asset;
 use AnzuSystems\CoreDamBundle\Entity\AssetLicence;
+use AnzuSystems\CoreDamBundle\Entity\ImageFile;
 use AnzuSystems\CoreDamBundle\Model\Enum\AssetStatus;
 use AnzuSystems\CoreDamBundle\Model\Enum\AssetType;
 use AnzuSystems\SerializerBundle\Exception\SerializerException;
@@ -37,11 +39,17 @@ final class ImageUgcLegacyElasticsearchDecorator
         $searchDto = $this->createSearchDto($licence, $apiUgcLegacyParams);
         $this->validator->validate($searchDto);
 
+        /** @var ApiInfiniteResponseList<Asset> $list */
         $list = $this->elasticSearch->searchInfiniteList($searchDto, $licence->getExtSystem());
         $data = array_map(
-            static fn (Asset $asset): ImageListDto => ImageListDto::getInstance($asset->getMainFile()),
+            static function (Asset $asset): ?ImageListDto {
+                $mainFile = $asset->getMainFile();
+
+                return $mainFile instanceof ImageFile ? ImageListDto::getInstance($mainFile) : null;
+            },
             $list->getData()
         );
+        $data = array_filter($data);
 
         return (new ApiResponseList())
             ->setBigTable(true)

@@ -10,6 +10,7 @@ use AnzuSystems\SerializerBundle\Attributes\Serialize;
 use AnzuSystems\SerializerBundle\Handler\Handlers\EntityIdHandler;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
+use Doctrine\Common\Collections\Selectable;
 
 class ImageDetailDto extends ImageListDto
 {
@@ -26,7 +27,9 @@ class ImageDetailDto extends ImageListDto
             ->where(Criteria::expr()->eq('position', RegionOfInterest::FIRST_ROI_POSITION))
             ->setMaxResults(1);
 
-        $regionOfInterest = $this->getRegionsOfInterest()->matching($criteria)->first();
+        /** @var Collection<int, RegionOfInterest>&Selectable<int, RegionOfInterest> $regionOfInterests */
+        $regionOfInterests = $this->getRegionsOfInterest();
+        $regionOfInterest = $regionOfInterests->matching($criteria)->first();
 
         return $regionOfInterest ? RegionOfInterestAdmDetailDto::getInstance($regionOfInterest) : null;
     }
