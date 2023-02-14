@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace App\DataFixtures;
 
 use AnzuSystems\CommonBundle\DataFixtures\Fixtures\AbstractFixtures;
-use AnzuSystems\Contracts\Model\User\UserDto;
+use AnzuSystems\CommonBundle\Model\User\UserDto;
+use AnzuSystems\Contracts\Entity\AnzuPermissionGroup;
 use AnzuSystems\CoreDamBundle\DataFixtures\AssetLicenceFixtures as BaseAssetLicenceFixtures;
 use AnzuSystems\CoreDamBundle\DataFixtures\PermissionGroupFixtures;
+use AnzuSystems\CoreDamBundle\Entity\AssetLicence;
 use App\Domain\User\UserManager;
 use App\Entity\User;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -62,13 +64,16 @@ final class UserFixtures extends AbstractFixtures
     private function getData(): iterable
     {
         $permissionGroup = $this->permissionGroupFixtures->getOneFromRegistry(PermissionGroupFixtures::BASIC_GROUP_TITLE);
+        /** @var AssetLicence $defaultCmsLicence */
         $defaultCmsLicence = $this->baseAssetLicenceFixtures->getOneFromRegistry(
             key: BaseAssetLicenceFixtures::DEFAULT_LICENCE_ID
         );
+        /** @var AssetLicence $defaultBlogLicence */
         $defaultBlogLicence = $this->assetLicenceFixtures->getOneFromRegistry(
             key: AssetLicenceFixtures::BLOG_DEFAULT_ASSET_LICENCE_ID
         );
 
+        /** @psalm-suppress InvalidArgument */
         yield (new UserDto())
             ->setId(self::USER_ONE_SSO_ID)
             ->setEmail('user1.anzu@smeonline.sk')
@@ -78,6 +83,7 @@ final class UserFixtures extends AbstractFixtures
             ->setUserToExtSystems(new ArrayCollection([$defaultCmsLicence->getExtSystem()]))
         ;
 
+        /** @psalm-suppress InvalidArgument */
         yield (new UserDto())
             ->setId(self::USER_TWO_SSO_ID)
             ->setEmail('user2.anzu@smeonline.sk')

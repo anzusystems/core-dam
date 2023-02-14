@@ -15,7 +15,10 @@ use App\Model\Dto\Artemis\ArtemisMediaDto;
 use App\Model\Dto\Artemis\ArtemisRubricDto;
 use Symfony\Component\HttpClient\Exception\ServerException;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\HttpExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
@@ -29,6 +32,15 @@ final class ArtemisClient
     ) {
     }
 
+    /**
+     * @return list<ArtemisRubricDto>
+     *
+     * @throws SerializerException
+     * @throws TransportExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws ClientExceptionInterface
+     */
     public function getRubricsBySectionId(int $sectionId): array
     {
         $response = $this->artemisApiClient->request(
@@ -39,7 +51,10 @@ final class ArtemisClient
             )
         );
 
-        return $this->serializer->deserializeIterable($response->getContent(), ArtemisRubricDto::class, []);
+        /** @var list<ArtemisRubricDto> $artemisRubrics */
+        $artemisRubrics = $this->serializer->deserializeIterable($response->getContent(), ArtemisRubricDto::class, []);
+
+        return $artemisRubrics;
     }
 
     /**

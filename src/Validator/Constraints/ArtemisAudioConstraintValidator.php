@@ -29,18 +29,16 @@ final class ArtemisAudioConstraintValidator extends ConstraintValidator
 
         $episodeId = $value->getTexts()->getEpisodeId();
 
-        if (false === empty($episodeId)) {
-            $podcastEpisode = $this->episodeRepository->find($episodeId);
+        if (empty($episodeId)) {
+            return;
+        }
 
-            if (
-                null === $podcastEpisode ||
-                false === ($podcastEpisode->getAsset()->getId() === $value->getAssetId())
-            ) {
-                $this->context
-                    ->buildViolation(ValidationException::ERROR_FIELD_INVALID)
-                    ->atPath('texts.episodeId')
-                    ->addViolation();
-            }
+        $podcastEpisode = $this->episodeRepository->find($episodeId);
+        if (false === ($podcastEpisode?->getAsset()?->getId() === $value->getAssetId())) {
+            $this->context
+                ->buildViolation(ValidationException::ERROR_FIELD_INVALID)
+                ->atPath('texts.episodeId')
+                ->addViolation();
         }
     }
 }

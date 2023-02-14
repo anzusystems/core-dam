@@ -5,11 +5,11 @@
     "require": {
         "php": ">=8.2",
         "ext-ctype": "*",
+        "ext-fileinfo": "*",
         "ext-iconv": "*",
         "ext-redis": "^5.3",
-        "ext-fileinfo": "*",
         "anzusystems/auth-bundle": "^1.1",
-        "anzusystems/core-dam-bundle": "dev-develop",
+        "anzusystems/core-dam-bundle": "dev-feature/psalm",
         "doctrine/doctrine-migrations-bundle": "^3.2",
         "doctrine/orm": "2.13.1",
         "league/flysystem-google-cloud-storage": "^3.0",
@@ -21,13 +21,16 @@
     },
     "require-dev": {
         "phpunit/phpunit": "^9.5",
+        "psalm/plugin-symfony": "^5.0",
         "symfony/browser-kit": "6.2.*",
         "symfony/css-selector": "6.2.*",
         "symfony/phpunit-bridge": "^6.2",
         "symfony/stopwatch": "6.2.*",
         "symfony/var-dumper": "6.2.*",
         "symfony/web-profiler-bundle": "6.2.*",
-        "symplify/easy-coding-standard": "^11.2"
+        "symplify/easy-coding-standard": "^11.2",
+        "vimeo/psalm": "^5.6",
+        "weirdan/doctrine-psalm-plugin": "^2.8"
     },
     "config": {
         "allow-plugins": {

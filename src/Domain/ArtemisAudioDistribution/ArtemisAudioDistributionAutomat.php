@@ -17,6 +17,7 @@ use AnzuSystems\CoreDamBundle\Model\Dto\Audio\AudioPublicationAdmDto;
 use AnzuSystems\CoreDamBundle\Model\Enum\AssetFileProcessStatus;
 use AnzuSystems\SerializerBundle\Exception\SerializerException;
 use App\Configuration\ConfigurationProvider;
+use App\Entity\ArtemisAudioDistribution;
 use App\Repository\ArtemisAudioDistributionRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use League\Flysystem\FilesystemException;
@@ -92,7 +93,7 @@ final class ArtemisAudioDistributionAutomat extends AbstractManager
             }
 
             // todo trigger on set position!
-            if ($distribution && $this->isAtPremiumSlot($audioFile)) {
+            if ($distribution instanceof ArtemisAudioDistribution && $this->isAtPremiumSlot($audioFile)) {
                 $this->factory->setPremiumDistributionProperties($distribution, $audioFile);
                 $this->artemisAudioDistributionManager->flush();
 

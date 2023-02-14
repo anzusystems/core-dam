@@ -47,4 +47,4 @@ extends:
     runPhpUnit: true
     runSecurityCheck: true
     runEcsCheck: true
-    #runPsalmCheck: true
+    runPsalmCheck: true

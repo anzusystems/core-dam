@@ -8,7 +8,6 @@ use AnzuSystems\CoreDamBundle\Distribution\AbstractDistributionDtoFactory;
 use AnzuSystems\CoreDamBundle\Domain\Configuration\ConfigurationProvider;
 use AnzuSystems\CoreDamBundle\Domain\Image\ImageUrlFactory;
 use AnzuSystems\CoreDamBundle\Entity\ImageFile;
-use AnzuSystems\CoreDamBundle\Model\Dto\Image\CropAllowItem;
 use App\Model\Dto\Artemis\ArtemisImageDto;
 use App\Model\Dto\Artemis\ArtemisMediaAuthorDto;
 use App\Model\Dto\Artemis\ArtemisMediaTagDto;
@@ -35,14 +34,14 @@ abstract class AbstractArtemisDtoFactory extends AbstractDistributionDtoFactory
 
     protected function getImage(ImageFile $assetFile): ?ArtemisImageDto
     {
-        /** @var CropAllowItem|null $cropAllowItem */
-        $cropAllowItem = $this->configurationProvider->getImageAdminSizeList(self::ARTEMIS_DISTRIBUTION_TAG)[0] ?? null;
+        $cropList = $this->configurationProvider->getImageAdminSizeList(self::ARTEMIS_DISTRIBUTION_TAG);
+        $cropAllowItem = reset($cropList) ?: null;
 
         if ($cropAllowItem) {
             return (new ArtemisImageDto())
                 ->setUrl(
                     $this->configurationProvider->getAdminDomain() . $this->imageUrlFactory->generatePublicUrl(
-                        imageId: $assetFile->getId(),
+                        imageId: (string) $assetFile->getId(),
                         width: $cropAllowItem->getWidth(),
                         height: $cropAllowItem->getHeight(),
                     )

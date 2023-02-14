@@ -48,6 +48,7 @@ final class AssetLicenceFixtures extends AbstractFixtures
      */
     private function getData(): iterable
     {
+        /** @var ExtSystem $blogExtSystem */
         $blogExtSystem = $this->entityManager->find(ExtSystem::class, 4);
 
         $user = new AssetLicence();

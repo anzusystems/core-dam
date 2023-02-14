@@ -21,6 +21,9 @@ final class ArtemisAudioDistributionDto
     private array $keywords = [];
 
     #[Serialize]
+    private string $publicUrlLink = '';
+
+    #[Serialize]
     private bool $createArticle = false;
 
     public function getDescription(): string

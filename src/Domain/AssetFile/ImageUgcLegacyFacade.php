@@ -80,12 +80,15 @@ final class ImageUgcLegacyFacade extends AssetFileFacade
     /**
      * @param ArrayCollection<int, ImageUpdateDto> $imageUpdateFiles
      *
+     * @return ArrayCollection<int, ImageFile>
+     *
      * @throws AnzuException
      * @throws ValidationException
      */
     public function updateBulk(ArrayCollection $imageUpdateFiles, bool $onlyUndescribed): ArrayCollection
     {
         $this->iterableValidator->validateDtoItems($imageUpdateFiles);
+        /** @var ArrayCollection<int, ImageFile> $updatedImages */
         $updatedImages = new ArrayCollection();
         foreach ($imageUpdateFiles as $imageUpdateFile) {
             $updatedImage = $this->update($imageUpdateFile, $onlyUndescribed, false);

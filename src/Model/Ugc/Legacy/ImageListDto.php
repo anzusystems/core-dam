@@ -39,11 +39,17 @@ class ImageListDto
 
     public static function getInstance(ImageFile $imageFile): static
     {
+        /** @var ArrayCollection<int, ImageAuthorDto> $authors */
         $authors = new ArrayCollection();
         $author = $imageFile->getAsset()->getMetadata()->getCustomData()['author'] ?? '';
         if ($author) {
             $authors->add(ImageAuthorDto::getInstance($author));
         }
+
+        /** @var User $createdBy */
+        $createdBy = $imageFile->getCreatedBy();
+        /** @var User $modifiedBy */
+        $modifiedBy = $imageFile->getModifiedBy();
 
         return (new static())
             ->setImageFile($imageFile)
@@ -57,8 +63,8 @@ class ImageListDto
             ->setImageAttributes(ImageAttributesDto::getInstance($imageFile))
             ->setCreatedAt($imageFile->getCreatedAt())
             ->setModifiedAt($imageFile->getModifiedAt())
-            ->setCreatedBy($imageFile->getCreatedBy())
-            ->setModifiedBy($imageFile->getModifiedBy())
+            ->setCreatedBy($createdBy)
+            ->setModifiedBy($modifiedBy)
         ;
     }
 
@@ -153,12 +159,18 @@ class ImageListDto
         return $this;
     }
 
+    /**
+     * @return ArrayCollection<int, ImageAuthorDto>
+     */
     #[Serialize(type: ImageAuthorDto::class)]
     public function getAuthors(): ArrayCollection
     {
         return $this->authors;
     }
 
+    /**
+     * @param ArrayCollection<int, ImageAuthorDto> $authors
+     */
     public function setAuthors(ArrayCollection $authors): self
     {
         $this->authors = $authors;

@@ -33,8 +33,10 @@ final readonly class ImageUgcLegacyRepositoryDecorator
         }
 
         $imageFiles = $this->imageFileRepo->findByLicenceAndIds($licence, $apiUgcLegacyParams->getIds());
+        /** @var ApiResponseList<ImageListDto> $responseList */
+        $responseList = new ApiResponseList();
 
-        return (new ApiResponseList())
+        return $responseList
             ->setTotalCount($imageFiles->count())
             ->setData(array_map(
                 fn (ImageFile $imageFile) => ImageListDto::getInstance($imageFile),

@@ -80,7 +80,7 @@ final class LegacyUgcImageLinksHandler extends AbstractHandler
             ->setRoi(RegionOfInterest::FIRST_ROI_POSITION);
 
         $roi = $this->roiRepository->findByImageIdAndPosition(
-            assetId: $imageFile->getId(),
+            assetId: (string) $imageFile->getId(),
             roiPosition: RegionOfInterest::FIRST_ROI_POSITION,
         );
         if (null === $roi) {
@@ -91,7 +91,7 @@ final class LegacyUgcImageLinksHandler extends AbstractHandler
 
         return [
             'url' => $this->configurationProvider->getAdminDomain() . $this->imageUrlFactory->generatePublicUrl(
-                imageId: $imageFile->getId(),
+                imageId: (string) $imageFile->getId(),
                 width: $reqCrop->getRequestWidth(),
                 height: $reqCrop->getRequestHeight(),
                 roiPosition: $roi->getPosition()

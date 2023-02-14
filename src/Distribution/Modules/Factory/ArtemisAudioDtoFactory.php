@@ -23,7 +23,7 @@ final class ArtemisAudioDtoFactory extends AbstractArtemisDtoFactory
         $mediaDto
             ->setTitle($distribution->getTexts()->getTitle())
             ->setDescription($distribution->getTexts()->getDescription())
-            ->setAnzuMediaId($assetFile->getAsset()->getId()) // todo check
+            ->setAnzuMediaId((string) $assetFile->getAsset()->getId()) // todo check
             ->setPremiumSourceUrl($distribution->getTexts()->getPremiumUrl())
             ->setDirectSourceUrl($distribution->getTexts()->getFreeUrl())
             ->setCreateArticle($distribution->getFlags()->isCreateArticle())

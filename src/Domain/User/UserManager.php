@@ -6,7 +6,8 @@ namespace App\Domain\User;
 
 use AnzuSystems\AuthBundle\Model\SsoUserDto;
 use AnzuSystems\CommonBundle\Domain\User\AbstractUserManager;
-use AnzuSystems\Contracts\Model\User\UserDto;
+use AnzuSystems\CommonBundle\Model\User\UserDto;
+use AnzuSystems\Contracts\Entity\AnzuUser;
 use AnzuSystems\CoreDamBundle\Entity\AssetLicence;
 use AnzuSystems\CoreDamBundle\Entity\ExtSystem;
 use App\Entity\User;
@@ -19,7 +20,7 @@ use Doctrine\Common\Collections\Collection;
  */
 final class UserManager extends AbstractUserManager
 {
-    public function createFromSsoUserInfo(SsoUserDto $ssoUserDto, array $roles = [User::ROLE_UGC], bool $flush = false): User
+    public function createFromSsoUserInfo(SsoUserDto $ssoUserDto, array $roles = [User::ROLE_UGC], bool $flush = false): AnzuUser
     {
         $userDto = (new UserDto())
             ->setId((int) $ssoUserDto->getId())
@@ -72,22 +73,28 @@ final class UserManager extends AbstractUserManager
 
     private function assignLicencesAndExtSystems(User $user, UpdateUserDto $userDto): User
     {
+        /** @psalm-suppress InvalidArgument */
         $this->colUpdate(
             oldCollection: $user->getAdminToExtSystems(),
             newCollection: $userDto->getAdminToExtSystems(),
-            addElementFn: function (Collection $oldCollection, ExtSystem $newExtSystem) use ($user) {
+            addElementFn: function (Collection $oldCollection, ExtSystem $newExtSystem) use ($user): bool {
                 $newExtSystem->getAdminUsers()->add($user);
                 $oldCollection->add($newExtSystem);
+
+                return true;
             },
-            removeElementFn: function (Collection $oldCollection, ExtSystem $oldExtSystem) use ($user) {
+            removeElementFn: function (Collection $oldCollection, ExtSystem $oldExtSystem) use ($user): bool {
                 $oldExtSystem->getAdminUsers()->removeElement($user);
                 $oldCollection->removeElement($oldExtSystem);
+
+                return true;
             }
         );
+        /** @psalm-suppress InvalidArgument */
         $this->colUpdate(
             oldCollection: $user->getAssetLicences(),
             newCollection: $userDto->getAssetLicences(),
-            addElementFn: function (Collection $oldCollection, AssetLicence $newAssetLicence) use ($user) {
+            addElementFn: function (Collection $oldCollection, AssetLicence $newAssetLicence) use ($user): bool {
                 $newAssetLicence->getUsers()->add($user);
                 $oldCollection->add($newAssetLicence);
                 if (false === $user->getUserToExtSystems()->containsKey((int) $newAssetLicence->getExtSystem()->getId())) {
@@ -96,8 +103,10 @@ final class UserManager extends AbstractUserManager
                 if (null === $user->getSelectedLicence()) {
                     $user->setSelectedLicence($newAssetLicence);
                 }
+
+                return true;
             },
-            removeElementFn: function (Collection $oldCollection, AssetLicence $oldAssetLicence) use ($user) {
+            removeElementFn: function (Collection $oldCollection, AssetLicence $oldAssetLicence) use ($user): bool {
                 $oldAssetLicence->getUsers()->removeElement($user);
                 $oldCollection->removeElement($oldAssetLicence);
                 if ($user->getUserToExtSystems()->containsKey((int) $oldAssetLicence->getExtSystem()->getId())) {
@@ -106,6 +115,8 @@ final class UserManager extends AbstractUserManager
                 if ($user->getSelectedLicence() instanceof AssetLicence && $oldAssetLicence->is($user->getSelectedLicence())) {
                     $user->setSelectedLicence($oldCollection->first() ?: null);
                 }
+
+                return true;
             }
         );
 

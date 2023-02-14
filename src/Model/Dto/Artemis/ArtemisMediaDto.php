@@ -64,7 +64,7 @@ class ArtemisMediaDto
         return $this->externalId;
     }
 
-    public function setExternalId(string $externalId): self
+    public function setExternalId(string $externalId): static
     {
         $this->externalId = $externalId;
 
@@ -76,7 +76,7 @@ class ArtemisMediaDto
         return $this->id;
     }
 
-    public function setId(?int $id): self
+    public function setId(?int $id): static
     {
         $this->id = $id;
 
@@ -88,7 +88,7 @@ class ArtemisMediaDto
         return $this->createArticle;
     }
 
-    public function setCreateArticle(bool $createArticle): self
+    public function setCreateArticle(bool $createArticle): static
     {
         $this->createArticle = $createArticle;
 
@@ -100,7 +100,7 @@ class ArtemisMediaDto
         return $this->title;
     }
 
-    public function setTitle(string $title): self
+    public function setTitle(string $title): static
     {
         $this->title = $title;
 
@@ -112,7 +112,7 @@ class ArtemisMediaDto
         return $this->description;
     }
 
-    public function setDescription(string $description): self
+    public function setDescription(string $description): static
     {
         $this->description = $description;
 
@@ -124,7 +124,7 @@ class ArtemisMediaDto
         return $this->type;
     }
 
-    public function setType(ArtemisMediaType $type): self
+    public function setType(ArtemisMediaType $type): static
     {
         $this->type = $type;
 
@@ -136,7 +136,7 @@ class ArtemisMediaDto
         return $this->youtubeId;
     }
 
-    public function setYoutubeId(?string $youtubeId): self
+    public function setYoutubeId(?string $youtubeId): static
     {
         $this->youtubeId = $youtubeId;
 
@@ -148,7 +148,7 @@ class ArtemisMediaDto
         return $this->jwId;
     }
 
-    public function setJwId(?string $jwId): self
+    public function setJwId(?string $jwId): static
     {
         $this->jwId = $jwId;
 
@@ -160,7 +160,7 @@ class ArtemisMediaDto
         return $this->tags;
     }
 
-    public function setTags(array $tags): self
+    public function setTags(array $tags): static
     {
         $this->tags = $tags;
 
@@ -172,7 +172,7 @@ class ArtemisMediaDto
         return $this->authors;
     }
 
-    public function setAuthors(array $authors): self
+    public function setAuthors(array $authors): static
     {
         $this->authors = $authors;
 
@@ -184,7 +184,7 @@ class ArtemisMediaDto
         return $this->rubric;
     }
 
-    public function setRubric(ArtemisMediaRubricDto $rubric): self
+    public function setRubric(ArtemisMediaRubricDto $rubric): static
     {
         $this->rubric = $rubric;
 
@@ -196,7 +196,7 @@ class ArtemisMediaDto
         return $this->image;
     }
 
-    public function setImage(?ArtemisImageDto $image): self
+    public function setImage(?ArtemisImageDto $image): static
     {
         $this->image = $image;
 
@@ -208,7 +208,7 @@ class ArtemisMediaDto
         return $this->bonus;
     }
 
-    public function setBonus(bool $bonus): self
+    public function setBonus(bool $bonus): static
     {
         $this->bonus = $bonus;
 
@@ -220,7 +220,7 @@ class ArtemisMediaDto
         return $this->duration;
     }
 
-    public function setDuration(?int $duration): self
+    public function setDuration(?int $duration): static
     {
         $this->duration = $duration;
 
@@ -232,7 +232,7 @@ class ArtemisMediaDto
         return $this->premiumDirectSourceDuration;
     }
 
-    public function setPremiumDirectSourceDuration(?int $premiumDirectSourceDuration): self
+    public function setPremiumDirectSourceDuration(?int $premiumDirectSourceDuration): static
     {
         $this->premiumDirectSourceDuration = $premiumDirectSourceDuration;
 

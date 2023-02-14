@@ -9,6 +9,7 @@ use AnzuSystems\CoreDamBundle\DataFixtures\ImageFixtures as BaseImageFixtures;
 use AnzuSystems\CoreDamBundle\Domain\AssetFile\AssetFileStatusFacadeProvider;
 use AnzuSystems\CoreDamBundle\Domain\Image\ImageFactory;
 use AnzuSystems\CoreDamBundle\Domain\Image\ImageManager;
+use AnzuSystems\CoreDamBundle\Entity\AssetLicence;
 use AnzuSystems\CoreDamBundle\Entity\ImageFile;
 use AnzuSystems\CoreDamBundle\FileSystem\FileSystemProvider;
 use AnzuSystems\CoreDamBundle\Model\Enum\AssetFileProcessStatus;
@@ -66,6 +67,7 @@ final class ImageFixtures extends AbstractAssetFileFixtures
     private function getData(): Generator
     {
         $fileSystem = $this->fileSystemProvider->createLocalFilesystem(self::DATA_PATH);
+        /** @var AssetLicence $licence */
         $licence = $this->licenceRepository->find(AssetLicenceFixtures::BLOG_DEFAULT_ASSET_LICENCE_ID);
 
         $file = $this->getFile($fileSystem, 'text_image_108x192.png');

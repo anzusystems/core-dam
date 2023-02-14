@@ -19,7 +19,7 @@ class Kernel extends AnzuKernel
     protected int $userIdAnonymous = User::ID_ANONYMOUS;
     protected int $userIdAdmin = User::ID_ADMIN;
 
-    protected function build(ContainerBuilder $container)
+    protected function build(ContainerBuilder $container): void
     {
         parent::build($container);
         $container->registerExtension(new CoreDamExtension());

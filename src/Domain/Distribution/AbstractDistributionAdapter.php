@@ -18,7 +18,7 @@ abstract class AbstractDistributionAdapter implements DistributionAdapterInterfa
 {
     use ValidatorAwareTrait;
 
-    protected readonly ValidationTransformer $validationTransformer;
+    protected ValidationTransformer $validationTransformer;
 
     #[Required]
     public function setValidationTransformer(ValidationTransformer $validationTransformer): void
