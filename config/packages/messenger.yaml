@@ -1,9 +1,32 @@
 framework:
     messenger:
-        transports: ~
+        transports:
+            anzu_core_dam_cache_purge:
+                dsn: '%env(MESSENGER_TRANSPORT_DSN)%/anzu_core_dam_cache_purge'
+                options:
+                    topic:
+                        name: 'anzu_core_dam_cache_purge'
+                        options:
+                            labels:
+                                application: 'core_dam'
+                                name: 'anzu_core_dam_cache_purge'
+                                topic: 'anzu_core_dam_cache_purge'
+                    subscription:
+                        name: 'anzu_core_dam_cache_purge'
+                        options:
+                            labels:
+                                application: 'core_dam'
+                                name: 'anzu_core_dam_cache_purge'
+                            retry_policy:
+                                minimumBackoff: '2s'
+                                maximumBackoff: '600s'
+
         buses:
             messenger.bus.default:
                 middleware:
                     AnzuSystems\CommonBundle\Messenger\Middleware\ContextIdentityMiddleware
 
-        routing: ~
+        routing:
+            App\Messenger\Message\AudioCachePurgeMessage: anzu_core_dam_cache_purge
+            App\Messenger\Message\CdnPurgeMessage: anzu_core_dam_cache_purge
+            App\Messenger\Message\ImageCachePurgeMessage: anzu_core_dam_cache_purge

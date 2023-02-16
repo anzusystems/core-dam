@@ -9,7 +9,7 @@ anzu_systems_core_dam:
     default_asset_licence_id: 100000
     allow_select_ext_system: true
     allow_select_licence: true
-    admin_allow_list_name: 'admin'
+    admin_allow_list_name: 'admin_image'
     max_bulk_item_count: 10
     acl_check_enabled: true
     app_redis: DamRedis
@@ -110,14 +110,14 @@ anzu_systems_core_dam:
       brown:
         rgb: [154, 0, 5]
     crop_allow_list:
-      admin:
-        domains: [ admin ]
+      admin_image:
+        domain: admin_image
         quality_whitelist: [ ]
         crops:
           - { width: 300, height: 200, tags: ['roi_example'], title: '3:2' }  # admin roi example 3:2
           - { width: 0, height: 200, tags: ['list'] }           # admin DAM listing
           - { width: 200, height: 200, tags: ['roi_example'], title: '1:1' }  # admin roi example 1:1
-          - { width: 1920, height: 0, tags: ['detail', 'artemis_distribution'] }        # admin DAM image crop
+          - { width: 1920, height: 0, tags: ['detail', 'artemis_distribution', 'cache_purge'] }        # admin DAM image crop
           - { width: 0, height: 600 }        # UGC DAM image preview
           - { width: 500, height: 281 }      # UGC DAM image preview after upload
           - { width: 972, height: 648 }   # blog web listing small image set (TODO remove when we change the domain on web-blog)
@@ -135,8 +135,8 @@ anzu_systems_core_dam:
           - { width: 448, height: 0 }   # blog web article detail image set (automatic height) (TODO remove when we change the domain on web-blog)
           - { width: 288, height: 0 }   # blog web article detail image set (automatic height) (TODO remove when we change the domain on web-blog)
           - { width: 300, height: 300 }   # blog mobile app (TODO remove when we change the domain on web-blog)
-      web_cms:
-        domains: [ web_cms ]
+      public_image:
+        domain: public_image
         quality_whitelist: [ 90 ]
         crops:
           - { width: 800, height: 450 }   # anzu web general
@@ -171,6 +171,8 @@ anzu_systems_core_dam:
         crop_storage_name: 'cms.crop'
         chunk_storage_name: 'cms.image'
         size_limit: '%env(byte_size:APP_CMS_IMAGE_MAX_SIZE)%'
+        public_domain: public_image
+        admin_domain: admin_image
         roi_width: 16
         roi_height: 9
         file_slots:
@@ -215,7 +217,7 @@ anzu_systems_core_dam:
             OwnerName: ~
         title: ['customData:title']
         custom_metadata_pinned_amount: 3
-        public_domain_name: '%env(resolve:string:AUDIO_CMS_WEB)%'
+        public_domain_name: '%env(resolve:string:DOMAIN_PUBLIC_AUDIO)%'
         storage_name: 'cms.audio'
         public_storage: 'cms.public_audio'
         chunk_storage_name: 'cms.audio'
@@ -389,6 +391,8 @@ anzu_systems_core_dam:
       id: 4
       image:
         enabled: true
+        public_domain: public_image
+        admin_domain: admin_image
         title: ['customData:title']
         custom_metadata_pinned_amount: 2
         storage_name: 'blog.image'
@@ -401,7 +405,18 @@ anzu_systems_core_dam:
           default: default
           slots: [ default ]
   domains:
-    admin:
-      domain: '%env(resolve:string:DOMAIN_ADMIN_WEB)%'
-    web_cms:
-      domain: '%env(resolve:string:DOMAIN_CMS_WEB)%'
+    admin_image:
+      domain: '%env(resolve:string:DOMAIN_ADMIN_IMAGE)%'
+      max_age: 0
+      cache_ttl: 60
+      public: false
+    public_image:
+      domain: '%env(resolve:string:DOMAIN_PUBLIC_IMAGE)%'
+      max_age: 60
+      cache_ttl: 60
+      public: true
+    public_audio:
+      domain: '%env(resolve:string:DOMAIN_PUBLIC_AUDIO)%'
+      max_age: 0
+      cache_ttl: 60
+      public: false

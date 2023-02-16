@@ -77,9 +77,13 @@ final class ArtemisAudioDistributionFactory extends AbstractDistributionDtoFacto
         AudioFile $audioFile,
     ): void {
         $premiumFile = $this->getPremiumAssetFile($audioFile->getAsset());
+
         if ($premiumFile && $premiumFile->getAudioPublicLink()->isPublic()) {
             $audioDistribution->getTexts()->setPremiumUrl(
-                $this->audioRouteGenerator->getFullUrl($premiumFile)
+                $this->audioRouteGenerator->getFullUrl(
+                    path: $premiumFile->getAudioPublicLink()->getPath(),
+                    extSlug: $premiumFile->getExtSystem()->getSlug()
+                )
             );
         }
     }

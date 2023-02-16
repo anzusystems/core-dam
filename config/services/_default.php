@@ -20,6 +20,9 @@ return static function (ContainerConfigurator $configurator): void {
             ->bind('$artemisAudioDistribution', param('anzu_systems.core_dam.artemis_audio_distribution'))
             ->bind('$artemisVideoDistribution', param('anzu_systems.core_dam.artemis_video_distribution'))
             ->bind('$privateUgcCert', env('AUTH_UGC_JWT_PRIVATE_CERT')->default('empty_string')->base64())
+            ->bind('$cachePurgeUrl', env('CORE_DAM_CACHE_PURGE_URL')->default('empty_string'))
+            ->bind('$cacheProxyPurgeEnabled', env('bool:CORE_DAM_CACHE_PROXY_PURGE_ENABLED'))
+            ->bind('$cdnPurgeEnabled', env('bool:CORE_DAM_CDN_PURGE_ENABLED'))
     ;
 
     $services
