@@ -16,6 +16,7 @@ anzu_systems_core_dam:
               fail_reason: '%env(string:DISTRIBUTION_DEV_YOUTUBE_CMS_MAIN_FAIL_REASON)%'
               ext_id: '%env(string:DISTRIBUTION_DEV_YOUTUBE_CMS_MAIN_EXT_ID)%'
               distribution_data: '%env(json:DISTRIBUTION_DEV_YOUTUBE_CMS_MAIN_DISTRIBUTION_DATA)%'
+          icon_path: '%env(string:DISTRIBUTION_YOUTUBE_CMS_MAIN_ICON_PATH)%'
       youtube_cms_fici:
           type: youtubeDistribution
           title: Youtube Fičí
@@ -32,6 +33,7 @@ anzu_systems_core_dam:
               fail_reason: '%env(string:DISTRIBUTION_DEV_YOUTUBE_CMS_FICI_FAIL_REASON)%'
               ext_id: '%env(string:DISTRIBUTION_DEV_YOUTUBE_CMS_FICI_EXT_ID)%'
               distribution_data: '%env(json:DISTRIBUTION_DEV_YOUTUBE_CMS_FICI_DISTRIBUTION_DATA)%'
+          icon_path: '%env(string:DISTRIBUTION_YOUTUBE_CMS_FICI_ICON_PATH)%'
       jw_cms:
           type: jwDistribution
           title: JwVideo
@@ -45,3 +47,4 @@ anzu_systems_core_dam:
               fail_reason: '%env(string:DISTRIBUTION_DEV_JW_CMS_MAIN_FAIL_REASON)%'
               ext_id: '%env(string:DISTRIBUTION_DEV_JW_CMS_MAIN_EXT_ID)%'
               distribution_data: '%env(json:DISTRIBUTION_DEV_JW_CMS_MAIN_DISTRIBUTION_DATA)%'
+          icon_path: '%env(string:DISTRIBUTION_JW_CMS_ICON_PATH)%'
