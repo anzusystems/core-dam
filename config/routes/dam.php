@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Symfony\Component\Routing\Loader\Configurator;
 
+use App\Controller\Api\Sys\V1\JobController;
+use Symfony\Component\HttpFoundation\Request;
+
 return static function (RoutingConfigurator $routes): void {
     $routes
         ->import('@AnzuSystemsCoreDamBundle/Controller/Api/Adm/V1', type: 'attribute')
@@ -48,4 +51,10 @@ return static function (RoutingConfigurator $routes): void {
     $routes
         ->import(__DIR__ . '/../../src/Controller/Api/Sys/V1', type: 'attribute')
         ->prefix('/api/sys/v1/');
+
+    $routes
+        ->add('anzu_core.job.legacy_gdpr', '/api/sys/v1/job/gdpr-delete')
+        ->methods([Request::METHOD_POST])
+        ->controller([JobController::class, 'createUserDataDelete'])
+    ;
 };
