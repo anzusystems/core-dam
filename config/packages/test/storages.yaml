@@ -12,3 +12,28 @@ anzu_systems_core_dam:
             adapter: 'local'
             options:
                 directory: '%kernel.project_dir%/var/mnt/data/blog-chunk-test'
+        cms.public_audio:
+            adapter: 'local'
+            options:
+                directory: '%kernel.project_dir%/var/mnt/data/audio_public_test'
+        cms.audio:
+            adapter: 'local'
+            options:
+                directory: '%kernel.project_dir%/var/mnt/data/audio_test'
+        cms.video:
+            adapter: 'local'
+            options:
+                directory: '%kernel.project_dir%/var/mnt/data/video_test'
+        cms.chunk:
+            adapter: 'local'
+            options:
+                directory: '%kernel.project_dir%/var/mnt/data/chunk_test'
+        cms.crop:
+            adapter: 'local'
+            options:
+                directory: '%kernel.project_dir%/var/mnt/data/crop_test'
+        cms.image:
+            adapter: 'local'
+            options:
+                directory: '%kernel.project_dir%/var/mnt/data/image_test'
+

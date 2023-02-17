@@ -54,65 +54,64 @@ final class ArtemisVideoDistributionControllerTest extends AbstractApiController
         $this->assertEqualsCanonicalizing(self::TEST_CUSTOM_DATA, $data['customData']);
     }
 
-    // todo
-//    public function testDistributeSuccess(): void
-//    {
-//        $client = $this->getClient(App::getUserIdAdmin());
-//
-//        $video = $this->entityManager->getRepository(VideoFile::class)->find(VideoFixtures::VIDEO_ID_1);
-//        $yt = $this->setupYtDistribution($video);
-//        $jw = $this->setupJwDistribution($video);
-//
-//        $response = $client->post(
-//            sprintf(
-//                '/api/adm/v1/custom-distribution/asset-file/%s/distribute',
-//                VideoFixtures::VIDEO_ID_1,
-//            ),
-//            [
-//                'distributionService' => 'artemis_video_cms',
-//                'customData' => self::TEST_CUSTOM_DATA,
-//                'blockedBy' => [
-//                    $yt->getId(),
-//                    $jw->getId()
-//                ]
-//            ]
-//        );
-//        $this->assertSame(Response::HTTP_OK, $response->getStatusCode(), (string) $response->getContent());
-//        $data = json_decode($response->getContent(), true);
-//        $this->assertSame(self::TEST_CUSTOM_DATA, $data['customData']);
-//        /** @var ArtemisVideoDistribution $distribution */
-//        $distribution = $this->entityManager->getRepository(ArtemisVideoDistribution::class)->find($data['id']);
-//        $this->assertNotNull($distribution);
-//
-//        $this->assertSame(self::TEST_CUSTOM_DATA['title'], $distribution->getTexts()->getTitle());
-//        $this->assertSame(self::TEST_CUSTOM_DATA['description'], $distribution->getTexts()->getDescription());
-//        $this->assertSame(self::TEST_CUSTOM_DATA['keywords'], $distribution->getTexts()->getKeywords());
-//        $this->assertSame(self::TEST_CUSTOM_DATA['authors'], $distribution->getTexts()->getAuthors());
-//        $this->assertSame(self::TEST_CUSTOM_DATA['createArticle'], $distribution->getFlags()->isCreateArticle());
-//
-//        $dto = $this->artemisVideoDtoFactory->createMediaDto($video, $distribution);
-//        $assetId = (string) $video->getImagePreview()?->getImageFile()?->getAsset()->getId();
-//        $imagePreviewId = (string) $video->getImagePreview()?->getImageFile()->getId();
-//
-//        $this->assertSame("http://admin-image.smedata.localhost/image/w1920-h0/{$imagePreviewId}.jpg", $dto->getImage()->getUrl());
-//        $this->assertSame($assetId, $dto->getImage()->getTitle());
-//        $this->assertSame(self::TEST_CUSTOM_DATA['title'], $dto->getTitle());
-//        $this->assertSame(self::TEST_CUSTOM_DATA['description'], $dto->getDescription());
-//        $this->assertSame(self::TEST_CUSTOM_DATA['rubricId'], $dto->getRubric()->getId());
-//        $this->assertSame($video->getAttributes()->getDuration(), $dto->getDuration());
-//        $this->assertSame('video', $dto->getType()->toString());
-//        $this->assertSame('123YT', $dto->getYoutubeId());
-//        $this->assertSame('123JW', $dto->getJwId());
-//        $this->assertSame(self::TEST_CUSTOM_DATA['createArticle'], $dto->isCreateArticle());
-//        $this->assertSame(
-//            self::TEST_CUSTOM_DATA['authors'],
-//            array_map(fn (ArtemisMediaAuthorDto $author): string => $author->getFullName(), $dto->getAuthors())
-//        );
-//        $this->assertSame(
-//            self::TEST_CUSTOM_DATA['keywords'],
-//            array_map(fn (ArtemisMediaTagDto $tag): string => $tag->getTitle(), $dto->getTags())
-//        );
-//    }
+    public function testDistributeSuccess(): void
+    {
+        $client = $this->getClient(App::getUserIdAdmin());
+
+        $video = $this->entityManager->getRepository(VideoFile::class)->find(VideoFixtures::VIDEO_ID_1);
+        $yt = $this->setupYtDistribution($video);
+        $jw = $this->setupJwDistribution($video);
+
+        $response = $client->post(
+            sprintf(
+                '/api/adm/v1/custom-distribution/asset-file/%s/distribute',
+                VideoFixtures::VIDEO_ID_1,
+            ),
+            [
+                'distributionService' => 'artemis_video_cms',
+                'customData' => self::TEST_CUSTOM_DATA,
+                'blockedBy' => [
+                    $yt->getId(),
+                    $jw->getId()
+                ]
+            ]
+        );
+        $this->assertSame(Response::HTTP_OK, $response->getStatusCode(), (string) $response->getContent());
+        $data = json_decode($response->getContent(), true);
+        $this->assertSame(self::TEST_CUSTOM_DATA, $data['customData']);
+        /** @var ArtemisVideoDistribution $distribution */
+        $distribution = $this->entityManager->getRepository(ArtemisVideoDistribution::class)->find($data['id']);
+        $this->assertNotNull($distribution);
+
+        $this->assertSame(self::TEST_CUSTOM_DATA['title'], $distribution->getTexts()->getTitle());
+        $this->assertSame(self::TEST_CUSTOM_DATA['description'], $distribution->getTexts()->getDescription());
+        $this->assertSame(self::TEST_CUSTOM_DATA['keywords'], $distribution->getTexts()->getKeywords());
+        $this->assertSame(self::TEST_CUSTOM_DATA['authors'], $distribution->getTexts()->getAuthors());
+        $this->assertSame(self::TEST_CUSTOM_DATA['createArticle'], $distribution->getFlags()->isCreateArticle());
+
+        $dto = $this->artemisVideoDtoFactory->createMediaDto($video, $distribution);
+        $assetId = (string) $video->getImagePreview()?->getImageFile()?->getAsset()->getId();
+        $imagePreviewId = (string) $video->getImagePreview()?->getImageFile()->getId();
+
+        $this->assertSame("http://admin-image.smedata.localhost/image/w1920-h0/{$imagePreviewId}.jpg", $dto->getImage()->getUrl());
+        $this->assertSame($assetId, $dto->getImage()->getTitle());
+        $this->assertSame(self::TEST_CUSTOM_DATA['title'], $dto->getTitle());
+        $this->assertSame(self::TEST_CUSTOM_DATA['description'], $dto->getDescription());
+        $this->assertSame(self::TEST_CUSTOM_DATA['rubricId'], $dto->getRubric()->getId());
+        $this->assertSame($video->getAttributes()->getDuration(), $dto->getDuration());
+        $this->assertSame('video', $dto->getType()->toString());
+        $this->assertSame('123YT', $dto->getYoutubeId());
+        $this->assertSame('123JW', $dto->getJwId());
+        $this->assertSame(self::TEST_CUSTOM_DATA['createArticle'], $dto->isCreateArticle());
+        $this->assertSame(
+            self::TEST_CUSTOM_DATA['authors'],
+            array_map(fn (ArtemisMediaAuthorDto $author): string => $author->getFullName(), $dto->getAuthors())
+        );
+        $this->assertSame(
+            self::TEST_CUSTOM_DATA['keywords'],
+            array_map(fn (ArtemisMediaTagDto $tag): string => $tag->getTitle(), $dto->getTags())
+        );
+    }
 
     public function testDistributeFailed(): void
     {

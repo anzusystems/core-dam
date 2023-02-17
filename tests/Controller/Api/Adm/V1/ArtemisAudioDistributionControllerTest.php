@@ -9,6 +9,7 @@ use AnzuSystems\CoreDamBundle\DataFixtures\ImageFixtures;
 use AnzuSystems\CoreDamBundle\DataFixtures\PodcastEpisodeFixtures;
 use AnzuSystems\CoreDamBundle\DataFixtures\PodcastFixtures;
 use AnzuSystems\CoreDamBundle\Domain\AssetSlot\AssetSlotFactory;
+use AnzuSystems\CoreDamBundle\Domain\Configuration\DistributionConfigurationProvider;
 use AnzuSystems\CoreDamBundle\Domain\PodcastEpisode\PodcastEpisodeFactory;
 use AnzuSystems\CoreDamBundle\Entity\AudioFile;
 use AnzuSystems\CoreDamBundle\Entity\Podcast;
@@ -63,65 +64,64 @@ final class ArtemisAudioDistributionControllerTest extends AbstractApiController
         $this->assertEqualsCanonicalizing(self::TEST_CUSTOM_DATA, $data['customData']);
     }
 
-    // todo
-//    public function testDistributeSuccess(): void
-//    {
-//        $this->setupAudioData();
-//        $client = $this->getClient(App::getUserIdAdmin());
-//
-//        $response = $client->post(
-//            sprintf(
-//                '/api/adm/v1/custom-distribution/asset-file/%s/distribute',
-//                AudioFixtures::AUDIO_ID_1,
-//            ),
-//            [
-//                'distributionService' => 'artemis_podcast_cms',
-//                'customData' => self::TEST_CUSTOM_DATA
-//            ]
-//        );
-//
-//        $this->assertSame(Response::HTTP_OK, $response->getStatusCode(), (string) $response->getContent());
-//        $data = json_decode($response->getContent(), true);
-//        $this->assertEqualsCanonicalizing(self::TEST_CUSTOM_DATA, $data['customData']);
-//        /** @var ArtemisAudioDistribution $distribution */
-//        $distribution = $this->entityManager->getRepository(ArtemisAudioDistribution::class)->find($data['id']);
-//        $this->assertNotNull($distribution);
-//
-//        $this->assertSame(self::TEST_CUSTOM_DATA['title'], $distribution->getTexts()->getTitle());
-//        $this->assertSame(self::TEST_CUSTOM_DATA['description'], $distribution->getTexts()->getDescription());
-//        $this->assertSame(self::TEST_CUSTOM_DATA['keywords'], $distribution->getTexts()->getKeywords());
-//        $this->assertSame(self::TEST_CUSTOM_DATA['authors'], $distribution->getTexts()->getAuthors());
-//        $this->assertSame(self::TEST_CUSTOM_DATA['freeUrl'], $distribution->getTexts()->getFreeUrl());
-//        $this->assertSame(self::TEST_CUSTOM_DATA['premiumUrl'], $distribution->getTexts()->getPremiumUrl());
-//        $this->assertSame(self::TEST_CUSTOM_DATA['createArticle'], $distribution->getFlags()->isCreateArticle());
-//        $this->assertSame(self::TEST_CUSTOM_DATA['extRssId'], $distribution->getTexts()->getExtRssId());
-//        $this->assertSame(self::TEST_CUSTOM_DATA['rubricId'], $distribution->getTexts()->getRubricId());
-//        $this->assertSame(self::TEST_CUSTOM_DATA['podcastId'], $distribution->getTexts()->getPodcastId());
-//
-//        $dto = $this->artemisAudioDtoFactory->createMediaDto($this->audioFile, $distribution);
-//
-//        $this->assertSame('http://admin-image.smedata.localhost/image/w1920-h0/'.ImageFixtures::IMAGE_ID_1_2.'.jpg', $dto->getImage()->getUrl());
-//        $this->assertSame('Custom Data Title', $dto->getImage()->getTitle());
-//
-//        $this->assertSame(self::TEST_CUSTOM_DATA['title'], $dto->getTitle());
-//        $this->assertSame(self::TEST_CUSTOM_DATA['description'], $dto->getDescription());
-//        $this->assertSame(self::TEST_CUSTOM_DATA['rubricId'], $dto->getRubric()->getId());
-//        $this->assertSame($this->audioFile->getAttributes()->getDuration(), $dto->getDuration());
-//        $this->assertSame($this->audioFile->getAttributes()->getDuration(), $dto->getPremiumDirectSourceDuration());
-//        $this->assertSame('audio', $dto->getType()->toString());
-//        $this->assertSame(self::TEST_CUSTOM_DATA['createArticle'], $dto->isCreateArticle());
-//        $this->assertSame(
-//            self::TEST_CUSTOM_DATA['authors'],
-//            array_map(fn (ArtemisMediaAuthorDto $author): string => $author->getFullName(), $dto->getAuthors())
-//        );
-//        $this->assertSame(
-//            self::TEST_CUSTOM_DATA['keywords'],
-//            array_map(fn (ArtemisMediaTagDto $tag): string => $tag->getTitle(), $dto->getTags())
-//        );
-//        $this->assertSame(self::TEST_CUSTOM_DATA['freeUrl'], $dto->getDirectSourceUrl());
-//        $this->assertSame(self::TEST_CUSTOM_DATA['premiumUrl'], $dto->getPremiumSourceUrl());
-//        $this->assertSame(self::TEST_CUSTOM_DATA['podcastId'], $dto->getMediaChannel()->getAnzuId());
-//    }
+    public function testDistributeSuccess(): void
+    {
+        $this->setupAudioData();
+        $client = $this->getClient(App::getUserIdAdmin());
+
+        $response = $client->post(
+            sprintf(
+                '/api/adm/v1/custom-distribution/asset-file/%s/distribute',
+                AudioFixtures::AUDIO_ID_1,
+            ),
+            [
+                'distributionService' => 'artemis_podcast_cms',
+                'customData' => self::TEST_CUSTOM_DATA
+            ]
+        );
+
+        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
+        $data = json_decode($response->getContent(), true);
+        $this->assertEqualsCanonicalizing(self::TEST_CUSTOM_DATA, $data['customData']);
+        /** @var ArtemisAudioDistribution $distribution */
+        $distribution = $this->entityManager->getRepository(ArtemisAudioDistribution::class)->find($data['id']);
+        $this->assertNotNull($distribution);
+
+        $this->assertSame(self::TEST_CUSTOM_DATA['title'], $distribution->getTexts()->getTitle());
+        $this->assertSame(self::TEST_CUSTOM_DATA['description'], $distribution->getTexts()->getDescription());
+        $this->assertSame(self::TEST_CUSTOM_DATA['keywords'], $distribution->getTexts()->getKeywords());
+        $this->assertSame(self::TEST_CUSTOM_DATA['authors'], $distribution->getTexts()->getAuthors());
+        $this->assertSame(self::TEST_CUSTOM_DATA['freeUrl'], $distribution->getTexts()->getFreeUrl());
+        $this->assertSame(self::TEST_CUSTOM_DATA['premiumUrl'], $distribution->getTexts()->getPremiumUrl());
+        $this->assertSame(self::TEST_CUSTOM_DATA['createArticle'], $distribution->getFlags()->isCreateArticle());
+        $this->assertSame(self::TEST_CUSTOM_DATA['extRssId'], $distribution->getTexts()->getExtRssId());
+        $this->assertSame(self::TEST_CUSTOM_DATA['rubricId'], $distribution->getTexts()->getRubricId());
+        $this->assertSame(self::TEST_CUSTOM_DATA['podcastId'], $distribution->getTexts()->getPodcastId());
+
+        $dto = $this->artemisAudioDtoFactory->createMediaDto($this->audioFile, $distribution);
+
+        $this->assertSame('http://admin-image.smedata.localhost/image/w1920-h0/'.ImageFixtures::IMAGE_ID_1_2.'.jpg', $dto->getImage()->getUrl());
+        $this->assertSame('Custom Data Title', $dto->getImage()->getTitle());
+
+        $this->assertSame(self::TEST_CUSTOM_DATA['title'], $dto->getTitle());
+        $this->assertSame(self::TEST_CUSTOM_DATA['description'], $dto->getDescription());
+        $this->assertSame(self::TEST_CUSTOM_DATA['rubricId'], $dto->getRubric()->getId());
+        $this->assertSame($this->audioFile->getAttributes()->getDuration(), $dto->getDuration());
+        $this->assertSame($this->audioFile->getAttributes()->getDuration(), $dto->getPremiumDirectSourceDuration());
+        $this->assertSame('audio', $dto->getType()->toString());
+        $this->assertSame(self::TEST_CUSTOM_DATA['createArticle'], $dto->isCreateArticle());
+        $this->assertSame(
+            self::TEST_CUSTOM_DATA['authors'],
+            array_map(fn (ArtemisMediaAuthorDto $author): string => $author->getFullName(), $dto->getAuthors())
+        );
+        $this->assertSame(
+            self::TEST_CUSTOM_DATA['keywords'],
+            array_map(fn (ArtemisMediaTagDto $tag): string => $tag->getTitle(), $dto->getTags())
+        );
+        $this->assertSame(self::TEST_CUSTOM_DATA['freeUrl'], $dto->getDirectSourceUrl());
+        $this->assertSame(self::TEST_CUSTOM_DATA['premiumUrl'], $dto->getPremiumSourceUrl());
+        $this->assertSame(self::TEST_CUSTOM_DATA['podcastId'], $dto->getMediaChannel()->getAnzuId());
+    }
 
     public function testDistributeFailed(): void
     {

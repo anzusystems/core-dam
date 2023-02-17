@@ -30,54 +30,52 @@ final class ArtemisAudioDistributionTest extends AbstractControllerTest
         $this->automat = $this->getService(ArtemisAudioDistributionAutomat::class);
     }
 
-    // todo
-//    public function testBonusEpisodeDistribution(): void {
-//        $audioFile = $this->entityManager->find(AudioFile::class, AudioFixtures::AUDIO_ID_1);
-//
-//        $this->automat->makeAudioPublicUrl($audioFile);
-//        $this->assertSame(false, $audioFile->getAudioPublicLink()->isPublic());
-//
-//        $this->audioPositionFacade->setToSlot($audioFile->getAsset(), $audioFile, 'bonus');
-//        $this->automat->makeAudioPublicUrl($audioFile);
-//        $this->assertSame(true, $audioFile->getAudioPublicLink()->isPublic());
-//
-//    }
+    public function testBonusEpisodeDistribution(): void {
+        $audioFile = $this->entityManager->find(AudioFile::class, AudioFixtures::AUDIO_ID_1);
 
-    // todo
-//    public function testDistribution(): void {
-//        $podcast = $this->entityManager->getRepository(Podcast::class)->find(PodcastFixtures::PODCAST_1);
-//
-//        // Run synchronization procedure for podcasts
-//        $this->importManager->syncPodcast($podcast);
-//
-//        // Find RSS Episode created by RSS synchronization, validated preview Image
-//        $episode = $this->entityManager->getRepository(PodcastEpisode::class)->findOneBy([
-//            'podcast' => $podcast,
-//            'attributes.rssId' => '45238 at https://www.thisamericanlife.org'
-//        ]);
-//        $this->assertNotNull($episode);
-//        $this->assertNotNull($episode->getImagePreview());
-//        $this->assertNotNull($podcast->getImagePreview());
-//        $this->assertSame(
-//            $episode->getImagePreview()->getImageFile(),
-//            $podcast->getImagePreview()->getImageFile()
-//        );
-//
-//        $distribution = $this->entityManager->getRepository(ArtemisAudioDistribution::class)->findOneBy([
-//            'texts.podcastId' => $episode->getPodcast()->getId()
-//        ]);
-//        $this->assertNotNull($distribution);
-//        $this->assertSame('artemis_podcast_cms', $distribution->getDistributionService());
-//        $this->validateFreeDistribution($distribution);
-//
-//        $audioFile = $this->entityManager->getRepository(AudioFile::class)->find(AudioFixtures::AUDIO_ID_1);
-//        $this->audioPositionFacade->setToSlot($episode->getAsset(), $audioFile, 'premium');
-//        // manually triggers "processed" state
-//        $this->automat->makeAudioPublicUrl($audioFile);
-//        $this->automat->tryToDistribute($audioFile);
-//        $this->entityManager->refresh($distribution);
-//        $this->validatePremiumDistribution($distribution);
-//    }
+        $this->automat->makeAudioPublicUrl($audioFile);
+        $this->assertSame(false, $audioFile->getAudioPublicLink()->isPublic());
+
+        $this->audioPositionFacade->setToSlot($audioFile->getAsset(), $audioFile, 'bonus');
+        $this->automat->makeAudioPublicUrl($audioFile);
+        $this->assertSame(true, $audioFile->getAudioPublicLink()->isPublic());
+
+    }
+
+    public function testDistribution(): void {
+        $podcast = $this->entityManager->getRepository(Podcast::class)->find(PodcastFixtures::PODCAST_1);
+
+        // Run synchronization procedure for podcasts
+        $this->importManager->syncPodcast($podcast);
+
+        // Find RSS Episode created by RSS synchronization, validated preview Image
+        $episode = $this->entityManager->getRepository(PodcastEpisode::class)->findOneBy([
+            'podcast' => $podcast,
+            'attributes.rssId' => '45238 at https://www.thisamericanlife.org'
+        ]);
+        $this->assertNotNull($episode);
+        $this->assertNotNull($episode->getImagePreview());
+        $this->assertNotNull($podcast->getImagePreview());
+        $this->assertSame(
+            $episode->getImagePreview()->getImageFile(),
+            $podcast->getImagePreview()->getImageFile()
+        );
+
+        $distribution = $this->entityManager->getRepository(ArtemisAudioDistribution::class)->findOneBy([
+            'texts.podcastId' => $episode->getPodcast()->getId()
+        ]);
+        $this->assertNotNull($distribution);
+        $this->assertSame('artemis_podcast_cms', $distribution->getDistributionService());
+        $this->validateFreeDistribution($distribution);
+
+        $audioFile = $this->entityManager->getRepository(AudioFile::class)->find(AudioFixtures::AUDIO_ID_1);
+        $this->audioPositionFacade->setToSlot($episode->getAsset(), $audioFile, 'premium');
+        // manually triggers "processed" state
+        $this->automat->makeAudioPublicUrl($audioFile);
+        $this->automat->tryToDistribute($audioFile);
+        $this->entityManager->refresh($distribution);
+        $this->validatePremiumDistribution($distribution);
+    }
 
     private function validateFreeDistribution(ArtemisAudioDistribution $distribution): void
     {

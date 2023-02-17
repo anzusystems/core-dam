@@ -29,7 +29,17 @@ final class ValidationTransformer
                     errors: $errors[$oldPath],
                     rootClass: $rootClass
                 ));
+
+                unset($errors[$oldPath]);
             }
+        }
+
+        foreach ($errors as $path => $notTransformedErrors) {
+            $transformedErrors = array_merge($transformedErrors, $this->transformErrorToViolations(
+                path: $path,
+                errors: $notTransformedErrors,
+                rootClass: $rootClass
+            ));
         }
 
         return $transformedErrors;
