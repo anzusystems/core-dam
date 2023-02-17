@@ -41,6 +41,7 @@ extends:
     containerDockerImageVariant: cli-ci-node-vipsffmpeg-xdebug
     mysqlDockerDatabaseName: $(MYSQL_DATABASE_NAME)
     mysqlDockerRootPassword: $(MYSQL_DATABASE_PASSWORD)
+    elasticsearchDockerImage: petitpress.azurecr.io/elasticsearch:3.1.0-vocabulary
     testServiceElasticsearchEnabled: true
     testServiceMongoEnabled: true
     runDoctrineValidate: true
