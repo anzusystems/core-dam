@@ -56,7 +56,7 @@ anzu_systems_common:
                 collection: auditLogs
             logged_methods: ['POST', 'PUT', 'PATCH', 'DELETE']
     permissions:
-        roles: [ROLE_USER, ROLE_UGC, ROLE_ADMIN, ROLE_DAM_ADMIN, ROLE_SYS_API]
+        roles: [ROLE_USER, ROLE_UGC, ROLE_ADMIN, ROLE_DAM_ADMIN, ROLE_SYS_API, ROLE_SYS_JOB_API]
         config:
             dam_asset:
                 create:
@@ -178,6 +178,9 @@ anzu_systems_common:
                 ROLE_SYS_API:
                     en: System Api
                     sk: Systémové Api
+                ROLE_SYS_JOB_API:
+                    en: System Job Api
+                    sk: Systémové Joby Api
             actions:
                 ui:
                     en: View

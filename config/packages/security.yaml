@@ -13,7 +13,8 @@ security:
         ROLE_DAM_ADMIN: [ROLE_USER] # dam admin
         ROLE_UGC: [ROLE_USER]
         ROLE_USER: ~
-        ROLE_SYS_API: ~
+        ROLE_SYS_API: [ROLE_SYS_JOB_API]
+        ROLE_SYS_JOB_API: ~
     password_hashers:
         App\Entity\User: 'auto'
     firewalls:
@@ -56,4 +57,5 @@ security:
         - { path: ^/api/adm/, roles: ROLE_DAM_ADMIN }
         - { path: ^/api/ugc/, roles: ROLE_UGC }
         - { path: ^/adm/, roles: ROLE_FORUM_ADMIN }
+        - { path: ^/api/sys/v(\d+)/job, roles: ROLE_SYS_JOB_API }
         - { path: ^/api/sys/, roles: ROLE_SYS_API }
