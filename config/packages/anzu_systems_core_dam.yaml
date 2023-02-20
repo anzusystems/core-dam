@@ -257,21 +257,25 @@ anzu_systems_core_dam:
             source_property_path: 'title'
             destination_property_path: 'metadata.customData[title]'
             normalizers:
-              - { type: string, options: { length: 64 } }
+              - { type: string, options: { length: 64, empty_string: true } }
               - { type: html, options: { words_wrap: 0 } }
           description:
             source_property_path: 'description'
             destination_property_path: 'metadata.customData[description]'
             normalizers:
-              - { type: string, options: { length: 5000 } }
+              - { type: string, options: { length: 5000, empty_string: true } }
               - { type: html, options: { words_wrap: 0 } }
         podcast_episode_entity_map:
           title:
             source_property_path: 'metadata.customData[title]'
             destination_property_path: 'texts.title'
+            normalizers:
+              - { type: string, options: { empty_string: true } }
           description:
             source_property_path: 'metadata.customData[description]'
             destination_property_path: 'texts.description'
+            normalizers:
+              - { type: string, options: { empty_string: true } }
       video:
         enabled: true
         keywords:
@@ -292,6 +296,8 @@ anzu_systems_core_dam:
           title:
             source_property_path: 'metadata.customData[title]'
             destination_property_path: 'texts.title'
+            normalizers:
+              - { type: string, options: { empty_string: true } }
         custom_metadata_pinned_amount: 3
         storage_name: 'cms.video'
         chunk_storage_name: 'cms.video'

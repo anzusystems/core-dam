@@ -21,6 +21,7 @@ use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
+use Throwable;
 
 final class ArtemisClient
 {
@@ -105,6 +106,13 @@ final class ArtemisClient
             );
 
             throw new DistributionFailedException(DistributionFailReason::ValidationFailed);
+        } catch (Throwable $exception) {
+            $this->logger->error(
+                DamLogger::NAMESPACE_DISTRIBUTION,
+                sprintf('Artemis distribute unexpected error (%s)', $exception->getMessage())
+            );
+
+            throw new DistributionFailedException(DistributionFailReason::Unknown);
         }
     }
 }

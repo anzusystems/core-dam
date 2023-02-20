@@ -10,8 +10,6 @@ framework:
                 base_uri: '%env(DISTRIBUTION_ARTEMIS_CMS_ENDPOINT)%'
                 headers:
                     token: '%env(DISTRIBUTION_ARTEMIS_CMS_API_TOKEN)%'
-                local_cert: '%env(resolve:DISTRIBUTION_ARTEMIS_CMS_API_CERT_PATH)%'
-                local_pk: '%env(resolve:DISTRIBUTION_ARTEMIS_CMS_API_KEY_PATH)%'
             anzu_notification.api_client:
                 base_uri: '%env(ANZU_NOTIFICATION_DOMAIN)%'
                 auth_bearer: '%env(string:ANZU_DAM_NOTIFICATION_API_TOKEN)%'
