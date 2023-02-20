@@ -23,13 +23,14 @@ final class ArtemisAudioDtoFactory extends AbstractArtemisDtoFactory
         $mediaDto
             ->setTitle($distribution->getTexts()->getTitle())
             ->setDescription($distribution->getTexts()->getDescription())
-            ->setAnzuMediaId((string) $assetFile->getAsset()->getId()) // todo check
+            ->setAnzuMediaId((string) $assetFile->getAsset()->getId())
             ->setPremiumSourceUrl($distribution->getTexts()->getPremiumUrl())
             ->setDirectSourceUrl($distribution->getTexts()->getFreeUrl())
             ->setCreateArticle($distribution->getFlags()->isCreateArticle())
+            ->setBonus($distribution->getFlags()->isBonusEpisode())
             ->setMediaChannel((new ArtemisMediaChannel())->setAnzuId($distribution->getTexts()->getPodcastId()))
-            ->setDuration($assetFile->getAttributes()->getDuration())
-            ->setPremiumDirectSourceDuration($assetFile->getAttributes()->getDuration()); // todo from premium asset
+            ->setDuration($distribution->getAttributes()->getDuration())
+            ->setPremiumDirectSourceDuration($distribution->getAttributes()->getPremiumDuration());
 
         $mediaDto->setAuthors($this->transformAuthors($distribution->getTexts()->getAuthors()));
         $mediaDto->setTags($this->transformKeywords($distribution->getTexts()->getKeywords()));

@@ -47,9 +47,11 @@ final class ArtemisAudioDistributionFactory extends AbstractDistributionDtoFacto
         $audioDistribution->setAssetId((string) $audioFile->getAsset()->getId());
         $audioDistribution->setAssetFileId((string) $audioFile->getId());
 
-        $this->setFreeDistributionProperties($audioDistribution, $episode);
+        $this->setFreeDistributionProperties($audioDistribution, $audioFile, $episode);
         $this->setPremiumDistributionProperties($audioDistribution, $audioFile);
         $this->setRubricId($audioDistribution, $audioFile);
+        $audioDistribution->getTexts()->setEpisodeId((string) $episode->getId());
+        $audioDistribution->getTexts()->setPodcastId((string) $episode->getPodcast()->getId());
 
         return $audioDistribution;
     }
@@ -60,9 +62,11 @@ final class ArtemisAudioDistributionFactory extends AbstractDistributionDtoFacto
             ->setDistributionService($service);
 
         $this->setPremiumDistributionProperties($audioDistribution, $audioFile);
-        $episode = $this->getRssEpisode($audioFile);
-        if ($episode) {
-            $this->setFreeDistributionProperties($audioDistribution, $episode);
+        $episode = $this->getRssEpisode($audioFile) ?? $audioFile->getAsset()->getEpisodes()->first();
+        if ($episode instanceof PodcastEpisode) {
+            $audioDistribution->getTexts()->setEpisodeId((string) $episode->getId());
+            $audioDistribution->getTexts()->setPodcastId((string) $episode->getPodcast()->getId());
+            $this->setFreeDistributionProperties($audioDistribution, $audioFile, $episode);
         }
         $this->setRubricId($audioDistribution, $audioFile);
 
@@ -76,7 +80,15 @@ final class ArtemisAudioDistributionFactory extends AbstractDistributionDtoFacto
         ArtemisAudioDistribution $audioDistribution,
         AudioFile $audioFile,
     ): void {
-        $premiumFile = $this->getPremiumAssetFile($audioFile->getAsset());
+        $config = $this->configurationProvider->getAudioDistribution();
+        $premiumFile = $this->getSlotAssetFile($audioFile->getAsset(), $config->getAudioBonusSlotName());
+        if ($premiumFile) {
+            $audioDistribution->getFlags()->setBonusEpisode(true);
+        }
+
+        if (null === $premiumFile) {
+            $premiumFile = $this->getSlotAssetFile($audioFile->getAsset(), $config->getAudioPremiumSlotName());
+        }
 
         if ($premiumFile && $premiumFile->getAudioPublicLink()->isPublic()) {
             $audioDistribution->getTexts()->setPremiumUrl(
@@ -85,6 +97,8 @@ final class ArtemisAudioDistributionFactory extends AbstractDistributionDtoFacto
                     extSlug: $premiumFile->getExtSystem()->getSlug()
                 )
             );
+
+            $audioDistribution->getAttributes()->setPremiumDuration($audioFile->getAttributes()->getDuration());
         }
     }
 
@@ -110,24 +124,26 @@ final class ArtemisAudioDistributionFactory extends AbstractDistributionDtoFacto
      */
     private function setFreeDistributionProperties(
         ArtemisAudioDistribution $audioDistribution,
+        AudioFile $audioFile,
         PodcastEpisode $episode,
     ): void {
-        $audioDistribution->getTexts()
-            ->setFreeUrl($episode->getAttributes()->getRssUrl())
-            ->setExtRssId($episode->getAttributes()->getRssId());
+        $config = $this->configurationProvider->getAudioDistribution();
+        $freeFile = $this->getSlotAssetFile($audioFile->getAsset(), $config->getAudioFreeSlotName());
 
-        $audioDistribution->getTexts()->setEpisodeId((string) $episode->getId());
-        $audioDistribution->getTexts()->setPodcastId((string) $episode->getPodcast()->getId());
+        if ($freeFile && $episode->getFlags()->isFromRss()) {
+            $audioDistribution->getAttributes()->setDuration($freeFile->getAttributes()->getDuration());
+            $audioDistribution->getTexts()
+                ->setFreeUrl($episode->getAttributes()->getRssUrl())
+                ->setExtRssId($episode->getAttributes()->getRssId());
+        }
     }
 
-    private function getPremiumAssetFile(Asset $asset): ?AudioFile
+    private function getSlotAssetFile(Asset $asset, string $slotName): ?AudioFile
     {
-        $config = $this->configurationProvider->getAudioDistribution();
-
         foreach ($asset->getSlots() as $slot) {
             $audioFile = $slot->getAssetFile();
 
-            if ($config->getAudioPremiumSlotName() === $slot->getName() && $audioFile instanceof AudioFile) {
+            if ($slotName === $slot->getName() && $audioFile instanceof AudioFile) {
                 return $audioFile;
             }
         }
@@ -139,9 +155,7 @@ final class ArtemisAudioDistributionFactory extends AbstractDistributionDtoFacto
     {
         $episode = $assetFile->getAsset()->getEpisodes()
             ->filter(
-                fn (PodcastEpisode $episode): bool =>
-                    false === empty($episode->getAttributes()->getRssId()) &&
-                    false === empty($episode->getAttributes()->getRssUrl())
+                fn (PodcastEpisode $episode): bool => $episode->getFlags()->isFromRss()
             )->first();
 
         if ($episode instanceof PodcastEpisode) {

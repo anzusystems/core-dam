@@ -6,6 +6,7 @@ namespace App\Model\Dto\Artemis;
 
 use AnzuSystems\SerializerBundle\Attributes\Serialize;
 use App\Model\Enum\ArtemisMediaType;
+use DateTimeImmutable;
 
 class ArtemisAudioMediaDto extends ArtemisMediaDto
 {
@@ -22,7 +23,7 @@ class ArtemisAudioMediaDto extends ArtemisMediaDto
     private string $premiumSourceUrl = '';
 
     #[Serialize(type: 'Y-m-d\TH:i:sP')]
-    private ?\DateTimeImmutable $publishedAt = null;
+    private ?DateTimeImmutable $publishedAt = null;
 
     public function __construct()
     {
@@ -79,12 +80,12 @@ class ArtemisAudioMediaDto extends ArtemisMediaDto
         return $this;
     }
 
-    public function getPublishedAt(): ?\DateTimeImmutable
+    public function getPublishedAt(): ?DateTimeImmutable
     {
         return $this->publishedAt;
     }
 
-    public function setPublishedAt(?\DateTimeImmutable $publishedAt): self
+    public function setPublishedAt(?DateTimeImmutable $publishedAt): self
     {
         $this->publishedAt = $publishedAt;
 

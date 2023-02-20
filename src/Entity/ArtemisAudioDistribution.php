@@ -6,6 +6,7 @@ namespace App\Entity;
 
 use AnzuSystems\CoreDamBundle\Entity\Distribution;
 use AnzuSystems\SerializerBundle\Attributes\Serialize;
+use App\Entity\Embeds\ArtemisAudioAttributes;
 use App\Entity\Embeds\ArtemisAudioFlags;
 use App\Entity\Embeds\ArtemisAudioTexts;
 use App\Repository\ArtemisAudioDistributionRepository;
@@ -22,6 +23,11 @@ class ArtemisAudioDistribution extends Distribution
     #[Serialize]
     private ArtemisAudioTexts $texts;
 
+    #[ORM\Embedded(ArtemisAudioAttributes::class)]
+    #[Assert\Valid]
+    #[Serialize]
+    private ArtemisAudioAttributes $attributes;
+
     #[ORM\Embedded(ArtemisAudioFlags::class)]
     #[Assert\Valid]
     #[Serialize]
@@ -32,6 +38,7 @@ class ArtemisAudioDistribution extends Distribution
         parent::__construct();
         $this->setTexts(new ArtemisAudioTexts());
         $this->setFlags(new ArtemisAudioFlags());
+        $this->setAttributes(new ArtemisAudioAttributes());
     }
 
     public function getTexts(): ArtemisAudioTexts
@@ -54,6 +61,18 @@ class ArtemisAudioDistribution extends Distribution
     public function setFlags(ArtemisAudioFlags $flags): self
     {
         $this->flags = $flags;
+
+        return $this;
+    }
+
+    public function getAttributes(): ArtemisAudioAttributes
+    {
+        return $this->attributes;
+    }
+
+    public function setAttributes(ArtemisAudioAttributes $attributes): self
+    {
+        $this->attributes = $attributes;
 
         return $this;
     }

@@ -20,7 +20,6 @@ class ArtemisAudioTexts
     private string $title;
 
     #[ORM\Column(type: Types::STRING, length: 256)]
-    #[Assert\NotBlank(message: ValidationException::ERROR_FIELD_EMPTY)]
     #[Assert\Length(max: 100, maxMessage: ValidationException::ERROR_FIELD_LENGTH_MAX)]
     #[Serialize]
     private string $extRssId;

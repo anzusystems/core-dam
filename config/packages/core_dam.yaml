@@ -8,9 +8,13 @@ core_dam:
       title:
         source_property_path: 'texts.title'
         destination_property_path: 'customData[title]'
+        normalizers:
+          - { type: string, options: { empty_string: true } }
       description:
         source_property_path: 'texts.description'
         destination_property_path: 'customData[description]'
+        normalizers:
+          - { type: string, options: { empty_string: true } }
       keywords:
         source_property_path: 'texts.keywords'
         destination_property_path: 'customData[keywords]'
@@ -26,6 +30,9 @@ core_dam:
       create_article:
         source_property_path: 'flags.createArticle'
         destination_property_path: 'customData[createArticle]'
+      bonus_episode:
+        source_property_path: 'flags.bonusEpisode'
+        destination_property_path: 'customData[bonusEpisode]'
       ext_rss_id:
         source_property_path: 'texts.extRssId'
         destination_property_path: 'customData[extRssId]'
@@ -38,15 +45,25 @@ core_dam:
       podcast_id:
         source_property_path: 'texts.podcastId'
         destination_property_path: 'customData[podcastId]'
+      duration:
+        source_property_path: 'attributes.duration'
+        destination_property_path: 'customData[duration]'
+      premium_duration:
+        source_property_path: 'attributes.premiumDuration'
+        destination_property_path: 'customData[premiumDuration]'
   artemis_video_distribution:
     default_rubric_id: 6978 # todo
     custom_data_to_distribution_map:
       title:
         source_property_path: 'texts.title'
         destination_property_path: 'customData[title]'
+        normalizers:
+          - { type: string, options: { empty_string: true } }
       description:
         source_property_path: 'texts.description'
         destination_property_path: 'customData[description]'
+        normalizers:
+          - { type: string, options: { empty_string: true } }
       keywords:
         source_property_path: 'texts.keywords'
         destination_property_path: 'customData[keywords]'

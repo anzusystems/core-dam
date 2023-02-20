@@ -25,20 +25,20 @@ use Throwable;
 
 final class ArtemisAudioDistributionAutomat extends AbstractManager
 {
+    private const ARTEMIS_AUDIO_DISTRIBUTION_SERVICE = 'artemis_podcast_cms';
+
     public function __construct(
         private readonly ArtemisAudioDistributionRepository $repository,
         private readonly ArtemisAudioDistributionFactory $factory,
         private readonly ArtemisAudioDistributionManager $artemisAudioDistributionManager,
         private readonly DistributionBroker $distributionBroker,
         private readonly ConfigurationProvider $configurationProvider,
-        private readonly AudioPublicManager $audioPublicManager,
         private readonly DamLogger $logger,
         private readonly AudioPublicFacade $audioPublicFacade,
     ) {
     }
 
     /**
-     * @throws FilesystemException
      * @throws SerializerException
      */
     public function makeAudioPublicUrl(AudioFile $audioFile): void
@@ -49,7 +49,10 @@ final class ArtemisAudioDistributionAutomat extends AbstractManager
         }
 
         // Public url only for bonus/premium slot
-        if (false === ($this->isAtBonusSlot($audioFile) || $this->isAtPremiumSlot($audioFile))) {
+        if (
+            false === $this->isAtPremiumSlot($audioFile) &&
+            false === $this->isAtBonusSlot($audioFile)
+        ) {
             return;
         }
 
@@ -64,7 +67,6 @@ final class ArtemisAudioDistributionAutomat extends AbstractManager
 
     /**
      * @throws NonUniqueResultException
-     * @throws FilesystemException
      */
     public function tryToDistribute(AudioFile $audioFile): void
     {
@@ -73,38 +75,54 @@ final class ArtemisAudioDistributionAutomat extends AbstractManager
         }
 
         foreach ($audioFile->getAsset()->getEpisodes() as $episode) {
-            if (false === $this->isRssEpisode($episode)) {
-                continue;
-            }
-
-            // todo validate multiple distributions result
             $distribution = $this->repository->findByPodcastAndAsset(
                 (string) $audioFile->getAsset()->getId(),
                 (string) $episode->getPodcast()->getId(),
-                'artemis_podcast_cms'
+                self::ARTEMIS_AUDIO_DISTRIBUTION_SERVICE
             );
 
-            if (null === $distribution && $this->isAtFreeSlot($audioFile)) {
-                $distribution = $this->artemisAudioDistributionManager->create(
-                    $this->factory->createFromAudioAndEpisode($audioFile, $episode, 'artemis_podcast_cms'),
-                );
-
-                $this->distributionBroker->startDistribution($distribution);
+            if (null === $distribution) {
+                $this->tryCreateNewDistribution($episode, $audioFile);
             }
 
-            // todo trigger on set position!
-            if ($distribution instanceof ArtemisAudioDistribution && $this->isAtPremiumSlot($audioFile)) {
-                $this->factory->setPremiumDistributionProperties($distribution, $audioFile);
-                $this->artemisAudioDistributionManager->flush();
-
-                $this->distributionBroker->redistribute($distribution);
+            if ($distribution instanceof ArtemisAudioDistribution) {
+                $this->tryRedistribute($distribution, $audioFile);
             }
         }
     }
 
-    private function isRssEpisode(PodcastEpisode $episode): bool
+    /**
+     * Automatically distribute if audio was uploaded to bonus slot or is synced from RSS to free slot
+     *
+     * @throws NonUniqueResultException
+     */
+    private function tryCreateNewDistribution(PodcastEpisode $episode, AudioFile $audioFile): void
     {
-        return false === (empty($episode->getAttributes()->getRssUrl()) && empty($episode->getAttributes()->getRssId()));
+        if (
+            $this->isAtFreeSlot($audioFile) && $episode->getFlags()->isFromRss() ||
+            $this->isAtBonusSlot($audioFile)
+        ) {
+            $distribution = $this->artemisAudioDistributionManager->create(
+                $this->factory->createFromAudioAndEpisode($audioFile, $episode, self::ARTEMIS_AUDIO_DISTRIBUTION_SERVICE),
+            );
+
+            $this->distributionBroker->startDistribution($distribution);
+        }
+    }
+
+    /**
+     * Automatically distribute, if audio was uploaded to premium slot and asset was already distributed
+     *
+     * @throws NonUniqueResultException
+     */
+    private function tryRedistribute(ArtemisAudioDistribution $distribution, AudioFile $audioFile): void
+    {
+        if ($this->isAtPremiumSlot($audioFile) && false === $this->isAtBonusSlot($audioFile)) {
+            $this->factory->setPremiumDistributionProperties($distribution, $audioFile);
+            $this->artemisAudioDistributionManager->flush();
+
+            $this->distributionBroker->redistribute($distribution);
+        }
     }
 
     private function isAtBonusSlot(AssetFile $assetFile): bool

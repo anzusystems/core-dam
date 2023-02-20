@@ -17,9 +17,14 @@ class ArtemisAudioFlags
     #[Serialize]
     private bool $createArticle;
 
+    #[ORM\Column(type: Types::BOOLEAN)]
+    #[Serialize]
+    private bool $bonusEpisode;
+
     public function __construct()
     {
         $this->setCreateArticle(false);
+        $this->setBonusEpisode(false);
     }
 
     public function isCreateArticle(): bool
@@ -30,6 +35,18 @@ class ArtemisAudioFlags
     public function setCreateArticle(bool $createArticle): self
     {
         $this->createArticle = $createArticle;
+
+        return $this;
+    }
+
+    public function isBonusEpisode(): bool
+    {
+        return $this->bonusEpisode;
+    }
+
+    public function setBonusEpisode(bool $bonusEpisode): self
+    {
+        $this->bonusEpisode = $bonusEpisode;
 
         return $this;
     }

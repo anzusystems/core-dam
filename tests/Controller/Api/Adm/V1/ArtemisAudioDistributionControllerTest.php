@@ -35,6 +35,9 @@ final class ArtemisAudioDistributionControllerTest extends AbstractApiController
         'rubricId' => 6978,
         'podcastId' => PodcastFixtures::PODCAST_1,
         'episodeId' => PodcastEpisodeFixtures::EPISODE_1_ID,
+        'duration' => 1,
+        'premiumDuration' => 1,
+        'bonusEpisode' => false,
     ];
 
     private AssetSlotFactory $assetSlotFactory;
@@ -49,19 +52,51 @@ final class ArtemisAudioDistributionControllerTest extends AbstractApiController
         $this->artemisAudioDtoFactory = $this->getService(ArtemisAudioDtoFactory::class);
     }
 
-    public function testPreparePayload(): void
+    /**
+     * @dataProvider preparePayloadDataProvider
+     */
+    public function testPreparePayload(string $id, array $expectedData): void
     {
         $this->setupAudioData();
         $client = $this->getClient(App::getUserIdAdmin());
         $response = $client->get(sprintf(
             '/api/adm/v1/custom-distribution/asset-file/%s/prepare-payload/%s',
-            AudioFixtures::AUDIO_ID_1,
+            $id,
                 'artemis_podcast_cms'
             )
         );
         $data = json_decode($response->getContent(), true);
 
-        $this->assertEqualsCanonicalizing(self::TEST_CUSTOM_DATA, $data['customData']);
+        $this->assertEqualsCanonicalizing($expectedData, $data['customData']);
+    }
+
+    private function preparePayloadDataProvider(): array
+    {
+        return [
+            [
+                AudioFixtures::AUDIO_ID_1,
+                self::TEST_CUSTOM_DATA
+            ],
+            [
+                AudioFixtures::AUDIO_ID_2,
+                [
+                    'title' => '',
+                    'description' => '',
+                    'keywords' => [],
+                    'authors' => [],
+                    'freeUrl' => '',
+                    'premiumUrl' => '',
+                    'createArticle' => false,
+                    'bonusEpisode' => false,
+                    'extRssId' => '',
+                    'rubricId' => 6978,
+                    'podcastId' => '',
+                    'episodeId' => '',
+                    'duration' => 0,
+                    'premiumDuration' => 0,
+                ]
+            ]
+        ];
     }
 
     public function testDistributeSuccess(): void
@@ -121,6 +156,7 @@ final class ArtemisAudioDistributionControllerTest extends AbstractApiController
         $this->assertSame(self::TEST_CUSTOM_DATA['freeUrl'], $dto->getDirectSourceUrl());
         $this->assertSame(self::TEST_CUSTOM_DATA['premiumUrl'], $dto->getPremiumSourceUrl());
         $this->assertSame(self::TEST_CUSTOM_DATA['podcastId'], $dto->getMediaChannel()->getAnzuId());
+        $this->assertSame(false, $dto->isBonus());
     }
 
     public function testDistributeFailed(): void
@@ -149,6 +185,7 @@ final class ArtemisAudioDistributionControllerTest extends AbstractApiController
                 'customData.podcastId' => ['error_field_empty'],
                 'customData.episodeId' => ['error_field_empty'],
                 'customData.createArticle' => ['error_field_empty'],
+                'customData.bonusEpisode' => ['error_field_empty'],
             ],
             $data['fields'] ?? []
         );
