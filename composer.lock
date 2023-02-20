@@ -66,16 +66,16 @@
         },
         {
             "name": "anzusystems/common-bundle",
-            "version": "2.6.1",
+            "version": "2.6.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/anzusystems/common-bundle.git",
-                "reference": "25eba4318f607962fea6b1eed6a88ea740c1d528"
+                "reference": "3b618ff08bbfe3b67282f1b9c3f661cd79e7f4ff"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/anzusystems/common-bundle/zipball/25eba4318f607962fea6b1eed6a88ea740c1d528",
-                "reference": "25eba4318f607962fea6b1eed6a88ea740c1d528",
+                "url": "https://api.github.com/repos/anzusystems/common-bundle/zipball/3b618ff08bbfe3b67282f1b9c3f661cd79e7f4ff",
+                "reference": "3b618ff08bbfe3b67282f1b9c3f661cd79e7f4ff",
                 "shasum": ""
             },
             "require": {
@@ -137,9 +137,9 @@
             ],
             "support": {
                 "issues": "https://github.com/anzusystems/common-bundle/issues",
-                "source": "https://github.com/anzusystems/common-bundle/tree/2.6.1"
+                "source": "https://github.com/anzusystems/common-bundle/tree/2.6.2"
             },
-            "time": "2023-02-16T12:56:12+00:00"
+            "time": "2023-02-17T13:33:23+00:00"
         },
         {
             "name": "anzusystems/contracts",
@@ -2062,16 +2062,16 @@
         },
         {
             "name": "google/apiclient-services",
-            "version": "v0.287.0",
+            "version": "v0.288.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/google-api-php-client-services.git",
-                "reference": "ed58596d34272a5cd0dc2c0595d9a678b9834880"
+                "reference": "de6cfa1556faf4a23d9ab5844508bb576f44fdd7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/google-api-php-client-services/zipball/ed58596d34272a5cd0dc2c0595d9a678b9834880",
-                "reference": "ed58596d34272a5cd0dc2c0595d9a678b9834880",
+                "url": "https://api.github.com/repos/googleapis/google-api-php-client-services/zipball/de6cfa1556faf4a23d9ab5844508bb576f44fdd7",
+                "reference": "de6cfa1556faf4a23d9ab5844508bb576f44fdd7",
                 "shasum": ""
             },
             "require": {
@@ -2100,9 +2100,9 @@
             ],
             "support": {
                 "issues": "https://github.com/googleapis/google-api-php-client-services/issues",
-                "source": "https://github.com/googleapis/google-api-php-client-services/tree/v0.287.0"
+                "source": "https://github.com/googleapis/google-api-php-client-services/tree/v0.288.0"
             },
-            "time": "2023-02-12T01:08:11+00:00"
+            "time": "2023-02-18T01:16:11+00:00"
         },
         {
             "name": "google/auth",
@@ -3303,16 +3303,16 @@
         },
         {
             "name": "league/flysystem",
-            "version": "3.12.2",
+            "version": "3.12.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem.git",
-                "reference": "f6377c709d2275ed6feaf63e44be7a7162b0e77f"
+                "reference": "81e87e74dd5213795c7846d65089712d2dda90ce"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/f6377c709d2275ed6feaf63e44be7a7162b0e77f",
-                "reference": "f6377c709d2275ed6feaf63e44be7a7162b0e77f",
+                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/81e87e74dd5213795c7846d65089712d2dda90ce",
+                "reference": "81e87e74dd5213795c7846d65089712d2dda90ce",
                 "shasum": ""
             },
             "require": {
@@ -3374,7 +3374,7 @@
             ],
             "support": {
                 "issues": "https://github.com/thephpleague/flysystem/issues",
-                "source": "https://github.com/thephpleague/flysystem/tree/3.12.2"
+                "source": "https://github.com/thephpleague/flysystem/tree/3.12.3"
             },
             "funding": [
                 {
@@ -3390,20 +3390,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-01-19T12:02:19+00:00"
+            "time": "2023-02-18T15:32:41+00:00"
         },
         {
             "name": "league/flysystem-google-cloud-storage",
-            "version": "3.11.0",
+            "version": "3.12.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem-google-cloud-storage.git",
-                "reference": "83de2a428cf4e7bcd8c2a113d74ab93730d36fbc"
+                "reference": "2c725f4703e99cc35d493484f325e24fa88acf96"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem-google-cloud-storage/zipball/83de2a428cf4e7bcd8c2a113d74ab93730d36fbc",
-                "reference": "83de2a428cf4e7bcd8c2a113d74ab93730d36fbc",
+                "url": "https://api.github.com/repos/thephpleague/flysystem-google-cloud-storage/zipball/2c725f4703e99cc35d493484f325e24fa88acf96",
+                "reference": "2c725f4703e99cc35d493484f325e24fa88acf96",
                 "shasum": ""
             },
             "require": {
@@ -3437,7 +3437,7 @@
             ],
             "support": {
                 "issues": "https://github.com/thephpleague/flysystem-google-cloud-storage/issues",
-                "source": "https://github.com/thephpleague/flysystem-google-cloud-storage/tree/3.11.0"
+                "source": "https://github.com/thephpleague/flysystem-google-cloud-storage/tree/3.12.3"
             },
             "funding": [
                 {
@@ -3453,7 +3453,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-12-02T14:19:16+00:00"
+            "time": "2023-01-18T11:09:35+00:00"
         },
         {
             "name": "league/mime-type-detection",
@@ -6418,16 +6418,16 @@
         },
         {
             "name": "symfony/flex",
-            "version": "v2.2.4",
+            "version": "v2.2.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/flex.git",
-                "reference": "52baff1adb29faf443c6710cb775bd88b9627381"
+                "reference": "2ff8465e7172790a47ab3c129f2b514eb2d8a286"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/flex/zipball/52baff1adb29faf443c6710cb775bd88b9627381",
-                "reference": "52baff1adb29faf443c6710cb775bd88b9627381",
+                "url": "https://api.github.com/repos/symfony/flex/zipball/2ff8465e7172790a47ab3c129f2b514eb2d8a286",
+                "reference": "2ff8465e7172790a47ab3c129f2b514eb2d8a286",
                 "shasum": ""
             },
             "require": {
@@ -6463,7 +6463,7 @@
             "description": "Composer plugin for Symfony",
             "support": {
                 "issues": "https://github.com/symfony/flex/issues",
-                "source": "https://github.com/symfony/flex/tree/v2.2.4"
+                "source": "https://github.com/symfony/flex/tree/v2.2.5"
             },
             "funding": [
                 {
@@ -6479,7 +6479,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-12-20T07:19:39+00:00"
+            "time": "2023-02-18T08:03:15+00:00"
         },
         {
             "name": "symfony/framework-bundle",
@@ -10448,16 +10448,16 @@
         },
         {
             "name": "fidry/cpu-core-counter",
-            "version": "0.4.1",
+            "version": "0.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/theofidry/cpu-core-counter.git",
-                "reference": "79261cc280aded96d098e1b0e0ba0c4881b432c2"
+                "reference": "b58e5a3933e541dc286cc91fc4f3898bbc6f1623"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/theofidry/cpu-core-counter/zipball/79261cc280aded96d098e1b0e0ba0c4881b432c2",
-                "reference": "79261cc280aded96d098e1b0e0ba0c4881b432c2",
+                "url": "https://api.github.com/repos/theofidry/cpu-core-counter/zipball/b58e5a3933e541dc286cc91fc4f3898bbc6f1623",
+                "reference": "b58e5a3933e541dc286cc91fc4f3898bbc6f1623",
                 "shasum": ""
             },
             "require": {
@@ -10497,7 +10497,7 @@
             ],
             "support": {
                 "issues": "https://github.com/theofidry/cpu-core-counter/issues",
-                "source": "https://github.com/theofidry/cpu-core-counter/tree/0.4.1"
+                "source": "https://github.com/theofidry/cpu-core-counter/tree/0.5.1"
             },
             "funding": [
                 {
@@ -10505,7 +10505,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2022-12-16T22:01:02+00:00"
+            "time": "2022-12-24T12:35:10+00:00"
         },
         {
             "name": "masterminds/html5",
@@ -12304,26 +12304,25 @@
         },
         {
             "name": "spatie/array-to-xml",
-            "version": "2.17.1",
+            "version": "3.1.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/array-to-xml.git",
-                "reference": "5cbec9c6ab17e320c58a259f0cebe88bde4a7c46"
+                "reference": "13f76acef5362d15c71ae1ac6350cc3df5e25e43"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/array-to-xml/zipball/5cbec9c6ab17e320c58a259f0cebe88bde4a7c46",
-                "reference": "5cbec9c6ab17e320c58a259f0cebe88bde4a7c46",
+                "url": "https://api.github.com/repos/spatie/array-to-xml/zipball/13f76acef5362d15c71ae1ac6350cc3df5e25e43",
+                "reference": "13f76acef5362d15c71ae1ac6350cc3df5e25e43",
                 "shasum": ""
             },
             "require": {
                 "ext-dom": "*",
-                "php": "^7.4|^8.0"
+                "php": "^8.0"
             },
             "require-dev": {
                 "mockery/mockery": "^1.2",
                 "pestphp/pest": "^1.21",
-                "phpunit/phpunit": "^9.0",
                 "spatie/pest-plugin-snapshots": "^1.1"
             },
             "type": "library",
@@ -12352,7 +12351,7 @@
                 "xml"
             ],
             "support": {
-                "source": "https://github.com/spatie/array-to-xml/tree/2.17.1"
+                "source": "https://github.com/spatie/array-to-xml/tree/3.1.5"
             },
             "funding": [
                 {
@@ -12364,7 +12363,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2022-12-26T08:22:07+00:00"
+            "time": "2022-12-24T13:43:51+00:00"
         },
         {
             "name": "symfony/browser-kit",
@@ -12836,16 +12835,16 @@
         },
         {
             "name": "vimeo/psalm",
-            "version": "5.6.0",
+            "version": "5.7.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/vimeo/psalm.git",
-                "reference": "e784128902dfe01d489c4123d69918a9f3c1eac5"
+                "reference": "8e0fd880141f236847ab49a06f94f788d41a4292"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/vimeo/psalm/zipball/e784128902dfe01d489c4123d69918a9f3c1eac5",
-                "reference": "e784128902dfe01d489c4123d69918a9f3c1eac5",
+                "url": "https://api.github.com/repos/vimeo/psalm/zipball/8e0fd880141f236847ab49a06f94f788d41a4292",
+                "reference": "8e0fd880141f236847ab49a06f94f788d41a4292",
                 "shasum": ""
             },
             "require": {
@@ -12864,12 +12863,12 @@
                 "ext-tokenizer": "*",
                 "felixfbecker/advanced-json-rpc": "^3.1",
                 "felixfbecker/language-server-protocol": "^1.5.2",
-                "fidry/cpu-core-counter": "^0.4.0",
+                "fidry/cpu-core-counter": "^0.4.1 || ^0.5.1",
                 "netresearch/jsonmapper": "^1.0 || ^2.0 || ^3.0 || ^4.0",
                 "nikic/php-parser": "^4.13",
                 "php": "^7.4 || ~8.0.0 || ~8.1.0 || ~8.2.0",
                 "sebastian/diff": "^4.0 || ^5.0",
-                "spatie/array-to-xml": "^2.17.0",
+                "spatie/array-to-xml": "^2.17.0 || ^3.0",
                 "symfony/console": "^4.1.6 || ^5.0 || ^6.0",
                 "symfony/filesystem": "^5.4 || ^6.0"
             },
@@ -12878,13 +12877,13 @@
             },
             "require-dev": {
                 "bamarni/composer-bin-plugin": "^1.4",
-                "brianium/paratest": "^6.0",
+                "brianium/paratest": "^6.9",
                 "ext-curl": "*",
                 "mockery/mockery": "^1.5",
                 "nunomaduro/mock-final-classes": "^1.1",
                 "php-parallel-lint/php-parallel-lint": "^1.2",
                 "phpstan/phpdoc-parser": "^1.6",
-                "phpunit/phpunit": "^9.5",
+                "phpunit/phpunit": "^9.6",
                 "psalm/plugin-mockery": "^1.1",
                 "psalm/plugin-phpunit": "^0.18",
                 "slevomat/coding-standard": "^8.4",
@@ -12930,13 +12929,14 @@
             "keywords": [
                 "code",
                 "inspection",
-                "php"
+                "php",
+                "static analysis"
             ],
             "support": {
                 "issues": "https://github.com/vimeo/psalm/issues",
-                "source": "https://github.com/vimeo/psalm/tree/5.6.0"
+                "source": "https://github.com/vimeo/psalm/tree/5.7.1"
             },
-            "time": "2023-01-23T20:32:47+00:00"
+            "time": "2023-02-20T00:48:41+00:00"
         },
         {
             "name": "weirdan/doctrine-psalm-plugin",
