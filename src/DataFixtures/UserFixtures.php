@@ -141,5 +141,17 @@ final class UserFixtures extends AbstractFixtures
             ->setEmail('matej.mihalik@petitpress.sk')
             ->setRoles([User::ROLE_ADMIN])
         => new User();
+
+        yield (new UserDto())
+            ->setId(1_548_214)
+            ->setEmail('michal.stanko@petitpress.sk')
+            ->setRoles([User::ROLE_ADMIN])
+        => new User();
+
+        yield (new UserDto())
+            ->setId(18_796)
+            ->setEmail('andrea.belanova@petitpress.sk')
+            ->setRoles([User::ROLE_ADMIN])
+        => new User();
     }
 }
