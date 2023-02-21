@@ -66,16 +66,16 @@
         },
         {
             "name": "anzusystems/common-bundle",
-            "version": "2.6.2",
+            "version": "2.6.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/anzusystems/common-bundle.git",
-                "reference": "3b618ff08bbfe3b67282f1b9c3f661cd79e7f4ff"
+                "reference": "5eabb81bec0fdb397d1d7aab88b44464cb34b402"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/anzusystems/common-bundle/zipball/3b618ff08bbfe3b67282f1b9c3f661cd79e7f4ff",
-                "reference": "3b618ff08bbfe3b67282f1b9c3f661cd79e7f4ff",
+                "url": "https://api.github.com/repos/anzusystems/common-bundle/zipball/5eabb81bec0fdb397d1d7aab88b44464cb34b402",
+                "reference": "5eabb81bec0fdb397d1d7aab88b44464cb34b402",
                 "shasum": ""
             },
             "require": {
@@ -137,9 +137,9 @@
             ],
             "support": {
                 "issues": "https://github.com/anzusystems/common-bundle/issues",
-                "source": "https://github.com/anzusystems/common-bundle/tree/2.6.2"
+                "source": "https://github.com/anzusystems/common-bundle/tree/2.6.4"
             },
-            "time": "2023-02-17T13:33:23+00:00"
+            "time": "2023-02-21T09:00:25+00:00"
         },
         {
             "name": "anzusystems/contracts",
