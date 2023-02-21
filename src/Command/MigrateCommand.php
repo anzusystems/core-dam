@@ -15,6 +15,7 @@ use App\DamMigrations\KeywordMigrations;
 use App\DamMigrations\LegacyDamPodcastMigrations;
 use App\DamMigrations\UgcLicenceMigrations;
 use App\DamMigrations\UgcUserMigrations;
+use App\DamMigrations\VideoShowMigrations;
 use App\Model\MigrateConfig;
 use Exception;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -43,6 +44,7 @@ final class MigrateCommand extends Command
         private readonly AssetAudioPremiumMigrations $assetAudioPremiumMigrations,
         private readonly AssetAudioFreeMigrations $assetAudioFreeMigrations,
         private readonly AssetVideoMigrations $assetVideoMigrations,
+        private readonly VideoShowMigrations $videoShowMigrations,
     ) {
         parent::__construct();
     }
@@ -70,12 +72,14 @@ final class MigrateCommand extends Command
         $this->ugcUserMigrations->migrate($migrateConfig);
         $this->authorMigrations->migrate($migrateConfig);
         $this->keywordMigrations->migrate($migrateConfig);
-        $this->assetImageMigrations->migrate($migrateConfig);
-        $this->legacyDamPodcastMigrations->migrate($migrateConfig);
         $this->audioCategoryMigrations->migrate($migrateConfig);
-        $this->assetAudioPremiumMigrations->migrate($migrateConfig);
+        $this->legacyDamPodcastMigrations->migrate($migrateConfig);
+        $this->videoShowMigrations->migrate($migrateConfig);
+
+        //        $this->assetImageMigrations->migrate($migrateConfig); // todo
+        //        $this->assetAudioPremiumMigrations->migrate($migrateConfig);
         $this->assetAudioFreeMigrations->migrate($migrateConfig);
-        $this->assetVideoMigrations->migrate($migrateConfig);
+        //        $this->assetVideoMigrations->migrate($migrateConfig);
 
         return Command::SUCCESS;
     }

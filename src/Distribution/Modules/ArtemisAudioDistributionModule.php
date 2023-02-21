@@ -20,9 +20,9 @@ use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 final class ArtemisAudioDistributionModule extends AbstractDistributionModule implements DistributionModuleInterface, CustomDistributionInterface
 {
-    private const ARTICLE_WEB_URL = 'articleWebUrl';
-    private const ARTICLE_ADMIN_URL = 'articleAdminUrl';
-    private const MEDIA_ADMIN_URL = 'mediaAdminUrl';
+    public const ARTICLE_WEB_URL = 'articleWebUrl';
+    public const ARTICLE_ADMIN_URL = 'articleAdminUrl';
+    public const MEDIA_ADMIN_URL = 'mediaAdminUrl';
 
     public function __construct(
         private readonly ArtemisClient $artemisRubricClient,

@@ -352,7 +352,7 @@ abstract class AbstractAssetMigrations extends AbstractMigrations
             'notify_to_id' => $distributionRow['distributed_by_id'],
             'created_at' => $videoRow['created_at'],
             'modified_at' => $videoRow['modified_at'],
-            'publish_at' => null,
+            'publish_at' => null, // todo check
             'distribution_service' => '',
             'asset_file_id' => $videoRow['id'],
             'asset_id' => $videoRow['id'],
@@ -360,7 +360,6 @@ abstract class AbstractAssetMigrations extends AbstractMigrations
             'status' => DistributionProcessStatus::Distributed->toString(),
             'fail_reason' => DistributionFailReason::None->toString(),
             'distribution_data' => '[]',
-            'custom_data' => '[]',
             'texts_title' => null,
             'texts_description' => null,
             'texts_author' => null,
@@ -373,7 +372,17 @@ abstract class AbstractAssetMigrations extends AbstractMigrations
             'flags_embeddable' => null,
             'flags_for_kids' => null,
             'flags_notify_subscribers' => null,
-            'rss_url' => null,
+            'dtype' => '', // todo new
+            'texts_ext_rss_id' => null, // todo new
+            'texts_free_url' => null, // todo new
+            'texts_premium_url' => null, // todo new
+            'texts_rubric_id' => null, // todo new
+            'texts_episode_id' => null, //todo new
+            'texts_podcast_id' => null, // todo new
+            'attributes_duration' => null, // todo new
+            'attributes_premium_duration' => null, // todo new
+            'flags_create_article' => null, // todo new
+            'flags_bonus_episode' => null, // todo new
         ];
     }
 
@@ -398,6 +407,11 @@ abstract class AbstractAssetMigrations extends AbstractMigrations
             'asset_flags_generated_by_system' => 0, // TODO
             'asset_flags_autocompleted_metadata' => 1, // TODO
             'asset_flags_auto_delete_unprocessed' => 0, // TODO
+            'asset_file_properties_distributes_in_services' => '[]',
+            'asset_file_properties_slot_names' => '[]',
+            'asset_file_properties_from_rss' => 0,
+            'asset_file_properties_width' => 0,
+            'asset_file_properties_height' => 0,
             'attributes_asset_type' => $this->getLegacyDamAssetType(),
             'attributes_status' => 'with_file',
             'main_file_id' => $row['id'],

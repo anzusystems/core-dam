@@ -190,7 +190,7 @@ final class AssetVideoMigrations extends AbstractAssetMigrations
         $data['publish_at'] = $res['dates_publish_at'];
         $data['channel_id'] = $res['channel_id'] ?? '';
         $data['playlist'] = $res['playlist_id'] ?? '';
-        $data['language'] = $row['youtube_language_id'] ?? 0; // todo
+        $data['language'] = $row['youtube_language_id'] ?? ''; // todo
         $data['flags_embeddable'] = $row['youtube_general_configuration_embeddable'];
         $data['flags_for_kids'] = $row['youtube_general_configuration_for_children'];
         $data['flags_notify_subscribers'] = $res['flags_notify_subscribers'];

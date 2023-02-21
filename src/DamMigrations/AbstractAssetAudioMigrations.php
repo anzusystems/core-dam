@@ -7,6 +7,7 @@ namespace App\DamMigrations;
 use AnzuSystems\CoreDamBundle\FileSystem\NameGenerator\NameGenerator;
 use AnzuSystems\CoreDamBundle\Model\Enum\DistributionFailReason;
 use AnzuSystems\CoreDamBundle\Model\Enum\DistributionProcessStatus;
+use App\Distribution\Modules\ArtemisAudioDistributionModule;
 use App\Model\MigrateConfig;
 use Symfony\Component\Uid\Uuid;
 
@@ -20,8 +21,10 @@ abstract class AbstractAssetAudioMigrations extends AbstractAssetMigrations
         $this->insertAudioFile($row, $assetId);
         $keywords = $this->insertKeywords($row, $assetId);
         $authors = $this->insertAuthors($row, $assetId);
-        $distributions = $this->insertDistribution($row);
-        $this->insertEpisode($row, $distributions, $assetId);
+
+        $distributions = $this->insertDistribution($row, $keywords, $authors);
+
+        //        $this->insertEpisode($row, $distributions, $assetId); // todo
     }
 
     protected function getCustomData(array $row): string
@@ -144,7 +147,7 @@ abstract class AbstractAssetAudioMigrations extends AbstractAssetMigrations
         }
     }
 
-    private function insertDistribution(array $row): array
+    private function insertDistribution(array $row, array $keywords, array $authors): array
     {
         $distributions = $this->damLegacyConnection->fetchAllAssociative(
             'SELECT
@@ -157,24 +160,46 @@ abstract class AbstractAssetAudioMigrations extends AbstractAssetMigrations
 
         foreach ($distributions as $distribution) {
             $distributionData = $this->getBaseDistribution($row, $distribution);
-            $distributionData['distribution_data'] = '[]'; // todo from params "params" => "{"mediaUrl": "https://artemis.sme.sk/admin/media/46954/edit/section/117", "articleId": 23043331, "articleUrl": "https://podcasty.sme.sk/c/23043331/.html", "articleAdminUrl": "https://artemis.sme.sk/admin/article/23043331/edit/section/117"}"
-            $distribution['ext_id'] = $distribution['distribution_id'];
-
             if ('artemis' === $distribution['type']) {
-                $distributionData['custom_data'] = '[]'; // todo
+                $distribution['ext_id'] = $distribution['distribution_id'];
+                $params = json_decode($distribution['params'] ?? '{}', true);
                 $distributionData['distribution_service'] = 'artemis_podcast_cms';
-                $distributionData['dtype'] = 'customdistribution';
-            }
-            if (false === ('artemis' === $distribution['type'])) {
-                $distributionData['rss_url'] = $row['file_attributes_origin_url'];
-                $distributionData['distribution_service'] = 'podcast_rss_main';
-                $distributionData['dtype'] = 'rssdistribution';
-            }
+                $distributionData['dtype'] = 'artemisaudiodistribution';
+                $distributionData['distribution_data'] = json_encode(
+                    [
+                        ArtemisAudioDistributionModule::ARTICLE_WEB_URL => $params['articleUrl'] ?? '',
+                        ArtemisAudioDistributionModule::ARTICLE_ADMIN_URL => $params['articleAdminUrl'] ?? '',
+                        ArtemisAudioDistributionModule::MEDIA_ADMIN_URL => $params['mediaUrl'] ?? '',
+                    ]
+                );
+                //                $distributionData['texts_title'] = $row['texts_title']; // todo truncate
+                $distributionData['texts_title'] = '';
+                $distributionData['texts_ext_rss_id'] = $row['file_attributes_origin_url'];
+                $distributionData['texts_description'] = $row['texts_description'];
+                $distributionData['texts_free_url'] = $row['file_attributes_origin_url'];
+                $distributionData['texts_premium_url'] = ''; // todo
+                $distributionData['texts_authors'] = json_encode($authors);
+                $distributionData['texts_keywords'] = json_encode($keywords);
+                $distributionData['texts_rubric_id'] = 6978;
+                $distributionData['texts_episode_id'] = '';
+                $distributionData['texts_podcast_id'] = '';
 
-            $this->prepareBulkInsert(
-                'distribution',
-                $distributionData
-            );
+                $distributionData['attributes_duration'] = 0; // todo
+                $distributionData['attributes_premium_duration'] = 0; // todo
+
+                $distributionData['flags_create_article'] = 0;
+                $distributionData['flags_bonus_episode'] = 0;
+
+                $this->prepareBulkInsert(
+                    'distribution',
+                    $distributionData
+                );
+            }
+            //            if (false === ('artemis' === $distribution['type'])) {
+            //                $distributionData['rss_url'] = $row['file_attributes_origin_url'];
+            //                $distributionData['distribution_service'] = 'podcast_rss_main';
+            //                $distributionData['dtype'] = 'rssdistribution';
+            //            }
         }
 
         return $distributions;
