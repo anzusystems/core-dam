@@ -421,14 +421,14 @@ anzu_systems_core_dam:
   domains:
     admin_image:
       domain: '%env(resolve:string:DOMAIN_ADMIN_IMAGE)%'
-      max_age: 0
-      cache_ttl: 60
-      public: false
+      max_age: '%env(int:DOMAIN_ADMIN_IMAGE_MAX_AGE)%'
+      cache_ttl: '%env(int:DOMAIN_ADMIN_IMAGE_CACHE_TTL)%'
+      public: '%env(bool:DOMAIN_ADMIN_IMAGE_PUBLIC)%'
     public_image:
       domain: '%env(resolve:string:DOMAIN_PUBLIC_IMAGE)%'
-      max_age: 60
-      cache_ttl: 60
-      public: true
+      max_age: '%env(int:DOMAIN_PUBLIC_IMAGE_MAX_AGE)%'
+      cache_ttl: '%env(int:DOMAIN_PUBLIC_IMAGE_CACHE_TTL)%'
+      public: '%env(bool:DOMAIN_PUBLIC_IMAGE_PUBLIC)%'
     public_audio:
       domain: '%env(resolve:string:DOMAIN_PUBLIC_AUDIO)%'
       max_age: 0
