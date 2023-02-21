@@ -1,9 +1,5 @@
 security:
     providers:
-        app_user_provider_email:
-            entity:
-                class: App\Entity\User
-                property: email
         app_user_provider_id:
             entity:
                 class: App\Entity\User
@@ -56,6 +52,6 @@ security:
         - { path: ^/api/auth/, roles: PUBLIC_ACCESS }
         - { path: ^/api/adm/, roles: ROLE_DAM_ADMIN }
         - { path: ^/api/ugc/, roles: ROLE_UGC }
-        - { path: ^/adm/, roles: ROLE_FORUM_ADMIN }
+        - { path: ^/adm/, roles: ROLE_DAM_ADMIN }
         - { path: ^/api/sys/v(\d+)/job, roles: ROLE_SYS_JOB_API }
         - { path: ^/api/sys/, roles: ROLE_SYS_API }
