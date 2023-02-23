@@ -75,6 +75,7 @@ final class ArtemisAudioDistributionAutomat extends AbstractManager
         }
 
         foreach ($audioFile->getAsset()->getEpisodes() as $episode) {
+            // todo fetch by episode?
             $distribution = $this->repository->findByPodcastAndAsset(
                 (string) $audioFile->getAsset()->getId(),
                 (string) $episode->getPodcast()->getId(),
