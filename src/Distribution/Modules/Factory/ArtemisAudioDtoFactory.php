@@ -33,6 +33,10 @@ final class ArtemisAudioDtoFactory extends AbstractArtemisDtoFactory
             ->setDuration($distribution->getAttributes()->getDuration())
             ->setPremiumDirectSourceDuration($distribution->getAttributes()->getPremiumDuration());
 
+        if ($distribution->getPublishAt()) {
+            $mediaDto->setPublishedAt($distribution->getPublishAt());
+        }
+
         $mediaDto->setAuthors($this->transformAuthors($distribution->getTexts()->getAuthors()));
         $mediaDto->setTags($this->transformKeywords($distribution->getTexts()->getKeywords()));
         $mediaDto->setRubric((new ArtemisMediaRubricDto())->setId($distribution->getTexts()->getRubricId()));
