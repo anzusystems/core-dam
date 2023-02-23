@@ -8,6 +8,7 @@ use AnzuSystems\CoreDamBundle\Entity\Asset;
 use AnzuSystems\CoreDamBundle\Entity\AudioFile;
 use AnzuSystems\CoreDamBundle\Entity\ImageFile;
 use AnzuSystems\CoreDamBundle\Entity\PodcastEpisode;
+use AnzuSystems\CoreDamBundle\Model\Enum\AssetFileProcessStatus;
 use App\Entity\ArtemisAudioDistribution;
 use App\Model\Dto\Artemis\ArtemisAudioMediaDto;
 use App\Model\Dto\Artemis\ArtemisMediaChannel;
@@ -51,7 +52,14 @@ final class ArtemisAudioDtoFactory extends AbstractArtemisDtoFactory
         );
 
         foreach ($episodes as $episode) {
-            $imageFile = $episode->getImagePreview()?->getImageFile() ?? $episode->getPodcast()->getImagePreview()?->getImageFile();
+            $imageFile = null;
+            if ($episode->getImagePreview()?->getImageFile()->getAssetAttributes()->getStatus()->is(AssetFileProcessStatus::Processed)) {
+                $imageFile = $episode->getImagePreview()?->getImageFile();
+            }
+            if ($episode->getPodcast()->getImagePreview()?->getImageFile()->getAssetAttributes()->getStatus()->is(AssetFileProcessStatus::Processed)) {
+                $imageFile = $episode->getPodcast()->getImagePreview()?->getImageFile();
+            }
+
             if ($imageFile) {
                 return $imageFile;
             }

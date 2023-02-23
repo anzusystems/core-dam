@@ -17,12 +17,44 @@
         </itunes:category>
         <itunes:image href="http://core-dam.sme.localhost/download-file?file=50x50" />
         <item>
-            <title>789: The Runaround</title>
+            <title>788: Duplicate</title>
             <link>https://www.thisamericanlife.org/789/the-runaround</link>
             <description>People being dodged, delayed, and evaded—and what they do to put an end to it.
             </description>
             <pubDate>Sun, 22 Jan 2023 18:00:00 -0500</pubDate>
-            <guid isPermaLink="false">45238 at https://www.thisamericanlife.org</guid>
+            <guid isPermaLink="false">45237 at https://www.thisamericanlife.org</guid>
+            <itunes:author>This American Life</itunes:author>
+            <enclosure url="http://core-dam.sme.localhost/download-file?file=audioa" type="audio/mpeg" />
+            <itunes:duration>01:03:02</itunes:duration>
+            <itunes:subtitle>People being dodged, delayed, and evaded—and what they do to put an end to it.
+            </itunes:subtitle>
+            <itunes:summary>People being dodged, delayed, and evaded—and what they do to put an end to it.
+            </itunes:summary>
+            <itunes:image href="http://core-dam.sme.localhost/download-file?file=50x50" />
+        </item>
+        <item>
+            <title>Between them</title>
+            <link>https://www.thisamericanlife.org/556/same-bed-different-dreams</link>
+            <description>Tralala
+            </description>
+            <pubDate>Sun, 24 Jan 2023 18:00:00 -0500</pubDate>
+            <guid isPermaLink="false">45233 at https://www.thisamericanlife.org</guid>
+            <itunes:author>This American Life</itunes:author>
+            <enclosure url="http://core-dam.sme.localhost/download-file?file=audiob" type="audio/mpeg" />
+            <itunes:duration>01:03:02</itunes:duration>
+            <itunes:subtitle>People being dodged, delayed, and evaded—and what they do to put an end to it.
+            </itunes:subtitle>
+            <itunes:summary>People being dodged, delayed, and evaded—and what they do to put an end to it.
+            </itunes:summary>
+            <itunes:image href="http://core-dam.sme.localhost/download-file?file=50x50" />
+        </item>
+        <item>
+            <title>789: The Runaround</title>
+            <link>https://www.thisamericanlife.org/789/the-runaround</link>
+            <description>People being dodged, delayed, and evaded—and what they do to put an end to it.
+            </description>
+            <pubDate>Sun, 28 Jan 2023 18:00:00 -0500</pubDate>
+            <guid isPermaLink="false">45232 at https://www.thisamericanlife.org</guid>
             <itunes:author>This American Life</itunes:author>
             <enclosure url="http://core-dam.sme.localhost/download-file?file=audioa" type="audio/mpeg" />
             <itunes:duration>01:03:02</itunes:duration>
