@@ -8,6 +8,7 @@ use AnzuSystems\CoreDamBundle\Entity\Asset;
 use AnzuSystems\CoreDamBundle\Entity\AudioFile;
 use AnzuSystems\CoreDamBundle\Entity\ImageFile;
 use AnzuSystems\CoreDamBundle\Entity\PodcastEpisode;
+use AnzuSystems\CoreDamBundle\Model\Enum\AssetFileProcessStatus;
 use App\Entity\ArtemisAudioDistribution;
 use App\Model\Dto\Artemis\ArtemisAudioMediaDto;
 use App\Model\Dto\Artemis\ArtemisMediaChannel;
@@ -32,6 +33,10 @@ final class ArtemisAudioDtoFactory extends AbstractArtemisDtoFactory
             ->setDuration($distribution->getAttributes()->getDuration())
             ->setPremiumDirectSourceDuration($distribution->getAttributes()->getPremiumDuration());
 
+        if ($distribution->getPublishAt()) {
+            $mediaDto->setPublishedAt($distribution->getPublishAt());
+        }
+
         $mediaDto->setAuthors($this->transformAuthors($distribution->getTexts()->getAuthors()));
         $mediaDto->setTags($this->transformKeywords($distribution->getTexts()->getKeywords()));
         $mediaDto->setRubric((new ArtemisMediaRubricDto())->setId($distribution->getTexts()->getRubricId()));
@@ -51,7 +56,14 @@ final class ArtemisAudioDtoFactory extends AbstractArtemisDtoFactory
         );
 
         foreach ($episodes as $episode) {
-            $imageFile = $episode->getImagePreview()?->getImageFile() ?? $episode->getPodcast()->getImagePreview()?->getImageFile();
+            $imageFile = null;
+            if ($episode->getImagePreview()?->getImageFile()->getAssetAttributes()->getStatus()->is(AssetFileProcessStatus::Processed)) {
+                $imageFile = $episode->getImagePreview()?->getImageFile();
+            }
+            if ($episode->getPodcast()->getImagePreview()?->getImageFile()->getAssetAttributes()->getStatus()->is(AssetFileProcessStatus::Processed)) {
+                $imageFile = $episode->getPodcast()->getImagePreview()?->getImageFile();
+            }
+
             if ($imageFile) {
                 return $imageFile;
             }

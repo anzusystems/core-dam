@@ -7,6 +7,9 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 use Google\Cloud\Storage\StorageClient;
 
 return static function (ContainerConfigurator $configurator): void {
+    $configurator->parameters()
+        ->set('empty_json', '{}');
+
     $services = $configurator->services();
 
     $services
@@ -29,7 +32,7 @@ return static function (ContainerConfigurator $configurator): void {
         ->args([
             [
                 'projectId' => 'anzu-devel-pp',
-                'keyFilePath' => env('resolve:string:GOOGLE_FALLBACK_BUCKET_CREDENTIALS')
+                'keyFile' => env('file:GOOGLE_FALLBACK_BUCKET_CREDENTIALS')->default('empty_json')
             ]
         ])
     ;

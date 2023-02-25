@@ -47,6 +47,9 @@ TEST-*.xml
 # Xdebug
 xdebug.log
 
+# Test Command
+src/Command/TestCommand.php
+
 # Docker
 .docker-sync*
 .docker-compose-host

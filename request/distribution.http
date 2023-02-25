@@ -124,7 +124,8 @@ Content-Type: application/json
       "Politics"
     ]
   },
-  "distributionService": "jw_cms"
+  "distributionService": "jw_cms",
+  "publishAt": "2023-02-24T11:53:13.000000Z"
 }
 
 > {%
