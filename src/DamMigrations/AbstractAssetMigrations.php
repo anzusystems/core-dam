@@ -20,7 +20,7 @@ abstract class AbstractAssetMigrations extends AbstractMigrations
     // todo described
     public const ASSET_TYPE_DISC = 'imagefile';
     protected const SLOT_NAME = 'default';
-    private const BULK_SIZE = 1;
+    protected const BULK_SIZE = 100;
 
     protected AuthorCache $authorCache;
     protected KeywordCache $keywordCache;
@@ -58,24 +58,15 @@ abstract class AbstractAssetMigrations extends AbstractMigrations
         $i = 0;
         $skipped = 0;
         while ($row = $res->fetchAssociative()) {
-            if (false === $this->shouldMigrate($row)) {
-                $skipped++;
-
-                continue;
-            }
-
             $i++;
             $this->insertAssetFileMetadata($row);
             $this->insertAssetFile($row);
 
-            $existingAssetId = $this->getExistingAssetId($row);
-            if (null === $existingAssetId) {
-                $this->insertAssetMetadata($row);
-                $this->insertAsset($row);
-            }
+            $this->insertAssetMetadata($row);
+            $this->insertAsset($row);
 
-            $this->prepareAssetTypeSpecific($row, $existingAssetId);
-            $this->insertAssetSlot($row, $existingAssetId);
+            $this->prepareAssetTypeSpecific($row, $row['id']);
+            $this->insertAssetSlot($row, $row['id']);
 
             if (0 === $i % self::BULK_SIZE) {
                 $this->flush();
@@ -87,16 +78,6 @@ abstract class AbstractAssetMigrations extends AbstractMigrations
 
         $progressBar->finish();
         $this->writeln('');
-    }
-
-    protected function shouldMigrate(array $row): bool
-    {
-        return true;
-    }
-
-    protected function getExistingAssetId(array $row): ?string
-    {
-        return null;
     }
 
     abstract protected function prepareAssetTypeSpecific(array $row, ?string $assetId = null): void;
@@ -391,7 +372,7 @@ abstract class AbstractAssetMigrations extends AbstractMigrations
         return [];
     }
 
-    private function insertAsset(array $row): void
+    protected function insertAsset(array $row): void
     {
         $this->prepareBulkInsert('asset', [
             'id' => $row['id'],
@@ -422,12 +403,12 @@ abstract class AbstractAssetMigrations extends AbstractMigrations
         ]);
     }
 
-    private function getDisplayTitle(array $row): string
+    protected function getDisplayTitle(array $row): string
     {
         return $row['texts_title'] ?? $row['id'];
     }
 
-    private function totalCount(MigrateConfig $migrateConfig): int
+    protected function totalCount(MigrateConfig $migrateConfig): int
     {
         $sql = '
             SELECT count(a.id)

@@ -1,0 +1,100 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Command;
+
+use AnzuSystems\CoreDamBundle\Command\Traits\OutputUtilTrait;
+use AnzuSystems\CoreDamBundle\Domain\Asset\AssetManager;
+use AnzuSystems\CoreDamBundle\Entity\AssetFile;
+use AnzuSystems\CoreDamBundle\Model\Enum\AssetType;
+use AnzuSystems\CoreDamBundle\Repository\AbstractAssetFileRepository;
+use AnzuSystems\CoreDamBundle\Repository\AudioFileRepository;
+use AnzuSystems\CoreDamBundle\Repository\DocumentFileRepository;
+use AnzuSystems\CoreDamBundle\Repository\ImageFileRepository;
+use AnzuSystems\CoreDamBundle\Repository\VideoFileRepository;
+use Exception;
+use Symfony\Component\Console\Attribute\AsCommand;
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
+
+#[AsCommand(
+    name: 'anzu:asset:refresh-properties',
+    description: 'Create mandatory users.'
+)]
+final class RefreshAssetFilePropertiesCommand extends Command
+{
+    use OutputUtilTrait;
+
+    private const ASSET_TYPE_ARG = 'asset_type';
+    private const BULK_COUNT = 50;
+
+    public function __construct(
+        private readonly AudioFileRepository $audioFileRepository,
+        private readonly ImageFileRepository $imageFileRepository,
+        private readonly DocumentFileRepository $documentFileRepository,
+        private readonly VideoFileRepository $videoFileRepository,
+        private readonly AssetManager $manager,
+    ) {
+        parent::__construct();
+    }
+
+    public function updateExisting(AssetType $assetType): void
+    {
+        $repository = $this->getRepository($assetType);
+
+        $progress = $this->outputUtil->createProgressBar();
+        $progress->start();
+
+        $i = 0;
+
+        // todo bulk
+        /** @var AssetFile $assetFile */
+        foreach ($repository->findAll() as $assetFile) {
+            $i++;
+            $this->manager->updateExisting($assetFile->getAsset(), false);
+            $progress->advance();
+
+            if (0 === $i % self::BULK_COUNT) {
+                $this->manager->flush();
+            }
+        }
+
+        $this->manager->flush();
+
+        $progress->finish();
+    }
+
+    protected function configure(): void
+    {
+        $this->addArgument(
+            name: self::ASSET_TYPE_ARG,
+            mode: InputArgument::REQUIRED,
+            description: 'asset type',
+        );
+    }
+
+    /**
+     * @throws Exception
+     */
+    protected function execute(InputInterface $input, OutputInterface $output): int
+    {
+        $this->updateExisting(
+            AssetType::tryFrom((string) $input->getArgument(self::ASSET_TYPE_ARG))
+        );
+
+        return Command::SUCCESS;
+    }
+
+    private function getRepository(AssetType $assetType): AbstractAssetFileRepository
+    {
+        return match ($assetType) {
+            AssetType::Image => $this->imageFileRepository,
+            AssetType::Video => $this->videoFileRepository,
+            AssetType::Audio => $this->audioFileRepository,
+            AssetType::Document => $this->documentFileRepository,
+        };
+    }
+}

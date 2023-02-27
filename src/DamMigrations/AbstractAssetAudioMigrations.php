@@ -4,28 +4,21 @@ declare(strict_types=1);
 
 namespace App\DamMigrations;
 
+use AnzuSystems\CoreDamBundle\Domain\PodcastEpisode\EpisodeRssImportManager;
 use AnzuSystems\CoreDamBundle\FileSystem\NameGenerator\NameGenerator;
+use AnzuSystems\CoreDamBundle\Helper\UrlHelper;
 use AnzuSystems\CoreDamBundle\Model\Enum\DistributionFailReason;
 use AnzuSystems\CoreDamBundle\Model\Enum\DistributionProcessStatus;
+use AnzuSystems\CoreDamBundle\Model\Enum\PodcastEpisodeStatus;
 use App\Distribution\Modules\ArtemisAudioDistributionModule;
 use App\Model\MigrateConfig;
+use Doctrine\DBAL\Exception;
 use Symfony\Component\Uid\Uuid;
 
 abstract class AbstractAssetAudioMigrations extends AbstractAssetMigrations
 {
     public const ASSET_TYPE_DISC = 'audiofile';
     protected const PUBLIC_STREAM = false;
-
-    protected function prepareAssetTypeSpecific(array $row, ?string $assetId = null): void
-    {
-        $this->insertAudioFile($row, $assetId);
-        $keywords = $this->insertKeywords($row, $assetId);
-        $authors = $this->insertAuthors($row, $assetId);
-
-        $distributions = $this->insertDistribution($row, $keywords, $authors);
-
-        //        $this->insertEpisode($row, $distributions, $assetId); // todo
-    }
 
     protected function getCustomData(array $row): string
     {
@@ -35,7 +28,7 @@ abstract class AbstractAssetAudioMigrations extends AbstractAssetMigrations
         ]));
     }
 
-    protected function shouldMigrate(array $row): bool
+    protected function shouldMigrate(array $row, bool $public): bool
     {
         $sql = '
             SELECT COUNT(texts_title)
@@ -104,7 +97,7 @@ abstract class AbstractAssetAudioMigrations extends AbstractAssetMigrations
         ;
     }
 
-    private function insertEpisode(array $row, array $distributions, ?string $assetId = null): void
+    protected function insertEpisode(array $row, array $artemisDistributionData, ?string $assetId = null): array
     {
         $sql = '
             SELECT
@@ -116,96 +109,123 @@ abstract class AbstractAssetAudioMigrations extends AbstractAssetMigrations
             where se.audio_id = :audioId
        ';
 
-        $rssDistrib = array_values(array_filter(
-            $distributions,
-            fn (array $array) => false === ('artemis' === $array['type'])
-        ))[0] ?? [];
-
         $episodes = $this->damLegacyConnection->fetchAllAssociative($sql, ['audioId' => $row['id']]);
+
+        if (1 < count($episodes)) {
+            dump('JOLO'); // todo
+        }
+
+        $newEpisode = [];
         foreach ($episodes as $episode) {
+            $newEpisode = [
+                'id' => $row['id'],
+                'podcast_id' => $this->podcastCache->getPodcast($episode['showTitle']),
+                'asset_id' => $assetId ?? $row['id'],
+                'created_at' => $row['created_at'],
+                'modified_at' => $row['modified_at'],
+                'created_by_id' => $row['created_by_id'],
+                'modified_by_id' => $row['modified_by_id'],
+                'position' => 0, // todo reorder position
+                'dates_publication_date' => $row['audio_dates_publish_at'],
+                'attributes_rss_id' => $artemisDistributionData['texts_ext_rss_id'] ?? '',
+                'flags_from_rss' => empty($artemisDistributionData['texts_ext_rss_id']) ? 0 : 1,
+                'attributes_rss_url' => $artemisDistributionData['texts_free_url'] ?? '',
+                'attributes_last_import_status' =>
+                    empty($artemisDistributionData['texts_ext_rss_id'])
+                        ? PodcastEpisodeStatus::Imported->toString()
+                        : PodcastEpisodeStatus::NotImported->toString(),
+                'attributes_season_number' => (int) ($episode['seasonTitle'] ?? null),
+                'attributes_episode_number' => (int) ($episode['episodeTitle'] ?? null),
+                'texts_title' => $row['texts_title'],
+                'texts_description' => $row['texts_description'],
+                'texts_raw_description' => '', // todo from artemis
+            ];
             $this->prepareBulkInsert(
                 'podcast_episode',
-                [
-                    'id' => (string) Uuid::v6(),
-                    'podcast_id' => $this->podcastCache->getPodcast($episode['showTitle']),
-                    'asset_id' => $assetId ?? $row['id'],
-                    'created_at' => $row['created_at'],
-                    'modified_at' => $row['modified_at'],
-                    'created_by_id' => $row['created_by_id'],
-                    'modified_by_id' => $row['modified_by_id'],
-                    'position' => 0, // todo reorder position
-                    'dates_publication_date' => $row['audio_dates_publish_at'],
-                    'attributes_ext_id' => $rssDistrib['distribution_id'] ?? '',
-                    'attributes_season_number' => (int) ($episode['seasonTitle'] ?? null),
-                    'attributes_episode_number' => (int) ($episode['episodeTitle'] ?? null),
-                    'texts_title' => $row['texts_title'],
-                    'texts_description' => $row['texts_description'],
-                    //                    'texts_description' => '',
-                    'texts_raw_description' => '', // todo from artemis
-                ]
+                $newEpisode
             );
         }
+
+        return $newEpisode;
     }
 
-    private function insertDistribution(array $row, array $keywords, array $authors): array
-    {
+    protected function prepareDistributionData(
+        string $assetId,
+        array $freeAsset,
+        array $keywords,
+        array $authors,
+        array $premiumAsset,
+    ): array {
         $distributions = $this->damLegacyConnection->fetchAllAssociative(
             'SELECT
                     id, audio_id, distributed_by_id, type, ext_id, url, params, distribution_id, distribute, process_state
-                FROM podcast WHERE audio_id = :audioId',
+                FROM podcast WHERE audio_id = :audioId AND process_state = :processState',
             [
-                'audioId' => $row['id'],
+                'audioId' => $freeAsset['id'],
+                'processState' => 'distributed',
             ]
         );
 
+        $rssDistribution = [
+            'id' => '',
+            'url' => '',
+        ];
+        $artemisDistributionData = [];
+
         foreach ($distributions as $distribution) {
-            $distributionData = $this->getBaseDistribution($row, $distribution);
+            if ('anchor' === $distribution['type']) {
+                $rssDistribution = [
+                    'id' => $distribution['ext_id'],
+                    'url' => $distribution['url'],
+                ];
+            }
+
             if ('artemis' === $distribution['type']) {
+                $artemisDistributionData = $this->getBaseDistribution($freeAsset, $distribution);
                 $distribution['ext_id'] = $distribution['distribution_id'];
                 $params = json_decode($distribution['params'] ?? '{}', true);
-                $distributionData['distribution_service'] = 'artemis_podcast_cms';
-                $distributionData['dtype'] = 'artemisaudiodistribution';
-                $distributionData['distribution_data'] = json_encode(
+                $artemisDistributionData['id'] = $assetId;
+
+                $artemisDistributionData['asset_file_id'] = $assetId;
+                $artemisDistributionData['asset_id'] = $assetId;
+                $artemisDistributionData['distribution_service'] = 'artemis_podcast_cms';
+                $artemisDistributionData['dtype'] = 'artemisaudiodistribution';
+                //                $artemisDistributionData['publish_at'] = 'todo'; // todo
+                $artemisDistributionData['distribution_data'] = json_encode(
                     [
                         ArtemisAudioDistributionModule::ARTICLE_WEB_URL => $params['articleUrl'] ?? '',
                         ArtemisAudioDistributionModule::ARTICLE_ADMIN_URL => $params['articleAdminUrl'] ?? '',
                         ArtemisAudioDistributionModule::MEDIA_ADMIN_URL => $params['mediaUrl'] ?? '',
                     ]
                 );
-                //                $distributionData['texts_title'] = $row['texts_title']; // todo truncate
-                $distributionData['texts_title'] = '';
-                $distributionData['texts_ext_rss_id'] = $row['file_attributes_origin_url'];
-                $distributionData['texts_description'] = $row['texts_description'];
-                $distributionData['texts_free_url'] = $row['file_attributes_origin_url'];
-                $distributionData['texts_premium_url'] = ''; // todo
-                $distributionData['texts_authors'] = json_encode($authors);
-                $distributionData['texts_keywords'] = json_encode($keywords);
-                $distributionData['texts_rubric_id'] = 6978;
-                $distributionData['texts_episode_id'] = '';
-                $distributionData['texts_podcast_id'] = '';
+                $artemisDistributionData['texts_title'] = mb_substr($freeAsset['texts_title'], 0, 128); // todo truncate
+                $artemisDistributionData['texts_description'] = $freeAsset['texts_description'];
+                $artemisDistributionData['texts_premium_url'] =
+                    empty($premiumAsset['audio_public_link_path']) ? '' : $this->addDomain($premiumAsset['audio_public_link_path']);
+                $artemisDistributionData['texts_authors'] = json_encode($authors);
+                $artemisDistributionData['texts_keywords'] = json_encode($keywords);
+                $artemisDistributionData['texts_rubric_id'] = 6978;
+                $artemisDistributionData['texts_episode_id'] = '';
+                $artemisDistributionData['texts_podcast_id'] = '';
 
-                $distributionData['attributes_duration'] = 0; // todo
-                $distributionData['attributes_premium_duration'] = 0; // todo
-
-                $distributionData['flags_create_article'] = 0;
-                $distributionData['flags_bonus_episode'] = 0;
-
-                $this->prepareBulkInsert(
-                    'distribution',
-                    $distributionData
-                );
+                $artemisDistributionData['attributes_duration'] = (int) ($freeAsset['audio_attributes_length'] ?? 0); // todo
+                $artemisDistributionData['attributes_premium_duration'] = (int) ($premiumAsset['attributes_duration'] ?? 0); // todo
+                $artemisDistributionData['flags_create_article'] = 0;
+                $artemisDistributionData['flags_bonus_episode'] = 0;
             }
-            //            if (false === ('artemis' === $distribution['type'])) {
-            //                $distributionData['rss_url'] = $row['file_attributes_origin_url'];
-            //                $distributionData['distribution_service'] = 'podcast_rss_main';
-            //                $distributionData['dtype'] = 'rssdistribution';
-            //            }
         }
 
-        return $distributions;
+        if (false === empty($artemisDistributionData)) {
+            $artemisDistributionData['texts_ext_rss_id'] = $rssDistribution['id'];
+            $artemisDistributionData['texts_free_url'] = $rssDistribution['url'];
+
+            return $artemisDistributionData;
+        }
+
+        return [];
     }
 
-    private function insertAudioFile(array $row, ?string $assetId = null): void
+    protected function insertAudioFile(array $row, ?string $assetId = null): void
     {
         $this->prepareBulkInsert('audio_file', [
             'id' => $row['id'],
@@ -217,5 +237,14 @@ abstract class AbstractAssetAudioMigrations extends AbstractAssetMigrations
             'audio_public_link_slug' => $row['audio_public_stream_slug'],
             'audio_public_link_is_public' => $row['audio_public_stream_is_public'],
         ]);
+    }
+
+    protected function prepareAssetTypeSpecific(array $row, ?string $assetId = null): void
+    {
+    }
+
+    private function addDomain(string $url): string
+    {
+        return UrlHelper::concatPathWithDomain('https://audio.smedata.sk', $url);
     }
 }

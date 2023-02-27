@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace App\Command;
 
+use AnzuSystems\CoreDamBundle\Elasticsearch\IndexBuilder;
+use AnzuSystems\CoreDamBundle\Elasticsearch\IndexManager;
+use AnzuSystems\CoreDamBundle\Elasticsearch\RebuildIndexConfig;
+use AnzuSystems\CoreDamBundle\Model\Enum\AssetType;
 use App\DamMigrations\AdmUserMigrations;
 use App\DamMigrations\AssetAudioFreeMigrations;
 use App\DamMigrations\AssetAudioPremiumMigrations;
@@ -33,18 +37,10 @@ final class MigrateCommand extends Command
     private const UGC_OPT = 'ugc';
 
     public function __construct(
-        private readonly LegacyDamPodcastMigrations $legacyDamPodcastMigrations,
-        private readonly UgcLicenceMigrations $ugcLicenceMigrations,
-        private readonly AdmUserMigrations $admUserMigrations,
-        private readonly UgcUserMigrations $ugcUserMigrations,
-        private readonly AssetImageMigrations $assetImageMigrations,
-        private readonly AudioCategoryMigrations $audioCategoryMigrations,
-        private readonly AuthorMigrations $authorMigrations,
-        private readonly KeywordMigrations $keywordMigrations,
-        private readonly AssetAudioPremiumMigrations $assetAudioPremiumMigrations,
+        private readonly IndexBuilder $indexBuilder,
+        private readonly RefreshAssetFilePropertiesCommand $refreshAssetFilePropertiesCommand,
         private readonly AssetAudioFreeMigrations $assetAudioFreeMigrations,
-        private readonly AssetVideoMigrations $assetVideoMigrations,
-        private readonly VideoShowMigrations $videoShowMigrations,
+        private readonly AssetAudioPremiumMigrations $assetAudioPremiumMigrations,
     ) {
         parent::__construct();
     }
@@ -64,22 +60,17 @@ final class MigrateCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $migrateConfig = new MigrateConfig(
-            ugc: (bool) $input->getOption(self::UGC_OPT),
+            ugc: false,
         );
 
-        $this->ugcLicenceMigrations->migrate($migrateConfig);
-        $this->admUserMigrations->migrate($migrateConfig);
-        $this->ugcUserMigrations->migrate($migrateConfig);
-        $this->authorMigrations->migrate($migrateConfig);
-        $this->keywordMigrations->migrate($migrateConfig);
-        $this->audioCategoryMigrations->migrate($migrateConfig);
-        $this->legacyDamPodcastMigrations->migrate($migrateConfig);
-        $this->videoShowMigrations->migrate($migrateConfig);
-
-        //        $this->assetImageMigrations->migrate($migrateConfig); // todo
-        //        $this->assetAudioPremiumMigrations->migrate($migrateConfig);
+        $this->assetAudioPremiumMigrations->migrate($migrateConfig);
         $this->assetAudioFreeMigrations->migrate($migrateConfig);
-        //        $this->assetVideoMigrations->migrate($migrateConfig);
+
+        $this->refreshAssetFilePropertiesCommand->updateExisting(AssetType::Audio);
+
+        $this->indexBuilder->rebuildIndex(
+            new RebuildIndexConfig('asset', 'cms', '', '', false, 10)
+        );
 
         return Command::SUCCESS;
     }
