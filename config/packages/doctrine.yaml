@@ -26,8 +26,18 @@ doctrine:
                         dir: '%kernel.project_dir%/src/Entity'
                         prefix: 'App\Entity'
                         alias: App
+                    AnzuSystemsCommonBundle:
+                        type: attribute
+                        dir: '%kernel.project_dir%/vendor/anzusystems/common-bundle/src/Entity'
+                        prefix: 'AnzuSystems\CommonBundle\Entity'
+                        alias: AnzuSystemsCommonBundle
+                    AnzuSystemsContractsEmbeds:
+                        type: attribute
+                        dir: '%kernel.project_dir%/vendor/anzusystems/contracts/src/Entity/Embeds'
+                        prefix: 'AnzuSystems\Contracts\Entity\Embeds'
+                        alias: AnzuSystemsContractsEmbeds
                 naming_strategy: doctrine.orm.naming_strategy.underscore_number_aware
-                auto_mapping: true
+                auto_mapping: false
                 second_level_cache:
                     enabled: '%env(bool:DOCTRINE_CACHE_ENABLED)%'
                     log_enabled: false
