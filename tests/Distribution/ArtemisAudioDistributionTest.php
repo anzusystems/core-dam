@@ -9,13 +9,18 @@ use AnzuSystems\CoreDamBundle\DataFixtures\AudioFixtures;
 use AnzuSystems\CoreDamBundle\DataFixtures\PodcastFixtures;
 use AnzuSystems\CoreDamBundle\Domain\Audio\AudioPositionFacade;
 use AnzuSystems\CoreDamBundle\Domain\Podcast\PodcastManager;
+use AnzuSystems\CoreDamBundle\Domain\Podcast\PodcastRssReader;
 use AnzuSystems\CoreDamBundle\Domain\Podcast\RssImportManager;
+use AnzuSystems\CoreDamBundle\Domain\PodcastEpisode\EpisodeRssImportManager;
 use AnzuSystems\CoreDamBundle\Domain\PodcastEpisode\PodcastEpisodeManager;
 use AnzuSystems\CoreDamBundle\Entity\AssetSlot;
 use AnzuSystems\CoreDamBundle\Entity\AudioFile;
 use AnzuSystems\CoreDamBundle\Entity\Embeds\PodcastEpisodeTexts;
 use AnzuSystems\CoreDamBundle\Entity\Podcast;
 use AnzuSystems\CoreDamBundle\Entity\PodcastEpisode;
+use AnzuSystems\CoreDamBundle\HttpClient\RssClient;
+use AnzuSystems\CoreDamBundle\Model\Enum\PodcastLastImportStatus;
+use AnzuSystems\SerializerBundle\Exception\SerializerException;
 use App\Distribution\Modules\Factory\ArtemisAudioDtoFactory;
 use App\Domain\ArtemisAudioDistribution\ArtemisAudioDistributionAutomat;
 use App\Entity\ArtemisAudioDistribution;
@@ -32,6 +37,10 @@ final class ArtemisAudioDistributionTest extends AbstractControllerTest
     private PodcastManager $podcastManager;
     private ArtemisAudioDtoFactory $artemisAudioDtoFactory;
 
+    private EpisodeRssImportManager $episodeRssImportManager;
+    private PodcastRssReader $reader;
+    private RssClient $client;
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -41,6 +50,9 @@ final class ArtemisAudioDistributionTest extends AbstractControllerTest
         $this->podcastEpisodeManager = $this->getService(PodcastEpisodeManager::class);
         $this->podcastManager = $this->getService(PodcastManager::class);
         $this->artemisAudioDtoFactory = $this->getService(ArtemisAudioDtoFactory::class);
+        $this->reader = $this->getService(PodcastRssReader::class);
+        $this->client = $this->getService(RssClient::class);
+        $this->episodeRssImportManager = $this->getService(EpisodeRssImportManager::class);
     }
 
     public function testMakePublicUrl(): void
@@ -104,7 +116,7 @@ final class ArtemisAudioDistributionTest extends AbstractControllerTest
             'texts.episodeId' => $episode->getId()
         ]);
         $this->assertNull($distribution);
-        $this->importManager->syncPodcast($episode->getPodcast());
+        $this->syncPodcast($episode->getPodcast());
 
         /** @var array<int, ArtemisAudioDistribution> $distributions */
         $distributions = $this->entityManager->getRepository(ArtemisAudioDistribution::class)->findBy([
@@ -123,12 +135,14 @@ final class ArtemisAudioDistributionTest extends AbstractControllerTest
         $this->assertSame('http://audio.smedata.localhost/7994f48d-118e-4dc6-8245-98b546cda6dc/783-kids-these-days.mp3', $distribution->getTexts()->getPremiumUrl());
     }
 
+
+
     public function testDistribution(): void
     {
         $podcast = $this->entityManager->getRepository(Podcast::class)->find(PodcastFixtures::PODCAST_1);
 
         // Run synchronization procedure for podcasts
-        $this->importManager->syncPodcast($podcast);
+        $this->syncPodcast($podcast);
 
         // Find RSS Episode created by RSS synchronization, validated preview Image
         $episode = $this->entityManager->getRepository(PodcastEpisode::class)->findOneBy([
@@ -171,5 +185,18 @@ final class ArtemisAudioDistributionTest extends AbstractControllerTest
         $this->assertSame([], $distribution->getTexts()->getAuthors());
         $this->assertSame([], $distribution->getTexts()->getKeywords());
         $this->assertSame(6978, $distribution->getTexts()->getRubricId());
+    }
+
+    /**
+     * @throws SerializerException
+     */
+    private function syncPodcast(Podcast $podcast): void
+    {
+        $this->reader->initReader($this->client->readPodcastRss($podcast));
+        $this->importManager->syncPodcast($podcast, $this->reader->readChannel());
+
+        foreach ($this->reader->readItems() as $podcastItem) {
+            $this->episodeRssImportManager->importEpisode($podcast, $podcastItem);
+        }
     }
 }
