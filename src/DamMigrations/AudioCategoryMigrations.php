@@ -256,9 +256,9 @@ final class AudioCategoryMigrations extends AbstractMigrations
                 yc.title as ytTitle,
                 yc.assignable as ytAssignable
             FROM video_category vc
-            INNER JOIN artemis_rubric ar ON ar.id = vc.artemis_rubric_id
-            INNER JOIN jw_video_category jvc ON jvc.id = vc.jw_video_category_id
-            INNER JOIN youtube_category yc ON yc.id = vc.youtube_category_id
+            LEFT JOIN artemis_rubric ar ON ar.id = vc.artemis_rubric_id
+            LEFT JOIN jw_video_category jvc ON jvc.id = vc.jw_video_category_id
+            LEFT JOIN youtube_category yc ON yc.id = vc.youtube_category_id
         '
         );
     }

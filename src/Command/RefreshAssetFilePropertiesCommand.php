@@ -55,11 +55,9 @@ final class RefreshAssetFilePropertiesCommand extends Command
         $progress->setFormat('debug');
         $progress->start();
 
-
         $assetFiles = $repository->findAllProcessed(self::BULK_COUNT);
         $lastId = null;
-        while (false === $assetFiles->isEmpty())
-        {
+        while (false === $assetFiles->isEmpty()) {
             /** @var AssetFile $assetFile */
             foreach ($assetFiles as $assetFile) {
                 $lastId = $assetFile->getId();
@@ -91,9 +89,14 @@ final class RefreshAssetFilePropertiesCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $this->updateExisting(
-            AssetType::tryFrom((string) $input->getArgument(self::ASSET_TYPE_ARG))
-        );
+        $assetType = AssetType::tryFrom((string) $input->getArgument(self::ASSET_TYPE_ARG));
+        if (null === $assetType) {
+            $this->outputUtil->error('Invalid asset type');
+
+            return Command::FAILURE;
+        }
+
+        $this->updateExisting($assetType);
 
         return Command::SUCCESS;
     }

@@ -24,17 +24,20 @@ final class Version20221003075735 extends AbstractMigration
             (1, 'CMS system', 'cms', '{$idConsole}', '{$idConsole}', NOW(), NOW()),
             (4, 'Blog system', 'blog', '{$idConsole}', '{$idConsole}', NOW(), NOW()),
             (1000, 'Tools system', 'tools', '{$idConsole}', '{$idConsole}', NOW(), NOW());
-        ");
+        "
+        );
 
         $this->addSql(
             "INSERT INTO `asset_licence` (id, `ext_system_id`, `created_by_id`, modified_by_id, name, ext_id, limited_files, created_at, modified_at) VALUES
             (200000, 1000, '{$idConsole}', '{$idConsole}', 'Tools licence', '', 0, NOW(), NOW());
-        ");
+        "
+        );
 
         $this->addSql(
             "INSERT INTO `keyword` (id, `ext_system_id`, `created_by_id`, modified_by_id, name, flags_reviewed, created_at, modified_at) VALUES
             ( 'd84744d7-6e73-44ef-b038-29a829479c26', 1000, '{$idConsole}', '{$idConsole}', 'Blog', 1, NOW(), NOW());
-        ");
+        "
+        );
     }
 
     public function down(Schema $schema): void

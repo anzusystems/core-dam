@@ -58,13 +58,13 @@ final class AssetAudioFreeMigrations extends AbstractAssetAudioMigrations
             if (false === empty($artemisDistributionData)) {
                 $artemisDistributionData['texts_episode_id'] = $episode['id'] ?? '';
                 $artemisDistributionData['texts_podcast_id'] = $episode['podcast_id'] ?? '';
-                
+
                 $this->prepareBulkInsert(
                     'distribution',
                     $artemisDistributionData
                 );
             }
-            
+
             $this->insertAssetSlot($row, $assetId);
 
             if (0 === $i % self::BULK_SIZE) {

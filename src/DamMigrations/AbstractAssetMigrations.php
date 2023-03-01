@@ -17,12 +17,11 @@ use Symfony\Contracts\Service\Attribute\Required;
 
 abstract class AbstractAssetMigrations extends AbstractMigrations
 {
-    private const NOT_FOUND_IMAGE = 'c41ca3a7-af73-46ee-a517-5f3748815c01';
-    private const EMPTY_BLOG_IMAGE = 'd2270546-55c1-43f1-83ad-29777aac40b8';
-
     public const ASSET_TYPE_DISC = 'imagefile';
     protected const SLOT_NAME = 'default';
     protected const BULK_SIZE = 1;
+    private const NOT_FOUND_IMAGE = 'c41ca3a7-af73-46ee-a517-5f3748815c01';
+    private const EMPTY_BLOG_IMAGE = 'd2270546-55c1-43f1-83ad-29777aac40b8';
 
     protected AuthorCache $authorCache;
     protected KeywordCache $keywordCache;
@@ -372,13 +371,13 @@ abstract class AbstractAssetMigrations extends AbstractMigrations
         return [];
     }
 
-    protected function insertAsset(array $row): void
+    protected function insertAsset(array $row, ?string $categoryId = null): void
     {
         $this->prepareBulkInsert('asset', [
             'id' => $row['id'],
             'metadata_id' => $row['id'],
             'licence_id' => $this->getLicence($row),
-            'distribution_category_id' => null, // TODO
+            'distribution_category_id' => $categoryId,
             'texts_display_title' => $this->getDisplayTitle($row),
             'dates_uploaded_at' => $row['dates_uploaded_at'],
             'dates_expire_at' => null, // TODO
@@ -467,8 +466,7 @@ abstract class AbstractAssetMigrations extends AbstractMigrations
             return 0;
         }
 
-        if ($this->isToolsImage($row))
-        {
+        if ($this->isToolsImage($row)) {
             return 0;
         }
 
@@ -481,6 +479,6 @@ abstract class AbstractAssetMigrations extends AbstractMigrations
 
     private function isToolsImage(array $row): bool
     {
-        return isset($row['id']) && in_array($row['id'], [self::NOT_FOUND_IMAGE, self::EMPTY_BLOG_IMAGE]);
+        return isset($row['id']) && in_array($row['id'], [self::NOT_FOUND_IMAGE, self::EMPTY_BLOG_IMAGE], true);
     }
 }

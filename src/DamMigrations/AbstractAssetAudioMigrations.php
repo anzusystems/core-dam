@@ -105,7 +105,7 @@ abstract class AbstractAssetAudioMigrations extends AbstractAssetMigrations
         $episodes = $this->damLegacyConnection->fetchAllAssociative($sql, ['audioId' => $row['id']]);
 
         if (1 < count($episodes)) {
-            dump('JOLO'); // todo
+            $this->outputUtil->writeln(sprintf('Multiple episodes for video (%s)', $row['id']));
         }
 
         $newEpisode = [];
