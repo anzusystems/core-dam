@@ -4,16 +4,9 @@ declare(strict_types=1);
 
 namespace App\DamMigrations;
 
-use AnzuSystems\CoreDamBundle\Domain\PodcastEpisode\EpisodeRssImportManager;
-use AnzuSystems\CoreDamBundle\FileSystem\NameGenerator\NameGenerator;
 use AnzuSystems\CoreDamBundle\Helper\UrlHelper;
-use AnzuSystems\CoreDamBundle\Model\Enum\DistributionFailReason;
-use AnzuSystems\CoreDamBundle\Model\Enum\DistributionProcessStatus;
 use AnzuSystems\CoreDamBundle\Model\Enum\PodcastEpisodeStatus;
 use App\Distribution\Modules\ArtemisAudioDistributionModule;
-use App\Model\MigrateConfig;
-use Doctrine\DBAL\Exception;
-use Symfony\Component\Uid\Uuid;
 
 abstract class AbstractAssetAudioMigrations extends AbstractAssetMigrations
 {
@@ -128,7 +121,7 @@ abstract class AbstractAssetAudioMigrations extends AbstractAssetMigrations
                 'position' => 0, // todo reorder position
                 'dates_publication_date' => $row['audio_dates_publish_at'],
                 'attributes_rss_id' => $artemisDistributionData['texts_ext_rss_id'] ?? '',
-                'flags_from_rss' => empty($artemisDistributionData['texts_ext_rss_id']) ? 0 : 1,
+                'flags_from_rss' => empty($artemisDistributionData['texts_free_url']) ? 0 : 1,
                 'attributes_rss_url' => $artemisDistributionData['texts_free_url'] ?? '',
                 'attributes_last_import_status' =>
                     empty($artemisDistributionData['texts_ext_rss_id'])
@@ -185,7 +178,6 @@ abstract class AbstractAssetAudioMigrations extends AbstractAssetMigrations
                 $distribution['ext_id'] = $distribution['distribution_id'];
                 $params = json_decode($distribution['params'] ?? '{}', true);
                 $artemisDistributionData['id'] = $assetId;
-
                 $artemisDistributionData['asset_file_id'] = $assetId;
                 $artemisDistributionData['asset_id'] = $assetId;
                 $artemisDistributionData['distribution_service'] = 'artemis_podcast_cms';
@@ -207,9 +199,8 @@ abstract class AbstractAssetAudioMigrations extends AbstractAssetMigrations
                 $artemisDistributionData['texts_rubric_id'] = 6978;
                 $artemisDistributionData['texts_episode_id'] = '';
                 $artemisDistributionData['texts_podcast_id'] = '';
-
-                $artemisDistributionData['attributes_duration'] = (int) ($freeAsset['audio_attributes_length'] ?? 0); // todo
-                $artemisDistributionData['attributes_premium_duration'] = (int) ($premiumAsset['attributes_duration'] ?? 0); // todo
+                $artemisDistributionData['attributes_duration'] = (int) ($freeAsset['audio_attributes_length'] ?? 0);
+                $artemisDistributionData['attributes_premium_duration'] = (int) ($premiumAsset['attributes_duration'] ?? 0);
                 $artemisDistributionData['flags_create_article'] = 0;
                 $artemisDistributionData['flags_bonus_episode'] = 0;
             }

@@ -41,6 +41,7 @@ final class MigrateCommand extends Command
         private readonly RefreshAssetFilePropertiesCommand $refreshAssetFilePropertiesCommand,
         private readonly AssetAudioFreeMigrations $assetAudioFreeMigrations,
         private readonly AssetAudioPremiumMigrations $assetAudioPremiumMigrations,
+        private readonly AssetImageMigrations $assetImageMigrations,
     ) {
         parent::__construct();
     }
@@ -63,13 +64,15 @@ final class MigrateCommand extends Command
             ugc: false,
         );
 
-        $this->assetAudioPremiumMigrations->migrate($migrateConfig);
-        $this->assetAudioFreeMigrations->migrate($migrateConfig);
+        $this->assetImageMigrations->migrate($migrateConfig);
 
-        $this->refreshAssetFilePropertiesCommand->updateExisting(AssetType::Audio);
+//        $this->assetAudioPremiumMigrations->migrate($migrateConfig);
+//        $this->assetAudioFreeMigrations->migrate($migrateConfig);
+//
+        $this->refreshAssetFilePropertiesCommand->updateExisting(AssetType::Image);
 
         $this->indexBuilder->rebuildIndex(
-            new RebuildIndexConfig('asset', 'cms', '', '', false, 10)
+            new RebuildIndexConfig('asset', 'cms', '', '', false, 100)
         );
 
         return Command::SUCCESS;

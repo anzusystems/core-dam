@@ -20,4 +20,6 @@ final readonly class MigrateConfig
     {
         return false === $this->isUgc();
     }
+
+
 }

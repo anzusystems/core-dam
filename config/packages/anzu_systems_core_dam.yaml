@@ -7,6 +7,7 @@ anzu_systems_core_dam:
     distribution_auth_redirect_url: '%env(resolve:string:DISTRIBUTION_AUTH_REDIRECT_URL)%'
     default_ext_system_id: 1
     default_asset_licence_id: 100000
+    not_found_image_id: 'c41ca3a7-af73-46ee-a517-5f3748815c01'
     allow_select_ext_system: true
     allow_select_licence: true
     admin_allow_list_name: 'admin_image'
@@ -413,6 +414,23 @@ anzu_systems_core_dam:
         crop_storage_name: 'blog.crop'
         chunk_storage_name: 'blog.chunk'
         size_limit: '%env(byte_size:APP_CMS_BLOG_MAX_SIZE)%'
+        roi_width: 16
+        roi_height: 9
+        file_slots:
+          default: default
+          slots: [ default ]
+    tools:
+      id: 4
+      image:
+        enabled: true
+        public_domain: public_image
+        admin_domain: admin_image
+        title: [ 'customData:title' ]
+        custom_metadata_pinned_amount: 2
+        storage_name: 'cms.image'
+        crop_storage_name: 'cms.crop'
+        chunk_storage_name: 'cms.chunk'
+        size_limit: '%env(byte_size:APP_CMS_IMAGE_MAX_SIZE)%'
         roi_width: 16
         roi_height: 9
         file_slots:

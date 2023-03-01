@@ -17,10 +17,12 @@ use Symfony\Contracts\Service\Attribute\Required;
 
 abstract class AbstractAssetMigrations extends AbstractMigrations
 {
-    // todo described
+    private const NOT_FOUND_IMAGE = 'c41ca3a7-af73-46ee-a517-5f3748815c01';
+    private const EMPTY_BLOG_IMAGE = 'd2270546-55c1-43f1-83ad-29777aac40b8';
+
     public const ASSET_TYPE_DISC = 'imagefile';
     protected const SLOT_NAME = 'default';
-    protected const BULK_SIZE = 100;
+    protected const BULK_SIZE = 1;
 
     protected AuthorCache $authorCache;
     protected KeywordCache $keywordCache;
@@ -56,12 +58,10 @@ abstract class AbstractAssetMigrations extends AbstractMigrations
         $progressBar->start();
 
         $i = 0;
-        $skipped = 0;
         while ($row = $res->fetchAssociative()) {
             $i++;
             $this->insertAssetFileMetadata($row);
             $this->insertAssetFile($row);
-
             $this->insertAssetMetadata($row);
             $this->insertAsset($row);
 
@@ -133,7 +133,7 @@ abstract class AbstractAssetMigrations extends AbstractMigrations
         $this->prepareBulkInsert('asset_file', [
             'id' => $row['id'],
             'metadata_id' => $row['id'],
-            'licence_id' => $row['licence_id'],
+            'licence_id' => $this->getLicence($row),
             'asset_attributes_checksum' => $row['file_attributes_checksum'],
             'asset_attributes_origin_asset_id' => '',
             'asset_attributes_file_path' => $row['file_attributes_file_path'],
@@ -377,17 +377,17 @@ abstract class AbstractAssetMigrations extends AbstractMigrations
         $this->prepareBulkInsert('asset', [
             'id' => $row['id'],
             'metadata_id' => $row['id'],
-            'licence_id' => $row['licence_id'],
+            'licence_id' => $this->getLicence($row),
             'distribution_category_id' => null, // TODO
-            'texts_display_title' => $this->getDisplayTitle($row), // TODO
+            'texts_display_title' => $this->getDisplayTitle($row),
             'dates_uploaded_at' => $row['dates_uploaded_at'],
             'dates_expire_at' => null, // TODO
             'dates_publish_at' => $row['publish_at'] ?? null,
-            'asset_flags_described' => $row['asset_flags_is_described'],
-            'asset_flags_visible' => 1, // TODO
-            'asset_flags_generated_by_system' => 0, // TODO
+            'asset_flags_described' => $this->isDescribed($row),
+            'asset_flags_visible' => 1,
+            'asset_flags_generated_by_system' => $this->generatedBySystem($row),
             'asset_flags_autocompleted_metadata' => 1, // TODO
-            'asset_flags_auto_delete_unprocessed' => 0, // TODO
+            'asset_flags_auto_delete_unprocessed' => 0,
             'asset_file_properties_distributes_in_services' => '[]',
             'asset_file_properties_slot_names' => '[]',
             'asset_file_properties_from_rss' => 0,
@@ -440,5 +440,47 @@ abstract class AbstractAssetMigrations extends AbstractMigrations
             AbstractAssetAudioMigrations::ASSET_TYPE_DISC => 'audio',
             AssetVideoMigrations::ASSET_TYPE_DISC => 'video',
         };
+    }
+
+    private function getLicence(array $row): int
+    {
+        if ($this->isToolsImage($row)) {
+            return self::TOOLS_LICENCE_ID;
+        }
+
+        return (int) ($row['licence_id'] ?? self::CMS_LICENCE_ID);
+    }
+
+    private function isDescribed(array $row): int
+    {
+        if ($this->isToolsImage($row)) {
+            return 1;
+        }
+
+        return (int) $row['asset_flags_is_described'];
+    }
+
+    // todo preverit
+    private function generatedBySystem(array $row): int
+    {
+        if (false === ('image' === $row['dtype'])) {
+            return 0;
+        }
+
+        if ($this->isToolsImage($row))
+        {
+            return 0;
+        }
+
+        if (self::CMS_LICENCE_ID === (int) $row['licence_id']) {
+            return 1;
+        }
+
+        return 0;
+    }
+
+    private function isToolsImage(array $row): bool
+    {
+        return isset($row['id']) && in_array($row['id'], [self::NOT_FOUND_IMAGE, self::EMPTY_BLOG_IMAGE]);
     }
 }

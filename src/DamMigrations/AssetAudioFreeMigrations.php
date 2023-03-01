@@ -48,20 +48,23 @@ final class AssetAudioFreeMigrations extends AbstractAssetAudioMigrations
 
             $artemisDistributionData = $this->prepareDistributionData($assetId, $row, $keywords, $authors, $existingPremium);
 
+            // todo Missing episode but premium/free and distributed to ARTEMIS (FI 'Nevidiaci: Odmietajú ich aj call centrá')
             $episode = $this->insertEpisode(
                 $row,
                 $artemisDistributionData,
                 $assetId
             );
 
-            $artemisDistributionData['texts_episode_id'] = $episode['id'] ?? '';
-            $artemisDistributionData['texts_podcast_id'] = $episode['podcast_id'] ?? '';
-
-            $this->prepareBulkInsert(
-                'distribution',
-                $artemisDistributionData
-            );
-
+            if (false === empty($artemisDistributionData)) {
+                $artemisDistributionData['texts_episode_id'] = $episode['id'] ?? '';
+                $artemisDistributionData['texts_podcast_id'] = $episode['podcast_id'] ?? '';
+                
+                $this->prepareBulkInsert(
+                    'distribution',
+                    $artemisDistributionData
+                );
+            }
+            
             $this->insertAssetSlot($row, $assetId);
 
             if (0 === $i % self::BULK_SIZE) {
@@ -85,7 +88,6 @@ final class AssetAudioFreeMigrations extends AbstractAssetAudioMigrations
             'au.audio_public_stream_is_public = false',
         ];
     }
-
 
     protected function getExistingPremium(array $row): array
     {

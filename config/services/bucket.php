@@ -8,7 +8,7 @@ use Google\Cloud\Storage\StorageClient;
 
 return static function (ContainerConfigurator $configurator): void {
     $configurator->parameters()
-        ->set('empty_json', '{}');
+        ->set('empty_array', []);
 
     $services = $configurator->services();
 
@@ -32,7 +32,7 @@ return static function (ContainerConfigurator $configurator): void {
         ->args([
             [
                 'projectId' => 'anzu-devel-pp',
-                'keyFile' => env('file:GOOGLE_FALLBACK_BUCKET_CREDENTIALS')->default('empty_json')
+                'keyFile' => env('file:GOOGLE_FALLBACK_BUCKET_CREDENTIALS')->json()->default('empty_array')
             ]
         ])
     ;

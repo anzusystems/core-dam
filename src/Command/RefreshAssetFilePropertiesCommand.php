@@ -13,6 +13,8 @@ use AnzuSystems\CoreDamBundle\Repository\AudioFileRepository;
 use AnzuSystems\CoreDamBundle\Repository\DocumentFileRepository;
 use AnzuSystems\CoreDamBundle\Repository\ImageFileRepository;
 use AnzuSystems\CoreDamBundle\Repository\VideoFileRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\NonUniqueResultException;
 use Exception;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -37,35 +39,43 @@ final class RefreshAssetFilePropertiesCommand extends Command
         private readonly DocumentFileRepository $documentFileRepository,
         private readonly VideoFileRepository $videoFileRepository,
         private readonly AssetManager $manager,
+        private readonly EntityManagerInterface $entityManager,
     ) {
         parent::__construct();
     }
 
+    /**
+     * @throws NonUniqueResultException
+     */
     public function updateExisting(AssetType $assetType): void
     {
         $repository = $this->getRepository($assetType);
 
         $progress = $this->outputUtil->createProgressBar();
+        $progress->setFormat('debug');
         $progress->start();
 
-        $i = 0;
 
-        // todo bulk
-        /** @var AssetFile $assetFile */
-        foreach ($repository->findAll() as $assetFile) {
-            $i++;
-            $this->manager->updateExisting($assetFile->getAsset(), false);
-            $progress->advance();
-
-            if (0 === $i % self::BULK_COUNT) {
-                $this->manager->flush();
+        $assetFiles = $repository->findAllProcessed(self::BULK_COUNT);
+        $lastId = null;
+        while (false === $assetFiles->isEmpty())
+        {
+            /** @var AssetFile $assetFile */
+            foreach ($assetFiles as $assetFile) {
+                $lastId = $assetFile->getId();
+                $this->manager->updateExisting($assetFile->getAsset(), false);
+                $progress->advance();
             }
+
+            $this->flushAndClear();
+
+            $assetFiles = $repository->findAllProcessed(self::BULK_COUNT, $lastId);
         }
 
-        $this->manager->flush();
-
         $progress->finish();
+        $this->flushAndClear();
     }
+
 
     protected function configure(): void
     {
@@ -86,6 +96,12 @@ final class RefreshAssetFilePropertiesCommand extends Command
         );
 
         return Command::SUCCESS;
+    }
+
+    private function flushAndClear(): void
+    {
+        $this->manager->flush();
+        $this->manager->clear();
     }
 
     private function getRepository(AssetType $assetType): AbstractAssetFileRepository
