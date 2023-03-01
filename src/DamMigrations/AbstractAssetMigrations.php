@@ -352,17 +352,17 @@ abstract class AbstractAssetMigrations extends AbstractMigrations
             'flags_embeddable' => null,
             'flags_for_kids' => null,
             'flags_notify_subscribers' => null,
-            'dtype' => '', // todo new
-            'texts_ext_rss_id' => null, // todo new
-            'texts_free_url' => null, // todo new
-            'texts_premium_url' => null, // todo new
-            'texts_rubric_id' => null, // todo new
-            'texts_episode_id' => null, //todo new
-            'texts_podcast_id' => null, // todo new
-            'attributes_duration' => null, // todo new
-            'attributes_premium_duration' => null, // todo new
-            'flags_create_article' => null, // todo new
-            'flags_bonus_episode' => null, // todo new
+            'dtype' => '',
+            'texts_ext_rss_id' => null,
+            'texts_free_url' => null,
+            'texts_premium_url' => null,
+            'texts_rubric_id' => null,
+            'texts_episode_id' => null,
+            'texts_podcast_id' => null,
+            'attributes_duration' => null,
+            'attributes_premium_duration' => null,
+            'flags_create_article' => null,
+            'flags_bonus_episode' => null,
         ];
     }
 
@@ -385,7 +385,7 @@ abstract class AbstractAssetMigrations extends AbstractMigrations
             'asset_flags_described' => $this->isDescribed($row),
             'asset_flags_visible' => 1,
             'asset_flags_generated_by_system' => $this->generatedBySystem($row),
-            'asset_flags_autocompleted_metadata' => 1, // TODO
+            'asset_flags_autocompleted_metadata' => 1,
             'asset_flags_auto_delete_unprocessed' => 0,
             'asset_file_properties_distributes_in_services' => '[]',
             'asset_file_properties_slot_names' => '[]',
