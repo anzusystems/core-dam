@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Model\Domain\User;
 
 use AnzuSystems\Contracts\AnzuApp;
+use AnzuSystems\Contracts\Entity\Embeds\Avatar;
+use AnzuSystems\Contracts\Entity\Embeds\Person;
 use AnzuSystems\CoreDamBundle\Entity\AssetLicence;
 use AnzuSystems\CoreDamBundle\Entity\ExtSystem;
 use AnzuSystems\SerializerBundle\Attributes\Serialize;
@@ -40,15 +42,15 @@ final class CurrentUserDto
     }
 
     #[Serialize]
-    public function getFirstName(): string
+    public function getPerson(): Person
     {
-        return $this->user->getPerson()->getFirstName();
+        return $this->user->getPerson();
     }
 
     #[Serialize]
-    public function getLastName(): string
+    public function getAvatar(): Avatar
     {
-        return $this->user->getPerson()->getLastName();
+        return $this->user->getAvatar();
     }
 
     #[Serialize]
