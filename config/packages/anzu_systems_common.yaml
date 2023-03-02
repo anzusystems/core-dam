@@ -44,6 +44,11 @@ anzu_systems_common:
                 database: '%env(ANZU_MONGODB_APP_LOG_DB)%'
                 ssl: '%env(bool:ANZU_MONGODB_APP_LOG_SSL)%'
                 collection: appLogs
+            ignored_exceptions:
+                - Symfony\Component\Security\Core\Exception\AccessDeniedException
+                - Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+                - Symfony\Component\Routing\Exception\ResourceNotFoundException
+                - AnzuSystems\CommonBundle\Exception\ValidationException
         # Audit log section
         audit:
             # Mongo connection definition
