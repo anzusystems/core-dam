@@ -14,16 +14,16 @@ use Doctrine\Common\Collections\Collection;
 final class UpdateUserDto
 {
     #[Serialize(handler: EntityIdHandler::class, type: ExtSystem::class)]
-    protected Collection $adminToExtSystems;
+    private Collection $adminToExtSystems;
 
     #[Serialize(handler: EntityIdHandler::class, type: AssetLicence::class)]
-    protected Collection $assetLicences;
+    private Collection $assetLicences;
 
     #[Serialize]
-    protected array $allowedAssetExternalProviders;
+    private array $allowedAssetExternalProviders;
 
     #[Serialize]
-    protected array $allowedDistributionServices;
+    private array $allowedDistributionServices;
 
     public function __construct()
     {
