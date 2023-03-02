@@ -36,10 +36,6 @@ final class UserManager extends AbstractUserManager
         $user
             ->setAllowedAssetExternalProviders($updateUserDto->getAllowedAssetExternalProviders())
             ->setAllowedDistributionServices($updateUserDto->getAllowedDistributionServices());
-        $user->getPerson()
-            ->setFirstName($updateUserDto->getFirstName())
-            ->setLastName($updateUserDto->getLastName());
-
         $user = $this->assignLicencesAndExtSystems($user, $updateUserDto);
 
         return $this->updateExisting($user, $flush);
