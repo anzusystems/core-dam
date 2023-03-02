@@ -42,13 +42,13 @@ final class CurrentUserDto
     #[Serialize]
     public function getFirstName(): string
     {
-        return $this->user->getFirstName();
+        return $this->user->getPerson()->getFirstName();
     }
 
     #[Serialize]
     public function getLastName(): string
     {
-        return $this->user->getLastName();
+        return $this->user->getPerson()->getLastName();
     }
 
     #[Serialize]

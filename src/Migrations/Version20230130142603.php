@@ -29,8 +29,11 @@ final class Version20230130142603 extends AbstractMigration
                 allowed_distribution_services = JSON_ARRAY(),               
                 email = 'sys_anzu_blog.anzu@smeonline.sk',               
                 enabled = 0,               
-                first_name = 'Blog SYS',               
-                last_name = 'ANZU'               
+                person_first_name = 'Blog SYS',               
+                person_last_name = 'ANZU',
+                person_full_name = 'Blog SYS ANZU', 
+                avatar_color = '#8C9419',
+                avatar_text = 'AB'
         SQL);
     }
 

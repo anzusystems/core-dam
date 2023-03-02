@@ -90,7 +90,6 @@ if [ -f /.dockerenv ]; then
     echo "[INFO] Running doctrine database migrations"
     bin/console doctrine:migrations:sync-metadata-storage --no-interaction
     bin/console doctrine:migrations:migrate --no-interaction --allow-no-migration
-#    bin/console doctrine:schema:update --force
 
     echo "[INFO] Creating mandatory users"
     bin/console anzu:mandatory-create:user --no-interaction
@@ -100,7 +99,7 @@ if [ -f /.dockerenv ]; then
 
     if ${FIXTURES_LOAD}; then
         echo "[INFO] Loading fixtures"
-        bin/console anzusystems:fixtures:generate
+#        bin/console anzusystems:fixtures:generate
         bin/console anzu:elastic:rebuild asset
         bin/console anzu:elastic:rebuild keyword
         bin/console anzu:elastic:rebuild author

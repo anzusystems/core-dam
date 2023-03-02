@@ -14,9 +14,9 @@ final class Version20221003075735 extends AbstractMigration
     {
         $idAnonymous = App::getUserIdAnonymous();
         $idConsole = App::getUserIdConsole();
-        $this->addSql("INSERT INTO `user` (id, email, first_name, last_name, roles, permissions, enabled, created_by_id, modified_by_id, created_at, modified_at, allowed_asset_external_providers, allowed_distribution_services) VALUES
-            ('{$idAnonymous}', 'anzu.app.anonym@smeonline.sk', 'Anonymous', 'DAM', '[\"ROLE_USER\"]', '[]', 0, '{$idAnonymous}', '{$idAnonymous}', NOW(), NOW(), JSON_ARRAY(), JSON_ARRAY()),                                                       
-            ('{$idConsole}', 'anzu.app.console@smeonline.sk', 'Console', 'DAM', '[\"ROLE_USER\"]', '[]', 0, '{$idConsole}', '{$idConsole}', NOW(), NOW(), JSON_ARRAY(), JSON_ARRAY())                                                       
+        $this->addSql("INSERT INTO `user` (id, email, person_first_name, person_last_name, person_full_name, avatar_color, avatar_text, roles, permissions, enabled, created_by_id, modified_by_id, created_at, modified_at, allowed_asset_external_providers, allowed_distribution_services) VALUES
+            ('{$idAnonymous}', 'anzu.app.anonym@smeonline.sk', 'Anonymous', 'DAM', 'Anonymous DAM', '#2F2F2F', 'AD', '[\"ROLE_USER\"]', '[]', 0, '{$idAnonymous}', '{$idAnonymous}', NOW(), NOW(), JSON_ARRAY(), JSON_ARRAY()),                                                       
+            ('{$idConsole}', 'anzu.app.console@smeonline.sk', 'Console', 'DAM', 'Console DAM', '#2F2F2F', 'CD', '[\"ROLE_USER\"]', '[]', 0, '{$idConsole}', '{$idConsole}', NOW(), NOW(), JSON_ARRAY(), JSON_ARRAY())                                                       
         ");
 
         $this->addSql(
@@ -29,7 +29,8 @@ final class Version20221003075735 extends AbstractMigration
 
         $this->addSql(
             "INSERT INTO `asset_licence` (id, `ext_system_id`, `created_by_id`, modified_by_id, name, ext_id, limited_files, created_at, modified_at) VALUES
-            (200000, 1000, '{$idConsole}', '{$idConsole}', 'Tools licence', '', 0, NOW(), NOW());
+            (200000, 1000, '{$idConsole}', '{$idConsole}', 'Tools licence', '', 0, NOW(), NOW()),
+            (100000, 1, '{$idConsole}', '{$idConsole}', 'CMS licence', '', 0, NOW(), NOW());
         "
         );
 

@@ -36,7 +36,6 @@ class User extends DamUser implements
 {
     use UserTrackingTrait;
     use TimeTrackingTrait;
-    use PersonNameTrait;
 
     public const ID_ANONYMOUS = 1_763_600;
     public const ID_CONSOLE = 1_000_000;
