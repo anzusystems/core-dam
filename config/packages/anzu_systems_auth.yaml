@@ -16,6 +16,7 @@ anzu_systems_auth:
         type: oauth2
         oauth2:
             user_repository_service_id: App\Repository\UserRepository
+            state_token_salt: '%env(AUTH_OAUTH2_STATE_TOKEN_SALT)%'
             authorize_url: '%env(AUTH_OAUTH2_AUTHORIZE_URL)%'
             access_token_url: '%env(AUTH_OAUTH2_ACCESS_TOKEN_URL)%'
             redirect_url: '%env(AUTH_OAUTH2_REDIRECT_URL)%'
