@@ -6,7 +6,7 @@ namespace App\Model\Dto\Artemis;
 
 use AnzuSystems\SerializerBundle\Attributes\Serialize;
 
-final class ArtemisAudioMediaResponseDto
+final class ArtemisMediaResponseDto
 {
     #[Serialize(serializedName: '_meta')]
     private ArtemisMediaMetaDto $meta;

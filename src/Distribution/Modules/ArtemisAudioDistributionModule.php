@@ -20,15 +20,12 @@ use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 final class ArtemisAudioDistributionModule extends AbstractDistributionModule implements DistributionModuleInterface, CustomDistributionInterface
 {
-    private const ARTICLE_WEB_URL = 'articleWebUrl';
-    private const ARTICLE_ADMIN_URL = 'articleAdminUrl';
-    private const MEDIA_ADMIN_URL = 'mediaAdminUrl';
-
     public function __construct(
         private readonly ArtemisClient $artemisRubricClient,
         private readonly AudioFileRepository $audioFileRepository,
         private readonly ArtemisAudioDtoFactory $artemisAudioDtoFactory,
         private readonly ArtemisAudioDistributionAdapter $adapter,
+        private readonly ArtemisMediaDistributionCustomDataFactory $customDataFactory,
     ) {
     }
 
@@ -55,11 +52,7 @@ final class ArtemisAudioDistributionModule extends AbstractDistributionModule im
             : $this->artemisRubricClient->updateMedia($distribution->getExtId(), $mediaDto);
 
         $distribution->setExtId($response->getMedia()->getExternalId());
-        $distribution->setDistributionData([
-            self::ARTICLE_WEB_URL => $response->getMeta()->getArticleUrl(),
-            self::ARTICLE_ADMIN_URL => $response->getMeta()->getArticleAdminUrl(),
-            self::MEDIA_ADMIN_URL => $response->getMeta()->getMediaAdminUrl(),
-        ]);
+        $distribution->setDistributionData($this->customDataFactory->createDistributionData($response));
     }
 
     public function supportsAssetType(): array

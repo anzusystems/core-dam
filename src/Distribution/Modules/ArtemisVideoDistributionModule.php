@@ -20,16 +20,12 @@ use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 final class ArtemisVideoDistributionModule extends AbstractDistributionModule implements DistributionModuleInterface, CustomDistributionInterface
 {
-    public const ARTICLE_WEB_URL = 'articleWebUrl';
-    public const ARTICLE_ADMIN_URL = 'articleAdminUrl';
-    public const MEDIA_ADMIN_URL = 'mediaAdminUrl';
-    public const ARTICLE_ID = 'articleId';
-
     public function __construct(
         private readonly ArtemisVideoDistributionAdapter $adapter,
         private readonly VideoFileRepository $videoFileRepository,
         private readonly ArtemisVideoDtoFactory $artemisVideoDtoFactory,
         private readonly ArtemisClient $artemisClient,
+        private readonly ArtemisMediaDistributionCustomDataFactory $customDataFactory,
     ) {
     }
 
@@ -56,11 +52,7 @@ final class ArtemisVideoDistributionModule extends AbstractDistributionModule im
             : $this->artemisClient->updateMedia($distribution->getExtId(), $mediaDto);
 
         $distribution->setExtId($response->getMedia()->getExternalId());
-        $distribution->setDistributionData([
-            self::ARTICLE_WEB_URL => $response->getMeta()->getArticleUrl(),
-            self::ARTICLE_ADMIN_URL => $response->getMeta()->getArticleAdminUrl(),
-            self::MEDIA_ADMIN_URL => $response->getMeta()->getMediaAdminUrl(),
-        ]);
+        $distribution->setDistributionData($this->customDataFactory->createDistributionData($response));
     }
 
     public function supportsAssetType(): array

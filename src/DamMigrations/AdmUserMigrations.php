@@ -60,8 +60,11 @@ final class AdmUserMigrations extends AbstractMigrations
                 'roles' => $row['roles'],
                 'enabled' => $row['enabled'],
                 'email' => $email,
-                'first_name' => '',
-                'last_name' => '',
+                'person_first_name' => '',
+                'person_last_name' => '',
+                'person_full_name' => '',
+                'avatar_color' => '',
+                'avatar_text' => '',
                 'api_token' => $row['api_token'],
                 'permissions' => '{}', // TODO
                 'allowed_asset_external_providers' => '[]',

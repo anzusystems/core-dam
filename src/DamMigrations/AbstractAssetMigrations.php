@@ -17,10 +17,11 @@ use Symfony\Contracts\Service\Attribute\Required;
 
 abstract class AbstractAssetMigrations extends AbstractMigrations
 {
-    // todo described
     public const ASSET_TYPE_DISC = 'imagefile';
     protected const SLOT_NAME = 'default';
-    private const BULK_SIZE = 1;
+    protected const BULK_SIZE = 1;
+    private const NOT_FOUND_IMAGE = 'c41ca3a7-af73-46ee-a517-5f3748815c01';
+    private const EMPTY_BLOG_IMAGE = 'd2270546-55c1-43f1-83ad-29777aac40b8';
 
     protected AuthorCache $authorCache;
     protected KeywordCache $keywordCache;
@@ -56,26 +57,15 @@ abstract class AbstractAssetMigrations extends AbstractMigrations
         $progressBar->start();
 
         $i = 0;
-        $skipped = 0;
         while ($row = $res->fetchAssociative()) {
-            if (false === $this->shouldMigrate($row)) {
-                $skipped++;
-
-                continue;
-            }
-
             $i++;
             $this->insertAssetFileMetadata($row);
             $this->insertAssetFile($row);
+            $this->insertAssetMetadata($row);
+            $this->insertAsset($row);
 
-            $existingAssetId = $this->getExistingAssetId($row);
-            if (null === $existingAssetId) {
-                $this->insertAssetMetadata($row);
-                $this->insertAsset($row);
-            }
-
-            $this->prepareAssetTypeSpecific($row, $existingAssetId);
-            $this->insertAssetSlot($row, $existingAssetId);
+            $this->prepareAssetTypeSpecific($row, $row['id']);
+            $this->insertAssetSlot($row, $row['id']);
 
             if (0 === $i % self::BULK_SIZE) {
                 $this->flush();
@@ -87,16 +77,6 @@ abstract class AbstractAssetMigrations extends AbstractMigrations
 
         $progressBar->finish();
         $this->writeln('');
-    }
-
-    protected function shouldMigrate(array $row): bool
-    {
-        return true;
-    }
-
-    protected function getExistingAssetId(array $row): ?string
-    {
-        return null;
     }
 
     abstract protected function prepareAssetTypeSpecific(array $row, ?string $assetId = null): void;
@@ -152,7 +132,7 @@ abstract class AbstractAssetMigrations extends AbstractMigrations
         $this->prepareBulkInsert('asset_file', [
             'id' => $row['id'],
             'metadata_id' => $row['id'],
-            'licence_id' => $row['licence_id'],
+            'licence_id' => $this->getLicence($row),
             'asset_attributes_checksum' => $row['file_attributes_checksum'],
             'asset_attributes_origin_asset_id' => '',
             'asset_attributes_file_path' => $row['file_attributes_file_path'],
@@ -352,7 +332,7 @@ abstract class AbstractAssetMigrations extends AbstractMigrations
             'notify_to_id' => $distributionRow['distributed_by_id'],
             'created_at' => $videoRow['created_at'],
             'modified_at' => $videoRow['modified_at'],
-            'publish_at' => null,
+            'publish_at' => null, // todo check
             'distribution_service' => '',
             'asset_file_id' => $videoRow['id'],
             'asset_id' => $videoRow['id'],
@@ -360,7 +340,6 @@ abstract class AbstractAssetMigrations extends AbstractMigrations
             'status' => DistributionProcessStatus::Distributed->toString(),
             'fail_reason' => DistributionFailReason::None->toString(),
             'distribution_data' => '[]',
-            'custom_data' => '[]',
             'texts_title' => null,
             'texts_description' => null,
             'texts_author' => null,
@@ -373,7 +352,17 @@ abstract class AbstractAssetMigrations extends AbstractMigrations
             'flags_embeddable' => null,
             'flags_for_kids' => null,
             'flags_notify_subscribers' => null,
-            'rss_url' => null,
+            'dtype' => '',
+            'texts_ext_rss_id' => null,
+            'texts_free_url' => null,
+            'texts_premium_url' => null,
+            'texts_rubric_id' => null,
+            'texts_episode_id' => null,
+            'texts_podcast_id' => null,
+            'attributes_duration' => null,
+            'attributes_premium_duration' => null,
+            'flags_create_article' => null,
+            'flags_bonus_episode' => null,
         ];
     }
 
@@ -382,22 +371,27 @@ abstract class AbstractAssetMigrations extends AbstractMigrations
         return [];
     }
 
-    private function insertAsset(array $row): void
+    protected function insertAsset(array $row, ?string $categoryId = null): void
     {
         $this->prepareBulkInsert('asset', [
             'id' => $row['id'],
             'metadata_id' => $row['id'],
-            'licence_id' => $row['licence_id'],
-            'distribution_category_id' => null, // TODO
-            'texts_display_title' => $this->getDisplayTitle($row), // TODO
+            'licence_id' => $this->getLicence($row),
+            'distribution_category_id' => $categoryId,
+            'texts_display_title' => $this->getDisplayTitle($row),
             'dates_uploaded_at' => $row['dates_uploaded_at'],
             'dates_expire_at' => null, // TODO
             'dates_publish_at' => $row['publish_at'] ?? null,
-            'asset_flags_described' => $row['asset_flags_is_described'],
-            'asset_flags_visible' => 1, // TODO
-            'asset_flags_generated_by_system' => 0, // TODO
-            'asset_flags_autocompleted_metadata' => 1, // TODO
-            'asset_flags_auto_delete_unprocessed' => 0, // TODO
+            'asset_flags_described' => $this->isDescribed($row),
+            'asset_flags_visible' => 1,
+            'asset_flags_generated_by_system' => $this->generatedBySystem($row),
+            'asset_flags_autocompleted_metadata' => 1,
+            'asset_flags_auto_delete_unprocessed' => 0,
+            'asset_file_properties_distributes_in_services' => '[]',
+            'asset_file_properties_slot_names' => '[]',
+            'asset_file_properties_from_rss' => 0,
+            'asset_file_properties_width' => 0,
+            'asset_file_properties_height' => 0,
             'attributes_asset_type' => $this->getLegacyDamAssetType(),
             'attributes_status' => 'with_file',
             'main_file_id' => $row['id'],
@@ -408,12 +402,12 @@ abstract class AbstractAssetMigrations extends AbstractMigrations
         ]);
     }
 
-    private function getDisplayTitle(array $row): string
+    protected function getDisplayTitle(array $row): string
     {
         return $row['texts_title'] ?? $row['id'];
     }
 
-    private function totalCount(MigrateConfig $migrateConfig): int
+    protected function totalCount(MigrateConfig $migrateConfig): int
     {
         $sql = '
             SELECT count(a.id)
@@ -445,5 +439,46 @@ abstract class AbstractAssetMigrations extends AbstractMigrations
             AbstractAssetAudioMigrations::ASSET_TYPE_DISC => 'audio',
             AssetVideoMigrations::ASSET_TYPE_DISC => 'video',
         };
+    }
+
+    private function getLicence(array $row): int
+    {
+        if ($this->isToolsImage($row)) {
+            return self::TOOLS_LICENCE_ID;
+        }
+
+        return (int) ($row['licence_id'] ?? self::CMS_LICENCE_ID);
+    }
+
+    private function isDescribed(array $row): int
+    {
+        if ($this->isToolsImage($row)) {
+            return 1;
+        }
+
+        return (int) $row['asset_flags_is_described'];
+    }
+
+    // todo preverit
+    private function generatedBySystem(array $row): int
+    {
+        if (false === ('image' === $row['dtype'])) {
+            return 0;
+        }
+
+        if ($this->isToolsImage($row)) {
+            return 0;
+        }
+
+        if (self::CMS_LICENCE_ID === (int) $row['licence_id']) {
+            return 1;
+        }
+
+        return 0;
+    }
+
+    private function isToolsImage(array $row): bool
+    {
+        return isset($row['id']) && in_array($row['id'], [self::NOT_FOUND_IMAGE, self::EMPTY_BLOG_IMAGE], true);
     }
 }
