@@ -6,7 +6,6 @@ namespace App\Model\Domain\User;
 
 use AnzuSystems\CoreDamBundle\Entity\AssetLicence;
 use AnzuSystems\CoreDamBundle\Entity\ExtSystem;
-use AnzuSystems\CoreDamBundle\Entity\Traits\PersonNameTrait;
 use AnzuSystems\SerializerBundle\Attributes\Serialize;
 use AnzuSystems\SerializerBundle\Handler\Handlers\EntityIdHandler;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -14,8 +13,6 @@ use Doctrine\Common\Collections\Collection;
 
 final class UpdateUserDto
 {
-    use PersonNameTrait;
-
     #[Serialize(handler: EntityIdHandler::class, type: ExtSystem::class)]
     protected Collection $adminToExtSystems;
 
