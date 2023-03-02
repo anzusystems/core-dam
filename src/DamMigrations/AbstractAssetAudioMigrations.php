@@ -7,11 +7,23 @@ namespace App\DamMigrations;
 use AnzuSystems\CoreDamBundle\Helper\UrlHelper;
 use AnzuSystems\CoreDamBundle\Model\Enum\PodcastEpisodeStatus;
 use App\Distribution\Modules\ArtemisAudioDistributionModule;
+use App\Distribution\Modules\ArtemisMediaDistributionCustomDataFactory;
+use App\Model\Dto\Artemis\ArtemisMediaMetaDto;
+use App\Model\Dto\Artemis\ArtemisMediaResponseDto;
+use Symfony\Contracts\Service\Attribute\Required;
 
 abstract class AbstractAssetAudioMigrations extends AbstractAssetMigrations
 {
     public const ASSET_TYPE_DISC = 'audiofile';
     protected const PUBLIC_STREAM = false;
+
+    private readonly ArtemisMediaDistributionCustomDataFactory $customDataFactory;
+
+    #[Required]
+    public function setCustomDataFactory(ArtemisMediaDistributionCustomDataFactory $customDataFactory): void
+    {
+        $this->customDataFactory = $customDataFactory;
+    }
 
     protected function getCustomData(array $row): string
     {
@@ -183,13 +195,17 @@ abstract class AbstractAssetAudioMigrations extends AbstractAssetMigrations
                 $artemisDistributionData['distribution_service'] = 'artemis_podcast_cms';
                 $artemisDistributionData['dtype'] = 'artemisaudiodistribution';
                 //                $artemisDistributionData['publish_at'] = 'todo'; // todo
-                $artemisDistributionData['distribution_data'] = json_encode(
-                    [
-                        ArtemisAudioDistributionModule::ARTICLE_WEB_URL => $params['articleUrl'] ?? '',
-                        ArtemisAudioDistributionModule::ARTICLE_ADMIN_URL => $params['articleAdminUrl'] ?? '',
-                        ArtemisAudioDistributionModule::MEDIA_ADMIN_URL => $params['mediaUrl'] ?? '',
-                    ]
-                );
+                $artemisDistributionData['distribution_data'] =
+                    json_encode(
+                        $this->customDataFactory->createDistributionData(
+                            (new ArtemisMediaResponseDto())->setMeta(
+                                (new ArtemisMediaMetaDto())
+                                    ->setArticleAdminUrl($params['articleAdminUrl'] ?? '')
+                                    ->setArticleUrl($params['articleUrl'] ?? '')
+                                    ->setMediaAdminUrl($params['mediaUrl'] ?? '')
+                            )
+                        )
+                    );
                 $artemisDistributionData['texts_title'] = mb_substr($freeAsset['texts_title'], 0, 128); // todo truncate
                 $artemisDistributionData['texts_description'] = $freeAsset['texts_description'];
                 $artemisDistributionData['texts_premium_url'] =

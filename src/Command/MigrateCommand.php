@@ -11,6 +11,7 @@ use App\DamMigrations\AdmUserMigrations;
 use App\DamMigrations\AssetAudioFreeMigrations;
 use App\DamMigrations\AssetAudioPremiumMigrations;
 use App\DamMigrations\AssetImageMigrations;
+use App\DamMigrations\AssetLicenceMigrations;
 use App\DamMigrations\AssetVideoMigrations;
 use App\DamMigrations\AudioCategoryMigrations;
 use App\DamMigrations\AuthorMigrations;
@@ -50,6 +51,7 @@ final class MigrateCommand extends Command
         private readonly VideoShowMigrations $videoShowMigrations,
         private readonly IndexBuilder $indexBuilder,
         private readonly RefreshAssetFilePropertiesCommand $refreshAssetFilePropertiesCommand,
+        private readonly AssetLicenceMigrations $assetLicenceMigrations,
     ) {
         parent::__construct();
     }
@@ -72,6 +74,7 @@ final class MigrateCommand extends Command
             ugc: false,
         );
 
+        $this->assetLicenceMigrations->migrate($migrateConfig);
         $this->ugcLicenceMigrations->migrate($migrateConfig);
         $this->admUserMigrations->migrate($migrateConfig);
         $this->ugcUserMigrations->migrate($migrateConfig);

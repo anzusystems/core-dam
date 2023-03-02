@@ -10,8 +10,8 @@ use AnzuSystems\CoreDamBundle\Logger\DamLogger;
 use AnzuSystems\CoreDamBundle\Model\Enum\DistributionFailReason;
 use AnzuSystems\SerializerBundle\Exception\SerializerException;
 //use App\Exception\UnrecoverableArtemisDistributionException;
-use App\Model\Dto\Artemis\ArtemisAudioMediaResponseDto;
 use App\Model\Dto\Artemis\ArtemisMediaDto;
+use App\Model\Dto\Artemis\ArtemisMediaResponseDto;
 use App\Model\Dto\Artemis\ArtemisRubricDto;
 use Symfony\Component\HttpClient\Exception\ServerException;
 use Symfony\Component\HttpFoundation\Request;
@@ -62,7 +62,7 @@ final class ArtemisClient
      * @throws TransportExceptionInterface
      * @throws SerializerException
      */
-    public function updateMedia(string $mediaId, ArtemisMediaDto $mediaDto): ArtemisAudioMediaResponseDto
+    public function updateMedia(string $mediaId, ArtemisMediaDto $mediaDto): ArtemisMediaResponseDto
     {
         return $this->mediaRequest(Request::METHOD_PATCH, "/api/rest/v1/media/{$mediaId}", $mediaDto);
     }
@@ -71,7 +71,7 @@ final class ArtemisClient
      * @throws TransportExceptionInterface
      * @throws SerializerException
      */
-    public function createMedia(ArtemisMediaDto $mediaDto): ArtemisAudioMediaResponseDto
+    public function createMedia(ArtemisMediaDto $mediaDto): ArtemisMediaResponseDto
     {
         return $this->mediaRequest(Request::METHOD_POST, '/api/rest/v1/media', $mediaDto);
     }
@@ -80,7 +80,7 @@ final class ArtemisClient
      * @throws SerializerException
      * @throws TransportExceptionInterface
      */
-    private function mediaRequest(string $method, string $url, ArtemisMediaDto $mediaDto): ArtemisAudioMediaResponseDto
+    private function mediaRequest(string $method, string $url, ArtemisMediaDto $mediaDto): ArtemisMediaResponseDto
     {
         try {
             $response = $this->artemisApiClient->request(
@@ -91,7 +91,7 @@ final class ArtemisClient
                 ]
             );
 
-            return $this->serializer->deserialize($response->getContent(), ArtemisAudioMediaResponseDto::class);
+            return $this->serializer->deserialize($response->getContent(), ArtemisMediaResponseDto::class);
         } catch (ServerException $exception) {
             $this->logger->error(
                 DamLogger::NAMESPACE_DISTRIBUTION,

@@ -4,13 +4,19 @@ declare(strict_types=1);
 
 namespace App\DamMigrations;
 
+use AnzuSystems\CoreDamBundle\Distribution\Modules\JwPlayerCustomDataFactory;
 use AnzuSystems\CoreDamBundle\Distribution\Modules\JwVideo\JwVideoDtoFactory;
+use AnzuSystems\CoreDamBundle\Distribution\Modules\YoutubeCustomDataFactory;
 use AnzuSystems\CoreDamBundle\Entity\JwDistribution;
 use AnzuSystems\CoreDamBundle\Entity\YoutubeDistribution;
 use AnzuSystems\CoreDamBundle\Helper\Math;
+use AnzuSystems\CoreDamBundle\Model\Dto\Youtube\YoutubeVideoDto;
 use App\App;
 use App\DamMigrations\Cache\VideoCategoryCache;
+use App\Distribution\Modules\ArtemisMediaDistributionCustomDataFactory;
 use App\Domain\ArtemisVideoDistribution\ArtemisVideoDistributionModule;
+use App\Model\Dto\Artemis\ArtemisMediaMetaDto;
+use App\Model\Dto\Artemis\ArtemisMediaResponseDto;
 use App\Model\MigrateConfig;
 use DateTimeImmutable;
 use Doctrine\DBAL\Exception;
@@ -28,6 +34,9 @@ final class AssetVideoMigrations extends AbstractAssetMigrations
     public function __construct(
         private readonly JwVideoDtoFactory $jwVideoDtoFactory,
         private readonly VideoCategoryCache $videoCategoryCache,
+        private readonly JwPlayerCustomDataFactory $jwPlayerCustomDataFactory,
+        private readonly YoutubeCustomDataFactory $youtubeCustomDataFactory,
+        private readonly ArtemisMediaDistributionCustomDataFactory $artemisCustomDataFactory,
     ) {
     }
 
@@ -216,9 +225,9 @@ final class AssetVideoMigrations extends AbstractAssetMigrations
         $data['texts_description'] = $row['texts_description'];
         $data['texts_author'] = $authors[0] ?? '';
         $data['texts_keywords'] = json_encode($keywords);
-        $data['distribution_data'] = json_encode([
-            JwDistribution::THUMBNAIL_DATA => $this->jwVideoDtoFactory->createThumbnailUrl($res['distribution_id']),
-        ]);
+        $data['distribution_data'] = json_encode(
+            $this->jwPlayerCustomDataFactory->createDistributionData((new JwDistribution())->setExtId($res['distribution_id']))
+        );
 
         $this->prepareBulkInsert('distribution', $data);
     }
@@ -244,12 +253,17 @@ final class AssetVideoMigrations extends AbstractAssetMigrations
         $data['id'] = $this->getId($row['id'], self::YT_DISTRIBUTION_ARTEMIS_SERVICE);
         $data['dtype'] = 'artemisvideodistribution';
         $data['distribution_service'] = self::YT_DISTRIBUTION_ARTEMIS_SERVICE;
-        $data['distribution_data'] = json_encode([
-            ArtemisVideoDistributionModule::ARTICLE_WEB_URL => $res['media_meta_article_url'],
-            ArtemisVideoDistributionModule::ARTICLE_ADMIN_URL => $res['media_meta_article_admin_url'],
-            ArtemisVideoDistributionModule::MEDIA_ADMIN_URL => $res['media_meta_media_url'],
-            ArtemisVideoDistributionModule::ARTICLE_ID => $res['media_meta_article_id'],
-        ]);
+        $data['distribution_data'] = json_encode(
+            $this->artemisCustomDataFactory->createDistributionData(
+                (new ArtemisMediaResponseDto())->setMeta(
+                    (new ArtemisMediaMetaDto())
+                        ->setArticleId((int) $res['media_meta_article_id'])
+                        ->setArticleAdminUrl($res['media_meta_article_admin_url'])
+                        ->setArticleUrl((string) $res['media_meta_article_url'])
+                        ->setMediaAdminUrl((string) $res['media_meta_media_url'])
+                )
+            )
+        );
 
         $data['texts_title'] = mb_substr($row['texts_title'], 0, 128); // todo truncate
         $data['texts_description'] = $row['texts_description'];
@@ -300,11 +314,9 @@ final class AssetVideoMigrations extends AbstractAssetMigrations
         $data['id'] = $this->getId($row['id'], self::YT_DISTRIBUTION_MAIN_SERVICE);
         $data['dtype'] = 'youtubedistribution';
         $data['distribution_service'] = self::YT_DISTRIBUTION_MAIN_SERVICE;
-        $data['distribution_data'] = json_encode([
-            YoutubeDistribution::THUMBNAIL_WIDTH => $res['thumbnail_width'],
-            YoutubeDistribution::THUMBNAIL_HEIGHT => $res['thumbnail_height'],
-            YoutubeDistribution::THUMBNAIL_DATA => $res['thumbnail_url'],
-        ]);
+        $data['distribution_data'] = json_encode(
+            $this->youtubeCustomDataFactory->createDistributionData((new YoutubeVideoDto())->setThumbnailUrl($res['thumbnail_url']))
+        );
         $data['texts_title'] = $res['texts_title'];
         $data['texts_description'] = $res['texts_description'];
         $data['texts_authors'] = json_encode($authors);
