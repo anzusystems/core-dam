@@ -1,0 +1,43 @@
+### Get permissions config.
+GET {{host}}/api/adm/v1/permissions/config
+Authorization: Bearer {{adm_access_token}}
+
+### ADM permission update of user1
+PUT {{host}}/api/adm/v1/anzu-user/10001040
+Content-Type: application/json
+Authorization: Bearer {{adm_access_token}}
+
+{
+  "id": 10001040,
+  "enabled": true,
+  "roles": ["ROLE_USER"],
+  "email": "user1.anzu@smeonline.sk",
+  "avatar": {
+    "color": "#000000"
+  },
+  "permissionGroups": [1],
+  "permissions": {
+    "dam_user_create": 1
+  }
+}
+
+### ADM get user1
+GET {{host}}/api/adm/v1/anzu-user/10001040
+Content-Type: application/json
+Authorization: Bearer {{adm_access_token}}
+
+### ADM get permission groups list
+GET {{host}}/api/adm/v1/permission-group
+Authorization: Bearer {{adm_access_token}}
+
+### ADM get permission groups list
+POST {{host}}/api/adm/v1/permission-group
+Content-Type: application/json
+Authorization: Bearer {{adm_access_token}}
+
+{
+  "title": "Testovacia grupa",
+  "permissions": {
+    "dam_user_create":2
+  }
+}
