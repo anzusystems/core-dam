@@ -81,10 +81,10 @@ spec:
                 - /var/run/crond.pid
             initialDelaySeconds: 10
             periodSeconds: 10
-        - name: podcast-read-rss-log
+        - name: podcast-generate-import-job-log
           image: busybox
           command: ["/bin/sh", "-c"]
-          args: ["/var/www/html/var/log/tail-cmd -f /var/www/html/var/log/podcast_read_rss.log"]
+          args: ["/var/www/html/var/log/tail-cmd -f /var/www/html/var/log/podcast_generate_import_job.log"]
           resources:
             limits:
               cpu: 5m

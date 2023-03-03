@@ -34,11 +34,8 @@ final class UserManager extends AbstractUserManager
     public function updateFromUserDto(User $user, UpdateUserDto $updateUserDto, bool $flush = true): User
     {
         $user
-            ->setFirstName($updateUserDto->getFirstName())
-            ->setLastName($updateUserDto->getLastName())
             ->setAllowedAssetExternalProviders($updateUserDto->getAllowedAssetExternalProviders())
-            ->setAllowedDistributionServices($updateUserDto->getAllowedDistributionServices())
-        ;
+            ->setAllowedDistributionServices($updateUserDto->getAllowedDistributionServices());
         $user = $this->assignLicencesAndExtSystems($user, $updateUserDto);
 
         return $this->updateExisting($user, $flush);

@@ -6,7 +6,6 @@ namespace App\DataFixtures;
 
 use AnzuSystems\CommonBundle\DataFixtures\Fixtures\AbstractFixtures;
 use AnzuSystems\CommonBundle\Model\User\UserDto;
-use AnzuSystems\Contracts\Entity\AnzuPermissionGroup;
 use AnzuSystems\CoreDamBundle\DataFixtures\AssetLicenceFixtures as BaseAssetLicenceFixtures;
 use AnzuSystems\CoreDamBundle\DataFixtures\PermissionGroupFixtures;
 use AnzuSystems\CoreDamBundle\Entity\AssetLicence;

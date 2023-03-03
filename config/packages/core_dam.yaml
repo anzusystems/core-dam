@@ -52,7 +52,7 @@ core_dam:
         source_property_path: 'attributes.premiumDuration'
         destination_property_path: 'customData[premiumDuration]'
   artemis_video_distribution:
-    default_rubric_id: 6978 # todo
+    default_rubric_id: 3
     custom_data_to_distribution_map:
       title:
         source_property_path: 'texts.title'

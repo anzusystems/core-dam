@@ -19,9 +19,10 @@ abstract class AbstractMigrations
     use OutputUtilTrait;
 
     protected const CMS_LICENCE_ID = 100_000;
+    protected const TOOLS_LICENCE_ID = 200_000;
     protected const BLOG_EXT_SYSTEM_ID = 4;
-
     protected const CMS_EXT_SYSTEM_ID = 1;
+    protected const TOOLS_EXT_SYSTEM_ID = 1_000;
 
     protected Connection $damLegacyConnection;
     protected Connection $defaultConnection;

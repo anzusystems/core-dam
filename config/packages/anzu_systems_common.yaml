@@ -44,6 +44,11 @@ anzu_systems_common:
                 database: '%env(ANZU_MONGODB_APP_LOG_DB)%'
                 ssl: '%env(bool:ANZU_MONGODB_APP_LOG_SSL)%'
                 collection: appLogs
+            ignored_exceptions:
+                - Symfony\Component\Security\Core\Exception\AccessDeniedException
+                - Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+                - Symfony\Component\Routing\Exception\ResourceNotFoundException
+                - AnzuSystems\CommonBundle\Exception\ValidationException
         # Audit log section
         audit:
             # Mongo connection definition
@@ -155,9 +160,22 @@ anzu_systems_common:
                 view:
                 delete:
                 ui:
+            dam_videoShow:
+                create:
+                update:
+                view:
+                delete:
+                ui:
+            dam_videoShowEpisode:
+                create:
+                update:
+                view:
+                delete:
+                ui:
             dam_log:
                 ui:
             dam_job:
+                view:
                 create:
                 delete:
                 ui:
@@ -183,6 +201,9 @@ anzu_systems_common:
                     sk: Systémové Joby Api
             actions:
                 ui:
+                    en: UI
+                    sk: UI
+                view:
                     en: View
                     sk: Zobraz
                 update:
@@ -246,6 +267,12 @@ anzu_systems_common:
                 dam_podcastEpisode:
                     en: Podcast Episode
                     sk: Podcastová epizóda
+                dam_videoShow:
+                    en: Video relácia
+                    sk: Video show
+                dam_videoShowEpisode:
+                    en: Video relácia (epizóda)
+                    sk: Video show (episode)
                 dam_distributionCategory:
                     en: Distribution Category
                     sk: Distribučná kategória
