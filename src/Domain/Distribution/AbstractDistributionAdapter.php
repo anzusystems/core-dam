@@ -31,10 +31,12 @@ abstract class AbstractDistributionAdapter implements DistributionAdapterInterfa
         CustomDistributionAdmDto $distributionDto,
         Distribution $distribution
     ): void {
+        $distribution->setId($distributionDto->getId());
         $distribution->setDistributionService($distributionDto->getDistributionService());
         $distribution->setAssetId((string) $assetFile->getAsset()->getId());
         $distribution->setAssetFileId((string) $assetFile->getId());
         $distribution->setBlockedBy($distributionDto->getBlockedBy());
+        $distribution->setPublishAt($distributionDto->getPublishAt());
     }
 
     /**

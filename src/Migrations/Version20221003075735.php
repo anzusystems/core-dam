@@ -29,7 +29,8 @@ final class Version20221003075735 extends AbstractMigration
 
         $this->addSql(
             "INSERT INTO `asset_licence` (id, `ext_system_id`, `created_by_id`, modified_by_id, name, ext_id, limited_files, created_at, modified_at) VALUES
-            (200000, 1000, '{$idConsole}', '{$idConsole}', 'Tools licence', '', 0, NOW(), NOW());
+            (200000, 1000, '{$idConsole}', '{$idConsole}', 'Tools licence', '', 0, NOW(), NOW()),
+            (100000, 1, '{$idConsole}', '{$idConsole}', 'CMS licence', '', 0, NOW(), NOW());
         "
         );
 

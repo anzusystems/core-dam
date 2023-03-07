@@ -69,9 +69,11 @@ final class LegacyDamPodcastMigrations extends AbstractMigrations
                 'modified_by_id' => User::ID_CONSOLE,
                 'created_at' => App::getAppDate()->format(DateTimeImmutable::ATOM),
                 'modified_at' => App::getAppDate()->format(DateTimeImmutable::ATOM),
+                'dates_import_from' => App::getAppDate()->format(DateTimeImmutable::ATOM),
                 'texts_description' => $row['description'],
                 'attributes_rss_url' => (string) $row['rss_feed'],
                 'licence_id' => self::CMS_LICENCE_ID,
+                'attributes_file_slot' => 'free',
                 'attributes_last_import_status' => PodcastLastImportStatus::NotImported->toString(),
                 'attributes_mode' => empty($row['rss_feed'])
                     ? PodcastImportMode::NotImport->toString()
@@ -108,8 +110,10 @@ final class LegacyDamPodcastMigrations extends AbstractMigrations
                 'modified_at' => $row['modified_at'],
                 'created_by_id' => $row['created_by_id'],
                 'modified_by_id' => $row['modified_by_id'],
+                'dates_import_from' => App::getAppDate()->format(DateTimeImmutable::ATOM),
                 'texts_description' => '',
                 'attributes_rss_url' => '',
+                'attributes_file_slot' => 'free',
                 'licence_id' => self::CMS_LICENCE_ID,
                 'attributes_last_import_status' => PodcastLastImportStatus::NotImported->toString(),
                 'attributes_mode' => PodcastImportMode::NotImport->toString(),
