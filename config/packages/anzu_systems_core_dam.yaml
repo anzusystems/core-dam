@@ -178,7 +178,7 @@ anzu_systems_core_dam:
         roi_height: 9
         file_slots:
           default: default
-          slots: [ default, free, extra ]
+          slots: [ default ]
         keywords:
           enabled: true
           required: false

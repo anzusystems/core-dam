@@ -26,6 +26,7 @@ final class ArtemisVideoDistributionManager extends AbstractDistributionManager
             ->setRubricId($newDistribution->getTexts()->getRubricId());
         $distribution->getFlags()
             ->setCreateArticle($newDistribution->getFlags()->isCreateArticle());
+        $distribution->setPublishAt($newDistribution->getPublishAt());
 
         $this->flush($flush);
 

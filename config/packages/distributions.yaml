@@ -10,6 +10,7 @@ anzu_systems_core_dam:
                 oauth_credentials: '%env(resolve:string:DISTRIBUTION_YOUTUBE_CMS_MAIN_OAUTH_CREDENTIALS)%'
                 channel_id: '%env(resolve:string:DISTRIBUTION_YOUTUBE_CMS_MAIN_CHANNEL_ID)%'
                 region_code: 'SK'
+                redirect_uri: '%env(resolve:string:DISTRIBUTION_YOUTUBE_REDIRECT_URI)%'
             icon_path: '%env(string:DISTRIBUTION_YOUTUBE_CMS_MAIN_ICON_PATH)%'
         youtube_cms_fici:
             type: youtubeDistribution
@@ -21,6 +22,7 @@ anzu_systems_core_dam:
                 oauth_credentials: '%env(resolve:string:DISTRIBUTION_YOUTUBE_CMS_FICI_OAUTH_CREDENTIALS)%'
                 channel_id: '%env(resolve:string:DISTRIBUTION_YOUTUBE_CMS_FICI_CHANNEL_ID)%'
                 region_code: 'SK'
+                redirect_uri: '%env(resolve:string:DISTRIBUTION_YOUTUBE_REDIRECT_URI)%'
             icon_path: '%env(string:DISTRIBUTION_YOUTUBE_CMS_FICI_ICON_PATH)%'
         jw_cms:
             type: jwDistribution

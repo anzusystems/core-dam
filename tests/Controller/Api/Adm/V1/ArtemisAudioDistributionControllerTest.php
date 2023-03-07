@@ -12,6 +12,7 @@ use AnzuSystems\CoreDamBundle\Domain\AssetSlot\AssetSlotFactory;
 use AnzuSystems\CoreDamBundle\Domain\Configuration\DistributionConfigurationProvider;
 use AnzuSystems\CoreDamBundle\Domain\PodcastEpisode\PodcastEpisodeFactory;
 use AnzuSystems\CoreDamBundle\Entity\AudioFile;
+use AnzuSystems\CoreDamBundle\Entity\ImageFile;
 use AnzuSystems\CoreDamBundle\Entity\Podcast;
 use App\App;
 use App\Distribution\Modules\Factory\ArtemisAudioDtoFactory;
@@ -136,7 +137,7 @@ final class ArtemisAudioDistributionControllerTest extends AbstractApiController
         $dto = $this->artemisAudioDtoFactory->createMediaDto($this->audioFile, $distribution);
 
         $this->assertSame('http://admin-image.smedata.localhost/image/w1920-h0/'.ImageFixtures::IMAGE_ID_1_2.'.jpg', $dto->getImage()->getUrl());
-        $this->assertSame('Custom Data Title', $dto->getImage()->getTitle());
+        $this->assertSame('Image 1_2 title', $dto->getImage()->getTitle());
 
         $this->assertSame(self::TEST_CUSTOM_DATA['title'], $dto->getTitle());
         $this->assertSame(self::TEST_CUSTOM_DATA['description'], $dto->getDescription());

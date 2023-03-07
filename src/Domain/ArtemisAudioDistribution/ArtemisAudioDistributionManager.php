@@ -36,6 +36,7 @@ final class ArtemisAudioDistributionManager extends AbstractDistributionManager
             ->setPodcastId($newDistribution->getTexts()->getPodcastId());
         $distribution->getFlags()
             ->setCreateArticle($newDistribution->getFlags()->isCreateArticle());
+        $distribution->setPublishAt($newDistribution->getPublishAt());
 
         $this->flush($flush);
 

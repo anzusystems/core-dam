@@ -9,6 +9,7 @@ use AnzuSystems\CommonBundle\Model\User\UserDto;
 use AnzuSystems\CoreDamBundle\DataFixtures\AssetLicenceFixtures as BaseAssetLicenceFixtures;
 use AnzuSystems\CoreDamBundle\DataFixtures\PermissionGroupFixtures;
 use AnzuSystems\CoreDamBundle\Entity\AssetLicence;
+use AnzuSystems\CoreDamBundle\Repository\AssetLicenceRepository;
 use App\Domain\User\UserManager;
 use App\Entity\User;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -25,8 +26,8 @@ final class UserFixtures extends AbstractFixtures
     public function __construct(
         private readonly UserManager $userManager,
         private readonly AssetLicenceFixtures $assetLicenceFixtures,
-        private readonly BaseAssetLicenceFixtures $baseAssetLicenceFixtures,
         private readonly PermissionGroupFixtures $permissionGroupFixtures,
+        private readonly AssetLicenceRepository $assetLicenceRepository,
     ) {
     }
 
@@ -64,9 +65,8 @@ final class UserFixtures extends AbstractFixtures
     {
         $permissionGroup = $this->permissionGroupFixtures->getOneFromRegistry(PermissionGroupFixtures::BASIC_GROUP_TITLE);
         /** @var AssetLicence $defaultCmsLicence */
-        $defaultCmsLicence = $this->baseAssetLicenceFixtures->getOneFromRegistry(
-            key: BaseAssetLicenceFixtures::DEFAULT_LICENCE_ID
-        );
+        $defaultCmsLicence = $this->assetLicenceRepository->find(BaseAssetLicenceFixtures::DEFAULT_LICENCE_ID);
+
         /** @var AssetLicence $defaultBlogLicence */
         $defaultBlogLicence = $this->assetLicenceFixtures->getOneFromRegistry(
             key: AssetLicenceFixtures::BLOG_DEFAULT_ASSET_LICENCE_ID

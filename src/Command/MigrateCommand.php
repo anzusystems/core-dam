@@ -49,9 +49,7 @@ final class MigrateCommand extends Command
         private readonly AssetAudioFreeMigrations $assetAudioFreeMigrations,
         private readonly AssetVideoMigrations $assetVideoMigrations,
         private readonly VideoShowMigrations $videoShowMigrations,
-        private readonly IndexBuilder $indexBuilder,
         private readonly RefreshAssetFilePropertiesCommand $refreshAssetFilePropertiesCommand,
-        private readonly AssetLicenceMigrations $assetLicenceMigrations,
     ) {
         parent::__construct();
     }
@@ -65,7 +63,7 @@ final class MigrateCommand extends Command
         );
     }
 
-    /**
+    /**B
      * @throws Exception
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -74,7 +72,6 @@ final class MigrateCommand extends Command
             ugc: false,
         );
 
-        $this->assetLicenceMigrations->migrate($migrateConfig);
         $this->ugcLicenceMigrations->migrate($migrateConfig);
         $this->admUserMigrations->migrate($migrateConfig);
         $this->ugcUserMigrations->migrate($migrateConfig);

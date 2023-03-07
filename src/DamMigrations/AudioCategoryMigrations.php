@@ -165,7 +165,7 @@ final class AudioCategoryMigrations extends AbstractMigrations
         try {
             $ytCmsMainSelectId = $this->getOrCreateCategorySelect(AssetType::Video, 'youtube_cms_main');
             $jwCmsSelectId = $this->getOrCreateCategorySelect(AssetType::Video, 'jw_cms');
-            $artemisCmsSelectId = $this->getOrCreateCategorySelect(AssetType::Video, 'artemis_cms');
+            $artemisCmsSelectId = $this->getOrCreateCategorySelect(AssetType::Video, 'artemis_video_cms');
 
             foreach ($this->getVideoCategories() as $videoCategory) {
                 $categoryId = $this->getOrCreateCategory($videoCategory, AssetType::Video);
