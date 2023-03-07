@@ -12,7 +12,7 @@ anzu_systems_core_dam:
             adapter: 'gcloud'
             options:
                 client: 'anzu.google_storage.env_client'
-                bucket: '%env(string:GCS_AUDIO_STORAGE_BUCKET)%'
+                bucket: '%env(string:GCS_PUBLIC_AUDIO_STORAGE_BUCKET)%'
         cms.image:
             adapter: 'gcloud'
             fallback_enabled: '%env(bool:CMS_IMAGE_FALLBACK_ENABLED)%'
