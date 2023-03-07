@@ -175,7 +175,7 @@ final class AudioCategoryMigrations extends AbstractMigrations
                     $this->assignOptionToCategory($categoryId, $optionId);
                 }
                 if ($videoCategory['jw_video_category_id']) {
-                    $optionId = $this->getOrCreateOption($jwCmsSelectId, (string) $videoCategory['jw_video_category_id'], (string) $videoCategory['jvcTitle']);
+                    $optionId = $this->getOrCreateOption($jwCmsSelectId, (string) $videoCategory['jvcTitle'], (string) $videoCategory['jvcTitle']);
                     $this->assignOptionToCategory($categoryId, $optionId);
                 }
                 if ($videoCategory['artemis_rubric_id']) {
