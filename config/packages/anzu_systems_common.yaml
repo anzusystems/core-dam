@@ -92,7 +92,7 @@ anzu_systems_common:
                 create:
                 update:
                 view:
-            dam_assetCustomFormElement:
+            dam_customFormElement:
                 view:
             dam_regionOfInterest:
                 create:
