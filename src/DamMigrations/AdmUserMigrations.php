@@ -4,13 +4,24 @@ declare(strict_types=1);
 
 namespace App\DamMigrations;
 
+use AnzuSystems\Contracts\Security\Grant;
+use AnzuSystems\CoreDamBundle\Security\Permission\DamPermissions;
+use App\App;
 use App\Entity\User;
 use App\Model\MigrateConfig;
+use DateTimeImmutable;
 use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Result;
 
 final class AdmUserMigrations extends AbstractMigrations
 {
+    private const DEFAULT_GROUP_ID = 1;
+
+    private const FULL_DAM_ACCESS_IDS = [
+        2209463, 2094837, 2074670, 2058535, 1966165, 1825192, 1777852, 1609469, 1492017, 1484934, 1439952, 1439940,
+        773176, 734566, 663606,
+    ];
+
     /**
      * @throws Exception
      */
@@ -21,6 +32,8 @@ final class AdmUserMigrations extends AbstractMigrations
         $progressBar = $this->outputUtil->createProgressBar($this->totalCount());
         $progressBar->setFormat('debug');
         $progressBar->start();
+
+        $this->createPermissionGroup();
 
         while ($row = $res->fetchAssociative()) {
             $email = $this->getEmail($row['id']);
@@ -40,6 +53,18 @@ final class AdmUserMigrations extends AbstractMigrations
         $this->outputUtil->writeln('');
     }
 
+    protected function hasPermissionGroupGroup(): bool
+    {
+        $res = $this->defaultConnection->fetchOne(
+            'SELECT id FROM permission_group WHERE id = ?',
+            [
+                self::DEFAULT_GROUP_ID,
+            ]
+        );
+
+        return is_int($res);
+    }
+
     private function totalCount(): int
     {
         return (int) $this->damLegacyConnection->fetchOne('
@@ -49,6 +74,16 @@ final class AdmUserMigrations extends AbstractMigrations
 
     private function insertUser(string $email, array $row): void
     {
+        $roles = json_decode($row['roles'], true);
+
+        if (1 === $row['enabled'] && in_array('ROLE_USER', $roles, true)) {
+            $userKey = array_search('ROLE_USER', $roles, true);
+            if (is_int($userKey)) {
+                unset($roles[$userKey]);
+            }
+            $roles[] = 'ROLE_DAM_ADMIN';
+        }
+
         $this->defaultConnection->insert(
             'user',
             [
@@ -57,7 +92,7 @@ final class AdmUserMigrations extends AbstractMigrations
                 'modified_at' => $row['modified_at'],
                 'created_by_id' => User::ID_CONSOLE,
                 'modified_by_id' => User::ID_CONSOLE,
-                'roles' => $row['roles'],
+                'roles' => json_encode(array_values($roles)),
                 'enabled' => $row['enabled'],
                 'email' => $email,
                 'person_first_name' => '',
@@ -66,9 +101,13 @@ final class AdmUserMigrations extends AbstractMigrations
                 'avatar_color' => '',
                 'avatar_text' => '',
                 'api_token' => $row['api_token'],
-                'permissions' => '{}', // TODO
-                'allowed_asset_external_providers' => '[]',
-                'allowed_distribution_services' => '[]',
+                'permissions' => '{}',
+                'allowed_asset_external_providers' => $this->hasFullAccess($row['id'])
+                    ? json_encode(['unsplash_cms'])
+                    : '[]',
+                'allowed_distribution_services' => $this->hasFullAccess($row['id'])
+                    ? json_encode(['youtube_cms_main', 'jw_cms', 'artemis_podcast_cms', 'artemis_video_cms'])
+                    : '[]',
             ]
         );
     }
@@ -92,7 +131,29 @@ final class AdmUserMigrations extends AbstractMigrations
                     'ext_system_id' => 1,
                 ]
             );
+
+            if ($this->hasFullAccess($userRow['id'])) {
+                $this->defaultConnection->insert(
+                    'admins_to_ext_systems',
+                    [
+                        'user_id' => $userRow['id'],
+                        'ext_system_id' => self::CMS_EXT_SYSTEM_ID,
+                    ]
+                );
+                $this->defaultConnection->insert(
+                    'user_permission_group',
+                    [
+                        'user_id' => $userRow['id'],
+                        'permission_group_id' => self::DEFAULT_GROUP_ID,
+                    ]
+                );
+            }
         }
+    }
+
+    private function hasFullAccess(int $id): bool
+    {
+        return in_array($id, self::FULL_DAM_ACCESS_IDS, true);
     }
 
     private function getDamUsers(): Result
@@ -101,5 +162,26 @@ final class AdmUserMigrations extends AbstractMigrations
             SELECT id, created_at, modified_at, roles, permissions, enabled, api_token, ext_system_id
             FROM user WHERE JSON_LENGTH(permissions) > 0 OR roles != JSON_ARRAY(\'ROLE_USER\')
         ');
+    }
+
+    private function createPermissionGroup(): void
+    {
+        if ($this->hasPermissionGroupGroup()) {
+            return;
+        }
+
+        $this->defaultConnection->insert(
+            'permission_group',
+            [
+                'id' => self::DEFAULT_GROUP_ID,
+                'title' => 'DAM full access',
+                'description' => 'Basic permission group for DAM access.',
+                'created_at' => App::getAppDate()->format(DateTimeImmutable::ATOM),
+                'modified_at' => App::getAppDate()->format(DateTimeImmutable::ATOM),
+                'created_by_id' => App::getUserIdConsole(),
+                'modified_by_id' => App::getUserIdConsole(),
+                'permissions' => json_encode(DamPermissions::default(Grant::ALLOW)),
+            ]
+        );
     }
 }
