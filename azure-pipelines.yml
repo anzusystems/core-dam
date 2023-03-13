@@ -33,6 +33,7 @@ resources:
     - repository: templates
       type: git
       name: DevOps/azure-ci-template
+      ref: tomasov_test_komand
 
 extends:
   template: composer-ci.yaml@templates
