@@ -20,3 +20,6 @@ bin/console doctrine:migrations:migrate --no-interaction --allow-no-migration
 
 echo "[INFO] Synchronize DistributionCategorySelect according ext systems distribution requirements."
 bin/console anzu-dam:distribution:sync-category-select
+
+echo "[INFO] Dump sql diff."
+bin/console d:s:u --dump-sql

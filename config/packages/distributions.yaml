@@ -34,13 +34,13 @@ anzu_systems_core_dam:
             icon_path: '%env(string:DISTRIBUTION_JW_CMS_ICON_PATH)%'
         artemis_podcast_cms:
             type: customDistribution
-            title: Artemis CMS
+            title: Artemis Podcast CMS
             module: App\Distribution\Modules\ArtemisAudioDistributionModule
             redistribute_statuses: ['failed',  'distributed']
             icon_path: '%env(string:DISTRIBUTION_ARTEMIS_PODCAST_CMS_ICON_PATH)%'
         artemis_video_cms:
             type: customDistribution
-            title: Artemis CMS
+            title: Artemis Video CMS
             module: App\Distribution\Modules\ArtemisVideoDistributionModule
             redistribute_statuses: ['failed',  'distributed']
             icon_path: '%env(string:DISTRIBUTION_ARTEMIS_VIDEO_CMS_ICON_PATH)%'

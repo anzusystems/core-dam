@@ -13,7 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Embeddable]
 class ArtemisVideoTexts
 {
-    #[ORM\Column(type: Types::STRING, length: 128)]
+    #[ORM\Column(type: Types::STRING, length: 255)]
     #[Assert\NotBlank(message: ValidationException::ERROR_FIELD_EMPTY)]
     #[Assert\Length(max: 100, maxMessage: ValidationException::ERROR_FIELD_LENGTH_MAX)]
     #[Serialize]
