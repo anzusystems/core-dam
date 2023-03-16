@@ -19,10 +19,10 @@ use App\Distribution\Modules\Factory\ArtemisAudioDtoFactory;
 use App\Entity\ArtemisAudioDistribution;
 use App\Model\Dto\Artemis\ArtemisMediaAuthorDto;
 use App\Model\Dto\Artemis\ArtemisMediaTagDto;
-use App\Tests\Controller\Api\AbstractApiControllerTest;
+use App\Tests\Controller\Api\AbstractApiController;
 use Symfony\Component\HttpFoundation\Response;
 
-final class ArtemisAudioDistributionControllerTest extends AbstractApiControllerTest
+final class ArtemisAudioDistributionControllerTest extends AbstractApiController
 {
     private const TEST_CUSTOM_DATA = [
         'title' => '783: Kids These Days',
@@ -136,7 +136,7 @@ final class ArtemisAudioDistributionControllerTest extends AbstractApiController
 
         $dto = $this->artemisAudioDtoFactory->createMediaDto($this->audioFile, $distribution);
 
-        $this->assertSame('http://admin-image.smedata.localhost/image/w1920-h0/'.ImageFixtures::IMAGE_ID_1_2.'.jpg', $dto->getImage()->getUrl());
+        $this->assertSame('http://image-admin.smedata.localhost/image/w1920-h0/'.ImageFixtures::IMAGE_ID_1_2.'.jpg', $dto->getImage()->getUrl());
         $this->assertSame('Image 1_2 title', $dto->getImage()->getTitle());
 
         $this->assertSame(self::TEST_CUSTOM_DATA['title'], $dto->getTitle());

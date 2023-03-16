@@ -1,0 +1,71 @@
+anzu_systems_core_dam:
+  image_settings:
+    optimal_resizes: [ 2000, 1000 ]
+    enable_crop_cache: true  # todo implement
+    color_set:
+      red:
+        rgb: [ 238, 2, 2 ]
+      yellow:
+        rgb: [ 251, 239, 0 ]
+      blue:
+        rgb: [ 30, 21, 246 ]
+      orange:
+        rgb: [ 244, 114, 0 ]
+      green:
+        rgb: [ 46, 145, 2 ]
+      purple:
+        rgb: [ 158, 11, 246 ]
+      white:
+        rgb: [ 255, 255, 255 ]
+      black:
+        rgb: [ 0, 0, 0 ]
+      pink:
+        rgb: [ 210, 7, 151 ]
+      brown:
+        rgb: [ 154, 0, 5 ]
+    crop_allow_map:
+      admin_image:
+        crop_allow_list: admin_image
+        ext_system_slugs: [tools, blog, cms]
+        domain: admin_image
+      public_image:
+        crop_allow_list: public_image
+        ext_system_slugs: [ cms ]
+        domain: public_image
+      blog_public_image:
+        crop_allow_list: blog_public_image
+        ext_system_slugs: [ blog ]
+        domain: public_image
+    crop_allow_list:
+      admin_image:
+        quality_whitelist: [ ]
+        crops:
+          - { width: 300, height: 200, tags: [ 'roi_example' ], title: '3:2' }  # admin roi example 3:2
+          - { width: 0, height: 200, tags: [ 'list' ] }           # admin DAM listing
+          - { width: 200, height: 200, tags: [ 'roi_example' ], title: '1:1' }  # admin roi example 1:1
+          - { width: 1920, height: 0, tags: [ 'detail', 'artemis_distribution', 'cache_purge' ] }
+          - { width: 0, height: 600 }        # UGC DAM image preview
+          - { width: 500, height: 281 }      # UGC DAM image preview after upload# admin DAM image crop
+      public_image:
+        quality_whitelist: [ 90 ]
+        crops:
+          - { width: 800, height: 450 }   # anzu web general
+          - { width: 350, height: 197 }   # anzu web box item photo
+      blog_public_image:
+        quality_whitelist: [ 90 ]
+        crops:
+          - { width: 972, height: 648 }   # blog web listing small image set
+          - { width: 600, height: 450 }   # blog web gallery image set
+          - { width: 480, height: 360 }   # blog web gallery image set
+          - { width: 360, height: 270 }   # blog web gallery image set
+          - { width: 240, height: 180 }   # blog web gallery image set
+          - { width: 120, height: 90 }    # blog web gallery image set
+          - { width: 450, height: 300 }   # blog web listing small image set
+          - { width: 100, height: 100 }   # blog web listing small image set
+          - { width: 200, height: 200 }   # blog web listing small image set
+          - { width: 1024, height: 0 }    # blog web article detail image set (automatic height)
+          - { width: 970, height: 0 }     # blog web article detail image set (automatic height)
+          - { width: 608, height: 0 }     # blog web article detail image set (automatic height)
+          - { width: 448, height: 0 }     # blog web article detail image set (automatic height)
+          - { width: 288, height: 0 }     # blog web article detail image set (automatic height)
+          - { width: 300, height: 300 }   # blog mobile app

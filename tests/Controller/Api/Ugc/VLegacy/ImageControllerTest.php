@@ -11,7 +11,7 @@ use AnzuSystems\CoreDamBundle\Helper\FileHelper;
 use App\DataFixtures\ImageFixtures;
 use App\DataFixtures\UserFixtures;
 use App\Tests\ApiClient;
-use App\Tests\Controller\Api\AbstractApiControllerTest;
+use App\Tests\Controller\Api\AbstractApiController;
 use App\Tests\data\Model\ApiClientFirewall;
 use App\Tests\data\Model\ImageUgcLegacyUrl;
 use Exception;
@@ -21,7 +21,7 @@ use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Response;
 
-final class ImageControllerTest extends AbstractApiControllerTest
+final class ImageControllerTest extends AbstractApiController
 {
     private const TEST_DATA_FILENAME = 'metadata_image.jpeg';
 

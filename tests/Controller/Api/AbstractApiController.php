@@ -7,12 +7,12 @@ namespace App\Tests\Controller\Api;
 
 use AnzuSystems\SerializerBundle\Serializer;
 use App\Tests\ApiClient;
-use App\Tests\Controller\AbstractControllerTest;
+use App\Tests\Controller\AbstractController;
 use App\Tests\data\Model\ApiClientFirewall;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Component\HttpFoundation\Response;
 
-abstract class AbstractApiControllerTest extends AbstractControllerTest
+abstract class AbstractApiController extends AbstractController
 {
     protected Serializer $serializer;
     protected static KernelBrowser $client;

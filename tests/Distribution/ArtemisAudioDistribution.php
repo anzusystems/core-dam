@@ -24,11 +24,11 @@ use AnzuSystems\SerializerBundle\Exception\SerializerException;
 use App\Distribution\Modules\Factory\ArtemisAudioDtoFactory;
 use App\Domain\ArtemisAudioDistribution\ArtemisAudioDistributionAutomat;
 use App\Entity\ArtemisAudioDistribution;
-use App\Tests\Controller\AbstractControllerTest;
+use App\Tests\Controller\AbstractController;
 use Doctrine\Common\Collections\ArrayCollection;
 use Google\Service\SecurityCommandCenter\Pod;
 
-final class ArtemisAudioDistributionTest extends AbstractControllerTest
+final class ArtemisAudioDistribution extends AbstractController
 {
     private RssImportManager $importManager;
     private AudioPositionFacade $audioPositionFacade;
