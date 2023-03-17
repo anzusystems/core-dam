@@ -8,12 +8,12 @@ use AnzuSystems\CoreDamBundle\Entity\AssetLicence;
 use App\DataFixtures\AssetLicenceFixtures;
 use App\DataFixtures\UserFixtures;
 use App\Entity\User;
-use App\Tests\Controller\Api\AbstractApiControllerTest;
+use App\Tests\Controller\Api\AbstractApiController;
 use App\Tests\data\Model\ApiClientFirewall;
 use App\Tests\data\Model\AssetLicenceSysUrl;
 use Symfony\Component\HttpFoundation\Response;
 
-final class AssetLicenceControllerTest extends AbstractApiControllerTest
+final class AssetLicenceControllerTest extends AbstractApiController
 {
     public function testUpsertLicence(): void
     {

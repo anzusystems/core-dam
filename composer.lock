@@ -203,12 +203,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/anzusystems/core-dam-bundle.git",
-                "reference": "91037bb93dfd93b17cb85da8448ff98144db33d8"
+                "reference": "ad3e44b4e3e55b8660d5d38604895abd8af5cf01"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/anzusystems/core-dam-bundle/zipball/91037bb93dfd93b17cb85da8448ff98144db33d8",
-                "reference": "91037bb93dfd93b17cb85da8448ff98144db33d8",
+                "url": "https://api.github.com/repos/anzusystems/core-dam-bundle/zipball/ad3e44b4e3e55b8660d5d38604895abd8af5cf01",
+                "reference": "ad3e44b4e3e55b8660d5d38604895abd8af5cf01",
                 "shasum": ""
             },
             "require": {
@@ -265,6 +265,7 @@
             },
             "require-dev": {
                 "doctrine/doctrine-bundle": "^2.4",
+                "ext-fileinfo": "*",
                 "phpunit/phpunit": "^9.5",
                 "psalm/plugin-symfony": "^5.0",
                 "slevomat/coding-standard": "^7.0",
@@ -288,7 +289,7 @@
                 "issues": "https://github.com/anzusystems/core-dam-bundle/issues",
                 "source": "https://github.com/anzusystems/core-dam-bundle/tree/develop"
             },
-            "time": "2023-03-13T12:35:54+00:00"
+            "time": "2023-03-17T15:29:20+00:00"
         },
         {
             "name": "anzusystems/serializer-bundle",

@@ -1,0 +1,73 @@
+parameters:
+  display_title_config:
+    title:
+      source_property_path: 'metadata.customData[title]'
+    headline:
+      source_property_path: 'metadata.customData[headline]'
+    originFileName:
+      source_property_path: 'mainFile?.assetAttributes.originFileName'
+    id:
+      source_property_path: 'id'
+    mainFileId:
+      source_property_path: 'mainFile?.id'
+
+anzu_systems_core_dam:
+  settings:
+    api_domain: '%env(resolve:string:DOMAIN_CORE_DAM_API)%'
+    youtube_api_key: '%env(resolve:string:YOUTUBE_API_KEY)%'
+    elastic_index_prefix: '%env(resolve:string:ELASTIC_INDEX_PREFIX)%'
+    elastic_language_dictionaries: [ 'sk' ]
+    distribution_auth_redirect_url: '%env(resolve:string:DISTRIBUTION_AUTH_REDIRECT_URL)%'
+    default_ext_system_id: 1
+    default_asset_licence_id: 100000
+    not_found_image_id: 'c41ca3a7-af73-46ee-a517-5f3748815c01'
+    allow_select_ext_system: true
+    allow_select_licence: true
+    admin_allow_list_name: 'admin_image'
+    max_bulk_item_count: 10
+    acl_check_enabled: true
+    app_redis: DamRedis
+    cache_redis: CacheRedis
+    user_auth_type: oauth2
+    limited_asset_licence_files_count: 100
+    notifications:
+      gps_config:
+        transport: rest
+    image_chunk_config:
+      min_size: '%env(byte_size:APP_SIZE_MIN_CHUNK_SIZE)%'
+      max_size: '%env(byte_size:APP_SIZE_MAX_CHUNK_SIZE)%'
+  display_title:
+    image: '%display_title_config%'
+    audio: '%display_title_config%'
+    video: '%display_title_config%'
+    document: '%display_title_config%'
+  file_operations:
+    tmp_dir_path: '/tmp'
+    fixtures_dir_path: '%kernel.project_dir%/var/mnt/data/fixtures'
+  exif_metadata:
+    common_metadata:
+      Software:
+        autoFillField: 'title'
+      ExifVersion:
+        autoFillField: 'title'
+      Make: ~
+      Artist: ~
+      Description: ~
+      Rights: ~
+      Title: ~
+      Subject: ~
+      Headline: ~
+      City: ~
+      Credit: ~
+      Source: ~
+      State: ~
+      Creator: ~
+      Country: ~
+      DateCreated: ~
+      Keywords: ~
+      OwnerName: ~
+    image_metadata:
+      ColorSpace:
+        autoFillField: 'description'
+      Flash: ~
+      ImageDescription: ~

@@ -56,17 +56,12 @@ final class ArtemisAudioDistributionAutomat extends AbstractManager
             return;
         }
 
-        if (false === $audioFile->getAudioPublicLink()->isPublic()) {
-            try {
-                $this->audioPublicFacade->makePublic($audioFile, new AudioPublicationAdmDto());
-            } catch (Throwable $exception) {
-                $this->logger->error(self::class, 'Make public audio link failed', $exception);
-            }
-        }
+        $this->tryMakePublic($audioFile);
     }
 
     /**
      * @throws NonUniqueResultException
+     * @throws SerializerException
      */
     public function tryToDistribute(AudioFile $audioFile): void
     {
@@ -75,7 +70,6 @@ final class ArtemisAudioDistributionAutomat extends AbstractManager
         }
 
         foreach ($audioFile->getAsset()->getEpisodes() as $episode) {
-            // todo fetch by episode?
             $distribution = $this->repository->findByPodcastAndAsset(
                 (string) $audioFile->getAsset()->getId(),
                 (string) $episode->getPodcast()->getId(),
@@ -93,16 +87,22 @@ final class ArtemisAudioDistributionAutomat extends AbstractManager
     }
 
     /**
-     * Automatically distribute if audio was uploaded to bonus slot or is synced from RSS to free slot
+     * Automatically distribute if audio is synced from RSS to free slot
      *
      * @throws NonUniqueResultException
+     * @throws SerializerException
      */
     private function tryCreateNewDistribution(PodcastEpisode $episode, AudioFile $audioFile): void
     {
-        if (
-            $this->isAtFreeSlot($audioFile) && $episode->getFlags()->isFromRss() ||
-            $this->isAtBonusSlot($audioFile)
-        ) {
+        if ($this->isAtFreeSlot($audioFile) && $episode->getFlags()->isFromRss()) {
+            $premiumVersion = $audioFile->getAsset()->getSlots()->filter(
+                fn (AssetSlot $slot): bool => $this->isAtPremiumSlot($slot->getAssetFile())
+            )->first();
+
+            if ($premiumVersion instanceof AssetSlot && $premiumVersion->getAudio()) {
+                $this->tryMakePublic($premiumVersion->getAudio());
+            }
+
             $distribution = $this->artemisAudioDistributionManager->create(
                 $this->factory->createFromAudioAndEpisode($audioFile, $episode, self::ARTEMIS_AUDIO_DISTRIBUTION_SERVICE),
             );
@@ -147,5 +147,19 @@ final class ArtemisAudioDistributionAutomat extends AbstractManager
             fn (AssetSlot $slot): bool =>
                 $slot->getName() === $slotName
         )->first();
+    }
+
+    /**
+     * @throws SerializerException
+     */
+    private function tryMakePublic(AudioFile $audioFile): void
+    {
+        if (false === $audioFile->getAudioPublicLink()->isPublic()) {
+            try {
+                $this->audioPublicFacade->makePublic($audioFile, new AudioPublicationAdmDto());
+            } catch (Throwable $exception) {
+                $this->logger->error(self::class, 'Make public audio link failed', $exception);
+            }
+        }
     }
 }

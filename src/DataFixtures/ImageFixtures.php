@@ -9,8 +9,10 @@ use AnzuSystems\CoreDamBundle\DataFixtures\ImageFixtures as BaseImageFixtures;
 use AnzuSystems\CoreDamBundle\Domain\AssetFile\AssetFileStatusFacadeProvider;
 use AnzuSystems\CoreDamBundle\Domain\Image\ImageFactory;
 use AnzuSystems\CoreDamBundle\Domain\Image\ImageManager;
+use AnzuSystems\CoreDamBundle\Domain\RegionOfInterest\RegionOfInterestManager;
 use AnzuSystems\CoreDamBundle\Entity\AssetLicence;
 use AnzuSystems\CoreDamBundle\Entity\ImageFile;
+use AnzuSystems\CoreDamBundle\Entity\RegionOfInterest;
 use AnzuSystems\CoreDamBundle\FileSystem\FileSystemProvider;
 use AnzuSystems\CoreDamBundle\Model\Enum\AssetFileProcessStatus;
 use AnzuSystems\CoreDamBundle\Repository\AssetLicenceRepository;
@@ -37,6 +39,7 @@ final class ImageFixtures extends AbstractAssetFileFixtures
         private readonly AssetLicenceRepository $licenceRepository,
         private readonly FileSystemProvider $fileSystemProvider,
         private readonly AssetFileStatusFacadeProvider $facadeProvider,
+        private readonly RegionOfInterestManager $regionOfInterestManager,
     ) {
     }
 
@@ -83,6 +86,16 @@ final class ImageFixtures extends AbstractAssetFileFixtures
         $image->getAssetAttributes()->setStatus(AssetFileProcessStatus::Uploaded);
         $image->getAsset()->getAssetFlags()->setDescribed(true);
         $this->facadeProvider->getStatusFacade($image)->storeAndProcess($image, $file);
+        $image->getRegionsOfInterest()->add(
+            $this->regionOfInterestManager->create(
+                (new RegionOfInterest())
+                    ->setImage($image)
+                    ->setPointX(0)
+                    ->setPointY(0)
+                    ->setPercentageWidth(0.5)
+                    ->setPercentageHeight(0.5)
+            )
+        );
 
         yield $image;
 

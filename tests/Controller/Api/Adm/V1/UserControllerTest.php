@@ -6,10 +6,10 @@ namespace App\Tests\Controller\Api\Adm\V1;
 
 use App\App;
 use App\Repository\UserRepository;
-use App\Tests\Controller\Api\AbstractApiControllerTest;
+use App\Tests\Controller\Api\AbstractApiController;
 use Symfony\Component\HttpFoundation\Response;
 
-final class UserControllerTest extends AbstractApiControllerTest
+final class UserControllerTest extends AbstractApiController
 {
     public function testCurrentApi(): void
     {

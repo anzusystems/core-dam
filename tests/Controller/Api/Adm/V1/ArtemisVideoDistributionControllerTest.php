@@ -15,10 +15,10 @@ use App\Distribution\Modules\Factory\ArtemisVideoDtoFactory;
 use App\Entity\ArtemisVideoDistribution;
 use App\Model\Dto\Artemis\ArtemisMediaAuthorDto;
 use App\Model\Dto\Artemis\ArtemisMediaTagDto;
-use App\Tests\Controller\Api\AbstractApiControllerTest;
+use App\Tests\Controller\Api\AbstractApiController;
 use Symfony\Component\HttpFoundation\Response;
 
-final class ArtemisVideoDistributionControllerTest extends AbstractApiControllerTest
+final class ArtemisVideoDistributionControllerTest extends AbstractApiController
 {
     private const TEST_CUSTOM_DATA = [
         'title' => 'Video title',
@@ -93,7 +93,7 @@ final class ArtemisVideoDistributionControllerTest extends AbstractApiController
         $assetId = (string) $video->getImagePreview()?->getImageFile()?->getAsset()->getId();
         $imagePreviewId = (string) $video->getImagePreview()?->getImageFile()->getId();
 
-        $this->assertSame("http://admin-image.smedata.localhost/image/w1920-h0/{$imagePreviewId}.jpg", $dto->getImage()->getUrl());
+        $this->assertSame("http://image-admin.smedata.localhost/image/w1920-h0/{$imagePreviewId}.jpg", $dto->getImage()->getUrl());
         $this->assertSame($assetId, $dto->getImage()->getTitle());
         $this->assertSame(self::TEST_CUSTOM_DATA['title'], $dto->getTitle());
         $this->assertSame(self::TEST_CUSTOM_DATA['description'], $dto->getDescription());

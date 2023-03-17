@@ -8,12 +8,12 @@ use AnzuSystems\CoreDamBundle\Entity\RegionOfInterest;
 use AnzuSystems\CoreDamBundle\Repository\RegionOfInterestRepository;
 use App\DataFixtures\ImageFixtures;
 use App\DataFixtures\UserFixtures;
-use App\Tests\Controller\Api\AbstractApiControllerTest;
+use App\Tests\Controller\Api\AbstractApiController;
 use App\Tests\data\Model\ApiClientFirewall;
 use App\Tests\data\Model\RegionOfInterestUgcLegacyUrl;
 use Doctrine\ORM\NonUniqueResultException;
 
-final class RegionOfInterestControllerTest extends AbstractApiControllerTest
+final class RegionOfInterestControllerTest extends AbstractApiController
 {
     private RegionOfInterest $regionOfInterest;
 
@@ -32,7 +32,7 @@ final class RegionOfInterestControllerTest extends AbstractApiControllerTest
         $client = $this->getClient(UserFixtures::USER_TWO_SSO_ID, ApiClientFirewall::Ugc);
         $response = $client->get(RegionOfInterestUgcLegacyUrl::getListPath(ImageFixtures::IMAGE_1_ID));
         $json = $this->assertResponseAndGetJsonContent($response);
-        $this->assertListResponse($json, 1);
+        $this->assertListResponse($json, 2);
         $this->assertSame($json['data'][0]['id'], $this->regionOfInterest->getId());
     }
 

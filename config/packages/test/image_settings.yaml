@@ -1,0 +1,63 @@
+anzu_systems_core_dam:
+  domains:
+    admin_image:
+      domain: 'http://image-admin.smedata.localhost'
+      max_age: 0
+      cache_ttl: 50
+      public: false
+    public_image:
+      domain: 'http://image.smedata.localhost'
+      max_age: 0
+      cache_ttl: 60
+      public: true
+    public_blog_image:
+      domain: 'http://blog-image.smedata.localhost'
+      max_age: 0
+      cache_ttl: 60
+      public: true
+    public_audio:
+      domain: 'http://audio.smedata.localhost'
+      max_age: 0
+      cache_ttl: 60
+      public: false
+  image_settings:
+    # we have domain (adm/pub or another variant) and licence slug
+    crop_allow_map:
+      admin_image:
+        crop_allow_list: admin_image
+        ext_system_slugs: [tools, blog, cms]
+        domain: admin_image
+      public_image:
+        crop_allow_list: public_image
+        ext_system_slugs: [ cms ]
+        domain: public_image
+      blog_public_image:
+        crop_allow_list: blog_public_image
+        ext_system_slugs: [ blog ]
+        domain: public_blog_image
+      blog_public_image_second:
+        crop_allow_list: blog_public_image_second
+        ext_system_slugs: [ blog ]
+        domain: public_image
+    crop_allow_list:
+      admin_image:
+        quality_whitelist: [ ]
+        crops:
+          - { width: 300, height: 200, tags: [ 'roi_example' ], title: '3:2' }                          # admin roi example 3:2
+          - { width: 0, height: 200, tags: [ 'list' ] }                                                 # admin DAM listing
+          - { width: 200, height: 200, tags: [ 'roi_example' ], title: '1:1' }                          # admin roi example 1:1
+          - { width: 1920, height: 0, tags: [ 'detail', 'artemis_distribution', 'cache_purge' ] }       # admin DAM image crop
+      public_image:
+        quality_whitelist: [ 90 ]
+        crops:
+          - { width: 777, height: 777 }   # anzu web general
+          - { width: 350, height: 197 }   # anzu web box item photo
+      blog_public_image:
+        quality_whitelist: [ 90 ]
+        crops:
+          - { width: 972, height: 648 }   # blog web listing small image set
+          - { width: 600, height: 450 }   # blog web gallery image set
+      blog_public_image_second:
+        quality_whitelist: [ 90, 70 ]
+        crops:
+          - { width: 123, height: 123 }
