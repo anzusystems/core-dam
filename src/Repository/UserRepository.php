@@ -21,6 +21,7 @@ final class UserRepository extends AbstractAnzuRepository implements OAuth2AuthU
     {
         return $this->find((int) $ssoUserId);
     }
+
     protected function getEntityClass(): string
     {
         return User::class;
