@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "361000d7d1fb1f666675385feaaa04d2",
+    "content-hash": "6f2bbc8a33da191bfac5d82fdf2eb477",
     "packages": [
         {
             "name": "anzusystems/auth-bundle",
@@ -199,16 +199,16 @@
         },
         {
             "name": "anzusystems/core-dam-bundle",
-            "version": "dev-develop",
+            "version": "dev-feature/tests_and_updates_5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/anzusystems/core-dam-bundle.git",
-                "reference": "4f9b2eff250c1c4c146309dbf0939e18f8e12d27"
+                "reference": "96d17bdcd80a27ee5ad17acc2bfcc88614c2a886"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/anzusystems/core-dam-bundle/zipball/4f9b2eff250c1c4c146309dbf0939e18f8e12d27",
-                "reference": "4f9b2eff250c1c4c146309dbf0939e18f8e12d27",
+                "url": "https://api.github.com/repos/anzusystems/core-dam-bundle/zipball/96d17bdcd80a27ee5ad17acc2bfcc88614c2a886",
+                "reference": "96d17bdcd80a27ee5ad17acc2bfcc88614c2a886",
                 "shasum": ""
             },
             "require": {
@@ -265,6 +265,7 @@
             },
             "require-dev": {
                 "doctrine/doctrine-bundle": "^2.4",
+                "ext-fileinfo": "*",
                 "phpunit/phpunit": "^9.5",
                 "psalm/plugin-symfony": "^5.0",
                 "slevomat/coding-standard": "^7.0",
@@ -286,9 +287,9 @@
             "description": "Dam core bundle",
             "support": {
                 "issues": "https://github.com/anzusystems/core-dam-bundle/issues",
-                "source": "https://github.com/anzusystems/core-dam-bundle/tree/develop"
+                "source": "https://github.com/anzusystems/core-dam-bundle/tree/feature/tests_and_updates_5"
             },
-            "time": "2023-03-10T14:16:42+00:00"
+            "time": "2023-03-17T08:05:16+00:00"
         },
         {
             "name": "anzusystems/serializer-bundle",
