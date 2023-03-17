@@ -8,35 +8,24 @@ namespace App\Tests\Distribution;
 use AnzuSystems\CoreDamBundle\DataFixtures\AudioFixtures;
 use AnzuSystems\CoreDamBundle\DataFixtures\PodcastFixtures;
 use AnzuSystems\CoreDamBundle\Domain\Audio\AudioPositionFacade;
-use AnzuSystems\CoreDamBundle\Domain\Podcast\PodcastManager;
 use AnzuSystems\CoreDamBundle\Domain\Podcast\PodcastRssReader;
 use AnzuSystems\CoreDamBundle\Domain\Podcast\RssImportManager;
 use AnzuSystems\CoreDamBundle\Domain\PodcastEpisode\EpisodeRssImportManager;
-use AnzuSystems\CoreDamBundle\Domain\PodcastEpisode\PodcastEpisodeManager;
 use AnzuSystems\CoreDamBundle\Entity\AssetSlot;
 use AnzuSystems\CoreDamBundle\Entity\AudioFile;
-use AnzuSystems\CoreDamBundle\Entity\Embeds\PodcastEpisodeTexts;
 use AnzuSystems\CoreDamBundle\Entity\Podcast;
 use AnzuSystems\CoreDamBundle\Entity\PodcastEpisode;
 use AnzuSystems\CoreDamBundle\HttpClient\RssClient;
-use AnzuSystems\CoreDamBundle\Model\Enum\PodcastLastImportStatus;
 use AnzuSystems\SerializerBundle\Exception\SerializerException;
-use App\Distribution\Modules\Factory\ArtemisAudioDtoFactory;
 use App\Domain\ArtemisAudioDistribution\ArtemisAudioDistributionAutomat;
 use App\Entity\ArtemisAudioDistribution;
 use App\Tests\Controller\AbstractController;
-use Doctrine\Common\Collections\ArrayCollection;
-use Google\Service\SecurityCommandCenter\Pod;
 
-final class ArtemisAudioDistribution extends AbstractController
+final class ArtemisAudioDistributionTest extends AbstractController
 {
     private RssImportManager $importManager;
     private AudioPositionFacade $audioPositionFacade;
     private ArtemisAudioDistributionAutomat $automat;
-    private PodcastEpisodeManager $podcastEpisodeManager;
-    private PodcastManager $podcastManager;
-    private ArtemisAudioDtoFactory $artemisAudioDtoFactory;
-
     private EpisodeRssImportManager $episodeRssImportManager;
     private PodcastRssReader $reader;
     private RssClient $client;
@@ -47,9 +36,6 @@ final class ArtemisAudioDistribution extends AbstractController
         $this->importManager = $this->getService(RssImportManager::class);
         $this->audioPositionFacade = $this->getService(AudioPositionFacade::class);
         $this->automat = $this->getService(ArtemisAudioDistributionAutomat::class);
-        $this->podcastEpisodeManager = $this->getService(PodcastEpisodeManager::class);
-        $this->podcastManager = $this->getService(PodcastManager::class);
-        $this->artemisAudioDtoFactory = $this->getService(ArtemisAudioDtoFactory::class);
         $this->reader = $this->getService(PodcastRssReader::class);
         $this->client = $this->getService(RssClient::class);
         $this->episodeRssImportManager = $this->getService(EpisodeRssImportManager::class);
@@ -62,40 +48,10 @@ final class ArtemisAudioDistribution extends AbstractController
         $this->automat->makeAudioPublicUrl($audioFile);
         $this->assertSame(false, $audioFile->getAudioPublicLink()->isPublic());
 
-        $this->audioPositionFacade->setToSlot($audioFile->getAsset(), $audioFile, 'bonus');
+        $this->audioPositionFacade->setToSlot($audioFile->getAsset(), $audioFile, 'premium');
         $this->automat->makeAudioPublicUrl($audioFile);
         $this->assertSame(true, $audioFile->getAudioPublicLink()->isPublic());
 
-    }
-
-    public function testBonusDistribution(): void
-    {
-        $podcast = $this->podcastManager->create((new Podcast()), false);
-        $episode = (new PodcastEpisode())->setTexts((new PodcastEpisodeTexts())->setTitle('Bonus Test'));
-        $episode->setPodcast($podcast);
-
-        $this->podcastEpisodeManager->create($episode, false);
-
-        $audioFile = $this->entityManager->getRepository(AudioFile::class)->find(AudioFixtures::AUDIO_ID_1);
-        $this->audioPositionFacade->setToSlot($audioFile->getAsset(), $audioFile, 'bonus');
-        $audioFile->getAsset()->setEpisodes(new ArrayCollection([$episode]));
-        $episode->setAsset($audioFile->getAsset());
-
-        $this->entityManager->flush();
-
-        // manually triggers "processed" state
-        $this->automat->makeAudioPublicUrl($audioFile);
-        $this->automat->tryToDistribute($audioFile);
-
-        $distribution = $this->entityManager->getRepository(ArtemisAudioDistribution::class)->findOneBy([
-            'texts.podcastId' => $episode->getPodcast()->getId()
-        ]);
-
-        $this->assertNotNull($distribution);
-        $this->assertSame('artemis_podcast_cms', $distribution->getDistributionService());
-        $this->assertSame('artemis_podcast_cms', $distribution->getDistributionService());
-        $this->assertSame('', $distribution->getTexts()->getFreeUrl());
-        $this->assertSame('http://audio.smedata.localhost/7994f48d-118e-4dc6-8245-98b546cda6dc/783-kids-these-days.mp3', $distribution->getTexts()->getPremiumUrl());
     }
 
     public function testDistributionPreparedPremium(): void

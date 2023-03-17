@@ -33,7 +33,7 @@ final class RssPodcastMock extends AbstractMock
         if ('https://feed.podbean.com/vedatorskypodcast/feed.xml' === $url) {
             return $this->getTestDataFile( 'vedator.xml');
         }
-        if ('https://www.thisamericanlife.org/podcast/rss.xml' === $url) {
+        if ('https://anchor.fm/s/8a651488/podcast/rss' === $url) {
             return $this->getTestDataFile( 'americanLife.xml');
         }
 
