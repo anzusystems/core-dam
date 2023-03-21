@@ -42,7 +42,6 @@ final class ChunkUgcLegacyFacade
         $this->validator->validate($createDto);
         $chunk = $this->chunkFactory->createFromAdmDto($createDto);
         $this->chunkManager->setAssetFile($chunk, $assetFile);
-        $this->chunkManager->setNotifyTo($assetFile);
         /** @var UploadedFile $uploadedFile */
         $uploadedFile = $createDto->getFile();
 

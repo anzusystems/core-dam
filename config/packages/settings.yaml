@@ -28,6 +28,8 @@ anzu_systems_core_dam:
     acl_check_enabled: true
     app_redis: DamRedis
     cache_redis: CacheRedis
+    unsplash_api_client_host: 'https://api.unsplash.com'
+    jw_player_api_client_host: 'https://api.jwplayer.com'
     user_auth_type: oauth2
     limited_asset_licence_files_count: 100
     notifications:

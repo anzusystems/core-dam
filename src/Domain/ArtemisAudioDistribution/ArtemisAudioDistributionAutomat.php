@@ -70,9 +70,9 @@ final class ArtemisAudioDistributionAutomat extends AbstractManager
         }
 
         foreach ($audioFile->getAsset()->getEpisodes() as $episode) {
-            $distribution = $this->repository->findByPodcastAndAsset(
+            $distribution = $this->repository->findByEpisodeAndAsset(
                 (string) $audioFile->getAsset()->getId(),
-                (string) $episode->getPodcast()->getId(),
+                (string) $episode->getId(),
                 self::ARTEMIS_AUDIO_DISTRIBUTION_SERVICE
             );
 

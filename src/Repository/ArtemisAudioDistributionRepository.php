@@ -19,14 +19,14 @@ use Doctrine\Common\Collections\Collection;
  */
 final class ArtemisAudioDistributionRepository extends DistributionRepository
 {
-    public function findByPodcastAndAsset(
+    public function findByEpisodeAndAsset(
         string $assetId,
-        string $podcastId,
+        string $episodeId,
         string $distributionService
     ): ?Distribution {
         return $this->findOneBy([
             'assetId' => $assetId,
-            'texts.podcastId' => $podcastId,
+            'texts.episodeId' => $episodeId,
             'distributionService' => $distributionService,
         ]);
     }

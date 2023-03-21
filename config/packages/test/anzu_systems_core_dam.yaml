@@ -2,5 +2,7 @@ anzu_systems_core_dam:
   settings:
     app_redis: DamRedis
     cache_redis: CacheRedis
+    unsplash_api_client_host: 'https://api.unsplash.com'
+    jw_player_api_client_host: 'https://api.jwplayer.com'
     notifications:
       enabled: false
