@@ -51,22 +51,22 @@ spec:
             - name: REDIS_HOST
               valueFrom:
                 configMapKeyRef:
-                  name: anzu-config
+                  name: anzu-infra
                   key: redis_host
             - name: REDIS_PORT
               valueFrom:
                 configMapKeyRef:
-                  name: anzu-config
+                  name: anzu-infra
                   key: redis_port
             - name: REDIS_CACHE_HOST
               valueFrom:
                 configMapKeyRef:
-                  name: anzu-config
+                  name: anzu-infra
                   key: redis_cache_host
             - name: REDIS_CACHE_PORT
               valueFrom:
                 configMapKeyRef:
-                  name: anzu-config
+                  name: anzu-infra
                   key: redis_cache_port
           volumeMounts:
             - name: logs
