@@ -8,8 +8,10 @@ echo "[INFO] Setup private key"
 cp /run/secrets/ssh_private_key "$HOME/.ssh/id_rsa"
 
 echo "[INFO] Redirecting logs to stdout"
-tail -F \
-    "${PHP_ERROR_LOG}" 2>/dev/null &
+tail-cmd -f "\
+    /var/log/newrelic/newrelic-daemon.log \
+    ${PHP_ERROR_LOG} \
+" &
 
 if [ -n "${GITHUB_PERSONAL_ACCESS_TOKEN}" ]; then
     echo "[INFO] Setup token for github.com"

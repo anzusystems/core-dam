@@ -18,7 +18,7 @@ function acr_login() {
     NOW_TIMESTAMP="$(date --utc +"%s")"
     CREDS_TIMESTAMP=$((LAST_LOGIN_TIMESTAMP + 175 * 60))
     # Azure ACR token is valid only 3 hours so relogin after 2 hours and 55 minutes
-    if [[ "${NOW_TIMESTAMP}" > "${CREDS_TIMESTAMP}" ]] || [ "${ACR_FORCE_LOGIN}" == "true" ]; then
+    if [[ "${NOW_TIMESTAMP}" -gt "${CREDS_TIMESTAMP}" ]] || [ "${ACR_FORCE_LOGIN}" == "true" ]; then
         echo_debug "Login to Azure Container Registry"
         if az acr login --name petitpress; then
             mkdir -p "$(dirname "${LOGIN_TIMESTAMP_CONF}")"
@@ -106,21 +106,14 @@ function delete_docker_network() {
 #   None
 #########################
 function docker_env_vars() {
-    # Create local environment file from example/dist environment file if not yet created
-    if [ ! -f "${ENV_APPLICATION_FILE}" ]; then
-        cp "${ENV_APPLICATION_FILE_DIST}" "${ENV_APPLICATION_FILE}"
-    fi
-
     # Create local docker environment file from example/dist docker environment file if not yet created
     if [ ! -f "${ENV_DOCKER_FILE}" ]; then
-        cp "${ENV_DOCKER_FILE_DIST}" "${ENV_DOCKER_FILE}"
+        echo -e "### Docker configuration\n\n# Docker others\n#DOCKER_USER=user\n#DOCKER_USER_ID=1000\n#DOCKER_GROUP_ID=1000\n#DOCKER_SSH_PRV_KEY_FILE=~/.ssh/id_rsa" > "${ENV_DOCKER_FILE}"
     fi
 
     # Export all environment variables from dist and local docker environment files if exists
     for env_file in ${ENV_DOCKER_FILE_DIST} ${ENV_DOCKER_FILE}; do
-        ENV_DOCKER_VARS=()
-        while read -r line; do [[ ! ${line?} =~ ^($|#) ]] && ENV_DOCKER_VARS+=("export ${line?}"); done 2>/dev/null < "$env_file"
-        for var in "${ENV_DOCKER_VARS[@]}"; do eval "$var"; done
+        while read -r line; do export "${line?}"; done 2>/dev/null < <(grep -vE '^\s*(#|$)' "$env_file")
     done
 }
 

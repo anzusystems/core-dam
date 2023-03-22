@@ -1,4 +1,4 @@
-FROM petitpress.azurecr.io/php82:1.3.0-cli-vipsffmpeg
+FROM petitpress.azurecr.io/php82:2.0.0-cli-vipsffmpeg
 
 LABEL maintainer="Lubomir Stanko <lubomir.stanko@petitpress.sk>"
 #

@@ -15,6 +15,7 @@ su -c "cp /usr/local/bin/tail-cmd var/log/tail-cmd" user
 echo "[INFO] Redirecting logs to stdout"
 tail-cmd -s 1 -f "\
     /var/log/cron/cron.log \
+    /var/log/newrelic/newrelic-daemon.log \
 " &
 
 echo "[INFO] Setup system wide environment variables for cron"
