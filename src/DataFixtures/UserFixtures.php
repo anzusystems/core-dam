@@ -14,6 +14,7 @@ use App\App;
 use App\Domain\User\UserManager;
 use App\Entity\User;
 use Doctrine\Common\Collections\ArrayCollection;
+use Google\Service\Iam\Role;
 use Symfony\Component\Console\Helper\ProgressBar;
 
 /**
@@ -136,8 +137,11 @@ final class UserFixtures extends AbstractFixtures
             ->setUserToExtSystems(new ArrayCollection([$blogThreeLicence->getExtSystem()]))
         ;
 
-        /** @var User $userAdmin */
+        /** @var User|null $userAdmin */
         $userAdmin = $this->entityManager->find(User::class, App::getUserIdAdmin());
+        $userAdmin ??= (new User())
+            ->setEmail('admin.anzu@smeonline.sk')
+        ;
 
         /** @psalm-suppress InvalidArgument */
         yield (new UserDto())
