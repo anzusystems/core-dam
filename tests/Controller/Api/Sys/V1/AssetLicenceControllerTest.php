@@ -19,7 +19,7 @@ final class AssetLicenceControllerTest extends AbstractApiController
     {
         // 1. Try to create a new licence
         $client = $this->getClient(ApiClientFirewall::ID_BLOG_SYS_API, ApiClientFirewall::Sys);
-        $extId = AssetLicenceFixtures::BLOG_EXT_ID + 1;
+        $extId = AssetLicenceFixtures::BLOG_SIX_EXT_ID + 1;
         $this->assertUserLicence(UserFixtures::USER_TWO_SSO_ID, $extId, false);
         $response = $client->put(AssetLicenceSysUrl::upsertLicence(), [
             'extId' => $extId,

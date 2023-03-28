@@ -71,7 +71,7 @@ final class ImageFixtures extends AbstractAssetFileFixtures
     {
         $fileSystem = $this->fileSystemProvider->createLocalFilesystem(self::DATA_PATH);
         /** @var AssetLicence $licence */
-        $licence = $this->licenceRepository->find(AssetLicenceFixtures::BLOG_DEFAULT_ASSET_LICENCE_ID);
+        $licence = $this->licenceRepository->find(AssetLicenceFixtures::BLOG_ONE_LICENCE_ID);
 
         $file = $this->getFile($fileSystem, 'text_image_108x192.png');
         $image = $this->imageFactory->createFromFile(

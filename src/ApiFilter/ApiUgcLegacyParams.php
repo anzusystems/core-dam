@@ -105,4 +105,17 @@ final class ApiUgcLegacyParams
     {
         return $this->ids;
     }
+
+    public function isFilterNotApplied(): bool
+    {
+        return empty($this->getText())
+            && null === $this->getCreatedAtFrom()
+            && null === $this->getCreatedAtUntil()
+        ;
+    }
+
+    public function isFilterApplied(): bool
+    {
+        return false === $this->isFilterNotApplied();
+    }
 }

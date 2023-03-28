@@ -41,6 +41,7 @@ class User extends DamUser implements
     public const ID_ADMIN = 10_001_039;
 
     public const ROLE_UGC = 'ROLE_UGC';
+    public const ROLE_DAM_ADMIN = 'ROLE_DAM_ADMIN';
 
     #[ORM\ManyToMany(targetEntity: PermissionGroup::class, inversedBy: 'users', fetch: App::DOCTRINE_EXTRA_LAZY, indexBy: 'id')]
     #[ORM\JoinTable]

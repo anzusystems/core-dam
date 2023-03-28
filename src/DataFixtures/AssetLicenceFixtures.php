@@ -16,8 +16,18 @@ use Symfony\Component\Console\Helper\ProgressBar;
  */
 final class AssetLicenceFixtures extends AbstractFixtures
 {
-    public const BLOG_DEFAULT_ASSET_LICENCE_ID = BaseAssetLicenceFixtures::DEFAULT_LICENCE_ID + 1;
-    public const BLOG_EXT_ID = 1;
+    public const BLOG_ONE_LICENCE_ID = BaseAssetLicenceFixtures::DEFAULT_LICENCE_ID + 1;
+    public const BLOG_ONE_EXT_ID = 1;
+    public const BLOG_TWO_LICENCE_ID = self::BLOG_ONE_LICENCE_ID + 1;
+    public const BLOG_TWO_EXT_ID = 2;
+    public const BLOG_THREE_LICENCE_ID = self::BLOG_TWO_LICENCE_ID + 1;
+    public const BLOG_THREE_EXT_ID = 3;
+    public const BLOG_FOUR_LICENCE_ID = self::BLOG_THREE_LICENCE_ID + 1;
+    public const BLOG_FOUR_EXT_ID = 4;
+    public const BLOG_FIVE_LICENCE_ID = self::BLOG_FOUR_LICENCE_ID + 1;
+    public const BLOG_FIVE_EXT_ID = 5;
+    public const BLOG_SIX_LICENCE_ID = self::BLOG_FIVE_LICENCE_ID + 1;
+    public const BLOG_SIX_EXT_ID = 6;
 
     public function __construct(
         private readonly AssetLicenceManager $assetLicenceManager,
@@ -51,13 +61,64 @@ final class AssetLicenceFixtures extends AbstractFixtures
         /** @var ExtSystem $blogExtSystem */
         $blogExtSystem = $this->entityManager->find(ExtSystem::class, 4);
 
-        $user = new AssetLicence();
-        $user
-            ->setId(self::BLOG_DEFAULT_ASSET_LICENCE_ID)
-            ->setExtId((string) self::BLOG_EXT_ID)
+        $licenceOne = new AssetLicence();
+        $licenceOne
+            ->setId(self::BLOG_ONE_LICENCE_ID)
+            ->setExtId((string) self::BLOG_ONE_EXT_ID)
             ->setExtSystem($blogExtSystem)
+            ->setName('Anzulák: Blog plný radosti')
         ;
 
-        yield $user;
+        yield $licenceOne;
+
+        $licenceTwo = new AssetLicence();
+        $licenceTwo
+            ->setId(self::BLOG_TWO_LICENCE_ID)
+            ->setExtId((string) self::BLOG_TWO_EXT_ID)
+            ->setExtSystem($blogExtSystem)
+            ->setName('Kavickar: Kavo-Blog')
+        ;
+
+        yield $licenceTwo;
+
+        $licenceThree = new AssetLicence();
+        $licenceThree
+            ->setId(self::BLOG_THREE_LICENCE_ID)
+            ->setExtId((string) self::BLOG_THREE_EXT_ID)
+            ->setExtSystem($blogExtSystem)
+            ->setName('Slonik: PHPckar')
+        ;
+
+        yield $licenceThree;
+
+        $licenceFour = new AssetLicence();
+        $licenceFour
+            ->setId(self::BLOG_FOUR_LICENCE_ID)
+            ->setExtId((string) self::BLOG_FOUR_EXT_ID)
+            ->setExtSystem($blogExtSystem)
+            ->setName('Vata')
+        ;
+
+        yield $licenceFour;
+
+        $licenceFive = new AssetLicence();
+        $licenceFive
+            ->setId(self::BLOG_FIVE_LICENCE_ID)
+            ->setExtId((string) self::BLOG_FIVE_EXT_ID)
+            ->setExtSystem($blogExtSystem)
+            ->setName('Pixel')
+        ;
+
+        yield $licenceFive;
+
+        $licenceSix = new AssetLicence();
+        $licenceSix
+            ->setId(self::BLOG_SIX_LICENCE_ID)
+            ->setExtId((string) self::BLOG_SIX_EXT_ID)
+            ->setExtSystem($blogExtSystem)
+            ->setName('Krčmárove patálie')
+        ;
+
+        yield $licenceSix;
     }
 }

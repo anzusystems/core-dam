@@ -4,15 +4,22 @@ declare(strict_types=1);
 
 namespace App\Repository\Decorator;
 
+use AnzuSystems\CommonBundle\ApiFilter\ApiParams;
 use AnzuSystems\CommonBundle\ApiFilter\ApiResponseList;
 use AnzuSystems\CommonBundle\Exception\ValidationException;
+use AnzuSystems\CoreDamBundle\ApiFilter\AssetStatusForAssetFileApiParams;
+use AnzuSystems\CoreDamBundle\ApiFilter\LicensedEntityApiParams;
 use AnzuSystems\CoreDamBundle\Entity\AssetLicence;
 use AnzuSystems\CoreDamBundle\Entity\ImageFile;
+use AnzuSystems\CoreDamBundle\Model\Enum\AssetStatus;
+use AnzuSystems\CoreDamBundle\Repository\CustomFilter\CustomAssetStatusForAssetFileFilter;
+use AnzuSystems\CoreDamBundle\Repository\CustomFilter\LicensedEntityFilter;
 use AnzuSystems\CoreDamBundle\Repository\ImageFileRepository;
 use AnzuSystems\SerializerBundle\Exception\SerializerException;
 use App\ApiFilter\ApiUgcLegacyParams;
 use App\Elasticsearch\Decorator\ImageUgcLegacyElasticsearchDecorator;
 use App\Model\Ugc\Legacy\ImageListDto;
+use Doctrine\ORM\Exception\ORMException;
 
 final readonly class ImageUgcLegacyRepositoryDecorator
 {
@@ -25,23 +32,58 @@ final readonly class ImageUgcLegacyRepositoryDecorator
     /**
      * @throws SerializerException
      * @throws ValidationException
+     * @throws ORMException
      */
     public function searchList(AssetLicence $licence, ApiUgcLegacyParams $apiUgcLegacyParams): ApiResponseList
     {
-        if (empty($apiUgcLegacyParams->getIds())) {
+        // A.) Filter applied, use ES
+        if ($apiUgcLegacyParams->isFilterApplied()) {
             return $this->elasticSearch->searchList($licence, $apiUgcLegacyParams);
         }
 
-        $imageFiles = $this->imageFileRepo->findByLicenceAndIds($licence, $apiUgcLegacyParams->getIds());
-        /** @var ApiResponseList<ImageListDto> $responseList */
-        $responseList = new ApiResponseList();
+        // B.) Specific ids send, fetch directly by ids and licence
+        if ($apiUgcLegacyParams->getIds()) {
+            $imageFiles = $this->imageFileRepo->findByLicenceAndIds($licence, $apiUgcLegacyParams->getIds());
+            /** @psalm-var ApiResponseList<ImageListDto> $responseList */
+            $responseList = new ApiResponseList();
+
+            return $responseList
+                ->setTotalCount($imageFiles->count())
+                ->setData(array_map(
+                    $this->mapAssetFileToImageListDto(...),
+                    $imageFiles->getValues()
+                ))
+            ;
+        }
+
+        // C.) No filter applied and no specific IDS, use api filter on DB
+        $apiParams = (new ApiParams())
+            ->setOrder([
+                'modifiedAt' => 'desc',
+                'id' => 'desc',
+            ])
+            ->setLimit($apiUgcLegacyParams->getLimit())
+            ->setOffset($apiUgcLegacyParams->getOffset())
+        ;
+        $apiParams = LicensedEntityApiParams::applyLicenceCustomFilter($apiParams, $licence);
+        $apiParams = AssetStatusForAssetFileApiParams::applyCustomFilter($apiParams, AssetStatus::WithFile);
+        $responseList = $this->imageFileRepo->findByApiParams(
+            apiParams: $apiParams,
+            customFilters: [
+                new LicensedEntityFilter(),
+                new CustomAssetStatusForAssetFileFilter(),
+            ]
+        );
 
         return $responseList
-            ->setTotalCount($imageFiles->count())
             ->setData(array_map(
-                fn (ImageFile $imageFile) => ImageListDto::getInstance($imageFile),
-                $imageFiles->getValues()
-            ))
-        ;
+                $this->mapAssetFileToImageListDto(...),
+                $responseList->getData()
+            ));
+    }
+
+    private function mapAssetFileToImageListDto(ImageFile $imageFile): ImageListDto
+    {
+        return ImageListDto::getInstance($imageFile);
     }
 }
