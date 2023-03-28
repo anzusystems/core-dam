@@ -10,6 +10,7 @@ use AnzuSystems\CoreDamBundle\DataFixtures\AssetLicenceFixtures as BaseAssetLice
 use AnzuSystems\CoreDamBundle\DataFixtures\PermissionGroupFixtures;
 use AnzuSystems\CoreDamBundle\Entity\AssetLicence;
 use AnzuSystems\CoreDamBundle\Repository\AssetLicenceRepository;
+use App\App;
 use App\Domain\User\UserManager;
 use App\Entity\User;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -22,6 +23,9 @@ final class UserFixtures extends AbstractFixtures
 {
     public const USER_ONE_SSO_ID = 10_001_040;
     public const USER_TWO_SSO_ID = 10_001_043;
+    public const USER_THREE_SSO_ID = 10_001_045;
+    public const USER_FOUR_SSO_ID = 111_000_000;
+    public const USER_FIVE_SSO_ID = 111_000_001;
 
     public function __construct(
         private readonly UserManager $userManager,
@@ -50,10 +54,18 @@ final class UserFixtures extends AbstractFixtures
     {
         /** @var UserDto $userDto */
         foreach ($progressBar->iterate($this->getData()) as $userDto => $user) {
+            /** @var User|null $existingUser */
+            if ($user->getId()) {
+                /** @var User $updated */
+                $updated = $this->userManager->updateAnzuUser($user, $userDto);
+                $this->addToRegistry($updated, (int) $updated->getId());
+
+                continue;
+            }
+
             /** @var User $created */
             $created = $this->userManager->createAnzuUser($user, $userDto);
             $this->addToRegistry($created, (int) $created->getId());
-            $this->addToRegistry($created, $created->getId());
         }
         $this->userManager->flush();
     }
@@ -67,9 +79,29 @@ final class UserFixtures extends AbstractFixtures
         /** @var AssetLicence $defaultCmsLicence */
         $defaultCmsLicence = $this->assetLicenceRepository->find(BaseAssetLicenceFixtures::DEFAULT_LICENCE_ID);
 
-        /** @var AssetLicence $defaultBlogLicence */
-        $defaultBlogLicence = $this->assetLicenceFixtures->getOneFromRegistry(
-            key: AssetLicenceFixtures::BLOG_DEFAULT_ASSET_LICENCE_ID
+        /** @var AssetLicence $blogOneLicence */
+        $blogOneLicence = $this->assetLicenceFixtures->getOneFromRegistry(
+            key: AssetLicenceFixtures::BLOG_ONE_LICENCE_ID
+        );
+        /** @var AssetLicence $blogTwoLicence */
+        $blogTwoLicence = $this->assetLicenceFixtures->getOneFromRegistry(
+            key: AssetLicenceFixtures::BLOG_TWO_LICENCE_ID
+        );
+        /** @var AssetLicence $blogThreeLicence */
+        $blogThreeLicence = $this->assetLicenceFixtures->getOneFromRegistry(
+            key: AssetLicenceFixtures::BLOG_THREE_LICENCE_ID
+        );
+        /** @var AssetLicence $blogFourLicence */
+        $blogFourLicence = $this->assetLicenceFixtures->getOneFromRegistry(
+            key: AssetLicenceFixtures::BLOG_FOUR_LICENCE_ID
+        );
+        /** @var AssetLicence $blogFiveLicence */
+        $blogFiveLicence = $this->assetLicenceFixtures->getOneFromRegistry(
+            key: AssetLicenceFixtures::BLOG_FIVE_LICENCE_ID
+        );
+        /** @var AssetLicence $blogSixLicence */
+        $blogSixLicence = $this->assetLicenceFixtures->getOneFromRegistry(
+            key: AssetLicenceFixtures::BLOG_SIX_LICENCE_ID
         );
 
         /** @psalm-suppress InvalidArgument */
@@ -77,9 +109,10 @@ final class UserFixtures extends AbstractFixtures
             ->setId(self::USER_ONE_SSO_ID)
             ->setEmail('user1.anzu@smeonline.sk')
             ->setPermissionGroups(new ArrayCollection([$permissionGroup]))
+            ->setRoles([User::ROLE_UGC, User::ROLE_DAM_ADMIN])
         => (new User())
-            ->setAssetLicences(new ArrayCollection([$defaultCmsLicence]))
-            ->setUserToExtSystems(new ArrayCollection([$defaultCmsLicence->getExtSystem()]))
+            ->setAssetLicences(new ArrayCollection([$defaultCmsLicence, $blogOneLicence]))
+            ->setUserToExtSystems(new ArrayCollection([$defaultCmsLicence->getExtSystem(), $blogOneLicence->getExtSystem()]))
         ;
 
         /** @psalm-suppress InvalidArgument */
@@ -87,10 +120,52 @@ final class UserFixtures extends AbstractFixtures
             ->setId(self::USER_TWO_SSO_ID)
             ->setEmail('user2.anzu@smeonline.sk')
             ->setPermissionGroups(new ArrayCollection([$permissionGroup]))
-            ->setRoles([User::ROLE_UGC, User::ROLE_USER])
+            ->setRoles([User::ROLE_UGC, User::ROLE_DAM_ADMIN])
         => (new User())
-            ->setAssetLicences(new ArrayCollection([$defaultCmsLicence, $defaultBlogLicence]))
-            ->setUserToExtSystems(new ArrayCollection([$defaultCmsLicence->getExtSystem(), $defaultBlogLicence->getExtSystem()]))
+            ->setAssetLicences(new ArrayCollection([$defaultCmsLicence, $blogTwoLicence]))
+            ->setUserToExtSystems(new ArrayCollection([$defaultCmsLicence->getExtSystem(), $blogTwoLicence->getExtSystem()]))
+        ;
+
+        /** @psalm-suppress InvalidArgument */
+        yield (new UserDto())
+            ->setId(self::USER_THREE_SSO_ID)
+            ->setEmail('user3.anzu@smeonline.sk')
+            ->setRoles([User::ROLE_UGC])
+        => (new User())
+            ->setAssetLicences(new ArrayCollection([$blogThreeLicence]))
+            ->setUserToExtSystems(new ArrayCollection([$blogThreeLicence->getExtSystem()]))
+        ;
+
+        /** @var User $userAdmin */
+        $userAdmin = $this->entityManager->find(User::class, App::getUserIdAdmin());
+
+        /** @psalm-suppress InvalidArgument */
+        yield (new UserDto())
+            ->setId(App::getUserIdAdmin())
+            ->setRoles([User::ROLE_UGC, User::ROLE_ADMIN])
+        => $userAdmin
+            ->setAssetLicences(new ArrayCollection([$blogFourLicence]))
+            ->setUserToExtSystems(new ArrayCollection([$blogFourLicence->getExtSystem()]))
+        ;
+
+        /** @psalm-suppress InvalidArgument */
+        yield (new UserDto())
+            ->setId(self::USER_FOUR_SSO_ID)
+            ->setEmail('user1_test.anzu@smeonline.sk')
+            ->setRoles([User::ROLE_UGC])
+        => (new User())
+            ->setAssetLicences(new ArrayCollection([$blogFiveLicence]))
+            ->setUserToExtSystems(new ArrayCollection([$blogFiveLicence->getExtSystem()]))
+        ;
+
+        /** @psalm-suppress InvalidArgument */
+        yield (new UserDto())
+            ->setId(self::USER_FIVE_SSO_ID)
+            ->setEmail('user2_test.anzu@smeonline.sk')
+            ->setRoles([User::ROLE_UGC])
+        => (new User())
+            ->setAssetLicences(new ArrayCollection([$blogSixLicence]))
+            ->setUserToExtSystems(new ArrayCollection([$blogSixLicence->getExtSystem()]))
         ;
 
         yield (new UserDto())

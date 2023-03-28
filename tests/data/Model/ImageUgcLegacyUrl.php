@@ -8,7 +8,7 @@ use App\DataFixtures\AssetLicenceFixtures;
 
 final readonly class ImageUgcLegacyUrl
 {
-    public static function getCreatePath(int $licenceId = AssetLicenceFixtures::BLOG_EXT_ID): string
+    public static function getCreatePath(int $licenceId = AssetLicenceFixtures::BLOG_ONE_EXT_ID): string
     {
         return "/api/ugc/vlegacy/blog/$licenceId/image";
     }
@@ -48,7 +48,7 @@ final readonly class ImageUgcLegacyUrl
         return "/api/ugc/vlegacy/image/bulk-update-undescribed";
     }
 
-    public static function getImageSearchListPath(int $licenceId = AssetLicenceFixtures::BLOG_EXT_ID): string
+    public static function getImageSearchListPath(int $licenceId = AssetLicenceFixtures::BLOG_ONE_EXT_ID): string
     {
         return "/api/ugc/vlegacy/blog/$licenceId/image";
     }
