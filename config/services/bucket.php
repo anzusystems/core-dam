@@ -36,4 +36,14 @@ return static function (ContainerConfigurator $configurator): void {
             ]
         ])
     ;
+
+    $services->set('anzu.google_storage.mediaapi_client')
+        ->class(StorageClient::class)
+        ->lazy()
+        ->args([
+            [
+                'keyFile' => env('file:GOOGLE_MEDIA_API_BUCKET_CREDENTIALS')->json()->default('empty_array')
+            ]
+        ])
+    ;
 };

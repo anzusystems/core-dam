@@ -10,6 +10,7 @@ use AnzuSystems\CoreDamBundle\Domain\Distribution\AbstractDistributionManager;
 use AnzuSystems\CoreDamBundle\Entity\AssetLicence;
 use AnzuSystems\CoreDamBundle\Entity\Author;
 use AnzuSystems\CoreDamBundle\Entity\Distribution;
+use AnzuSystems\CoreDamBundle\Entity\Keyword;
 use App\Entity\ArtemisAudioDistribution;
 use App\Model\Domain\AssetLicence\UpsertAssertLicenceDto;
 

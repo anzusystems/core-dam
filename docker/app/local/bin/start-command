@@ -24,6 +24,18 @@ if [ -n "${GITHUB_PERSONAL_ACCESS_TOKEN}" ]; then
 EOF
 fi
 
+if [ -d vendor ]; then
+    echo "[INFO] Trying to setup messenger transports"
+    messengers_setup_count=0
+    while [[ "${messengers_setup_count}" -lt 3 ]]; do
+        sleep 2
+        if bin/console messenger:setup-transports; then
+            break
+        fi
+        _=$((messengers_setup_count++))
+    done &
+fi
+
 echo "[INFO] Starting supervisor"
 messenger-supervisor-conf
 /usr/bin/supervisord

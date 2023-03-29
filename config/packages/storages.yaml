@@ -81,3 +81,14 @@ anzu_systems_core_dam:
                 bucket: '%env(string:GCS_DOCUMENT_FALLBACK_STORAGE_BUCKET)%'
                 prefix: 'documents'
 
+        cms.media_api.remote_storage:
+            adapter: 'gcloud'
+            options:
+                client: 'anzu.google_storage.mediaapi_client'
+                bucket: 'mediaapi-content-production-bel'
+                prefix: 'public/api-media/media/image'
+
+        cms.media_api.local_storage:
+            adapter: 'local'
+            options:
+                directory: '%kernel.project_dir%/var/mnt/data/media'

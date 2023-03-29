@@ -11,6 +11,10 @@ doctrine:
                 url: '%env(resolve:DB_CORE_URL)%'
             blog:
                 url: '%env(resolve:DB_BLOG_URL)%'
+            media_api:
+                url: '%env(resolve:DB_MEDIA_API_URL)%'
+            dam_media_api_mig:
+                url: '%env(resolve:DB_DAM_MEDIA_API_MIG_NAME_URL)%'
     orm:
         auto_generate_proxy_classes: true
         resolve_target_entities:

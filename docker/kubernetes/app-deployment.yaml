@@ -281,6 +281,8 @@ spec:
                 path: sso/central-oauth2-public-key.pem
               - key: central-oauth2-web-public-key.pem
                 path: sso/central-oauth2-web-public-key.pem
+              - key: dam-mediaapi-prod-ro-storage-bucket-credentials.json
+                path: google/mediaapi-production-storage-bucket-credentials.json
               - key: dam-mediaapi-ro-storage-bucket-credentials.json
                 path: google/mediaapi-storage-bucket-credentials.json
               - key: dam-ro-production-storage-bucket-credentials.json
