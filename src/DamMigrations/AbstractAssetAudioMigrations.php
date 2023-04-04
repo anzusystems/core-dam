@@ -46,7 +46,7 @@ abstract class AbstractAssetAudioMigrations extends AbstractAssetMigrations
         $count = $this->damLegacyConnection->fetchOne($sql, [
             'title' => $row['texts_title'],
             'public' => $public,
-            'state' => 'processed'
+            'state' => 'processed',
         ]);
 
         if ($count > 1) {
