@@ -22,6 +22,7 @@ abstract class AbstractAssetMigrations extends AbstractMigrations
     protected const BULK_SIZE = 1;
     private const NOT_FOUND_IMAGE = 'c41ca3a7-af73-46ee-a517-5f3748815c01';
     private const EMPTY_BLOG_IMAGE = 'd2270546-55c1-43f1-83ad-29777aac40b8';
+    private const TO_BE_MIGRATED_IMAGE = '48788859-b88b-402e-9fc2-3f8b9fcac4d3';
 
     protected AuthorCache $authorCache;
     protected KeywordCache $keywordCache;
@@ -479,6 +480,6 @@ abstract class AbstractAssetMigrations extends AbstractMigrations
 
     private function isToolsImage(array $row): bool
     {
-        return isset($row['id']) && in_array($row['id'], [self::NOT_FOUND_IMAGE, self::EMPTY_BLOG_IMAGE], true);
+        return isset($row['id']) && in_array($row['id'], [self::NOT_FOUND_IMAGE, self::EMPTY_BLOG_IMAGE, self::TO_BE_MIGRATED_IMAGE], true);
     }
 }

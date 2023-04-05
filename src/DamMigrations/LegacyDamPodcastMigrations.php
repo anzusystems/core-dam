@@ -16,6 +16,8 @@ use Symfony\Component\Uid\Uuid;
 
 final class LegacyDamPodcastMigrations extends AbstractMigrations
 {
+    private const NOT_MIGRATE_IDS = [99];
+
     /**
      * @var array<string, string>
      */
@@ -39,6 +41,10 @@ final class LegacyDamPodcastMigrations extends AbstractMigrations
         $this->outputUtil->info('Importing from Artemis');
         $progressBar->start();
         while ($row = $res->fetchAssociative()) {
+            if (isset($row['id_media_channel']) && in_array($row['id_media_channel'], self::NOT_MIGRATE_IDS, true)) {
+                continue;
+            }
+
             $this->insertArtemisPodcast($row);
             $progressBar->advance();
         }
