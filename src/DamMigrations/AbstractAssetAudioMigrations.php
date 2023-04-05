@@ -39,12 +39,14 @@ abstract class AbstractAssetAudioMigrations extends AbstractAssetMigrations
             SELECT COUNT(texts_title)
             FROM asset a
             LEFT JOIN audio au ON au.id = a.id
-            WHERE a.texts_title = :title and au.audio_public_stream_is_public = :public
+            WHERE a.texts_title = :title and au.audio_public_stream_is_public = :public and a.process_process_state = :state
+        
         ';
 
         $count = $this->damLegacyConnection->fetchOne($sql, [
             'title' => $row['texts_title'],
-            'public' => self::PUBLIC_STREAM,
+            'public' => $public,
+            'state' => 'processed',
         ]);
 
         if ($count > 1) {

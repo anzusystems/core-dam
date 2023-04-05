@@ -349,7 +349,7 @@ final class AssetVideoMigrations extends AbstractAssetMigrations
             'attributes_width' => $row['video_attributes_width'],
             'attributes_height' => $row['video_attributes_height'],
             'attributes_rotation' => $row['video_attributes_rotation'],
-            'attributes_duration' => $row['video_attributes_length'],
+            'attributes_duration' => (int) $row['video_attributes_length'],
             'attributes_codec_name' => 0, // todo
             'attributes_bitrate' => 0, // todo
             'image_preview_id' => $insertImagePreview ? $row['id'] : null,
