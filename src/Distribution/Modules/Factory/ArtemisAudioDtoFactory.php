@@ -9,10 +9,14 @@ use AnzuSystems\CoreDamBundle\Entity\AudioFile;
 use AnzuSystems\CoreDamBundle\Entity\ImageFile;
 use AnzuSystems\CoreDamBundle\Entity\PodcastEpisode;
 use AnzuSystems\CoreDamBundle\Model\Enum\AssetFileProcessStatus;
+use App\App;
 use App\Entity\ArtemisAudioDistribution;
 use App\Model\Dto\Artemis\ArtemisAudioMediaDto;
 use App\Model\Dto\Artemis\ArtemisMediaChannel;
 use App\Model\Dto\Artemis\ArtemisMediaRubricDto;
+use DateTime;
+use DateTimeImmutable;
+use DateTimeZone;
 
 final class ArtemisAudioDtoFactory extends AbstractArtemisDtoFactory
 {
@@ -34,7 +38,11 @@ final class ArtemisAudioDtoFactory extends AbstractArtemisDtoFactory
             ->setPremiumDirectSourceDuration($distribution->getAttributes()->getPremiumDuration());
 
         if ($distribution->getPublishAt()) {
-            $mediaDto->setPublishedAt($distribution->getPublishAt());
+            $mediaDto->setPublishedAt(
+                DateTimeImmutable::createFromMutable(
+                    DateTime::createFromImmutable($distribution->getPublishAt())->setTimezone(new DateTimeZone(App::DATE_TIME_ZONE))
+                )
+            );
         }
 
         $mediaDto->setAuthors($this->transformAuthors($distribution->getTexts()->getAuthors()));

@@ -49,6 +49,6 @@ final class ArtemisVideoDistributionFactory extends AbstractDistributionDtoFacto
             return;
         }
 
-        $artemisVideoDistribution->getTexts()->setRubricId($this->configurationProvider->getAudioDistribution()->getDefaultRubricId());
+        $artemisVideoDistribution->getTexts()->setRubricId($this->configurationProvider->getVideoDistribution()->getDefaultRubricId());
     }
 }

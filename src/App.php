@@ -15,6 +15,7 @@ final class App extends AnzuApp
     public const SYSTEM = 'weather';
     public const ENTITY_NAMESPACE = __NAMESPACE__ . '\Entity';
     public const JSON_TYPE = 'json';
+    public const DATE_TIME_ZONE = 'Europe/Bratislava';
 
     public const FETCH_EXTRA_LAZY = 'EXTRA_LAZY';
 }
