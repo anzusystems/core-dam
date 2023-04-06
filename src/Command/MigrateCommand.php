@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Command;
 
+use AnzuSystems\CoreDamBundle\Command\Traits\OutputUtilTrait;
 use AnzuSystems\CoreDamBundle\Elasticsearch\IndexBuilder;
 use AnzuSystems\CoreDamBundle\Elasticsearch\RebuildIndexConfig;
 use AnzuSystems\CoreDamBundle\Model\Enum\AssetType;
@@ -17,6 +18,7 @@ use App\DamMigrations\AudioCategoryMigrations;
 use App\DamMigrations\AuthorMigrations;
 use App\DamMigrations\KeywordMigrations;
 use App\DamMigrations\LegacyDamPodcastMigrations;
+use App\DamMigrations\PodcastEpisodesReorderMigrations;
 use App\DamMigrations\UgcLicenceMigrations;
 use App\DamMigrations\UgcUserMigrations;
 use App\DamMigrations\VideoShowMigrations;
@@ -34,6 +36,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 )]
 final class MigrateCommand extends Command
 {
+    use OutputUtilTrait;
     private const UGC_OPT = 'ugc';
 
     public function __construct(
@@ -50,6 +53,7 @@ final class MigrateCommand extends Command
         private readonly AssetVideoMigrations $assetVideoMigrations,
         private readonly VideoShowMigrations $videoShowMigrations,
         private readonly RefreshAssetFilePropertiesCommand $refreshAssetFilePropertiesCommand,
+        private readonly PodcastEpisodesReorderMigrations $reorderMigrations,
     ) {
         parent::__construct();
     }
@@ -81,10 +85,16 @@ final class MigrateCommand extends Command
         $this->legacyDamPodcastMigrations->migrate($migrateConfig);
         $this->videoShowMigrations->migrate($migrateConfig);
 
+        $this->outputUtil->info('Migrate Images');
         $this->assetImageMigrations->migrate($migrateConfig);
+        $this->outputUtil->info('Migrate Premium Audio');
         $this->assetAudioPremiumMigrations->migrate($migrateConfig);
+        $this->outputUtil->info('Migrate Free Audio');
         $this->assetAudioFreeMigrations->migrate($migrateConfig);
+        $this->outputUtil->info('Migrate Video');
         $this->assetVideoMigrations->migrate($migrateConfig);
+
+        $this->reorderMigrations->migrate($migrateConfig);
 
         $this->refreshAssetFilePropertiesCommand->updateExisting(AssetType::Video);
         $this->refreshAssetFilePropertiesCommand->updateExisting(AssetType::Image);

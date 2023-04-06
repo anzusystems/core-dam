@@ -48,7 +48,6 @@ final class AssetAudioFreeMigrations extends AbstractAssetAudioMigrations
 
             $artemisDistributionData = $this->prepareDistributionData($assetId, $row, $keywords, $authors, $existingPremium);
 
-            // todo Missing episode but premium/free and distributed to ARTEMIS (FI 'Nevidiaci: Odmietajú ich aj call centrá')
             $episode = $this->insertEpisode(
                 $row,
                 $artemisDistributionData,

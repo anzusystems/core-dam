@@ -109,7 +109,7 @@ abstract class AbstractAssetAudioMigrations extends AbstractAssetMigrations
         $sql = '
             SELECT
                 se.id, se.season_id, se.created_by_id, se.modified_by_id, se.title as episodeTitle, se.created_at, se.modified_at, se.audio_id,
-                ss.title as seasonTitle, vs.title as showTitle
+                ss.title as seasonTitle, vs.title as showTitle, vs.id as showId
             FROM show_episode se
             INNER JOIN show_session ss ON se.season_id = ss.id
             INNER JOIN video_show vs ON vs.id = ss.show_id
@@ -124,9 +124,16 @@ abstract class AbstractAssetAudioMigrations extends AbstractAssetMigrations
 
         $newEpisode = [];
         foreach ($episodes as $episode) {
+            $podcastId = $this->podcastCache->getPodcast((int) $episode['showId']);
+            if (null === $podcastId) {
+                $this->outputUtil->writeln(sprintf('Cant assign podcast, show id (%s) missing', $episode['showId']));
+
+                continue;
+            }
+
             $newEpisode = [
                 'id' => $row['id'],
-                'podcast_id' => $this->podcastCache->getPodcast($episode['showTitle']),
+                'podcast_id' => $podcastId,
                 'asset_id' => $assetId ?? $row['id'],
                 'created_at' => $row['created_at'],
                 'modified_at' => $row['modified_at'],
