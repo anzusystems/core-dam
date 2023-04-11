@@ -81,10 +81,10 @@ variables:
     value: 'anzu-$(APP_NAME)-cron'
   # Application dockerfile location
   - name: APP_DOCKERFILE
-    value: '$(Build.SourcesDirectory)/docker/$(APP_NAME)/kubernetes/Dockerfile'
+    value: '$(Build.SourcesDirectory)/docker/app/kubernetes/Dockerfile'
   # Cron dockerfile location
   - name: CRON_DOCKERFILE
-    value: '$(Build.SourcesDirectory)/docker/$(APP_NAME)-cron/kubernetes/Dockerfile'
+    value: '$(Build.SourcesDirectory)/docker/app-cron/kubernetes/Dockerfile'
   # Kubernetes migration job manifest filename
   - name: CONFIGURATION_MANIFEST_FILE_NAME
     value: 'configuration.yaml'
