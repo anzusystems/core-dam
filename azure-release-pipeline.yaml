@@ -122,6 +122,7 @@ extends:
   template: composer-release-k8s.yaml@templates
   parameters:
     containerDockerImageVersion: php82
+    containerDockerImageVariant: cli-ci-node-vipsffmpeg-xdebug
     releaseType: ${{ parameters.releaseType }}
     version: ${{ parameters.version }}
     changelog: ${{ parameters.changelog }}
