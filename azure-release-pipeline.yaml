@@ -1,15 +1,35 @@
-# Anzu-Core-DAM project Azure Pipelines Continuous Deployment definition
-# 1. Checkout branch to build
+# Anzu-Core-DAM project Azure Pipelines Continuous Deployment Release definition
+# 1. Create release/hotfix branch in core-dam project
 # 2. Build and push the anzu-core-dam image to Azure Container Registry
+# 3. Tag the release/hotfix branch
 # 4. Deploy to chosen environment
+# 5. Merge release/hotfix branch to master and develop branches
 
-name: $(rev:rrrr)$(ENVIRONMENT_TAG)
+name: $(rev:rrrr)_$(SHORT_RELEASE_TYPE)_$(VERSION)$(ENVIRONMENT_TAG)
 
 # Disable automatic pipeline trigger
 trigger: none
 
 # Setup runtime parameters
 parameters:
+  - name: version
+    displayName: Version
+    type: string
+  - name: changelog
+    displayName: Changelog
+    type: string
+    default: ' '
+  - name: releaseType
+    displayName: Release type
+    type: string
+    default: 'hotfix'
+    values:
+      - hotfix
+      - release
+  - name: runBranchInitialization
+    displayName: Branch initialization
+    type: boolean
+    default: true
   - name: runBuild
     displayName: Docker build
     type: boolean
@@ -17,7 +37,7 @@ parameters:
   - name: runDeployment
     displayName: Deployment
     type: boolean
-    default: true
+    default: false
   - name: environment
     displayName: Environment
     type: string
@@ -25,6 +45,7 @@ parameters:
     values:
       - devel
       - stage
+      - production
 
 # Setup variables
 variables:
@@ -34,6 +55,12 @@ variables:
   - name: APP_NAME
     value: 'core-dam'
   # Pipeline name shortcuts
+  - ${{ if eq(parameters.releaseType, 'release') }}:
+    - name: SHORT_RELEASE_TYPE
+      value: 'R'
+  - ${{ if eq(parameters.releaseType, 'hotfix') }}:
+    - name: SHORT_RELEASE_TYPE
+      value: 'H'
   - ${{ if parameters.runDeployment }}:
     - name: ENVIRONMENT_TAG
       value: '_${{ parameters.environment }}'
@@ -45,7 +72,7 @@ variables:
     value: '${{ parameters.environment }}'
   # Application version
   - name: VERSION
-    value: '$(Build.SourceBranchName)'
+    value: '${{ parameters.version }}'
   # Application container registry image repository
   - name: APP_DOCKER_IMAGE_REPOSITORY
     value: 'anzu-$(APP_NAME)'
@@ -54,10 +81,10 @@ variables:
     value: 'anzu-$(APP_NAME)-cron'
   # Application dockerfile location
   - name: APP_DOCKERFILE
-    value: '$(Build.SourcesDirectory)/docker/app/kubernetes/Dockerfile'
+    value: '$(Build.SourcesDirectory)/docker/$(APP_NAME)/kubernetes/Dockerfile'
   # Cron dockerfile location
   - name: CRON_DOCKERFILE
-    value: '$(Build.SourcesDirectory)/docker/app-cron/kubernetes/Dockerfile'
+    value: '$(Build.SourcesDirectory)/docker/$(APP_NAME)-cron/kubernetes/Dockerfile'
   # Kubernetes migration job manifest filename
   - name: CONFIGURATION_MANIFEST_FILE_NAME
     value: 'configuration.yaml'
@@ -92,11 +119,13 @@ resources:
 
 # Pipeline definition
 extends:
-  template: composer-deploy-k8s.yaml@templates
+  template: composer-release-k8s.yaml@templates
   parameters:
     containerDockerImageVersion: php82
-    containerDockerImageVariant: cli-ci-node-vipsffmpeg-xdebug
-    version: $(VERSION)
+    releaseType: ${{ parameters.releaseType }}
+    version: ${{ parameters.version }}
+    changelog: ${{ parameters.changelog }}
+    runBranchInitialization: ${{ parameters.runBranchInitialization }}
     runBuild: ${{ parameters.runBuild }}
     appDockerImageRepository: $(APP_DOCKER_IMAGE_REPOSITORY)
     cronDockerImageRepository: $(CRON_DOCKER_IMAGE_REPOSITORY)
