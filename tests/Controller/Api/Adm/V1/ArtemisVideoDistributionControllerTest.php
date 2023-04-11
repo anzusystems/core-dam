@@ -26,7 +26,7 @@ final class ArtemisVideoDistributionControllerTest extends AbstractApiController
         'keywords' => ['News', 'Podcast', 'Politics'],
         'authors' => ['Aarne Ormonde', 'Larry Queen', 'Malka Raisa'],
         'createArticle' => false,
-        'rubricId' => 3,
+        'rubricId' => 7026,
     ];
 
     private DistributionManagerProvider $distributionManagerProvider;

@@ -243,7 +243,7 @@ anzu_systems_common:
                 dam_assetCustomForm:
                     en: Custom Form
                     sk: Vlastné polia
-                dam_assetCustomFormElement:
+                dam_customFormElement:
                     en: Custom Form Element
                     sk: Vlastné polia element
                 dam_regionOfInterest:
