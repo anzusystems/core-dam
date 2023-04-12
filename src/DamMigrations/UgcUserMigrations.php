@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\DamMigrations;
 
 use App\Entity\User;
-use App\Model\MigrateConfig;
 use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Result;
 
@@ -14,12 +13,8 @@ final class UgcUserMigrations extends AbstractMigrations
     /**
      * @throws Exception
      */
-    public function migrate(MigrateConfig $migrateConfig): void
+    public function migrate(): void
     {
-        if ($migrateConfig->isNotUgc()) {
-            return;
-        }
-
         $res = $this->getDamUsers();
 
         $progressBar = $this->outputUtil->createProgressBar($this->totalCount());
@@ -43,7 +38,17 @@ final class UgcUserMigrations extends AbstractMigrations
 
     private function totalCount(): int
     {
-        return (int) $this->damLegacyConnection->fetchOne('SELECT COUNT(id) FROM user');
+        return (int) $this->damLegacyConnection->fetchOne('
+            SELECT COUNT(u.id) 
+            FROM `user` u
+            INNER JOIN licence_group_has_user lghu ON lghu.user_id = u.id
+            INNER JOIN licence_group lg ON lg.id = lghu.licence_group_id
+            WHERE lg.ext_system_id = :extSystemId
+        ',
+            [
+                'extSystemId' => self::BLOG_EXT_SYSTEM_ID,
+            ]
+        );
     }
 
     private function insertUser(string $email, array $row, array $licenceIds): void
@@ -116,7 +121,15 @@ final class UgcUserMigrations extends AbstractMigrations
     private function getDamUsers(): Result
     {
         return $this->damLegacyConnection->executeQuery('
-            SELECT id, created_at, modified_at, roles, permissions, enabled, api_token, ext_system_id FROM user
-        ');
+            SELECT u.id, u.created_at, u.modified_at, u.roles, u.permissions, u.enabled, u.api_token, u.ext_system_id 
+            FROM `user` u
+            INNER JOIN licence_group_has_user lghu ON lghu.user_id = u.id
+            INNER JOIN licence_group lg ON lg.id = lghu.licence_group_id
+            WHERE lg.ext_system_id = :extSystemId
+        ',
+            [
+                'extSystemId' => self::BLOG_EXT_SYSTEM_ID,
+            ]
+        );
     }
 }

@@ -7,38 +7,25 @@ namespace App\DamMigrations;
 use AnzuSystems\AuthBundle\Exception\UnsuccessfulAccessTokenRequestException;
 use AnzuSystems\AuthBundle\Exception\UnsuccessfulUserInfoRequestException;
 use AnzuSystems\AuthBundle\HttpClient\OAuth2HttpClient;
+use AnzuSystems\Contracts\AnzuApp;
 use AnzuSystems\CoreDamBundle\Command\Traits\OutputUtilTrait;
 use App\MediaApiMigrations\ConnectionDecorator;
-use App\Model\MigrateConfig;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;
-use Doctrine\DBAL\Result;
 use Symfony\Contracts\Service\Attribute\Required;
 
 abstract class AbstractMigrations
 {
     use OutputUtilTrait;
 
-    protected const CMS_LICENCE_ID = 100_000;
-    protected const TOOLS_LICENCE_ID = 200_000;
     protected const BLOG_EXT_SYSTEM_ID = 4;
-    protected const CMS_EXT_SYSTEM_ID = 1;
-    protected const TOOLS_EXT_SYSTEM_ID = 1_000;
 
     protected Connection $damLegacyConnection;
     protected Connection $defaultConnection;
-    protected Connection $artemisConnection;
-    protected Connection $coreConnection;
     protected Connection $blogConnection;
     protected ConnectionDecorator $defaultConnectionDecorator;
     protected OAuth2HttpClient $OAuth2HttpClient;
-    protected array $bulkCache = [];
-
-    #[Required]
-    public function setArtemisConnection(Connection $artemisConnection): void
-    {
-        $this->artemisConnection = $artemisConnection;
-    }
+    private array $hasUserCache = [];
 
     #[Required]
     public function setDamLegacyConnection(Connection $damLegacyConnection): void
@@ -54,12 +41,6 @@ abstract class AbstractMigrations
     }
 
     #[Required]
-    public function setCoreConnection(Connection $coreConnection): void
-    {
-        $this->coreConnection = $coreConnection;
-    }
-
-    #[Required]
     public function setBlogConnection(Connection $blogConnection): void
     {
         $this->blogConnection = $blogConnection;
@@ -71,17 +52,16 @@ abstract class AbstractMigrations
         $this->OAuth2HttpClient = $OAuth2HttpClient;
     }
 
-    abstract public function migrate(MigrateConfig $migrateConfig): void;
+    abstract public function migrate(): void;
 
     protected function getEmail(int $userId): ?string
     {
-        $email =
-            $this->blogConnection->fetchOne('SELECT email FROM user where id = ?', [$userId])
-            ?? $this->coreConnection->fetchOne('SELECT email FROM user where id = ?', [$userId]);
+        $email = $this->blogConnection->fetchOne('SELECT email FROM user where id = ?', [$userId]);
 
         if (empty($email)) {
             try {
-                return $this->OAuth2HttpClient->getSsoUserInfo((string) $userId)->getEmail();
+//                TODO remove and allow to resolve from central
+//                return $this->OAuth2HttpClient->getSsoUserInfo((string) $userId)->getEmail();
             } catch (UnsuccessfulAccessTokenRequestException | UnsuccessfulUserInfoRequestException) {
             }
         }
@@ -97,6 +77,10 @@ abstract class AbstractMigrations
 
     protected function hasUser(int $userId): bool
     {
+        if (isset($this->hasUserCache[$userId])) {
+            return $this->hasUserCache[$userId];
+        }
+
         $res = $this->defaultConnection->fetchOne(
             'SELECT id FROM user WHERE id = ?',
             [
@@ -104,7 +88,14 @@ abstract class AbstractMigrations
             ]
         );
 
-        return is_int($res);
+        $this->hasUserCache[$userId] = is_int($res);
+
+        return $this->hasUserCache[$userId];
+    }
+
+    protected function getUserIdWithFallback(int $userId): int
+    {
+        return $this->hasUser($userId) ? $userId : AnzuApp::getUserIdAnonymous();
     }
 
     protected function prepareBulkInsert(string $table, array $data, array $duplicateKeyUpdate = ['id = new_row.id']): void

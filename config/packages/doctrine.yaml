@@ -5,10 +5,6 @@ doctrine:
                 url: '%env(resolve:DB_CORE_DAM_URL)%'
             dam_legacy:
                 url: '%env(resolve:DB_DAM_LEGACY_URL)%'
-            artemis:
-                url: '%env(resolve:DB_ARTEMIS_URL)%'
-            core:
-                url: '%env(resolve:DB_CORE_URL)%'
             blog:
                 url: '%env(resolve:DB_BLOG_URL)%'
             media_api:
