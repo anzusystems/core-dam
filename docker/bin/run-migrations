@@ -5,7 +5,7 @@ set -e
 cd /var/www/html || exit 1
 
 echo "[INFO] Composer install"
-composer -n install 2>&1
+composer -n install --no-dev 2>&1
 
 echo "[INFO] Composer dump-autoload"
 composer dump-autoload --classmap-authoritative 2>&1
