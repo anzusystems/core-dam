@@ -20,7 +20,7 @@ anzu_systems_core_dam:
             options:
                 client: 'anzu.google_storage.env_client'
                 bucket: '%env(string:GCS_IMAGE_STORAGE_BUCKET)%'
-                prefix: 'images'
+                prefix: 'assets'
         cms.document:
             adapter: 'gcloud'
             fallback_enabled: '%env(bool:CMS_DOCUMENT_FALLBACK_ENABLED)%'
@@ -44,7 +44,7 @@ anzu_systems_core_dam:
             options:
                 client: 'anzu.google_storage.env_client'
                 bucket: '%env(string:GCS_BLOG_IMAGE_STORAGE_BUCKET)%'
-                prefix: 'assets'
+                prefix: 'images'
         cms.chunk:
             adapter: 'gcloud'
             options:
