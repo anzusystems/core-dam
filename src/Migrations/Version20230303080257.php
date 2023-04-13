@@ -115,7 +115,7 @@ final class Version20230303080257 extends AbstractMigration
                 'attributes_min_count' => null,
                 'attributes_max_count' => null,
                 'attributes_required' => 0,
-                'attributes_searchable' => 0,
+                'attributes_searchable' => 1,
             ],
             [
                 'form_id' => $customFormId,
@@ -177,7 +177,7 @@ final class Version20230303080257 extends AbstractMigration
                 'attributes_min_count' => null,
                 'attributes_max_count' => null,
                 'attributes_required' => 0,
-                'attributes_searchable' => 0,
+                'attributes_searchable' => 1,
             ],
         ];
     }
@@ -211,7 +211,7 @@ final class Version20230303080257 extends AbstractMigration
                 'attributes_min_count' => null,
                 'attributes_max_count' => null,
                 'attributes_required' => 0,
-                'attributes_searchable' => 0,
+                'attributes_searchable' => 1,
             ],
         ];
     }
@@ -245,7 +245,7 @@ final class Version20230303080257 extends AbstractMigration
                 'attributes_min_count' => null,
                 'attributes_max_count' => null,
                 'attributes_required' => 0,
-                'attributes_searchable' => 0,
+                'attributes_searchable' => 1,
             ],
         ];
     }
