@@ -8,7 +8,10 @@ use AnzuSystems\AuthBundle\Model\SsoUserDto;
 use AnzuSystems\CommonBundle\Domain\User\AbstractUserManager;
 use AnzuSystems\CommonBundle\Model\User\UserDto;
 use AnzuSystems\Contracts\Entity\AnzuUser;
+use AnzuSystems\Contracts\Entity\Embeds\Avatar;
+use AnzuSystems\Contracts\Entity\Embeds\Person;
 use AnzuSystems\CoreDamBundle\Entity\AssetLicence;
+use AnzuSystems\CoreDamBundle\Entity\DamUser;
 use AnzuSystems\CoreDamBundle\Entity\ExtSystem;
 use App\Entity\User;
 use App\Model\Domain\User\UpdateCurrentUserDto;
@@ -46,6 +49,15 @@ final class UserManager extends AbstractUserManager
         $user->setSelectedLicence($currentUserDto->getSelectedLicence());
 
         return $this->updateExisting($user, $flush);
+    }
+
+    public function deletePersonalData(User $user, bool $flush = true): User
+    {
+        return $user
+            ->setAvatar(new Avatar())
+            ->setPerson(new Person())
+            ->setSelectedLicence(null)
+        ;
     }
 
     /**
