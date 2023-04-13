@@ -18,6 +18,7 @@ use AnzuSystems\CoreDamBundle\Repository\ImageFileRepository;
 use AnzuSystems\SerializerBundle\Exception\SerializerException;
 use App\ApiFilter\ApiUgcLegacyParams;
 use App\Elasticsearch\Decorator\ImageUgcLegacyElasticsearchDecorator;
+use App\Model\Ugc\Legacy\ImageDetailDto;
 use App\Model\Ugc\Legacy\ImageListDto;
 use Doctrine\ORM\Exception\ORMException;
 
@@ -50,7 +51,7 @@ final readonly class ImageUgcLegacyRepositoryDecorator
             return $responseList
                 ->setTotalCount($imageFiles->count())
                 ->setData(array_map(
-                    $this->mapAssetFileToImageListDto(...),
+                    ImageDetailDto::getInstance(...),
                     $imageFiles->getValues()
                 ))
             ;
@@ -77,13 +78,8 @@ final readonly class ImageUgcLegacyRepositoryDecorator
 
         return $responseList
             ->setData(array_map(
-                $this->mapAssetFileToImageListDto(...),
+                ImageListDto::getInstance(...),
                 $responseList->getData()
             ));
-    }
-
-    private function mapAssetFileToImageListDto(ImageFile $imageFile): ImageListDto
-    {
-        return ImageListDto::getInstance($imageFile);
     }
 }
