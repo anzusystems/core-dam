@@ -51,9 +51,10 @@ final class UserManager extends AbstractUserManager
         return $this->updateExisting($user, $flush);
     }
 
-    public function deletePersonalData(User $user, bool $flush = true): User
+    public function deletePersonalData(User $user): User
     {
         return $user
+            ->setEnabled(false)
             ->setAvatar(new Avatar())
             ->setPerson(new Person())
             ->setSelectedLicence(null)
