@@ -55,6 +55,7 @@ class User extends DamUser implements
     private ?string $apiToken;
 
     #[ORM\ManyToOne]
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
     private ?AssetLicence $selectedLicence;
 
     public function __construct()

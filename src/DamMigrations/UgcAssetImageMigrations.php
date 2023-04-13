@@ -204,7 +204,7 @@ final class UgcAssetImageMigrations extends AbstractMigrations
             requestedSize: max($row['image_attributes_width'], $row['image_attributes_height']),
             width: $row['image_attributes_width'],
             height: $row['image_attributes_height'],
-            path: $this->nameGenerator->alternatePath($row['file_attributes_file_path'], 'original')->getRelativePath(),
+            path: $this->nameGenerator->alternatePath($row['file_attributes_file_path'])->getRelativePath(),
         );
     }
 
