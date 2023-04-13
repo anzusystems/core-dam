@@ -35,8 +35,8 @@ final class MigrateCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-//        $this->ugcLicenceMigrations->migrate();
-//        $this->ugcUserMigrations->migrate();
+        $this->ugcLicenceMigrations->migrate();
+        $this->ugcUserMigrations->migrate();
 
         $this->outputUtil->info('Migrate Images');
         $this->ugcAssetImageMigrations->migrate();
