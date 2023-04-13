@@ -132,6 +132,7 @@ final class ArtemisAudioDistributionFactory extends AbstractDistributionDtoFacto
 
         if ($freeFile && $episode->getFlags()->isFromRss()) {
             $audioDistribution->getAttributes()->setDuration($freeFile->getAttributes()->getDuration());
+            $audioDistribution->setPublishAt($episode->getDates()->getPublicationDate());
             $audioDistribution->getTexts()
                 ->setFreeUrl($episode->getAttributes()->getRssUrl())
                 ->setExtRssId($episode->getAttributes()->getRssId());
