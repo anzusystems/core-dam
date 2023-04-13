@@ -30,11 +30,11 @@ anzu_systems_core_dam:
         domain: admin_image
       public_image:
         crop_allow_list: public_image
-        ext_system_slugs: [ cms ]
+        ext_system_slugs: [ cms, tools ]
         domain: public_image
       blog_public_image:
         crop_allow_list: blog_public_image
-        ext_system_slugs: [ blog ]
+        ext_system_slugs: [ blog, tools ]
         domain: public_image
     crop_allow_list:
       admin_image:
