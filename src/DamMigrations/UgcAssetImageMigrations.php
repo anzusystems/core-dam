@@ -12,7 +12,6 @@ use function Symfony\Component\String\u;
 final class UgcAssetImageMigrations extends AbstractMigrations
 {
     private const SLOT_NAME = 'default';
-    private const BULK_SIZE = 100;
 
     public function __construct(
         private readonly NameGenerator $nameGenerator,

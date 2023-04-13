@@ -19,13 +19,14 @@ abstract class AbstractMigrations
     use OutputUtilTrait;
 
     protected const BLOG_EXT_SYSTEM_ID = 4;
+    protected const BULK_SIZE = 200;
 
     protected Connection $damLegacyConnection;
     protected Connection $defaultConnection;
     protected Connection $blogConnection;
     protected ConnectionDecorator $defaultConnectionDecorator;
     protected OAuth2HttpClient $OAuth2HttpClient;
-    private array $hasUserCache = [];
+    protected array $hasUserCache = [];
 
     #[Required]
     public function setDamLegacyConnection(Connection $damLegacyConnection): void
@@ -60,8 +61,7 @@ abstract class AbstractMigrations
 
         if (empty($email)) {
             try {
-//                TODO remove and allow to resolve from central
-//                return $this->OAuth2HttpClient->getSsoUserInfo((string) $userId)->getEmail();
+                return $this->OAuth2HttpClient->getSsoUserInfo((string) $userId)->getEmail();
             } catch (UnsuccessfulAccessTokenRequestException | UnsuccessfulUserInfoRequestException) {
             }
         }
@@ -75,14 +75,14 @@ abstract class AbstractMigrations
         return 'dam-' . $userId . '@anzusystems.dev';
     }
 
-    protected function hasUser(int $userId): bool
+    protected function hasUser(int $userId, bool $force = false): bool
     {
-        if (isset($this->hasUserCache[$userId])) {
+        if (isset($this->hasUserCache[$userId]) && false === $force) {
             return $this->hasUserCache[$userId];
         }
 
         $res = $this->defaultConnection->fetchOne(
-            'SELECT id FROM user WHERE id = ?',
+            'SELECT id FROM `user` WHERE id = ?',
             [
                 $userId,
             ]

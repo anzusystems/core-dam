@@ -53,7 +53,7 @@ final class UgcUserMigrations extends AbstractMigrations
 
     private function insertUser(string $email, array $row, array $licenceIds): void
     {
-        if ($this->hasUser($row['id'])) {
+        if ($this->hasUser($row['id'], true)) {
             $this->defaultConnection->executeQuery('
                 UPDATE `user` 
                 SET roles = JSON_ARRAY_APPEND(roles, "$", "ROLE_UGC") 
@@ -86,6 +86,8 @@ final class UgcUserMigrations extends AbstractMigrations
                 'selected_licence_id' => $licenceIds[0] ?? null,
             ]
         );
+
+        $this->hasUserCache[$row['id']] = true;
     }
 
     private function insertLicences(int $userId, array $licenceIds): void

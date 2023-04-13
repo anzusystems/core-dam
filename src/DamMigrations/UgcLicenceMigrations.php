@@ -21,14 +21,22 @@ final class UgcLicenceMigrations extends AbstractMigrations
         $progressBar->setFormat('debug');
         $progressBar->start();
 
+        $i = 0;
         while ($row = $res->fetchAssociative()) {
+            $i++;
             if ($this->hasLicence($row['id'])) {
                 continue;
             }
 
             $this->insertLicence($row);
+
+            if (0 === $i % self::BULK_SIZE) {
+                $this->flush();
+            }
             $progressBar->advance();
         }
+
+        $this->flush();
 
         $progressBar->finish();
         $this->writeln('');
@@ -55,7 +63,7 @@ final class UgcLicenceMigrations extends AbstractMigrations
 
     private function insertLicence(array $row): void
     {
-        $this->defaultConnection->insert(
+        $this->prepareBulkInsert(
             'asset_licence',
             [
                 'id' => $row['id'],
