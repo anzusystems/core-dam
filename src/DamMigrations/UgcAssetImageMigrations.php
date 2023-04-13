@@ -51,6 +51,132 @@ final class UgcAssetImageMigrations extends AbstractMigrations
         $this->writeln('');
     }
 
+    protected function getAssets(): Result
+    {
+        return $this->damLegacyConnection->executeQuery(
+            '
+            SELECT
+                a.id,
+                a.created_at,
+                a.modified_at,
+                a.created_by_id,
+                a.modified_by_id,
+                a.dates_uploaded_at,
+                a.texts_description,
+                a.tags_headline,
+                a.tags_title,
+                a.tags_description,
+                a.tags_creator,
+                a.tags_tag_event,
+                a.tags_person_shown,
+                a.tags_keywords,
+                a.tags_author,
+                a.tags_color_space,
+                a.tags_orientation,
+                a.texts_title,
+                a.texts_description,
+                a.texts_tag_event,
+                a.texts_persons,
+                a.dtype,
+                a.file_attributes_checksum,
+                a.file_attributes_file_path,
+                a.file_attributes_origin_file_name,
+                a.file_attributes_origin_url,
+                a.file_attributes_extension,
+                a.file_attributes_size,
+                a.asset_flags_is_described,
+                i.image_attributes_ratio_width,
+                i.image_attributes_ratio_height,
+                i.image_attributes_width,
+                i.image_attributes_height,
+                i.image_attributes_rotation,
+                i.small_optimal_resize_width,
+                i.small_optimal_resize_height,
+                i.small_optimal_resize_path,
+                i.medium_optimal_resize_width,
+                i.medium_optimal_resize_height,
+                i.medium_optimal_resize_path,
+                i_roi.id as roi_id,
+                i_roi.point_x as roi_point_x,
+                i_roi.point_y as roi_point_y,
+                i_roi.percentage_width as roi_percentage_width,
+                i_roi.percentage_height as roi_percentage_height,
+                i_roi.title as roi_title,
+                aha.custom_author,
+                lg.id as licence_id
+            FROM asset a
+            INNER JOIN image i ON a.id = i.id
+            LEFT JOIN asset_has_author aha ON aha.asset_id = a.id
+            LEFT JOIN region_of_interest i_roi ON i_roi.image_id = i.id
+            LEFT JOIN image_licence il ON i.id = il.image_id
+            LEFT JOIN licence_group lg ON il.licence_group_id = lg.id
+            WHERE a.process_process_state = :processState
+            AND a.dtype = :dtype
+            AND i.image_type = :imageType
+        ',
+            [
+                'processState' => 'processed',
+                'dtype' => 'image',
+                'imageType' => 'ugc',
+            ]
+        );
+    }
+
+    protected function insertAsset(array $row): void
+    {
+        $this->prepareBulkInsert('asset', [
+            'id' => $row['id'],
+            'metadata_id' => $row['id'],
+            'licence_id' => (int) $row['licence_id'],
+            'distribution_category_id' => null,
+            'texts_display_title' => $this->getDisplayTitle($row),
+            'dates_uploaded_at' => $row['dates_uploaded_at'],
+            'dates_expire_at' => null,
+            'dates_publish_at' => null,
+            'asset_flags_described' => (int) $row['asset_flags_is_described'],
+            'asset_flags_visible' => 1,
+            'asset_flags_generated_by_system' => 0,
+            'asset_flags_autocompleted_metadata' => 1,
+            'asset_flags_auto_delete_unprocessed' => 0,
+            'asset_file_properties_distributes_in_services' => '[]',
+            'asset_file_properties_slot_names' => '[]',
+            'asset_file_properties_from_rss' => 0,
+            'asset_file_properties_width' => 0,
+            'asset_file_properties_height' => 0,
+            'attributes_asset_type' => 'image',
+            'attributes_status' => 'with_file',
+            'main_file_id' => $row['id'],
+            'created_at' => $row['created_at'],
+            'modified_at' => $row['modified_at'],
+            'created_by_id' => $this->getUserIdWithFallback($row['created_by_id']),
+            'modified_by_id' => $this->getUserIdWithFallback($row['modified_by_id']),
+        ]);
+    }
+
+    protected function getDisplayTitle(array $row): string
+    {
+        return $row['texts_title'] ?? $row['id'];
+    }
+
+    protected function totalCount(): int
+    {
+        return (int) $this->damLegacyConnection->fetchOne(
+            '
+            SELECT count(a.id)
+            FROM asset a
+            INNER JOIN image i ON i.id = a.id
+            WHERE a.process_process_state = :processState
+            AND a.dtype = :dtype
+            AND i.image_type = :imageType
+         ',
+            [
+                'processState' => 'processed',
+                'dtype' => 'image',
+                'imageType' => 'ugc',
+            ]
+        );
+    }
+
     private function prepareAssetTypeSpecific(array $row): void
     {
         $this->insertImageFile($row);
@@ -137,7 +263,7 @@ final class UgcAssetImageMigrations extends AbstractMigrations
         $this->prepareBulkInsert('asset_file', [
             'id' => $row['id'],
             'metadata_id' => $row['id'],
-            'licence_id' => (int)$row['licence_id'],
+            'licence_id' => (int) $row['licence_id'],
             'asset_attributes_checksum' => $row['file_attributes_checksum'],
             'asset_attributes_origin_asset_id' => '',
             'asset_attributes_file_path' => $row['file_attributes_file_path'],
@@ -174,130 +300,6 @@ final class UgcAssetImageMigrations extends AbstractMigrations
             'created_by_id' => $this->getUserIdWithFallback($row['created_by_id']),
             'modified_by_id' => $this->getUserIdWithFallback($row['modified_by_id']),
         ]);
-    }
-
-    protected function getAssets(): Result
-    {
-        return $this->damLegacyConnection->executeQuery('
-            SELECT
-                a.id,
-                a.created_at,
-                a.modified_at,
-                a.created_by_id,
-                a.modified_by_id,
-                a.dates_uploaded_at,
-                a.texts_description,
-                a.tags_headline,
-                a.tags_title,
-                a.tags_description,
-                a.tags_creator,
-                a.tags_tag_event,
-                a.tags_person_shown,
-                a.tags_keywords,
-                a.tags_author,
-                a.tags_color_space,
-                a.tags_orientation,
-                a.texts_title,
-                a.texts_description,
-                a.texts_tag_event,
-                a.texts_persons,
-                a.dtype,
-                a.file_attributes_checksum,
-                a.file_attributes_file_path,
-                a.file_attributes_origin_file_name,
-                a.file_attributes_origin_url,
-                a.file_attributes_extension,
-                a.file_attributes_size,
-                a.asset_flags_is_described,
-                i.image_attributes_ratio_width,
-                i.image_attributes_ratio_height,
-                i.image_attributes_width,
-                i.image_attributes_height,
-                i.image_attributes_rotation,
-                i.small_optimal_resize_width,
-                i.small_optimal_resize_height,
-                i.small_optimal_resize_path,
-                i.medium_optimal_resize_width,
-                i.medium_optimal_resize_height,
-                i.medium_optimal_resize_path,
-                i_roi.id as roi_id,
-                i_roi.point_x as roi_point_x,
-                i_roi.point_y as roi_point_y,
-                i_roi.percentage_width as roi_percentage_width,
-                i_roi.percentage_height as roi_percentage_height,
-                i_roi.title as roi_title,
-                aha.custom_author,
-                lg.id as licence_id
-            FROM asset a
-            INNER JOIN image i ON a.id = i.id
-            LEFT JOIN asset_has_author aha ON aha.asset_id = a.id
-            LEFT JOIN region_of_interest i_roi ON i_roi.image_id = i.id
-            LEFT JOIN image_licence il ON i.id = il.image_id
-            LEFT JOIN licence_group lg ON il.licence_group_id = lg.id
-            WHERE a.process_process_state = :processState
-            AND a.dtype = :dtype
-            AND i.image_type = :imageType
-        ',
-            [
-                'processState' => 'processed',
-                'dtype' => 'image',
-                'imageType' => 'ugc',
-            ]
-        );
-    }
-
-    protected function insertAsset(array $row): void
-    {
-        $this->prepareBulkInsert('asset', [
-            'id' => $row['id'],
-            'metadata_id' => $row['id'],
-            'licence_id' => (int)$row['licence_id'],
-            'distribution_category_id' => null,
-            'texts_display_title' => $this->getDisplayTitle($row),
-            'dates_uploaded_at' => $row['dates_uploaded_at'],
-            'dates_expire_at' => null,
-            'dates_publish_at' => null,
-            'asset_flags_described' => (int)$row['asset_flags_is_described'],
-            'asset_flags_visible' => 1,
-            'asset_flags_generated_by_system' => 0,
-            'asset_flags_autocompleted_metadata' => 1,
-            'asset_flags_auto_delete_unprocessed' => 0,
-            'asset_file_properties_distributes_in_services' => '[]',
-            'asset_file_properties_slot_names' => '[]',
-            'asset_file_properties_from_rss' => 0,
-            'asset_file_properties_width' => 0,
-            'asset_file_properties_height' => 0,
-            'attributes_asset_type' => 'image',
-            'attributes_status' => 'with_file',
-            'main_file_id' => $row['id'],
-            'created_at' => $row['created_at'],
-            'modified_at' => $row['modified_at'],
-            'created_by_id' => $this->getUserIdWithFallback($row['created_by_id']),
-            'modified_by_id' => $this->getUserIdWithFallback($row['modified_by_id']),
-        ]);
-    }
-
-    protected function getDisplayTitle(array $row): string
-    {
-        return $row['texts_title'] ?? $row['id'];
-    }
-
-    protected function totalCount(): int
-    {
-        return (int)$this->damLegacyConnection->fetchOne('
-            SELECT count(a.id)
-            FROM asset a
-            INNER JOIN image i ON i.id = a.id
-            WHERE a.process_process_state = :processState
-            AND a.dtype = :dtype
-            AND i.image_type = :imageType
-         ',
-            [
-                'processState' => 'processed',
-                'dtype' => 'image',
-                'imageType' => 'ugc',
-            ]
-        );
     }
 
     private function insertImageFile(array $row): void

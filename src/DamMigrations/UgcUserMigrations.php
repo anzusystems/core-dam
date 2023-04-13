@@ -38,7 +38,8 @@ final class UgcUserMigrations extends AbstractMigrations
 
     private function totalCount(): int
     {
-        return (int) $this->damLegacyConnection->fetchOne('
+        return (int) $this->damLegacyConnection->fetchOne(
+            '
             SELECT COUNT(u.id) 
             FROM `user` u
             INNER JOIN licence_group_has_user lghu ON lghu.user_id = u.id
@@ -122,7 +123,8 @@ final class UgcUserMigrations extends AbstractMigrations
 
     private function getDamUsers(): Result
     {
-        return $this->damLegacyConnection->executeQuery('
+        return $this->damLegacyConnection->executeQuery(
+            '
             SELECT u.id, u.created_at, u.modified_at, u.roles, u.permissions, u.enabled, u.api_token, u.ext_system_id 
             FROM `user` u
             INNER JOIN licence_group_has_user lghu ON lghu.user_id = u.id

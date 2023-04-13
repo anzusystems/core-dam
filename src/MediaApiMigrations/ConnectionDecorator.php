@@ -117,7 +117,7 @@ final class ConnectionDecorator
         }
 
         try {
-        /** @psalm-suppress UndefinedInterfaceMethod */
+            /** @psalm-suppress UndefinedInterfaceMethod */
             return $statement->executeQuery();
         } catch (\Exception $exception) {
             throw $exception;
