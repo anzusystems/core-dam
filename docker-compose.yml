@@ -8,7 +8,7 @@ services:
       context: .
       dockerfile: ./docker/app/local/Dockerfile
     environment:
-      - VIRTUAL_HOST=core-dam.sme.localhost,image.smedata.localhost,admin-image.smedata.localhost,tools-image.smedata.localhost
+      - VIRTUAL_HOST=core-dam.sme.localhost,image.smedata.localhost,audio.smedata.localhost,admin-image.smedata.localhost
       - VIRTUAL_PORT=${NGINX_PORT:-8130}
       - NGINX_PORT=${NGINX_PORT:-8130}
     external_links:
