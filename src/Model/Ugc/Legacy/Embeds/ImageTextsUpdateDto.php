@@ -11,7 +11,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 final class ImageTextsUpdateDto
 {
     #[Serialize]
-    #[Assert\Length(max: 5_000, maxMessage: ValidationException::ERROR_FIELD_LENGTH_MAX)]
+    #[Assert\Length(max: 2_000, maxMessage: ValidationException::ERROR_FIELD_LENGTH_MAX)]
     private string $description;
 
     public function __construct()

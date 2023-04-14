@@ -11,7 +11,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 final class ImageAuthorDto
 {
     #[Serialize]
-    #[Assert\Length(max: 100, maxMessage: ValidationException::ERROR_FIELD_LENGTH_MAX)]
+    #[Assert\Length(max: 255, maxMessage: ValidationException::ERROR_FIELD_LENGTH_MAX)]
     private string $customAuthor = '';
 
     public static function getInstance(string $name): self
