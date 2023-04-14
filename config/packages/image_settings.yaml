@@ -69,3 +69,4 @@ anzu_systems_core_dam:
           - { width: 448, height: 0 }     # blog web article detail image set (automatic height)
           - { width: 288, height: 0 }     # blog web article detail image set (automatic height)
           - { width: 300, height: 300 }   # blog mobile app
+          - { width: 500, height: 281 }   # forum subscribed email - blog images
