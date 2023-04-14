@@ -10,10 +10,10 @@ use AnzuSystems\SerializerBundle\Attributes\Serialize;
 final class ImageAttributesDto
 {
     #[Serialize]
-    private int $rationWidth = 0;
+    private int $ratioWidth = 0;
 
     #[Serialize]
-    private int $rationHeight = 0;
+    private int $ratioHeight = 0;
 
     #[Serialize]
     private int $width = 0;
@@ -27,34 +27,34 @@ final class ImageAttributesDto
     public static function getInstance(ImageFile $imageFile): self
     {
         return (new self())
-            ->setRationWidth($imageFile->getImageAttributes()->getRatioWidth())
-            ->setRationHeight($imageFile->getImageAttributes()->getRatioHeight())
+            ->setRatioWidth($imageFile->getImageAttributes()->getRatioWidth())
+            ->setRatioHeight($imageFile->getImageAttributes()->getRatioHeight())
             ->setWidth($imageFile->getImageAttributes()->getWidth())
             ->setHeight($imageFile->getImageAttributes()->getHeight())
             ->setRotation($imageFile->getImageAttributes()->getRotation())
         ;
     }
 
-    public function getRationWidth(): int
+    public function getRatioWidth(): int
     {
-        return $this->rationWidth;
+        return $this->ratioWidth;
     }
 
-    public function setRationWidth(int $rationWidth): self
+    public function setRatioWidth(int $ratioWidth): self
     {
-        $this->rationWidth = $rationWidth;
+        $this->ratioWidth = $ratioWidth;
 
         return $this;
     }
 
-    public function getRationHeight(): int
+    public function getRatioHeight(): int
     {
-        return $this->rationHeight;
+        return $this->ratioHeight;
     }
 
-    public function setRationHeight(int $rationHeight): self
+    public function setRatioHeight(int $ratioHeight): self
     {
-        $this->rationHeight = $rationHeight;
+        $this->ratioHeight = $ratioHeight;
 
         return $this;
     }
