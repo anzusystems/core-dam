@@ -20,6 +20,7 @@ use AnzuSystems\CoreDamBundle\Model\Dto\RegionOfInterest\RegionOfInterestAdmDeta
 use AnzuSystems\CoreDamBundle\Model\Dto\RegionOfInterest\RegionOfInterestAdmListDto;
 use AnzuSystems\CoreDamBundle\Repository\Decorator\RegionOfInterestRepositoryDecorator;
 use AnzuSystems\SerializerBundle\Attributes\SerializeParam;
+use App\Domain\RegionOfInterest\RoiDtoLegacyFixer;
 use App\Security\Voter\UgcVoter;
 use Doctrine\ORM\Exception\ORMException;
 use OpenApi\Attributes as OA;
@@ -34,6 +35,7 @@ final class RegionOfInterestController extends AbstractApiController
     public function __construct(
         private readonly RegionOfInterestFacade $regionOfInterestFacade,
         private readonly RegionOfInterestRepositoryDecorator $repositoryDecorator,
+        private readonly RoiDtoLegacyFixer $dtoLegacyFixer,
     ) {
     }
 
@@ -89,7 +91,7 @@ final class RegionOfInterestController extends AbstractApiController
 
         return $this->okResponse(
             RegionOfInterestAdmDetailDto::getInstance(
-                $this->regionOfInterestFacade->update($regionOfInterest, $roiDto),
+                $this->regionOfInterestFacade->update($regionOfInterest, $this->dtoLegacyFixer->fixRoiDto($roiDto)),
             )
         );
     }
