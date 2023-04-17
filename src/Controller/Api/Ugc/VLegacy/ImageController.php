@@ -22,6 +22,8 @@ use AnzuSystems\CoreDamBundle\Model\Attributes\SerializeIterableParam;
 use AnzuSystems\CoreDamBundle\Model\Dto\Asset\AssetAdmFinishDto;
 use AnzuSystems\CoreDamBundle\Model\Dto\Chunk\ChunkAdmCreateDto;
 use AnzuSystems\CoreDamBundle\Model\Dto\Image\ImageFileAdmDetailDto;
+use AnzuSystems\CoreDamBundle\Model\Enum\AssetFileProcessStatus;
+use AnzuSystems\CoreDamBundle\Repository\ImageFileRepository;
 use AnzuSystems\SerializerBundle\Attributes\SerializeParam;
 use AnzuSystems\SerializerBundle\Exception\SerializerException;
 use App\ApiFilter\ApiUgcLegacyParams;
@@ -50,6 +52,7 @@ final class ImageController extends AbstractApiController
         private readonly ImageUgcLegacyFacade $imageFacade,
         private readonly ChunkUgcLegacyFacade $chunkFacade,
         private readonly ImageStatusFacade $statusFacade,
+        private readonly ImageFileRepository $imageFileRepository,
     ) {
     }
 
@@ -71,13 +74,22 @@ final class ImageController extends AbstractApiController
         );
     }
 
+    /**
+     * @throws NonUniqueResultException
+     */
     #[Route(path: '/image/{imageFile}', name: 'get_one', methods: [Request::METHOD_GET])]
     #[OAResponse(ImageDetailDto::class)]
     public function getOne(ImageFile $imageFile): JsonResponse
     {
         $this->denyAccessUnlessGranted(UgcVoter::DAM_UGC_ACCESS, $imageFile);
+        if ($imageFile->getAssetAttributes()->getStatus()->is(AssetFileProcessStatus::Duplicate)) {
+            $originAsset = $this->imageFileRepository->findProcessedByChecksumAndLicence(
+                checksum: $imageFile->getAssetAttributes()->getChecksum(),
+                licence: $imageFile->getLicence(),
+            );
+        }
 
-        return $this->okResponse(ImageDetailDto::getInstance($imageFile));
+        return $this->okResponse(ImageDetailDto::getInstance($originAsset ?? $imageFile));
     }
 
     /**
