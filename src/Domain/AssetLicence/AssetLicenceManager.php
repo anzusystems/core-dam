@@ -55,6 +55,9 @@ final class AssetLicenceManager extends AbstractManager
             if (false === $user->getAssetLicences()->containsKey((int) $licence->getId())) {
                 $user->getAssetLicences()->set((int) $licence->getId(), $licence);
             }
+            if (false === $user->getUserToExtSystems()->containsKey((int) $licence->getExtSystem()->getId())) {
+                $user->getUserToExtSystems()->set((int) $licence->getExtSystem()->getId(), $licence->getExtSystem());
+            }
             if ($user->hasNotRole(User::ROLE_UGC)) {
                 $user->addRole(User::ROLE_UGC);
             }

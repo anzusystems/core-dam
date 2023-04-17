@@ -116,8 +116,12 @@ final class ConnectionDecorator
             $statement->bindValue($name, $value);
         }
 
-        /** @psalm-suppress UndefinedInterfaceMethod */
-        return $statement->executeQuery();
+        try {
+            /** @psalm-suppress UndefinedInterfaceMethod */
+            return $statement->executeQuery();
+        } catch (\Exception $exception) {
+            throw $exception;
+        }
     }
 
     private function getRunnableSql(string $sql, array $params): string

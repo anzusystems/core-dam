@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\DamMigrations;
 
 use App\Entity\User;
-use App\Model\MigrateConfig;
 use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Result;
 
@@ -14,25 +13,30 @@ final class UgcLicenceMigrations extends AbstractMigrations
     /**
      * @throws Exception
      */
-    public function migrate(MigrateConfig $migrateConfig): void
+    public function migrate(): void
     {
-        if ($migrateConfig->isNotUgc()) {
-            return;
-        }
         $res = $this->getGroups();
 
         $progressBar = $this->outputUtil->createProgressBar($this->totalCount());
         $progressBar->setFormat('debug');
         $progressBar->start();
 
+        $i = 0;
         while ($row = $res->fetchAssociative()) {
+            $i++;
             if ($this->hasLicence($row['id'])) {
                 continue;
             }
 
             $this->insertLicence($row);
+
+            if (0 === $i % self::BULK_SIZE) {
+                $this->flush();
+            }
             $progressBar->advance();
         }
+
+        $this->flush();
 
         $progressBar->finish();
         $this->writeln('');
@@ -59,13 +63,13 @@ final class UgcLicenceMigrations extends AbstractMigrations
 
     private function insertLicence(array $row): void
     {
-        $this->defaultConnection->insert(
+        $this->prepareBulkInsert(
             'asset_licence',
             [
                 'id' => $row['id'],
                 'ext_system_id' => $row['ext_system_id'],
                 'ext_id' => $row['ext_id'],
-                'name' => $this->getExtSystemName($row),
+                'name' => 'Blog system - ' . $row['ext_id'],
                 'limited_files' => $row['limited'],
                 'created_at' => $row['created_at'],
                 'modified_at' => $row['modified_at'],
@@ -73,11 +77,6 @@ final class UgcLicenceMigrations extends AbstractMigrations
                 'modified_by_id' => User::ID_CONSOLE,
             ]
         );
-    }
-
-    private function getExtSystemName(array $row): string
-    {
-        return 'Blog system - ' . $row['id'];
     }
 
     private function getGroups(): Result
