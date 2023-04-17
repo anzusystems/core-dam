@@ -8,7 +8,6 @@ use AnzuSystems\CommonBundle\Domain\User\CurrentAnzuUserProvider;
 use AnzuSystems\CommonBundle\Model\User\UserDto;
 use AnzuSystems\Contracts\AnzuApp;
 use AnzuSystems\Contracts\Entity\AnzuUser;
-use AnzuSystems\CoreDamBundle\Entity\AssetLicence;
 use App\App;
 use App\Domain\User\UserManager;
 use App\Entity\User;
@@ -31,7 +30,6 @@ use Symfony\Component\Validator\Validation;
 )]
 final class CreateMandatoryUsersCommand extends Command
 {
-    private const DEFAULT_CMS_LICENCE_ID = 100_000;
     private const ADMIN_USER_SSO_ID_ARG = 'sso-id';
 
     private QuestionHelper $questionHelper;
@@ -120,14 +118,7 @@ final class CreateMandatoryUsersCommand extends Command
             $ssoId = $input->getOption(self::ADMIN_USER_SSO_ID_ARG);
             $output->writeln('SSO ID for admin user is: ' . $ssoId);
 
-            /** @var AssetLicence $defaultCmsLicence */
-            $defaultCmsLicence = $this->userManager->getEntityManager()->getReference(
-                AssetLicence::class,
-                self::DEFAULT_CMS_LICENCE_ID
-            );
-
             $user = new User();
-            $user->setSelectedLicence($defaultCmsLicence);
             $adminUser = new UserDto();
             $adminUser->setId((int) $ssoId);
             $adminUser->setEmail($email);

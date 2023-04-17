@@ -141,13 +141,12 @@ final class UserFixtures extends AbstractFixtures
 
         /** @var User|null $userAdmin */
         $userAdmin = $this->entityManager->find(User::class, App::getUserIdAdmin());
-        $userAdmin ??= (new User())
-            ->setEmail('admin.anzu@smeonline.sk')
-        ;
+        $userAdmin ??= new User();
 
         /** @psalm-suppress InvalidArgument */
         yield (new UserDto())
             ->setId(App::getUserIdAdmin())
+            ->setEmail('admin.anzu@smeonline.sk')
             ->setRoles([User::ROLE_UGC, User::ROLE_ADMIN])
         => $userAdmin
             ->setSelectedLicence($defaultCmsLicence)
