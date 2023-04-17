@@ -31,6 +31,7 @@ use Symfony\Component\Validator\Validation;
 final class CreateMandatoryUsersCommand extends Command
 {
     private const ADMIN_USER_SSO_ID_ARG = 'sso-id';
+
     private QuestionHelper $questionHelper;
 
     public function __construct(
