@@ -21,7 +21,6 @@ final class ImageProcessDto
             ->setProcessState(
                 match ($status) {
                     AssetFileProcessStatus::Stored => 'uploading',
-                    AssetFileProcessStatus::Duplicate => 'failed',
                     default => $imageFile->getAssetAttributes()->getStatus()->toString(),
                 }
             )
