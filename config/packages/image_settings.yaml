@@ -36,6 +36,10 @@ anzu_systems_core_dam:
         crop_allow_list: blog_public_image
         ext_system_slugs: [ blog, tools ]
         domain: public_image
+      blog_public_image_tmp:
+        crop_allow_list: blog_public_image
+        ext_system_slugs: [ blog, tools ]
+        domain: public_image_tmp
     crop_allow_list:
       admin_image:
         quality_whitelist: [ ]
