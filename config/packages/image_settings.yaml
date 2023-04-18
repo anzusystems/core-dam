@@ -43,7 +43,7 @@ anzu_systems_core_dam:
           - { width: 300, height: 200, tags: [ 'roi_example' ], title: '3:2' }  # admin roi example 3:2
           - { width: 0, height: 200, tags: [ 'list' ] }           # admin DAM listing
           - { width: 200, height: 200, tags: [ 'roi_example' ], title: '1:1' }  # admin roi example 1:1
-          - { width: 1920, height: 0, tags: [ 'detail', 'artemis_distribution', 'cache_purge' ] }
+          - { width: 1920, height: 0, tags: [ 'detail', 'artemis_distribution', 'cache_purge', 'youtube_distribution' ] }
           - { width: 0, height: 600 }        # UGC DAM image preview
           - { width: 500, height: 281 }      # UGC DAM image preview after upload# admin DAM image crop
       public_image:
