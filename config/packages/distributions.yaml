@@ -2,7 +2,7 @@ anzu_systems_core_dam:
     distribution_services:
         youtube_cms_main:
             type: youtubeDistribution
-            title: Youtube CMS
+            title: Youtube
             module: AnzuSystems\CoreDamBundle\Distribution\Modules\YoutubeDistributionModule
             auth_redirect_url: '%env(resolve:string:DISTRIBUTION_YOUTUBE_CMS_MAIN_REDIRECT_URL)%'
             required_auth: true

@@ -77,7 +77,7 @@ anzu_systems_core_dam:
                   source_property_path: 'metadata.customData[title]'
                   destination_property_path: 'texts.title'
                   normalizers:
-                    - { type: string, options: { empty_string: true } }
+                    - { type: string, options: {  length: 200, empty_string: true } }
                 description:
                   source_property_path: 'metadata.customData[description]'
                   destination_property_path: 'texts.description'
@@ -100,7 +100,7 @@ anzu_systems_core_dam:
             source_property_path: 'title'
             destination_property_path: 'metadata.customData[title]'
             normalizers:
-              - { type: string, options: { length: 64, empty_string: true } }
+              - { type: string, options: { length: 255, empty_string: true } }
               - { type: html, options: { words_wrap: 0 } }
           description:
             source_property_path: 'description'
@@ -140,7 +140,7 @@ anzu_systems_core_dam:
             source_property_path: 'metadata.customData[title]'
             destination_property_path: 'texts.title'
             normalizers:
-              - { type: string, options: { empty_string: true } }
+              - { type: string, options: { length: 200, empty_string: true } }
         custom_metadata_pinned_amount: 3
         storage_name: 'cms.video'
         chunk_storage_name: 'cms.video'
@@ -150,7 +150,7 @@ anzu_systems_core_dam:
           distribution_services: [ youtube_cms_main, jw_cms, artemis_video_cms ]
           distribution_requirements:
             youtube_cms_main:
-              title: 'YouTube CMS'
+              title: 'YouTube'
               blocked_by: []
               strategy: none
               distribution_metadata_map:

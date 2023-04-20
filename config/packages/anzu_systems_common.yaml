@@ -25,6 +25,7 @@ anzu_systems_common:
         enabled: true
         only_uri_match:
           - ^/api/
+          - ^/image/
         default_exception_handler: AnzuSystems\CommonBundle\Exception\Handler\DefaultExceptionHandler
         exception_handlers:
             - AnzuSystems\CommonBundle\Exception\Handler\NotFoundExceptionHandler
