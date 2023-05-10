@@ -135,6 +135,8 @@ data:
   SSO_CLIENT_ID: "#{SSO_CLIENT_ID}#"
   SSO_PUBLIC_CERT_PATH: "/var/www/html/var/secure/sso/central-oauth2-public-key.pem"
   SSO_USER_INFO_URL: "#{SSO_USER_INFO_URL}#"
+  SUPERVISOR_MESSENGER_NUMPROCS: "1"
+  SUPERVISOR_MESSENGER_TIME_LIMIT: "600"
 ---
 apiVersion: v1
 kind: Secret
