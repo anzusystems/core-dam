@@ -105,10 +105,10 @@ variables:
     value: '$(APP_NAME)-cron'
   # Kubernetes service connection name
   - name: KUBERNETES_SERVICE_CONNECTION_NAME
-    value: 'anzu-${{ parameters.environment }}'
+    value: '$(DEPLOYMENT_KUBERNETES_NAMESPACE)-${{ parameters.environment }}'
   # Kubernetes namespace
   - name: KUBERNETES_NAMESPACE
-    value: 'anzu'
+    value: '$(DEPLOYMENT_KUBERNETES_NAMESPACE)'
 
 # Checkout azure ci template repository
 resources:
