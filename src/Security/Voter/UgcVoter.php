@@ -9,6 +9,9 @@ use App\Entity\User;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
+/**
+ * @template-extends Voter<string, AssetLicenceInterface>
+ */
 final class UgcVoter extends Voter
 {
     // UGC access

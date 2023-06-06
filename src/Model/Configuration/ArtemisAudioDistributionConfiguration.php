@@ -13,6 +13,7 @@ final class ArtemisAudioDistributionConfiguration
     public const AUDIO_BONUS_SLOT_NAME_KEY = 'audio_bonus_slot_name';
     public const DEFAULT_RUBRIC_ID = 'default_rubric_id';
     public const CUSTOM_DATA_TO_DISTRIBUTION_MAP = 'custom_data_to_distribution_map';
+    public const RSS_JW_DISTRIBUTE = 'rss_jw_distribute';
 
     public function __construct(
         private readonly string $audioFreeSlotName,
@@ -20,6 +21,7 @@ final class ArtemisAudioDistributionConfiguration
         private readonly string $audioBonusSlotName,
         private readonly int $defaultRubricId,
         private readonly array $customDataToDistributionMap,
+        private readonly bool $rssJwDistribute,
     ) {
     }
 
@@ -33,7 +35,8 @@ final class ArtemisAudioDistributionConfiguration
             array_map(
                 fn (array $episodeMapConfig): TextsWriterConfiguration => TextsWriterConfiguration::getFromArrayConfiguration($episodeMapConfig),
                 $config[self::CUSTOM_DATA_TO_DISTRIBUTION_MAP] ?? []
-            )
+            ),
+            $config[self::RSS_JW_DISTRIBUTE] ?? false
         );
     }
 
@@ -55,6 +58,11 @@ final class ArtemisAudioDistributionConfiguration
     public function getAudioBonusSlotName(): string
     {
         return $this->audioBonusSlotName;
+    }
+
+    public function isRssJwDistribute(): bool
+    {
+        return $this->rssJwDistribute;
     }
 
     /**

@@ -8,17 +8,21 @@ use AnzuSystems\CoreDamBundle\Distribution\DistributionBroker;
 use AnzuSystems\CoreDamBundle\Domain\AbstractManager;
 use AnzuSystems\CoreDamBundle\Domain\Audio\AudioPublicFacade;
 use AnzuSystems\CoreDamBundle\Domain\Audio\AudioPublicManager;
+use AnzuSystems\CoreDamBundle\Domain\JwDistribution\JwDistributionManager;
 use AnzuSystems\CoreDamBundle\Entity\AssetFile;
 use AnzuSystems\CoreDamBundle\Entity\AssetSlot;
 use AnzuSystems\CoreDamBundle\Entity\AudioFile;
+use AnzuSystems\CoreDamBundle\Entity\JwDistribution;
 use AnzuSystems\CoreDamBundle\Entity\PodcastEpisode;
 use AnzuSystems\CoreDamBundle\Logger\DamLogger;
 use AnzuSystems\CoreDamBundle\Model\Dto\Audio\AudioPublicationAdmDto;
 use AnzuSystems\CoreDamBundle\Model\Enum\AssetFileProcessStatus;
+use AnzuSystems\CoreDamBundle\Repository\JwDistributionRepository;
 use AnzuSystems\SerializerBundle\Exception\SerializerException;
 use App\Configuration\ConfigurationProvider;
 use App\Entity\ArtemisAudioDistribution;
 use App\Repository\ArtemisAudioDistributionRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\NonUniqueResultException;
 use League\Flysystem\FilesystemException;
 use Throwable;
@@ -26,11 +30,14 @@ use Throwable;
 final class ArtemisAudioDistributionAutomat extends AbstractManager
 {
     private const ARTEMIS_AUDIO_DISTRIBUTION_SERVICE = 'artemis_podcast_cms';
+    private const JW_AUDIO_DISTRIBUTION_SERVICE = 'jw_cms';
 
     public function __construct(
         private readonly ArtemisAudioDistributionRepository $repository,
+        private readonly JwDistributionRepository $jwDistributionRepository,
         private readonly ArtemisAudioDistributionFactory $factory,
         private readonly ArtemisAudioDistributionManager $artemisAudioDistributionManager,
+        private readonly JwDistributionManager $jwDistributionManager,
         private readonly DistributionBroker $distributionBroker,
         private readonly ConfigurationProvider $configurationProvider,
         private readonly DamLogger $logger,
@@ -103,12 +110,55 @@ final class ArtemisAudioDistributionAutomat extends AbstractManager
                 $this->tryMakePublic($premiumVersion->getAudio());
             }
 
-            $distribution = $this->artemisAudioDistributionManager->create(
-                $this->factory->createFromAudioAndEpisode($audioFile, $episode, self::ARTEMIS_AUDIO_DISTRIBUTION_SERVICE),
+            $artemisAudioDistribution = $this->factory->createFromAudioAndEpisode(
+                $audioFile,
+                $episode,
+                self::ARTEMIS_AUDIO_DISTRIBUTION_SERVICE
             );
 
-            $this->distributionBroker->startDistribution($distribution);
+            $jwDistribution = $this->prepareJwDistribution($artemisAudioDistribution, $audioFile);
+            $this->artemisAudioDistributionManager->create($artemisAudioDistribution, false);
+
+            if ($jwDistribution) {
+                $artemisAudioDistribution->addBlockedBy($jwDistribution);
+                $this->artemisAudioDistributionManager->flush();
+                $this->distributionBroker->startDistribution($jwDistribution);
+
+                return;
+            }
+            $this->artemisAudioDistributionManager->flush();
+            $this->distributionBroker->startDistribution($artemisAudioDistribution);
         }
+    }
+
+    private function prepareJwDistribution(ArtemisAudioDistribution $distribution, AudioFile $audioFile): ?JwDistribution
+    {
+        if (false === $this->configurationProvider->getAudioDistribution()->isRssJwDistribute()) {
+            return null;
+        }
+        $jwDistribution = $this->jwDistributionRepository->findByAssetFileAndDistributionService(
+            assetFileId: (string) $audioFile->getAsset()->getId(),
+            distributionService: self::JW_AUDIO_DISTRIBUTION_SERVICE
+        );
+
+        if ($jwDistribution) {
+            return null;
+        }
+
+        $jwDistribution = (new JwDistribution())
+            ->setAssetId((string) $audioFile->getAsset()->getId())
+            ->setAssetFileId((string) $audioFile->getId())
+            ->setDistributionService(self::JW_AUDIO_DISTRIBUTION_SERVICE);
+        $jwDistribution
+            ->getTexts()
+            ->setTitle($distribution->getTexts()->getTitle())
+            ->setKeywords($distribution->getTexts()->getKeywords())
+            ->setAuthor($distribution->getTexts()->getAuthors()[0] ?? '')
+            ->setDescription($distribution->getTexts()->getDescription());
+
+        $this->jwDistributionManager->create($jwDistribution, false);
+
+        return $jwDistribution;
     }
 
     /**

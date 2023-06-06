@@ -3,6 +3,7 @@ core_dam:
     audio_free_slot_name: 'free'
     audio_premium_slot_name: 'premium'
     audio_bonus_slot_name: 'bonus'
+    rss_jw_distribute: '%env(bool:RSS_JW_DISTRIBUTE)%'
     default_rubric_id: 6978
     custom_data_to_distribution_map:
       title:

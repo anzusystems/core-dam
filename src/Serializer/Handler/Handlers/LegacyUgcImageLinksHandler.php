@@ -36,11 +36,8 @@ final class LegacyUgcImageLinksHandler extends AbstractHandler
      */
     public function serialize(mixed $value, Metadata $metadata): mixed
     {
-        $type = ImageCropTag::tryFrom((string) $metadata->customType);
-        if (null === $type) {
-            throw new SerializerException(
-                sprintf('(%s) should by provided as type', ImageCropTag::class)
-            );
+        if (null === $metadata->customType) {
+            return null;
         }
 
         if ($value instanceof ImageFile) {
@@ -49,7 +46,7 @@ final class LegacyUgcImageLinksHandler extends AbstractHandler
             }
 
             $cropAllowItem = array_values(array_filter(
-                $this->configurationProvider->getImageAdminSizeList($type->toString()),
+                $this->configurationProvider->getImageAdminSizeList($metadata->customType),
                 static fn (CropAllowItem $cropAllowItem) => 200 === $cropAllowItem->getHeight() && 0 === $cropAllowItem->getWidth()
             ))[0] ?? null;
 

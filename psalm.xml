@@ -14,7 +14,6 @@
         <directory name="src"/>
         <ignoreFiles>
             <directory name="vendor"/>
-            <directory name="src/DamMigrations"/>
             <directory name="src/Migrations"/>
             <file name="src/DependencyInjection/Configuration.php"/>
             <file name="src/Controller/Api/Adm/V1/TestController.php"/>

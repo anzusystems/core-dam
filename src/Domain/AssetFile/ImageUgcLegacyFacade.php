@@ -6,7 +6,7 @@ namespace App\Domain\AssetFile;
 
 use AnzuSystems\CommonBundle\Exception\ValidationException;
 use AnzuSystems\Contracts\Exception\AnzuException;
-use AnzuSystems\CoreDamBundle\Domain\AssetFile\AssetFileFacade;
+use AnzuSystems\CoreDamBundle\Domain\AssetFile\AbstractAssetFileFacade;
 use AnzuSystems\CoreDamBundle\Domain\AssetFile\AssetFileFactory;
 use AnzuSystems\CoreDamBundle\Domain\AssetFile\AssetFileManager;
 use AnzuSystems\CoreDamBundle\Domain\Image\ImageFacade;
@@ -28,9 +28,9 @@ use Doctrine\ORM\NonUniqueResultException;
 use RuntimeException;
 
 /**
- * @extends AssetFileFacade<ImageFile>
+ * @extends AbstractAssetFileFacade<ImageFile>
  */
-final class ImageUgcLegacyFacade extends AssetFileFacade
+final class ImageUgcLegacyFacade extends AbstractAssetFileFacade
 {
     public function __construct(
         private readonly ImageManager $imageManager,

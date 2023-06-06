@@ -81,6 +81,34 @@ spec:
                 - /var/run/crond.pid
             initialDelaySeconds: 10
             periodSeconds: 10
+        - name: anzu-dam-asset-file-clear-log
+          image: busybox
+          command: [ "/bin/sh", "-c" ]
+          args: [ "/var/www/html/var/log/tail-cmd -f /var/www/html/var/log/anzu_dam_asset_file_clear.log" ]
+          resources:
+            limits:
+              cpu: 5m
+              memory: 10Mi
+            requests:
+              cpu: 1m
+              memory: 5Mi
+          volumeMounts:
+            - name: logs
+              mountPath: /var/www/html/var/log
+        - name: anzu-dam-asset-clear-log
+          image: busybox
+          command: [ "/bin/sh", "-c" ]
+          args: [ "/var/www/html/var/log/tail-cmd -f /var/www/html/var/log/anzu_dam_asset_clear.log" ]
+          resources:
+            limits:
+              cpu: 5m
+              memory: 10Mi
+            requests:
+              cpu: 1m
+              memory: 5Mi
+          volumeMounts:
+            - name: logs
+              mountPath: /var/www/html/var/log
         - name: podcast-generate-import-job-log
           image: busybox
           command: ["/bin/sh", "-c"]

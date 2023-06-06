@@ -66,11 +66,35 @@ anzu_systems_core_dam:
         chunk_storage_name: 'cms.audio'
         size_limit: '%env(byte_size:APP_CMS_AUDIO_MAX_SIZE)%'
         distribution:
-          distribution_services: [ artemis_podcast_cms ]
+          distribution_services: [ jw_cms, artemis_podcast_cms ]
           distribution_requirements:
+            jw_cms:
+              title: 'JW Player Audio'
+              distribution_metadata_map:
+                title:
+                  source_property_path: 'metadata.customData[title]'
+                  destination_property_path: 'texts.title'
+                  normalizers:
+                    - { type: string, options: { empty_string: true } }
+                description:
+                  source_property_path: 'metadata.customData[description]'
+                  destination_property_path: 'texts.description'
+                  normalizers:
+                    - { type: string, options: { empty_string: true } }
+                keywords:
+                  source_property_path: 'keywords_as_string_array'
+                  destination_property_path: 'texts.keywords'
+                author:
+                  source_property_path: 'authors_as_string_array[0]'
+                  destination_property_path: 'texts.null_author'
+              blocked_by: [ ]
+              strategy: none
+              category_select:
+                enabled: true
+                required: false
             artemis_podcast_cms:
               title: 'Artemis Podcasty'
-              blocked_by: [ ]
+              blocked_by: [ jw_cms ]
               strategy: none
               distribution_metadata_map:
                 title:
@@ -113,7 +137,7 @@ anzu_systems_core_dam:
             source_property_path: 'metadata.customData[title]'
             destination_property_path: 'texts.title'
             normalizers:
-              - { type: string, options: { empty_string: true } }
+              - { type: string, options: { empty_string: true, trim: true } }
           description:
             source_property_path: 'metadata.customData[description]'
             destination_property_path: 'texts.description'

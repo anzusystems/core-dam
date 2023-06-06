@@ -10,9 +10,12 @@ use AnzuSystems\CoreDamBundle\Domain\Distribution\DistributionBodyBuilder;
 use AnzuSystems\CoreDamBundle\Entity\Asset;
 use AnzuSystems\CoreDamBundle\Entity\AssetFile;
 use AnzuSystems\CoreDamBundle\Entity\AudioFile;
+use AnzuSystems\CoreDamBundle\Entity\Distribution;
 use AnzuSystems\CoreDamBundle\Entity\PodcastEpisode;
+use AnzuSystems\CoreDamBundle\Repository\DistributionRepository;
 use App\Configuration\ConfigurationProvider;
 use App\Entity\ArtemisAudioDistribution;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\NonUniqueResultException;
 
 final class ArtemisAudioDistributionFactory extends AbstractDistributionDtoFactory
@@ -21,6 +24,7 @@ final class ArtemisAudioDistributionFactory extends AbstractDistributionDtoFacto
         private readonly AudioRouteGenerator $audioRouteGenerator,
         private readonly ConfigurationProvider $configurationProvider,
         private readonly DistributionBodyBuilder $distributionBodyBuilder,
+        private readonly DistributionRepository $distributionRepository,
     ) {
     }
 
@@ -69,6 +73,11 @@ final class ArtemisAudioDistributionFactory extends AbstractDistributionDtoFacto
             $this->setFreeDistributionProperties($audioDistribution, $audioFile, $episode);
         }
         $this->setRubricId($audioDistribution, $audioFile);
+
+        $blockedByDistributions = $this->distributionRepository->findByAssetFile((string) $audioFile->getId())->filter(
+            fn (Distribution $distribution): bool => false === ($distribution->getDistributionService() === $service)
+        );
+        $audioDistribution->setBlockedBy(new ArrayCollection($blockedByDistributions->toArray()));
 
         return $audioDistribution;
     }

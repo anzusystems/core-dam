@@ -6,6 +6,7 @@ namespace App\Model\Ugc\Legacy;
 
 use AnzuSystems\CoreDamBundle\Entity\ImageFile;
 use AnzuSystems\CoreDamBundle\Model\Enum\ImageCropTag;
+use AnzuSystems\CoreDamBundle\Serializer\Handler\Handlers\ImageLinksHandler;
 use AnzuSystems\SerializerBundle\Attributes\Serialize;
 use AnzuSystems\SerializerBundle\Handler\Handlers\EntityIdHandler;
 use App\Entity\User;
@@ -244,7 +245,7 @@ class ImageListDto
         return $this;
     }
 
-    #[Serialize(serializedName: '_view', handler: LegacyUgcImageLinksHandler::class, type: ImageCropTag::LIST)]
+    #[Serialize(serializedName: '_view', handler: LegacyUgcImageLinksHandler::class, type: ImageLinksHandler::TAG_LIST)]
     public function getLinks(): ImageFile
     {
         return $this->imageFile;

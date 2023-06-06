@@ -6,8 +6,8 @@ namespace App\Tests\Controller\Api\Ugc\VLegacy;
 
 use AnzuSystems\CoreDamBundle\Entity\ImageFile;
 use AnzuSystems\CoreDamBundle\FileSystem\FileSystemProvider;
+use AnzuSystems\CoreDamBundle\FileSystem\MimeGuesser;
 use AnzuSystems\CoreDamBundle\FileSystem\NameGenerator\NameGenerator;
-use AnzuSystems\CoreDamBundle\Helper\FileHelper;
 use App\DataFixtures\ImageFixtures;
 use App\DataFixtures\UserFixtures;
 use App\Tests\ApiClient;
@@ -210,7 +210,7 @@ final class ImageControllerTest extends AbstractApiController
         UploadedFile $file,
         int $expectedStatusCode,
     ): Response {
-        $checksum = FileHelper::checksumFromPath((string) $file->getRealPath());
+        $checksum = MimeGuesser::checksumFromPath((string) $file->getRealPath());
         $response = $apiClient->post(
             ImageUgcLegacyUrl::getCreatePath(),
             [
@@ -266,7 +266,7 @@ final class ImageControllerTest extends AbstractApiController
         UploadedFile $file,
         string $imageFileId,
     ): Response {
-        $checksum = FileHelper::checksumFromPath((string) $file->getRealPath());
+        $checksum = MimeGuesser::checksumFromPath((string) $file->getRealPath());
         $response = $apiClient->patch(
             ImageUgcLegacyUrl::getFinishUploadPath($imageFileId),
             [

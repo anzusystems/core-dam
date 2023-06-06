@@ -25,3 +25,9 @@ SHELL=/bin/bash
 
 # Every hour
 0 * * * * cron-cmd -n podcast_generate_import_job bin/console anzu-dam:podcast:generate-import
+
+# Every day
+0 0 * * * cron-cmd -n anzu_dam_asset_clear bin/console anzu-dam:asset:clear
+
+# Every day
+0 0 * * * cron-cmd -n anzu_dam_asset_file_clear bin/console anzu-dam:asset-file:clear

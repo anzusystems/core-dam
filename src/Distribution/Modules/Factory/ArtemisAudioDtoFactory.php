@@ -7,8 +7,11 @@ namespace App\Distribution\Modules\Factory;
 use AnzuSystems\CoreDamBundle\Entity\Asset;
 use AnzuSystems\CoreDamBundle\Entity\AudioFile;
 use AnzuSystems\CoreDamBundle\Entity\ImageFile;
+use AnzuSystems\CoreDamBundle\Entity\JwDistribution;
 use AnzuSystems\CoreDamBundle\Entity\PodcastEpisode;
+use AnzuSystems\CoreDamBundle\Entity\YoutubeDistribution;
 use AnzuSystems\CoreDamBundle\Model\Enum\AssetFileProcessStatus;
+use AnzuSystems\CoreDamBundle\Repository\DistributionRepository;
 use App\App;
 use App\Entity\ArtemisAudioDistribution;
 use App\Model\Dto\Artemis\ArtemisAudioMediaDto;
@@ -20,6 +23,11 @@ use DateTimeZone;
 
 final class ArtemisAudioDtoFactory extends AbstractArtemisDtoFactory
 {
+    public function __construct(
+        private readonly DistributionRepository $repository,
+    ) {
+    }
+
     public function createMediaDto(
         AudioFile $assetFile,
         ArtemisAudioDistribution $distribution,
@@ -52,6 +60,13 @@ final class ArtemisAudioDtoFactory extends AbstractArtemisDtoFactory
         $imagFile = $this->getImagePreview($assetFile->getAsset(), $distribution);
         if ($imagFile) {
             $mediaDto->setImage($this->getImage($imagFile));
+        }
+
+        $distributions = $this->repository->findByAssetFile((string) $assetFile->getId());
+        foreach ($distributions as $distribution) {
+            if ($distribution instanceof JwDistribution && false === empty($distribution->getExtId())) {
+                $mediaDto->setJwId($distribution->getExtId());
+            }
         }
 
         return $mediaDto;
