@@ -14,6 +14,7 @@ use AnzuSystems\CoreDamBundle\Entity\AssetSlot;
 use AnzuSystems\CoreDamBundle\Entity\AudioFile;
 use AnzuSystems\CoreDamBundle\Entity\JwDistribution;
 use AnzuSystems\CoreDamBundle\Entity\PodcastEpisode;
+use AnzuSystems\CoreDamBundle\Helper\StringHelper;
 use AnzuSystems\CoreDamBundle\Logger\DamLogger;
 use AnzuSystems\CoreDamBundle\Model\Dto\Audio\AudioPublicationAdmDto;
 use AnzuSystems\CoreDamBundle\Model\Enum\AssetFileProcessStatus;
@@ -151,7 +152,7 @@ final class ArtemisAudioDistributionAutomat extends AbstractManager
             ->setDistributionService(self::JW_AUDIO_DISTRIBUTION_SERVICE);
         $jwDistribution
             ->getTexts()
-            ->setTitle($distribution->getTexts()->getTitle())
+            ->setTitle(StringHelper::parseLength($distribution->getTexts()->getTitle(), 100))
             ->setKeywords($distribution->getTexts()->getKeywords())
             ->setAuthor($distribution->getTexts()->getAuthors()[0] ?? '')
             ->setDescription($distribution->getTexts()->getDescription());
