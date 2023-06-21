@@ -70,8 +70,8 @@ final class CreateMandatoryUsersCommand extends Command
             $anonymousUser = new User();
             $anonymousUser->setId($anonymousUserId);
             $anonymousUser->setEmail($email);
-            $anonymousUser->setFirstName('Anonymous');
-            $anonymousUser->setLastName('DAM');
+            $anonymousUser->getPerson()->setFirstName('Anonymous');
+            $anonymousUser->getPerson()->setLastName('DAM');
             $anonymousUser->setEnabled(false);
 
             $this->userManager->getEntityManager()->persist($anonymousUser);
@@ -92,8 +92,8 @@ final class CreateMandatoryUsersCommand extends Command
             $consoleUser = new User();
             $consoleUser->setId($consoleUserId);
             $consoleUser->setEmail($email);
-            $consoleUser->setFirstName('Console');
-            $consoleUser->setLastName('DAM');
+            $consoleUser->getPerson()->setFirstName('Console');
+            $consoleUser->getPerson()->setLastName('DAM');
             $consoleUser->setEnabled(false);
 
             $this->userManager->create($consoleUser);
@@ -129,8 +129,8 @@ final class CreateMandatoryUsersCommand extends Command
             $adminUser = new User();
             $adminUser->setId($adminUserId);
             $adminUser->setEmail($email);
-            $adminUser->setFirstName('Admin');
-            $adminUser->setLastName('DAM');
+            $adminUser->getPerson()->setFirstName('Admin');
+            $adminUser->getPerson()->setLastName('DAM');
             $adminUser->setEnabled(true);
             $adminUser->setRoles([User::ROLE_ADMIN]);
             $adminUser->setPassword(

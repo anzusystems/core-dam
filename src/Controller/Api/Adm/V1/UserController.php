@@ -65,7 +65,7 @@ final class UserController extends AbstractApiController
      * @throws ORMException
      */
     #[Route('', 'get_list', methods: [Request::METHOD_GET])]
-    #[ParamConverter('apiParams', converter: ApiFilterParamConverter::class)]
+//    #[ParamConverter('apiParams', converter: ApiFilterParamConverter::class)]
     #[OAResponse([User::class])]
     public function getList(ApiParams $apiParams): JsonResponse
     {
@@ -83,7 +83,7 @@ final class UserController extends AbstractApiController
      * @throws AppReadOnlyModeException
      */
     #[Route('', 'create', methods: [Request::METHOD_POST])]
-    #[ParamConverter('createUserDto', converter: SerializerParamConverter::class)]
+//    #[ParamConverter('createUserDto', converter: SerializerParamConverter::class)]
     #[OARequest(CreateUserDto::class), OAResponseCreated(User::class), OAResponseValidation]
     public function create(CreateUserDto $createUserDto): JsonResponse
     {
@@ -103,7 +103,7 @@ final class UserController extends AbstractApiController
      * @throws SerializerException
      */
     #[Route('/{user}', 'update', ['user' => '\d+'], methods: [Request::METHOD_PUT])]
-    #[ParamConverter('updateUserDto', converter: SerializerParamConverter::class)]
+//    #[ParamConverter('updateUserDto', converter: SerializerParamConverter::class)]
     #[OAParameterPath('user'), OARequest(UpdateUserDto::class), OAResponse(User::class), OAResponseValidation]
     public function update(User $user, UpdateUserDto $updateUserDto): JsonResponse
     {

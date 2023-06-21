@@ -26,10 +26,6 @@ return static function (RoutingConfigurator $routes): void {
         ->prefix('/');
 
     $routes
-        ->import('@AnzuSystemsCoreDamBundle/Controller/AudioController.php', type: 'attribute')
-        ->prefix('/');
-
-    $routes
         ->import('@AnzuSystemsAuthBundle/Controller/Api/JsonCredentialsAuthController.php', type: 'attribute')
         ->prefix('/api/auth/');
 

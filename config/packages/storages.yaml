@@ -4,6 +4,10 @@ anzu_systems_core_dam:
             adapter: 'local'
             options:
                 directory: '%kernel.project_dir%/var/mnt/data/audio'
+        cms.public_audio:
+            adapter: 'local'
+            options:
+                directory: '%kernel.project_dir%/var/mnt/data/public_audio'
         cms.image:
             adapter: 'local'
             options:
