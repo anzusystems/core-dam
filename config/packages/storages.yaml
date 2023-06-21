@@ -34,6 +34,10 @@ anzu_systems_core_dam:
             fallback_storage: cms.video_fallback
             options:
                 directory: '%kernel.project_dir%/var/mnt/data/video'
+        cms.rtmp:
+            adapter: 'local'
+            options:
+                directory: '%kernel.project_dir%/var/mnt/data/rtmp'
         cms.chunk:
             adapter: 'local'
             options:

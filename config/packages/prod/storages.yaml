@@ -37,6 +37,11 @@ anzu_systems_core_dam:
                 client: 'anzu.google_storage.env_client'
                 bucket: '%env(string:GCS_VIDEO_STORAGE_BUCKET)%'
                 prefix: 'videos'
+        cms.rtmp:
+            adapter: 'gcloud'
+            options:
+                client: 'anzu.google_storage.env_client'
+                bucket: '%env(string:GCS_RTMP_STORAGE_BUCKET)%'
         blog.image:
             adapter: 'gcloud'
             fallback_enabled: '%env(bool:BLOG_IMAGE_FALLBACK_ENABLED)%'

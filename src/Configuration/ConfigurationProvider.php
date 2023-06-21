@@ -6,16 +6,28 @@ namespace App\Configuration;
 
 use App\Model\Configuration\ArtemisAudioDistributionConfiguration;
 use App\Model\Configuration\ArtemisVideoDistributionConfiguration;
+use App\Model\Configuration\RtmpConfiguration;
 
 final class ConfigurationProvider
 {
     private ?ArtemisAudioDistributionConfiguration $distributionConfiguration = null;
     private ?ArtemisVideoDistributionConfiguration $videoDistributionConfiguration = null;
+    private ?RtmpConfiguration $rtmpConfiguration = null;
 
     public function __construct(
         private readonly array $artemisAudioDistribution,
         private readonly array $artemisVideoDistribution,
+        private readonly array $rtmp,
     ) {
+    }
+
+    public function getRtmpConfiguration(): RtmpConfiguration
+    {
+        if (null === $this->rtmpConfiguration) {
+            $this->rtmpConfiguration = RtmpConfiguration::getFromArrayConfiguration($this->rtmp);
+        }
+
+        return $this->rtmpConfiguration;
     }
 
     public function getAudioDistribution(): ArtemisAudioDistributionConfiguration

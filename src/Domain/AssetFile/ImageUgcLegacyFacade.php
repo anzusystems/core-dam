@@ -7,7 +7,7 @@ namespace App\Domain\AssetFile;
 use AnzuSystems\CommonBundle\Exception\ValidationException;
 use AnzuSystems\Contracts\Exception\AnzuException;
 use AnzuSystems\CoreDamBundle\Domain\AssetFile\AbstractAssetFileFacade;
-use AnzuSystems\CoreDamBundle\Domain\AssetFile\AssetFileFactory;
+use AnzuSystems\CoreDamBundle\Domain\AssetFile\AbstractAssetFileFactory;
 use AnzuSystems\CoreDamBundle\Domain\AssetFile\AssetFileManager;
 use AnzuSystems\CoreDamBundle\Domain\Image\ImageFacade;
 use AnzuSystems\CoreDamBundle\Domain\Image\ImageFactory;
@@ -136,7 +136,7 @@ final class ImageUgcLegacyFacade extends AbstractAssetFileFacade
         return $this->imageManager;
     }
 
-    protected function getFactory(): AssetFileFactory
+    protected function getFactory(): AbstractAssetFileFactory
     {
         return $this->imageFactory;
     }

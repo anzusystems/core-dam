@@ -7,6 +7,7 @@ namespace App\DependencyInjection;
 use AnzuSystems\CoreDamBundle\DependencyInjection\Configuration as BaseConfiguration;
 use App\Model\Configuration\ArtemisAudioDistributionConfiguration;
 use App\Model\Configuration\ArtemisVideoDistributionConfiguration;
+use App\Model\Configuration\RtmpConfiguration;
 use Symfony\Component\Config\Definition\Builder\NodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -20,9 +21,21 @@ class Configuration implements ConfigurationInterface
             ->children()
             ->append($this->getAudioDistributionSection())
             ->append($this->getVideoDistributionSection())
+            ->append($this->getRtmpConfigurationSection())
             ->end();
 
         return $treeBuilder;
+    }
+
+    private function getRtmpConfigurationSection(): NodeDefinition
+    {
+        return (new TreeBuilder('rtmp'))->getRootNode()
+            ->children()
+                ->scalarNode(RtmpConfiguration::STORAGE_NAME)->isRequired()->end()
+                ->integerNode(RtmpConfiguration::ASSET_LICENCE_ID)->isRequired()->end()
+                ->scalarNode(RtmpConfiguration::KEYWORD_ID)->end()
+                ->scalarNode(RtmpConfiguration::TITLE_TEMPLATE)->end()
+            ->end();
     }
 
     private function getAudioDistributionSection(): NodeDefinition

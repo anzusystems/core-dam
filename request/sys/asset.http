@@ -1,0 +1,9 @@
+### Create file from path
+POST {{host}}/api/sys/v1/asset/rtmp
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{haproxySysUserApiToken}}
+
+{
+  "path": "deep/test-1686749225.flv"
+}
