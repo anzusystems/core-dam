@@ -50,7 +50,7 @@ xdebug.log
 # Docker
 .docker-sync*
 .docker-compose-host
-docker-compose.override.yml
+docker-compose.override.yml.old
 
 ###> symfony/framework-bundle ###
 /.env.local

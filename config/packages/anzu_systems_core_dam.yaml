@@ -1,5 +1,19 @@
+parameters:
+  display_title_config:
+    title:
+      source_property_path: 'metadata.customData[title]'
+    headline:
+      source_property_path: 'metadata.customData[headline]'
+    originFileName:
+      source_property_path: 'mainFile?.assetAttributes.originFileName'
+    id:
+      source_property_path: 'id'
+    mainFileId:
+      source_property_path: 'mainFile?.id'
+
 anzu_systems_core_dam:
   settings:
+    not_found_image_id: 'c41ca3a7-af73-46ee-a517-5f3748815c01' # todo
     api_domain: '%env(resolve:string:DOMAIN_CORE_DAM_API)%'
     elastic_index_prefix: '%env(resolve:string:ELASTIC_INDEX_PREFIX)%'
     elastic_language_dictionaries: ['sk']
@@ -13,42 +27,17 @@ anzu_systems_core_dam:
     acl_check_enabled: true
     app_redis: DamRedis
     cache_redis: CacheRedis
+    unsplash_api_client_host: 'https://api.unsplash.com'
+    jw_player_api_client_host: 'https://api.jwplayer.com'
+    limited_asset_licence_files_count: 100
     image_chunk_config:
       min_size: '%env(byte_size:APP_SIZE_MIN_CHUNK_SIZE)%'
       max_size: '%env(byte_size:APP_SIZE_MAX_CHUNK_SIZE)%'
   display_title:
-    image:
-      - 'customData:title'
-      - 'customData:headline'
-      - 'assetTexts:title'
-      - 'assetFileAttributes:originFileName'
-      - 'asset:id'
-      - 'assetFile:id'
-      - 'assetTexts:title'
-    audio:
-      - 'customData:title'
-      - 'customData:headline'
-      - 'assetTexts:title'
-      - 'assetFileAttributes:originFileName'
-      - 'asset:id'
-      - 'assetFile:id'
-      - 'assetTexts:title'
-    video:
-      - 'customData:title'
-      - 'customData:headline'
-      - 'assetTexts:title'
-      - 'assetFileAttributes:originFileName'
-      - 'asset:id'
-      - 'assetFile:id'
-      - 'assetTexts:title'
-    document:
-      - 'customData:title'
-      - 'customData:headline'
-      - 'assetTexts:title'
-      - 'assetFileAttributes:originFileName'
-      - 'asset:id'
-      - 'assetFile:id'
-      - 'assetTexts:title'
+    image: '%display_title_config%'
+    audio: '%display_title_config%'
+    video: '%display_title_config%'
+    document: '%display_title_config%'
   file_operations:
     tmp_dir_path: '/tmp'
     fixtures_dir_path: '%kernel.project_dir%/var/mnt/fixtures'
@@ -80,6 +69,15 @@ anzu_systems_core_dam:
       Flash: ~
       ImageDescription: ~
   image_settings:
+    crop_allow_map:
+      admin_image:
+        crop_allow_list: admin_allow_list
+        ext_system_slugs: [ cms ]
+        domain: admin_domain
+      public_image:
+        crop_allow_list: web_allow_list
+        ext_system_slugs: [ cms ]
+        domain: public_domain
     optimal_resizes: [ 2000, 1000 ]
     enable_crop_cache: true
     color_set:
@@ -104,16 +102,14 @@ anzu_systems_core_dam:
       brown:
         rgb: [154, 0, 5]
     crop_allow_list:
-      admin:
-        domains: [ admin ]
+      admin_allow_list:
         quality_whitelist: [ ]
         crops:
           - { width: 300, height: 200, tags: ['roi_example'], title: '3:2' }  # admin roi example 3:2
           - { width: 0, height: 200, tags: ['list'] }                         # admin DAM listing
           - { width: 200, height: 200, tags: ['roi_example'], title: '1:1' }  # admin roi example 1:1
           - { width: 1920, height: 0, tags: ['detail'] }                      # admin DAM image crop
-      web_cms:
-        domains: [ web_cms ]
+      web_allow_list:
         quality_whitelist: [ 90 ]
         crops:
           - { width: 800, height: 450 }   # anzu web general
@@ -129,11 +125,13 @@ anzu_systems_core_dam:
         crop_storage_name: 'cms.crop'
         chunk_storage_name: 'cms.image'
         size_limit: '%env(byte_size:APP_CMS_IMAGE_MAX_SIZE)%'
+        public_domain: public_domain
+        admin_domain: admin_domain
         roi_width: 16
         roi_height: 9
-        file_versions:
+        file_slots:
           default: default
-          versions: [ default ]
+          slots: [ default ]
         keywords:
           enabled: true
           required: false
@@ -155,7 +153,11 @@ anzu_systems_core_dam:
         storage_name: 'cms.audio'
         chunk_storage_name: 'cms.audio'
         size_limit: '%env(byte_size:APP_CMS_AUDIO_MAX_SIZE)%'
-        file_versions: ~
+        public_domain_name: '%env(resolve:string:DOMAIN_PUBLIC_AUDIO)%'
+        public_storage: 'cms.public_audio'
+        file_slots:
+          default: free
+          slots: [ free, premium ]
         podcast_episode_rss_map:
           title:
             source_property_path: 'title'
@@ -176,7 +178,7 @@ anzu_systems_core_dam:
         storage_name: 'cms.video'
         chunk_storage_name: 'cms.video'
         size_limit: '%env(byte_size:APP_CMS_VIDEO_MAX_SIZE)%'
-        file_versions: ~
+        file_slots: ~
       document:
         enabled: true
         title: ['customData:title']
@@ -184,9 +186,9 @@ anzu_systems_core_dam:
         storage_name: 'cms.document'
         chunk_storage_name: 'cms.document'
         size_limit: '%env(byte_size:APP_CMS_DOCUMENT_MAX_SIZE)%'
-        file_versions: ~
+        file_slots: ~
   domains:
-    admin:
+    admin_domain:
       domain: '%env(resolve:string:DOMAIN_ADMIN_WEB)%'
-    web_cms:
+    public_domain:
       domain: '%env(resolve:string:DOMAIN_CMS_WEB)%'

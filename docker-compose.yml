@@ -47,7 +47,7 @@ services:
       - anzusystems_network
 
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.17.8
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.8.1
     environment:
       - cluster.routing.allocation.disk.threshold_enabled=false
       - discovery.type=single-node

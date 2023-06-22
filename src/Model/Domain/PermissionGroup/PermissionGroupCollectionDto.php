@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Model\Domain\PermissionGroup;
 
+use AnzuSystems\CoreDamBundle\Entity\PermissionGroup;
 use AnzuSystems\SerializerBundle\Attributes\Serialize;
 use AnzuSystems\SerializerBundle\Handler\Handlers\EntityIdHandler;
-use App\Entity\PermissionGroup;
 use Doctrine\Common\Collections\ArrayCollection;
 
 final class PermissionGroupCollectionDto

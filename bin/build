@@ -91,7 +91,6 @@ if [ -f /.dockerenv ]; then
     echo "[INFO] Running doctrine database migrations"
     bin/console doctrine:migrations:sync-metadata-storage --no-interaction
     bin/console doctrine:migrations:migrate --no-interaction --allow-no-migration
-    bin/console doctrine:schema:update --force
 
     echo "[INFO] Creating mandatory users"
     bin/console anzu:mandatory-create:user

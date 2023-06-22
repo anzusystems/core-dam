@@ -1,0 +1,5 @@
+anzu_systems_serializer:
+  parameter_bag:
+    AnzuSystems\CoreDamBundle\Entity\DamUser: App\Entity\User
+    AnzuSystems\Contracts\Entity\AnzuUser: App\Entity\User
+    AnzuSystems\Contracts\Entity\AnzuPermissionGroup: AnzuSystems\CoreDamBundle\Entity\PermissionGroup

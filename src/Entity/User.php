@@ -10,19 +10,18 @@ use AnzuSystems\Contracts\Entity\Interfaces\TimeTrackingInterface;
 use AnzuSystems\Contracts\Entity\Interfaces\UserTrackingInterface;
 use AnzuSystems\Contracts\Entity\Traits\TimeTrackingTrait;
 use AnzuSystems\CoreDamBundle\App;
+use AnzuSystems\CoreDamBundle\Entity\AssetLicence;
 use AnzuSystems\CoreDamBundle\Entity\DamUser;
-use AnzuSystems\CoreDamBundle\Entity\Traits\PersonNameTrait;
+use AnzuSystems\CoreDamBundle\Entity\PermissionGroup;
 use AnzuSystems\CoreDamBundle\Entity\Traits\UserTrackingTrait;
 use AnzuSystems\SerializerBundle\Attributes\Serialize;
 use AnzuSystems\SerializerBundle\Handler\Handlers\EntityIdHandler;
-use App\Security\Permission\UserPermissionResolver;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
-use App\Validator\Constraints as AppAssert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_email', fields: ['email'])]
@@ -35,25 +34,11 @@ class User extends DamUser implements
 {
     use UserTrackingTrait;
     use TimeTrackingTrait;
-    use PersonNameTrait;
 
     public const ID_ANONYMOUS = 1;
     public const ID_CONSOLE = 2;
     public const ID_ADMIN = 3;
     public const ID_BASIC_USER = 4;
-
-    #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: 'AUTO')]
-    #[ORM\Column(type: Types::INTEGER)]
-    #[Serialize]
-    protected ?int $id = null;
-
-    /**
-     * Unique Email of user.
-     */
-    #[ORM\Column(type: Types::STRING, length: 180)]
-    #[Serialize]
-    private string $email;
 
     /**
      * Authorization password for system users.
@@ -67,46 +52,28 @@ class User extends DamUser implements
     #[ORM\Column(type: Types::STRING, nullable: true)]
     private ?string $apiToken;
 
-    /**
-     * List of permissions which belongs to user.
-     *
-     * @var array<string, int>
-     */
-    #[ORM\Column(type: Types::JSON)]
-    #[AppAssert\PermissionValid(requireAll: false)]
-    #[Serialize(strategy: Serialize::KEYS_VALUES)]
-    private array $permissions;
-
     #[ORM\ManyToMany(targetEntity: PermissionGroup::class, inversedBy: 'users', fetch: App::DOCTRINE_EXTRA_LAZY, indexBy: 'id')]
     #[ORM\JoinTable]
     #[Serialize(handler: EntityIdHandler::class, type: PermissionGroup::class)]
-    private Collection $permissionGroups;
+    protected Collection $permissionGroups;
+
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
+    private ?AssetLicence $selectedLicence;
 
     public function __construct()
     {
-        $this->setId(null);
-        $this->setEmail('');
-        $this->setPassword(null);
+        parent::__construct();
         $this->setPermissions([]);
         $this->setApiToken(null);
+        $this->setPassword(null);
         $this->setEnabled(true);
         $this->setRoles([self::ROLE_USER]);
         $this->setPermissionGroups(new ArrayCollection());
         $this->setAssetLicences(new ArrayCollection());
         $this->setAdminToExtSystems(new ArrayCollection());
         $this->setUserToExtSystems(new ArrayCollection());
-    }
-
-    public function getEmail(): string
-    {
-        return $this->email;
-    }
-
-    public function setEmail(string $email): self
-    {
-        $this->email = $email;
-
-        return $this;
+        $this->setSelectedLicence(null);
     }
 
     public function getPassword(): ?string
@@ -131,48 +98,6 @@ class User extends DamUser implements
         $this->apiToken = $apiToken;
 
         return $this;
-    }
-
-    public function getPermissions(): array
-    {
-        return $this->permissions;
-    }
-
-    public function setPermissions(array $permissions): self
-    {
-        $this->permissions = $permissions;
-
-        return $this;
-    }
-    /**
-     * @return Collection<int, PermissionGroup>
-     */
-    public function getPermissionGroups(): Collection
-    {
-        return $this->permissionGroups;
-    }
-
-    public function setPermissionGroups(Collection $permissionGroups): self
-    {
-        $this->permissionGroups = $permissionGroups;
-
-        return $this;
-    }
-
-    #[Serialize(strategy: Serialize::KEYS_VALUES)]
-    public function getResolvedPermissions(): array
-    {
-        return UserPermissionResolver::resolve($this);
-    }
-
-    #[Serialize]
-    public function getPermissionGroupTitles(): array
-    {
-        return $this
-            ->getPermissionGroups()
-            ->map(fn (PermissionGroup $permissionGroup): string => $permissionGroup->getTitle())
-            ->toArray()
-        ;
     }
 
     public function getAuthId(): string
@@ -200,6 +125,18 @@ class User extends DamUser implements
         if (is_int($foundKey)) {
             unset($this->roles[$foundKey]);
         }
+
+        return $this;
+    }
+
+    public function getSelectedLicence(): ?AssetLicence
+    {
+        return $this->selectedLicence;
+    }
+
+    public function setSelectedLicence(?AssetLicence $selectedLicence): self
+    {
+        $this->selectedLicence = $selectedLicence;
 
         return $this;
     }
