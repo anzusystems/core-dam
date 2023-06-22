@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Serializer\Handler\Handlers;
 
 use AnzuSystems\CoreDamBundle\Domain\Configuration\ConfigurationProvider;
+use AnzuSystems\CoreDamBundle\Domain\Configuration\ExtSystemConfigurationProvider;
 use AnzuSystems\CoreDamBundle\Domain\Image\Crop\CropFactory;
 use AnzuSystems\CoreDamBundle\Domain\Image\ImageUrlFactory;
 use AnzuSystems\CoreDamBundle\Entity\Asset;
@@ -13,7 +14,6 @@ use AnzuSystems\CoreDamBundle\Entity\RegionOfInterest;
 use AnzuSystems\CoreDamBundle\Model\Dto\Image\Crop\RequestedCropDto;
 use AnzuSystems\CoreDamBundle\Model\Dto\Image\CropAllowItem;
 use AnzuSystems\CoreDamBundle\Model\Enum\AssetFileProcessStatus;
-use AnzuSystems\CoreDamBundle\Model\Enum\ImageCropTag;
 use AnzuSystems\CoreDamBundle\Repository\RegionOfInterestRepository;
 use AnzuSystems\SerializerBundle\Exception\SerializerException;
 use AnzuSystems\SerializerBundle\Handler\Handlers\AbstractHandler;
@@ -27,6 +27,7 @@ final class LegacyUgcImageLinksHandler extends AbstractHandler
         private readonly RegionOfInterestRepository $roiRepository,
         private readonly ImageUrlFactory $imageUrlFactory,
         private readonly ConfigurationProvider $configurationProvider,
+        private readonly ExtSystemConfigurationProvider $extSystemConfigurationProvider,
     ) {
     }
 
@@ -85,9 +86,10 @@ final class LegacyUgcImageLinksHandler extends AbstractHandler
         }
 
         $cropDto = $this->cropFactory->prepareImageCrop($roi, $reqCrop, $imageFile);
+        $config = $this->extSystemConfigurationProvider->getImageExtSystemConfiguration($imageFile->getExtSystem()->getSlug());
 
         return [
-            'url' => $this->configurationProvider->getAdminDomain() . $this->imageUrlFactory->generatePublicUrl(
+            'url' => $config->getAdminDomain() . $this->imageUrlFactory->generatePublicUrl(
                 imageId: (string) $imageFile->getId(),
                 width: $reqCrop->getRequestWidth(),
                 height: $reqCrop->getRequestHeight(),

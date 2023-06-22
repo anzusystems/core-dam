@@ -6,6 +6,7 @@ namespace App\Distribution\Modules\Factory;
 
 use AnzuSystems\CoreDamBundle\Distribution\AbstractDistributionDtoFactory;
 use AnzuSystems\CoreDamBundle\Domain\Configuration\ConfigurationProvider;
+use AnzuSystems\CoreDamBundle\Domain\Configuration\ExtSystemConfigurationProvider;
 use AnzuSystems\CoreDamBundle\Domain\Image\ImageUrlFactory;
 use AnzuSystems\CoreDamBundle\Entity\ImageFile;
 use App\Model\Dto\Artemis\ArtemisImageDto;
@@ -19,6 +20,7 @@ abstract class AbstractArtemisDtoFactory extends AbstractDistributionDtoFactory
 
     protected ConfigurationProvider $configurationProvider;
     protected ImageUrlFactory $imageUrlFactory;
+    protected ExtSystemConfigurationProvider $extSystemConfigurationProvider;
 
     #[Required]
     public function setImageUrlFactory(ImageUrlFactory $imageUrlFactory): void
@@ -32,15 +34,22 @@ abstract class AbstractArtemisDtoFactory extends AbstractDistributionDtoFactory
         $this->configurationProvider = $configurationProvider;
     }
 
+    #[Required]
+    public function setExtSystemConfigurationProvider(ExtSystemConfigurationProvider $extSystemConfigurationProvider): void
+    {
+        $this->extSystemConfigurationProvider = $extSystemConfigurationProvider;
+    }
+
     protected function getImage(ImageFile $assetFile): ?ArtemisImageDto
     {
         $cropList = $this->configurationProvider->getImageAdminSizeList(self::ARTEMIS_DISTRIBUTION_TAG);
         $cropAllowItem = reset($cropList) ?: null;
+        $config = $this->extSystemConfigurationProvider->getImageExtSystemConfiguration($assetFile->getExtSystem()->getSlug());
 
         if ($cropAllowItem) {
             return (new ArtemisImageDto())
                 ->setUrl(
-                    $this->configurationProvider->getAdminDomain() . $this->imageUrlFactory->generatePublicUrl(
+                    $config->getAdminDomain() . $this->imageUrlFactory->generatePublicUrl(
                         imageId: (string) $assetFile->getId(),
                         width: $cropAllowItem->getWidth(),
                         height: $cropAllowItem->getHeight(),
