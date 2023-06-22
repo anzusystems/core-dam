@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a14874c83fb735e26128231c69b08e5f",
+    "content-hash": "32272b043640af55ee105ea24630be64",
     "packages": [
         {
             "name": "anzusystems/auth-bundle",
@@ -201,16 +201,16 @@
         },
         {
             "name": "anzusystems/core-dam-bundle",
-            "version": "1.0.0",
+            "version": "dev-develop",
             "source": {
                 "type": "git",
                 "url": "https://github.com/anzusystems/core-dam-bundle.git",
-                "reference": "c0c9abf3a38d58f989e73f0a0481c1f4cfc9f97a"
+                "reference": "2fb4938f339cc3b326cf49810c25d81804e7448c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/anzusystems/core-dam-bundle/zipball/c0c9abf3a38d58f989e73f0a0481c1f4cfc9f97a",
-                "reference": "c0c9abf3a38d58f989e73f0a0481c1f4cfc9f97a",
+                "url": "https://api.github.com/repos/anzusystems/core-dam-bundle/zipball/2fb4938f339cc3b326cf49810c25d81804e7448c",
+                "reference": "2fb4938f339cc3b326cf49810c25d81804e7448c",
                 "shasum": ""
             },
             "require": {
@@ -235,25 +235,25 @@
                 "php": ">=8.2",
                 "php-ffmpeg/php-ffmpeg": "^1.0",
                 "phpexiftool/exiftool": "^10.16",
-                "symfony/dependency-injection": "^6.2",
-                "symfony/doctrine-bridge": "^6.2",
-                "symfony/dotenv": "^6.2",
-                "symfony/expression-language": "^6.2",
-                "symfony/framework-bundle": "^6.2",
-                "symfony/http-client": "^6.2",
-                "symfony/http-kernel": "^6.2",
-                "symfony/lock": "^6.2",
-                "symfony/messenger": "^6.2",
-                "symfony/mime": "^6.2",
-                "symfony/options-resolver": "^6.2",
+                "symfony/dependency-injection": "^6.3",
+                "symfony/doctrine-bridge": "^6.3",
+                "symfony/dotenv": "^6.3",
+                "symfony/expression-language": "^6.3",
+                "symfony/framework-bundle": "^6.3",
+                "symfony/http-client": "^6.3",
+                "symfony/http-kernel": "^6.3",
+                "symfony/lock": "^6.3",
+                "symfony/messenger": "^6.3",
+                "symfony/mime": "^6.3",
+                "symfony/options-resolver": "^6.3",
                 "symfony/polyfill-uuid": "^1.24",
-                "symfony/process": "^6.2",
-                "symfony/property-access": "^6.2",
-                "symfony/runtime": "^6.2",
-                "symfony/security-bundle": "^6.2",
-                "symfony/uid": "^6.2",
-                "symfony/validator": "^6.2",
-                "symfony/yaml": "^6.2"
+                "symfony/process": "^6.3",
+                "symfony/property-access": "^6.3",
+                "symfony/runtime": "^6.3",
+                "symfony/security-bundle": "^6.3",
+                "symfony/uid": "^6.3",
+                "symfony/validator": "^6.3",
+                "symfony/yaml": "^6.3"
             },
             "replace": {
                 "symfony/polyfill-ctype": "*",
@@ -289,9 +289,9 @@
             "description": "Dam core bundle",
             "support": {
                 "issues": "https://github.com/anzusystems/core-dam-bundle/issues",
-                "source": "https://github.com/anzusystems/core-dam-bundle/tree/1.0.0"
+                "source": "https://github.com/anzusystems/core-dam-bundle/tree/develop"
             },
-            "time": "2023-06-20T07:49:41+00:00"
+            "time": "2023-06-22T09:37:44+00:00"
         },
         {
             "name": "anzusystems/serializer-bundle",
@@ -10320,7 +10320,9 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {
+        "anzusystems/core-dam-bundle": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {

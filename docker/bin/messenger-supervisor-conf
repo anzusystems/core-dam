@@ -2,15 +2,17 @@
 # Script to generate specified messenger supervisor conf files inside the container
 
 SUPERVISOR_DEFAULT_MESSENGER_NAMES='
-    anzu_core_dam_image_file_change_state
-    anzu_core_dam_video_file_change_state
-    anzu_core_dam_audio_file_change_state
-    anzu_core_dam_document_file_change_state
-    anzu_core_dam_asset_change_state
-    anzu_core_dam_asset_file_metadata_process
-    anzu_core_dam_distribution
-    anzu_core_dam_distribution_remote_check
-    core_dam_log
+     anzu_core_dam_image_file_change_state
+     anzu_core_dam_video_file_change_state
+     anzu_core_dam_audio_file_change_state
+     anzu_core_dam_document_file_change_state
+     anzu_core_dam_asset_change_state
+     anzu_core_dam_asset_file_metadata_process
+     anzu_core_dam_distribution
+     anzu_core_dam_distribution_remote_check
+     core_dam_log
+     anzu_core_dam_cache_purge
+     anzu_core_dam_property_refresh
 '
 
 export SUPERVISOR_MESSENGER_NAMES=${SUPERVISOR_MESSENGER_NAMES:-${SUPERVISOR_DEFAULT_MESSENGER_NAMES}}

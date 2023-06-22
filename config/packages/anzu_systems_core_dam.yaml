@@ -19,10 +19,10 @@ anzu_systems_core_dam:
     elastic_language_dictionaries: ['sk']
     distribution_auth_redirect_url: ''
     default_ext_system_id: 1
-    default_asset_licence_id: 1
+    default_asset_licence_id: 100000
     allow_select_ext_system: false
     allow_select_licence: false
-    admin_allow_list_name: 'admin'
+    admin_allow_list_name: 'admin_allow_list'
     max_bulk_item_count: 10
     acl_check_enabled: true
     app_redis: DamRedis
