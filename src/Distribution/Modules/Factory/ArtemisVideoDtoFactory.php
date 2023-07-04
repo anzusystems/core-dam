@@ -26,6 +26,7 @@ final class ArtemisVideoDtoFactory extends AbstractArtemisDtoFactory
     ): ArtemisMediaDto {
         $mediaDto = new ArtemisMediaDto();
         $mediaDto
+            ->setAnzuMediaId((string) $assetFile->getAsset()->getId())
             ->setTitle($distribution->getTexts()->getTitle())
             ->setDescription($distribution->getTexts()->getDescription())
             ->setCreateArticle($distribution->getFlags()->isCreateArticle())

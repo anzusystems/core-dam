@@ -9,7 +9,6 @@ use AnzuSystems\CoreDamBundle\Entity\AudioFile;
 use AnzuSystems\CoreDamBundle\Entity\ImageFile;
 use AnzuSystems\CoreDamBundle\Entity\JwDistribution;
 use AnzuSystems\CoreDamBundle\Entity\PodcastEpisode;
-use AnzuSystems\CoreDamBundle\Entity\YoutubeDistribution;
 use AnzuSystems\CoreDamBundle\Model\Enum\AssetFileProcessStatus;
 use AnzuSystems\CoreDamBundle\Repository\DistributionRepository;
 use App\App;
@@ -42,6 +41,7 @@ final class ArtemisAudioDtoFactory extends AbstractArtemisDtoFactory
             ->setCreateArticle($distribution->getFlags()->isCreateArticle())
             ->setBonus($distribution->getFlags()->isBonusEpisode())
             ->setMediaChannel((new ArtemisMediaChannel())->setAnzuId($distribution->getTexts()->getPodcastId()))
+            ->setAnzuPodcastEpisodeId($distribution->getTexts()->getEpisodeId())
             ->setDuration($distribution->getAttributes()->getDuration())
             ->setPremiumDirectSourceDuration($distribution->getAttributes()->getPremiumDuration());
 

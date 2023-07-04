@@ -11,8 +11,7 @@ use DateTimeImmutable;
 class ArtemisAudioMediaDto extends ArtemisMediaDto
 {
     #[Serialize]
-    private string $anzuMediaId = '';
-
+    protected string $anzuPodcastEpisodeId = '';
     #[Serialize]
     private ArtemisMediaChannel $mediaChannel;
 
@@ -44,6 +43,18 @@ class ArtemisAudioMediaDto extends ArtemisMediaDto
         return $this;
     }
 
+    public function getAnzuPodcastEpisodeId(): string
+    {
+        return $this->anzuPodcastEpisodeId;
+    }
+
+    public function setAnzuPodcastEpisodeId(string $anzuPodcastEpisodeId): self
+    {
+        $this->anzuPodcastEpisodeId = $anzuPodcastEpisodeId;
+
+        return $this;
+    }
+
     public function getPremiumSourceUrl(): string
     {
         return $this->premiumSourceUrl;
@@ -52,18 +63,6 @@ class ArtemisAudioMediaDto extends ArtemisMediaDto
     public function setPremiumSourceUrl(string $premiumSourceUrl): self
     {
         $this->premiumSourceUrl = $premiumSourceUrl;
-
-        return $this;
-    }
-
-    public function getAnzuMediaId(): string
-    {
-        return $this->anzuMediaId;
-    }
-
-    public function setAnzuMediaId(string $anzuMediaId): self
-    {
-        $this->anzuMediaId = $anzuMediaId;
 
         return $this;
     }

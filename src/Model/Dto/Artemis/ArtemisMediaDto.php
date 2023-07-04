@@ -37,6 +37,9 @@ class ArtemisMediaDto
     protected ArtemisMediaType $type = ArtemisMediaType::Default;
 
     #[Serialize]
+    protected string $anzuMediaId = '';
+
+    #[Serialize]
     protected ?string $youtubeId = null;
 
     #[Serialize]
@@ -57,6 +60,18 @@ class ArtemisMediaDto
     public function __construct()
     {
         $this->setRubric(new ArtemisMediaRubricDto());
+    }
+
+    public function getAnzuMediaId(): string
+    {
+        return $this->anzuMediaId;
+    }
+
+    public function setAnzuMediaId(string $anzuMediaId): static
+    {
+        $this->anzuMediaId = $anzuMediaId;
+
+        return $this;
     }
 
     public function getExternalId(): string
