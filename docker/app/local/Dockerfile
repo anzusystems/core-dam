@@ -1,4 +1,4 @@
-FROM petitpress.azurecr.io/php82:2.1.0-fpm-nginx-vipsffmpeg-xdebug
+FROM petitpress.azurecr.io/php82:2.3.0-fpm-nginx-vipsffmpeg-xdebug
 
 LABEL maintainer="Lubomir Stanko <lubomir.stanko@petitpress.sk>"
 #
