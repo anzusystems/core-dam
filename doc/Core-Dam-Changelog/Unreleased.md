@@ -4,10 +4,5 @@ planned
 ### Added
 
 ### Changed
-- Fixed storage bucket names from "fra" to "bel".
-- Update dockers to php82 [[v2.3.0](https://dev.azure.com/petitpress/DevOps/_wiki/wikis/PHP%208.2%20Changelog/2439/2.3.0)] [[#74218](https://dev.azure.com/petitpress/Devops/_workitems/edit/74218/)]
-  - Update php to 8.2.9
-  - Update lot of other packages - see php82 docu for more info
-  - Update docker configuration
 
 ### Removed
