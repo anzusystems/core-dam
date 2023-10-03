@@ -53,6 +53,12 @@ anzu_systems_core_dam:
         crops:
           - { width: 800, height: 450 }   # anzu web general
           - { width: 350, height: 197 }   # anzu web box item photo
+          - { width: 1000, height: 0 }    # web article detail image set (automatic height)
+          - { width: 970, height: 0 }     # web article detail image set (automatic height)
+          - { width: 625, height: 0 }     # web article detail image set (automatic height)
+          - { width: 448, height: 0 }     # web article detail image set (automatic height)
+          - { width: 300, height: 0 }     # web article detail image set (automatic height)
+          - { width: 288, height: 0 }     # web article detail image set (automatic height)
       blog_public_image:
         quality_whitelist: [ 90 ]
         crops:
