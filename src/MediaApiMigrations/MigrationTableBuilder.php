@@ -28,6 +28,15 @@ final class MigrationTableBuilder
         $this->damMediaApiMigConnectionDecorator = new ConnectionDecorator($damMediaApiMigConnection);
     }
 
+    public function updateDeltaTable(): ?int
+    {
+        $lastId = $this->getLasMediaIdFromDelta();
+        $this->outputUtil->info(sprintf('Populate delta table from id %s', $lastId));
+        $this->populate($lastId);
+
+        return $lastId;
+    }
+
     /**
      * @throws Exception
      */
@@ -42,12 +51,16 @@ final class MigrationTableBuilder
             $this->createTable();
         }
 
-        $lastId = $config->getFromId();
-        $progress = $this->outputUtil->createProgressBar($this->getMediaApiImagesCount($lastId, $config->getToId()));
+        $this->populate($config->getFromId(), $config->getToId());
+    }
+
+    private function populate(int $fromId = null, int $toId = null): void
+    {
+        $progress = $this->outputUtil->createProgressBar($this->getMediaApiImagesCount($fromId, $toId));
         $progress->setFormat('debug');
         $progress->start();
 
-        $rows = $this->getMediaApiImages($lastId, $config->getToId())->fetchAllAssociative();
+        $rows = $this->getMediaApiImages($fromId, $toId)->fetchAllAssociative();
         while (false === empty($rows)) {
             foreach ($rows as $row) {
                 $progress->advance();
@@ -57,12 +70,12 @@ final class MigrationTableBuilder
             }
 
             $this->damMediaApiMigConnectionDecorator->flush();
-            $rows = $this->getMediaApiImages($lastId, $config->getToId())->fetchAllAssociative();
+            $rows = $this->getMediaApiImages($lastId, $toId)->fetchAllAssociative();
         }
 
         $progress->finish();
         $this->outputUtil->writeln('');
-        $this->outputUtil->info('Delta table created');
+        $this->outputUtil->info('Delta table populated');
     }
 
     private function insertToDelta(array $row): void
@@ -76,6 +89,7 @@ final class MigrationTableBuilder
                 'media_api_id' => $row['id_image'],
                 'source_url' => $row['source_url'] ?? '',
                 'description' => $row['description'] ?? '',
+                'author_name' => $row['author'] ?? '',
                 'author_id' => $this->getAuthorId($row),
                 'keywords' => json_encode($this->getKeywords($row)),
                 'created_at' => $row['created_at'],
@@ -89,6 +103,19 @@ final class MigrationTableBuilder
             ],
             ['media_api_id = new_row.media_api_id']
         );
+    }
+
+    private function getLasMediaIdFromDelta(): ?int
+    {
+        $res = $this->damMediaApiMigConnection->fetchOne(
+            'SELECT max(media_api_id) FROM dam_media_api_mig'
+        );
+
+        if (is_numeric($res)) {
+            return (int) $res;
+        }
+
+        return null;
     }
 
     private function getKeywords(array $row): array
@@ -131,7 +158,6 @@ final class MigrationTableBuilder
      */
     private function createTable(): void
     {
-        // todo status index
         $sql = '
         CREATE TABLE IF NOT EXISTS dam_media_api_mig(
             media_api_id int unsigned auto_increment primary key,
@@ -139,6 +165,7 @@ final class MigrationTableBuilder
             main_file_id char(36) not null default \'\',
             source_url varchar(4096) not null default \'\',
             description varchar(500) not null default \'\',
+            author_name VARCHAR(255) NOT NULL DEFAULT \'\',
             author_id char(36) default null,
             keywords json not null,
             created_at datetime default null,

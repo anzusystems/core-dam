@@ -15,8 +15,7 @@ final class Version20230414144845 extends AbstractMigration
             UPDATE custom_form_element cfe 
             INNER JOIN custom_form cf on cfe.form_id = cf.id 
             SET cfe.attributes_max_value = 255 
-            WHERE cf.ext_system_id = 4 AND cfe.key_name = 'author' 
-            LIMIT 1;
+            WHERE cf.ext_system_id = 4 AND cfe.key_name = 'author'; 
         ");
     }
 
@@ -26,8 +25,7 @@ final class Version20230414144845 extends AbstractMigration
             UPDATE custom_form_element cfe 
             INNER JOIN custom_form cf on cfe.form_id = cf.id 
             SET cfe.attributes_max_value = 64 
-            WHERE cf.ext_system_id = 4 AND cfe.key_name = 'author' 
-            LIMIT 1;
+            WHERE cf.ext_system_id = 4 AND cfe.key_name = 'author'; 
         ");
     }
 }

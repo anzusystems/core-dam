@@ -4,28 +4,12 @@ declare(strict_types=1);
 
 namespace App\Command;
 
-use AnzuSystems\CoreDamBundle\Model\Enum\AssetType;
-use App\DamMigrations\AdmUserMigrations;
-use App\DamMigrations\AssetAudioFreeMigrations;
-use App\DamMigrations\AssetAudioPremiumMigrations;
-use App\DamMigrations\AssetImageMigrations;
-use App\DamMigrations\AssetVideoMigrations;
-use App\DamMigrations\AudioCategoryMigrations;
-use App\DamMigrations\AuthorMigrations;
-use App\DamMigrations\KeywordMigrations;
-use App\DamMigrations\LegacyDamPodcastMigrations;
-use App\DamMigrations\UgcLicenceMigrations;
-use App\DamMigrations\UgcUserMigrations;
-use App\DamMigrations\VideoShowMigrations;
 use App\MediaApiMigrations\ImageMigrationPostProcessor;
 use App\MediaApiMigrations\MediaApiFileCopy;
 use App\MediaApiMigrations\MediaApiMigration;
 use App\MediaApiMigrations\MigrationTableBuilder;
-use App\MediaApiMigrations\PoiToRoiTransformer;
 use App\MediaApiMigrations\UsersMigration;
 use App\Model\MediaApiMigrateConfig;
-use App\Model\MediaApiMigrationIteratorConfig;
-use App\Model\MigrateConfig;
 use Exception;
 use League\Flysystem\FilesystemException;
 use Symfony\Component\Console\Attribute\AsCommand;

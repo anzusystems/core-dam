@@ -27,7 +27,7 @@ final class KeywordProvider
      */
     public function getKeyword(string $title, int $extSystemId): string
     {
-        $title = StringHelper::parseString($title);
+        $title = StringHelper::parseString($title, 255);
         if (isset($this->cache[$extSystemId][$title])) {
             return $this->cache[$extSystemId][$title];
         }

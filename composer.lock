@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c5a5ebb8da254e809804c530b5214b70",
+    "content-hash": "0cc2ae40345e04652a57b99614c290b5",
     "packages": [
         {
             "name": "anzusystems/auth-bundle",
@@ -203,16 +203,16 @@
         },
         {
             "name": "anzusystems/core-dam-bundle",
-            "version": "1.1.1",
+            "version": "1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/anzusystems/core-dam-bundle.git",
-                "reference": "52f9fe8f0dd4b11638a8b6404dd6e3424e03618f"
+                "reference": "7b9256961de1a1db41655c0f81c00ddd7fa0d218"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/anzusystems/core-dam-bundle/zipball/52f9fe8f0dd4b11638a8b6404dd6e3424e03618f",
-                "reference": "52f9fe8f0dd4b11638a8b6404dd6e3424e03618f",
+                "url": "https://api.github.com/repos/anzusystems/core-dam-bundle/zipball/7b9256961de1a1db41655c0f81c00ddd7fa0d218",
+                "reference": "7b9256961de1a1db41655c0f81c00ddd7fa0d218",
                 "shasum": ""
             },
             "require": {
@@ -291,9 +291,9 @@
             "description": "Dam core bundle",
             "support": {
                 "issues": "https://github.com/anzusystems/core-dam-bundle/issues",
-                "source": "https://github.com/anzusystems/core-dam-bundle/tree/1.1.1"
+                "source": "https://github.com/anzusystems/core-dam-bundle/tree/1.2.0"
             },
-            "time": "2023-07-21T09:51:50+00:00"
+            "time": "2023-10-26T11:45:48+00:00"
         },
         {
             "name": "anzusystems/serializer-bundle",

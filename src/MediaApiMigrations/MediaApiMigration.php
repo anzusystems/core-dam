@@ -7,22 +7,37 @@ namespace App\MediaApiMigrations;
 use AnzuSystems\Contracts\Entity\Interfaces\TimeTrackingInterface;
 use AnzuSystems\Contracts\Entity\Interfaces\UserTrackingInterface;
 use AnzuSystems\CoreDamBundle\Command\Traits\OutputUtilTrait;
+use AnzuSystems\CoreDamBundle\Domain\Asset\AssetFactory;
 use AnzuSystems\CoreDamBundle\Domain\Asset\AssetTextsProcessor;
 use AnzuSystems\CoreDamBundle\Domain\AssetFile\AssetFileStatusFacadeProvider;
+use AnzuSystems\CoreDamBundle\Domain\AssetFile\FileProcessor\AssetFileStorageOperator;
+use AnzuSystems\CoreDamBundle\Domain\AssetFile\FileProcessor\FileAttributesProcessor;
+use AnzuSystems\CoreDamBundle\Domain\AssetFileMetadata\AssetFileMetadataManager;
+use AnzuSystems\CoreDamBundle\Domain\Image\FileProcessor\OptimalCropsProcessor;
 use AnzuSystems\CoreDamBundle\Domain\Image\ImageFactory;
 use AnzuSystems\CoreDamBundle\Domain\Image\ImageManager;
 use AnzuSystems\CoreDamBundle\Domain\RegionOfInterest\RegionOfInterestManager;
+use AnzuSystems\CoreDamBundle\Entity\AssetFileMetadata;
+use AnzuSystems\CoreDamBundle\Entity\AssetLicence;
 use AnzuSystems\CoreDamBundle\Entity\Author;
 use AnzuSystems\CoreDamBundle\Entity\ImageFile;
 use AnzuSystems\CoreDamBundle\Entity\Keyword;
 use AnzuSystems\CoreDamBundle\Entity\RegionOfInterest;
+use AnzuSystems\CoreDamBundle\Exception\AssetFileProcessFailed;
+use AnzuSystems\CoreDamBundle\Exception\DuplicateAssetFileException;
+use AnzuSystems\CoreDamBundle\Exiftool\Exiftool;
 use AnzuSystems\CoreDamBundle\FileSystem\AbstractFilesystem;
 use AnzuSystems\CoreDamBundle\FileSystem\FileSystemProvider;
+use AnzuSystems\CoreDamBundle\FileSystem\MimeGuesser;
 use AnzuSystems\CoreDamBundle\FileSystem\TmpLocalFilesystem;
 use AnzuSystems\CoreDamBundle\Helper\StringHelper;
 use AnzuSystems\CoreDamBundle\Model\Dto\File\AdapterFile;
+use AnzuSystems\CoreDamBundle\Model\Enum\AssetFileFailedType;
 use AnzuSystems\CoreDamBundle\Model\Enum\AssetFileProcessStatus;
+use AnzuSystems\CoreDamBundle\Model\Enum\AssetStatus;
+use AnzuSystems\CoreDamBundle\Model\Enum\ImageMimeTypes;
 use AnzuSystems\CoreDamBundle\Repository\AssetLicenceRepository;
+use AnzuSystems\CoreDamBundle\Repository\ImageFileRepository;
 use App\App;
 use App\Entity\User;
 use App\Model\Dto\Image\PoiDto;
@@ -34,6 +49,7 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Exception\ORMException;
+use Doctrine\ORM\NonUniqueResultException;
 use League\Flysystem\FilesystemException;
 use RuntimeException;
 use Symfony\Component\HttpFoundation\File\File;
@@ -55,6 +71,8 @@ final class MediaApiMigration
     private readonly ConnectionDecorator $damMediaApiMigConnectionDecorator;
 
     public function __construct(
+        private readonly array $exifImageMetadata,
+        private readonly array $exifCommonMetadata,
         private readonly MigrationTableIterator $migrationIterator,
         private readonly FileSystemProvider $fileSystemProvider,
         private readonly ImageManager $imageManager,
@@ -67,6 +85,14 @@ final class MediaApiMigration
         private readonly PoiToRoiTransformer $poiToRoiTransformer,
         private readonly EntityManagerInterface $entityManager,
         private readonly AssetTextsProcessor $assetTextsProcessor,
+        private readonly MimeGuesser $mimeGuesser,
+        private readonly AssetFactory $assetFactory,
+        protected readonly AssetFileMetadataManager $assetFileMetadataManager,
+        protected FileAttributesProcessor $fileAttributesPostProcessor,
+        protected readonly ImageFileRepository $imageFileRepository,
+        protected AssetFileStorageOperator $assetFileStorageOperator,
+        private readonly OptimalCropsProcessor $optimalCropsProcessor,
+        private readonly Exiftool $exiftool,
     ) {
         $this->damMediaApiMigConnectionDecorator = new ConnectionDecorator($damMediaApiMigConnection);
     }
@@ -143,6 +169,14 @@ final class MediaApiMigration
 
         try {
             $image = $this->createImage($row);
+        } catch (DuplicateAssetFileException $e) {
+            $this->updateRow(
+                mediaApiId: $row->getMediaApiId(),
+                status: self::STATUS_MIGRATED,
+                mainFileId: (string) $e->getOldAsset()->getId()
+            );
+
+            return;
         } catch (Throwable $e) {
             $this->updateRow(
                 mediaApiId: $row->getMediaApiId(),
@@ -186,6 +220,8 @@ final class MediaApiMigration
     /**
      * @throws FilesystemException
      * @throws ORMException
+     * @throws AssetFileProcessFailed
+     * @throws DuplicateAssetFileException
      */
     private function createImage(ImageMigrationDto $row): ImageFile
     {
@@ -198,10 +234,8 @@ final class MediaApiMigration
             title: 'Migration Licence',
             extSystemId: MigrationTableBuilder::CMS_EXT_ID
         );
+        $image = $this->createImageFile($adapterFile, $licence);
 
-        $image = $this->imageFactory->createFromFile(file: $adapterFile, assetLicence: $licence);
-        $image->getAsset()->getAssetFlags()->setDescribed(true);
-        $image->getAssetAttributes()->setStatus(AssetFileProcessStatus::Uploaded);
         $this->prepareRoi($row, $file, $image);
 
         $author = $this->getAuthor($row);
@@ -212,20 +246,61 @@ final class MediaApiMigration
         $image->getAssetAttributes()->setOriginFileName(pathinfo($row->getFilePath())['basename'] ?? '');
         $image->getAssetAttributes()->setOriginUrl($this->getSourceUrl($row));
 
-        $this->facadeProvider->getStatusFacade($image)->storeAndProcess($image, $adapterFile);
+        $this->storeAndProcess($image, $adapterFile);
 
-        $image->getAsset()->getMetadata()->setCustomData([
+        $this->processMetadata($image, $adapterFile, $row);
+        $this->updateTrackableFields($image, $row);
+        $this->updateTrackableFields($image->getAsset(), $row);
+
+        $image->getAssetAttributes()->setStatus(AssetFileProcessStatus::Processed);
+
+        $asset = $image->getAsset();
+
+        $asset->getAssetFileProperties()->setWidth(
+            $image->getImageAttributes()->getWidth()
+        );
+        $asset->getAssetFileProperties()->setHeight(
+            $image->getImageAttributes()->getHeight()
+        );
+        $asset->getAttributes()->setStatus(AssetStatus::WithFile);
+
+        return $image;
+    }
+
+    private function storeAndProcess(ImageFile $imageFile, AdapterFile $file): void
+    {
+        $this->assetFileStorageOperator->save($imageFile, $file);
+        // todo temporary removed service for most dominant collor
+        $this->optimalCropsProcessor->process($imageFile, $file);
+    }
+
+    private function processMetadata(ImageFile $imageFile, AdapterFile $file, ImageMigrationDto $row): void
+    {
+        try {
+            $rawMetadata = $this->exiftool->getTags($file->getRealPath());
+            $metadata = $this->provideCommonMetadata($rawMetadata, $this->exifCommonMetadata);
+            $metadata = array_merge(
+                $metadata,
+                $this->provideCommonMetadata($rawMetadata, $this->exifImageMetadata)
+            );
+            $imageFile->getMetadata()->setExifData($metadata);
+            $imageFile->getFlags()->setProcessedMetadata(true);
+        } catch (Throwable $e) {
+            $this->outputUtil->writeln('Exiftool failed ' . $e->getMessage());
+        }
+
+        $imageFile->getAsset()->getMetadata()->setCustomData([
             'title' => StringHelper::parseString(
                 input: $this->getValueOrExifAlt(
-                    image: $image,
+                    image: $imageFile,
                     value: $row->getDescription(),
                     keys: ['Title', 'Subject', 'Headline']
                 ),
-                length: 256
+                length: 255
             ),
             'description' => StringHelper::parseString(
                 input: $this->getValueOrExifAlt(
-                    image: $image,
+                    image: $imageFile,
                     value: $row->getDescription(),
                     keys: ['Description']
                 ),
@@ -233,18 +308,52 @@ final class MediaApiMigration
             ),
         ]);
 
-        $image->getAsset()->getTexts()->setDisplayTitle(
-            $this->assetTextsProcessor->getAssetDisplayTitle($image->getAsset())
+        $imageFile->getAsset()->getTexts()->setDisplayTitle(
+            $this->assetTextsProcessor->getAssetDisplayTitle($imageFile->getAsset())
         );
+        $imageFile->getAsset()->getAssetFlags()->setDescribed(true);
+    }
 
-        if ($image->getAssetAttributes()->getStatus()->isNot(AssetFileProcessStatus::Processed)) {
-            $image->getAsset()->getAssetFlags()->setDescribed(false);
+    /**
+     * @throws AssetFileProcessFailed
+     * @throws NonUniqueResultException
+     * @throws DuplicateAssetFileException
+     */
+    private function createImageFile(AdapterFile $file, AssetLicence $licence): ImageFile
+    {
+        $mimeType = $this->mimeGuesser->guessMime((string) $file->getRealPath());
+
+        if (false === in_array($mimeType, ImageMimeTypes::values(), true)) {
+            throw new AssetFileProcessFailed(AssetFileFailedType::InvalidMimeType);
+        }
+        $checksum = MimeGuesser::checksumFromPath($file->getRealPath());
+        $originAsset = $this->imageFileRepository->findProcessedByChecksumAndLicence(
+            checksum: $checksum,
+            licence: $licence,
+        );
+        if ($originAsset) {
+            throw new DuplicateAssetFileException($originAsset, (new ImageFile()));
         }
 
-        $this->updateTrackableFields($image, $row);
-        $this->updateTrackableFields($image->getAsset(), $row);
+        $metadata = new AssetFileMetadata();
+        $this->assetFileMetadataManager->create($metadata, false);
 
-        return $image;
+        $assetFile = (new ImageFile());
+        $assetFile
+            ->setMetadata($metadata)
+            ->setLicence($licence);
+
+        $assetFile->getAssetAttributes()
+            ->setMimeType($mimeType)
+            ->setSize($file->getSize());
+
+        $assetFile->getAssetAttributes()
+            ->setChecksum($checksum);
+
+        $this->assetFactory->createForAssetFile($assetFile, $licence);
+        $this->imageManager->create($assetFile, false);
+
+        return $assetFile;
     }
 
     private function getValueOrExifAlt(ImageFile $image, string $value, array $keys): string
@@ -255,7 +364,7 @@ final class MediaApiMigration
         }
 
         foreach ($keys as $key) {
-            if (isset($exifData[$key]) && false === empty($exifData[$key])) {
+            if (false === empty($exifData[$key])) {
                 return $exifData[$key];
             }
         }
@@ -382,5 +491,22 @@ final class MediaApiMigration
                 'media_api_id' => $mediaApiId,
             ]
         );
+    }
+
+    private function provideCommonMetadata(array $rawMetadata, array $allowedMetadataList): array
+    {
+        $metadata = [];
+        foreach ($allowedMetadataList as $metadataName => $value) {
+            if (isset($rawMetadata[$metadataName])) {
+                $metadata[$metadataName] = $this->parseValue($rawMetadata[$metadataName]);
+            }
+        }
+
+        return $metadata;
+    }
+
+    private function parseValue(string $value): string
+    {
+        return htmlspecialchars(strip_tags($value));
     }
 }

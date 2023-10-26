@@ -11,6 +11,7 @@ anzu_systems_core_dam:
               channel_id: '%env(resolve:string:DISTRIBUTION_YOUTUBE_CMS_MAIN_CHANNEL_ID)%'
               region_code: 'SK'
               redirect_uri: '%env(resolve:string:DISTRIBUTION_YOUTUBE_REDIRECT_URI)%'
+              default_language: 'sk'
           use_mock: '%env(bool:DISTRIBUTION_DEV_YOUTUBE_CMS_MAIN_MOCK)%'
           mock_options:
               sleep: '%env(int:DISTRIBUTION_DEV_YOUTUBE_CMS_MAIN_SLEEP)%'
@@ -29,6 +30,7 @@ anzu_systems_core_dam:
              channel_id: '%env(resolve:string:DISTRIBUTION_YOUTUBE_CMS_FICI_CHANNEL_ID)%'
              region_code: 'SK'
              redirect_uri: '%env(resolve:string:DISTRIBUTION_YOUTUBE_REDIRECT_URI)%'
+             default_language: 'sk'
           use_mock: '%env(bool:DISTRIBUTION_DEV_YOUTUBE_CMS_FICI_MOCK)%'
           mock_options:
               sleep: '%env(int:DISTRIBUTION_DEV_YOUTUBE_CMS_FICI_SLEEP)%'

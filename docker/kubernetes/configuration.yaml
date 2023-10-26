@@ -166,7 +166,7 @@ stringData:
   DB_CORE_DAM_URL: "mysql://#{DB_CORE_DAM_USER}#:#{core-dam-mysql-db-password}#@#{DB_CORE_DAM_HOST}#:#{DB_CORE_DAM_PORT}#/#{DB_CORE_DAM_NAME}#?serverVersion=#{DB_SERVER_VERSION}#"
   DB_DAM_LEGACY_URL: "mysql://#{DB_CORE_DAM_USER}#:#{core-dam-mysql-db-password}#@#{DB_CORE_DAM_HOST}#:#{DB_CORE_DAM_PORT}#/#{DB_DAM_LEGACY_NAME}#?serverVersion=#{DB_SERVER_VERSION}#"
   DB_DAM_MEDIA_API_MIG_NAME_URL: "mysql://#{DB_CORE_DAM_USER}#:#{core-dam-mysql-db-password}#@#{DB_CORE_DAM_HOST}#:#{DB_CORE_DAM_PORT}#/#{DB_DAM_MEDIA_API_MIG_NAME}#?serverVersion=#{DB_SERVER_VERSION}#"
-  DB_MEDIA_API_URL: "mysql://#{DB_CORE_DAM_USER}#:#{core-dam-mysql-db-password}#@#{DB_CORE_DAM_HOST}#:#{DB_CORE_DAM_PORT}#/#{DB_MEDIA_API_NAME}#?serverVersion=#{DB_SERVER_VERSION}#"
+  DB_MEDIA_API_URL: "mysql://#{DB_MEDIA_API_USER}#:#{core-dam-mysql-mediaapi-db-password}#@#{DB_MEDIA_API_HOST}#:#{DB_MEDIA_API_PORT}#/#{DB_MEDIA_API_NAME}#?serverVersion=#{DB_MEDIA_API_SERVER_VERSION}#"
   DISTRIBUTION_ARTEMIS_CMS_API_TOKEN: "#{core-dam-distribution-artemis-cms-api-token}#"
   DISTRIBUTION_JW_CMS_SECRET_V2: "#{core-dam-distribution-jw-cms-secret-v2}#"
   ELASTIC_PASSWORD: "#{elasticsearch-user-app-core-dam-pwd}#"

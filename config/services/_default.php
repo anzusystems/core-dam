@@ -24,6 +24,8 @@ return static function (ContainerConfigurator $configurator): void {
             ->bind('$cachePurgeUrl', env('CORE_DAM_CACHE_PURGE_URL')->default('empty_string'))
             ->bind('$cacheProxyPurgeEnabled', env('bool:CORE_DAM_CACHE_PROXY_PURGE_ENABLED'))
             ->bind('$cdnPurgeEnabled', env('bool:CORE_DAM_CDN_PURGE_ENABLED'))
+            ->bind('$exifCommonMetadata', param('anzu_systems.dam_bundle.common_metadata'))
+            ->bind('$exifImageMetadata', param('anzu_systems.dam_bundle.image_metadata'))
     ;
 
     $services
