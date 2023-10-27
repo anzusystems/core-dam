@@ -39,7 +39,7 @@ final readonly class MediaApiMigrateConfig
         private array $stages = [],
         private ?int $limit = null,
         private string $status = 'waiting',
-        private string $mediaApiSourceStorage = 'cms.media_api_target',
+        private string $mediaApiSourceStorage = 'cms.media_api.remote_storage',
     ) {
     }
 
