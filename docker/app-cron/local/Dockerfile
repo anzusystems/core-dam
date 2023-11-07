@@ -1,6 +1,6 @@
 FROM anzusystems/php:1.0.0-php82-cli-vipsffmpeg
 
-LABEL maintainer="Lubomir Stanko <lubomir.stanko@petitpress.sk>"
+LABEL maintainer="CloudOps Team <it.online@petitpress.sk>"
 #
 ### Basic arguments and variables
 ARG DOCKER_USER_ID
