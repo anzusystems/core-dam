@@ -1,4 +1,4 @@
-FROM anzusystems/php:1.0.0-php82-fpm-vipsffmpeg-nginx
+FROM anzusystems/php:1.1.0-php82-fpm-vipsffmpeg-nginx
 
 LABEL maintainer="CloudOps Team <it.online@petitpress.sk>"
 #
