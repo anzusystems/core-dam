@@ -64,7 +64,7 @@ services:
       - elasticsearch_data:/usr/share/elasticsearch/data:cached
     ports:
       - ${ELASTICSEARCH_DOCKER_PORT:-9225}:9200
-    hostname: elasticsearch-core
+    hostname: elasticsearch
     networks:
       - anzusystems_network
 
@@ -80,7 +80,7 @@ services:
       - mysql_data:/var/lib/mysql:cached
     ports:
       - ${MYSQL_DOCKER_PORT:-3353}:3306
-    hostname: mysql-core
+    hostname: mysql
     networks:
       - anzusystems_network
 
@@ -94,7 +94,7 @@ services:
       - mongo_data:/data/db:cached
     ports:
       - ${MONGO_DOCKER_PORT:-27517}:27017
-    hostname: mongo-core
+    hostname: mongo
     networks:
       - anzusystems_network
 
@@ -113,7 +113,7 @@ services:
       - redis_data:/data:cached
     ports:
       - ${REDIS_DOCKER_PORT:-6571}:6379
-    hostname: redis-core
+    hostname: redis
     networks:
       - anzusystems_network
 

@@ -1,4 +1,4 @@
-FROM anzusystems/php:1.0.0-php82-cli-vipsffmpeg
+FROM anzusystems/php:1.1.0-php82-cli-vipsffmpeg
 
 LABEL maintainer="Lubomir Stanko <lubomir.stanko@petitpress.sk>"
 #
