@@ -8,11 +8,11 @@ services:
       context: .
       dockerfile: ./docker/app/local/Dockerfile
     environment:
-      - VIRTUAL_HOST=core-dam.anzusystems.localhost,image.anzusystemsdata.localhost,admin-image.anzusystemsdata.localhost
+      - VIRTUAL_HOST=core-dam.anzusystems.local,image.anzusystemsdata.local,admin-image.anzusystemsdata.local
       - VIRTUAL_PORT=${NGINX_PORT:-8130}
       - NGINX_PORT=${NGINX_PORT:-8130}
     external_links:
-      - local-proxy:core-dam.anzusystems.localhost
+      - local-proxy:core-dam.anzusystems.local
     env_file:
       - .env.docker.dist
       - .env.docker.local
@@ -36,7 +36,7 @@ services:
       context: .
       dockerfile: ./docker/app-cron/local/Dockerfile
     external_links:
-      - local-proxy:core-dam.anzusystems.localhost
+      - local-proxy:core-dam.anzusystems.local
     env_file:
       - .env.docker.dist
       - .env.docker.local
@@ -47,7 +47,7 @@ services:
       - anzusystems_network
 
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:8.8.1
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.10.2
     environment:
       - cluster.routing.allocation.disk.threshold_enabled=false
       - discovery.type=single-node
@@ -85,7 +85,7 @@ services:
       - anzusystems_network
 
   mongo:
-    image: mongo:5.0
+    image: mongo:6.0
     command: ${MONGO_LOGAPPEND:-} ${MONGO_NOTABLESCAN:-}
     env_file:
       - .env.docker.dist

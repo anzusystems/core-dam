@@ -1,5 +1,5 @@
 #!/bin/bash
-# Script used to run bash in the specified docker container
+# Script used to run bash in the application container
 
 PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")"/.. && pwd)"
 DOCKER_CONTAINER="app"
@@ -9,14 +9,14 @@ cd "${PROJECT_ROOT}" || exit 1
 
 function help() {
     echo -en "$(printf %q "${BASH_SOURCE[0]}") [OPERATION] [OPTIONS]...
-    \nScript used to run bash in the specified docker container
+    \nScript used to run bash in the application container
 
     Container:
-        app      Run bash in the application docker container (default)
+        app      Run bash in the application container (default)
         app-cron Run bash in the application cron docker container
 
     Options:
-        --root   (Optional) Run bash as root in the docker container
+        --root   (Optional) Run bash as root in the application container
 
     Examples:
         $(printf %q "${BASH_SOURCE[0]}") --root
