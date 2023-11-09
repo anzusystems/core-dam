@@ -1,5 +1,5 @@
 #!/bin/bash
-# Script to run migrations inside the container
+# Script used to run migrations inside the container
 set -e
 
 cd /var/www/html || exit 1

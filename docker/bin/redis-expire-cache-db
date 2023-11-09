@@ -1,5 +1,5 @@
 #!/bin/bash
-# Script to run redis-expire for application cache db and pattern
+# Script used to run redis-expire for application cache db and pattern
 set -e
 
 cpulimit -l 5 -c 1 -e redis-cli -b -q

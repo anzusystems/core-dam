@@ -1,6 +1,6 @@
-FROM petitpress.azurecr.io/php82:2.3.0-fpm-nginx-vipsffmpeg-xdebug
+FROM petitpress.azurecr.io/php82:2.4.0-fpm-nginx-vipsffmpeg-xdebug
 
-LABEL maintainer="Lubomir Stanko <lubomir.stanko@petitpress.sk>"
+LABEL maintainer="CloudOps Team <it.online@petitpress.sk>"
 #
 ### Basic arguments and variables
 ARG DOCKER_USER

@@ -6,6 +6,7 @@
 # 5. Merge release/hotfix branch to master and develop branches
 
 name: $(rev:rrrr)_$(SHORT_RELEASE_TYPE)_$(VERSION)$(ENVIRONMENT_TAG)
+appendCommitMessageToRunName: false
 
 # Disable automatic pipeline trigger
 trigger: none

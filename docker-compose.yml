@@ -8,12 +8,14 @@ services:
       context: .
       dockerfile: ./docker/app/local/Dockerfile
     environment:
-      - VIRTUAL_HOST=core-dam.sme.localhost,image.smedata.localhost,audio.smedata.localhost,admin-image.smedata.localhost
+      - VIRTUAL_HOST=core-dam.sme.localhost,image.smedata.localhost,audio.smedata.localhost,admin-image.smedata.localhost,core-dam.sme.local,image.smedata.local,audio.smedata.local,admin-image.smedata.local
       - VIRTUAL_PORT=${NGINX_PORT:-8130}
       - NGINX_PORT=${NGINX_PORT:-8130}
     external_links:
       - local-proxy:core-dam.sme.localhost
       - local-proxy:central.sme.localhost
+      - local-proxy:core-dam.sme.local
+      - local-proxy:central.sme.local
     env_file:
       - .env.docker.dist
       - .env.docker.local
@@ -38,6 +40,7 @@ services:
       dockerfile: ./docker/app-cron/local/Dockerfile
     external_links:
       - local-proxy:core-dam.sme.localhost
+      - local-proxy:core-dam.sme.local
     env_file:
       - .env.docker.dist
       - .env.docker.local
