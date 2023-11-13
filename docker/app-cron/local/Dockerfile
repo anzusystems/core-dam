@@ -1,4 +1,4 @@
-FROM petitpress.azurecr.io/php82:2.4.0-cli-vipsffmpeg-xdebug
+FROM petitpress.azurecr.io/php82:2.4.1-cli-vipsffmpeg-xdebug
 
 LABEL maintainer="CloudOps Team <it.online@petitpress.sk>"
 #
