@@ -7,6 +7,7 @@ namespace App\DependencyInjection;
 use AnzuSystems\CoreDamBundle\DependencyInjection\Configuration as BaseConfiguration;
 use App\Model\Configuration\ArtemisAudioDistributionConfiguration;
 use App\Model\Configuration\ArtemisVideoDistributionConfiguration;
+use App\Model\Configuration\MediaApiSyncConfiguration;
 use App\Model\Configuration\RtmpConfiguration;
 use Symfony\Component\Config\Definition\Builder\NodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
@@ -19,9 +20,10 @@ class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder('core_dam');
         $treeBuilder->getRootNode()
             ->children()
-            ->append($this->getAudioDistributionSection())
-            ->append($this->getVideoDistributionSection())
-            ->append($this->getRtmpConfigurationSection())
+                ->append($this->getMediaApiConfigurationSection())
+                ->append($this->getAudioDistributionSection())
+                ->append($this->getVideoDistributionSection())
+                ->append($this->getRtmpConfigurationSection())
             ->end();
 
         return $treeBuilder;
@@ -35,6 +37,14 @@ class Configuration implements ConfigurationInterface
                 ->integerNode(RtmpConfiguration::ASSET_LICENCE_ID)->isRequired()->end()
                 ->scalarNode(RtmpConfiguration::KEYWORD_ID)->end()
                 ->scalarNode(RtmpConfiguration::TITLE_TEMPLATE)->end()
+            ->end();
+    }
+
+    private function getMediaApiConfigurationSection(): NodeDefinition
+    {
+        return (new TreeBuilder('media_api'))->getRootNode()
+            ->children()
+                ->scalarNode(MediaApiSyncConfiguration::STORAGE_NAME)->isRequired()->end()
             ->end();
     }
 

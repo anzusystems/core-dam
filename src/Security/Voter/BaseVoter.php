@@ -7,6 +7,9 @@ namespace App\Security\Voter;
 use AnzuSystems\CommonBundle\Security\Voter\AbstractVoter;
 use App\Security\Permission\DamPermissions;
 
+/**
+ * @template-extends AbstractVoter<string, mixed>
+ */
 final class BaseVoter extends AbstractVoter
 {
     protected function getSupportedPermissions(): array

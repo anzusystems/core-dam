@@ -13,6 +13,21 @@ Content-Type: application/json
   client.global.set('assetId', response.body.asset)
 %}
 
+### Rotate
+PATCH {{host}}/api/adm/v1/image/892d7b56-7423-4428-86a0-2d366685d823/rotate/90
+Content-Type: application/json
+
+### Change flags
+PUT {{host}}/api/adm/v1/image/892d7b56-7423-4428-86a0-2d366685d823
+Content-Type: application/json
+
+{
+  "flags": {
+    "public": false,
+    "singleUse": false
+  }
+}
+
 ### Upload chunk 1
 POST {{host}}/api/adm/v1/image/{{imageId}}/chunk
 Content-Type: multipart/form-data; boundary=boundary

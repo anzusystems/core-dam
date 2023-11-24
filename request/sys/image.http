@@ -1,0 +1,90 @@
+### Create image file
+POST {{host}}/api/sys/v1/mediaapi/image
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{mediaapiSysUserApiToken}}
+
+// https://m.smedata.sk/api-media/media/image/sme/0/70/7008280/7008280.jpeg
+// /sme/0/70/7008280/7008280.jpeg
+// https://m.smedata.sk/api-media/media/image/sme/6/22/2255366/2255366_300x200.jpeg
+// /sme/6/22/2255366/2255366.jpeg
+// https://m.smedata.sk/api-media/media/image/sme/6/31/3129176/3129176.jpeg
+// /sme/6/31/3129176/3129176.jpeg
+
+{
+  "mediaApiId": 7008280,
+  "fullPath": "/sme/6/31/3129176/3129176.jpeg",
+  "idStock": 8,
+  "author": "",
+  "keywords": "airbus",
+  "description": "",
+  "focusX": 1891,
+  "focusY": 1309,
+  "createdAt": "2021-05-11T00:00:00.000000Z",
+  "updatedAt": "2021-05-11T00:00:00.000000Z",
+  "idCentralUserCreated": 773001,
+  "idCentralUserUpdated": 773001,
+  "singleUse": false,
+  "public": false
+}
+
+> {%
+    client.global.set('id', response.body.id);
+%}
+
+### Delete image file
+DELETE {{host}}/api/sys/v1/mediaapi/image/{{id}}
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{mediaapiSysUserApiToken}}
+
+
+### Create duplicate
+POST {{host}}/api/sys/v1/mediaapi/image
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{mediaapiSysUserApiToken}}
+
+// https://m.smedata.sk/api-media/media/image/sme/0/70/7008280/7008280.jpeg
+{
+  "mediaApiId": 7008281,
+  "fullPath": "/video/1/39/3950851/bmp.bmp",
+  "idStock": 5,
+  "author": "Duplicate author",
+  "keywords": "duplicate",
+  "description": "Duplicate description.",
+  "focusX": 1891,
+  "focusY": 1309,
+  "createdAt": "2024-05-11T00:00:00.000000Z",
+  "updatedAt": "2024-05-11T00:00:00.000000Z",
+  "idCentralUserCreated": 773001,
+  "idCentralUserUpdated": 773001,
+  "singleUse": false,
+  "public": false
+}
+
+> {%
+    client.global.set('duplicate_id', response.body.id);
+%}
+
+### Update image file
+PUT {{host}}/api/sys/v1/mediaapi/image/{{id}}
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{mediaapiSysUserApiToken}}
+
+// https://m.smedata.sk/api-media/media/image/sme/0/70/7008280/7008280.jpeg
+{
+  "mediaApiId": 7008280,
+  "fullPath": "/sme/0/70/7008280/7008280.jpeg",
+  "idStock": 5,
+  "author": "TASR",
+  "keywords": "airbus, lietadlo",
+  "description": "Lietadlo padlo.",
+  "focusX": 50,
+  "focusY": 50,
+  "updatedAt": "2021-05-11T00:00:00.000000Z",
+  "createdAt": "2021-05-11T00:00:00.000000Z",
+  "idCentralUserUpdated": 773001,
+  "idCentralUserCreated": 773001
+}

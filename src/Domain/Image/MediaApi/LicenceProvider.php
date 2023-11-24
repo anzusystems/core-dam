@@ -1,0 +1,72 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Domain\Image\MediaApi;
+
+use AnzuSystems\CoreDamBundle\Entity\AssetLicence;
+use AnzuSystems\CoreDamBundle\Entity\ExtSystem;
+use AnzuSystems\CoreDamBundle\Exception\DomainException;
+use AnzuSystems\CoreDamBundle\Repository\AssetLicenceRepository;
+use App\Model\Domain\Asset\AssetFileMediaApiCreateDecorator;
+use App\Model\Domain\Asset\AssetFileMediaApiDecorator;
+use App\Model\Domain\Asset\AssetFileMediaApiResponseDecorator;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+
+final readonly class LicenceProvider
+{
+    private const STOCK_SPECTATOR = 2;
+    private const STOCK_SME = 5;
+    private const STOCK_XBLOCK = 8;
+    private const STOCK_QUIZ = 10;
+    private const STOCK_MAGAZIN = 17;
+    private const STOCK_CERSTVI = 25;
+    private const STOCK_AUTHORS = 38;
+    private const STOCK_ACCELERATED_WIGET = 43;
+    private const STOCK_ARTICLE_SHORT = 45;
+    private const STOCK_ARTICLE_BACKGROUND = 46;
+
+    private const LICENCE_CMS = 100_000;
+    private const LICENCE_SPECTATOR = 100_001;
+    private const LICENCE_X_BLOCK = 100_002;
+    private const LICENCE_MAGAZIN = 100_003;
+    private const LICENCE_KOMERCNE = 100_004;
+    private const LICENCE_AUTHOR = 100_006;
+    private const LICENCE_SOCIAL = 100_007;
+    private const LICENCE_SCRAPER = 101_000;
+
+    private const LICENCE_MAP = [
+        self::STOCK_SPECTATOR => self::LICENCE_SPECTATOR,
+        self::STOCK_SME => self::LICENCE_CMS,
+        self::STOCK_XBLOCK => self::LICENCE_X_BLOCK,
+        self::STOCK_QUIZ => self::LICENCE_CMS,
+        self::STOCK_MAGAZIN => self::LICENCE_MAGAZIN,
+        self::STOCK_CERSTVI => self::LICENCE_KOMERCNE,
+        self::STOCK_AUTHORS => self::LICENCE_AUTHOR,
+        self::STOCK_ACCELERATED_WIGET => self::LICENCE_SCRAPER,
+        self::STOCK_ARTICLE_SHORT => self::LICENCE_SOCIAL,
+        self::STOCK_ARTICLE_BACKGROUND => self::LICENCE_SOCIAL,
+    ];
+
+    public function __construct(
+        private AssetLicenceRepository $assetLicenceRepository,
+    ) {
+    }
+
+    public function getLicence(AssetFileMediaApiCreateDecorator $dto): AssetLicence
+    {
+        $licenceId = self::LICENCE_MAP[$dto->getIdStock()]
+            ?? throw new NotFoundHttpException('Unknown stock');
+
+        $licence = $this->assetLicenceRepository->find($licenceId);
+        if (null === $licence) {
+            throw new NotFoundHttpException('Licence not found');
+        }
+        return $licence;
+    }
+
+    public function getExtSystem(AssetFileMediaApiCreateDecorator $dto): ExtSystem
+    {
+        return $this->getLicence($dto)->getExtSystem();
+    }
+}

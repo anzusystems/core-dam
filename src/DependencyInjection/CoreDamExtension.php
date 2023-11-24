@@ -20,6 +20,7 @@ final class CoreDamExtension extends Extension
 
         $container->setParameter('anzu_systems.core_dam.artemis_audio_distribution', $processed['artemis_audio_distribution']);
         $container->setParameter('anzu_systems.core_dam.artemis_video_distribution', $processed['artemis_video_distribution']);
+        $container->setParameter('anzu_systems.core_dam.media_api_configuration', $processed['media_api']);
         $container->setParameter('anzu_systems.core_dam.rtmp', $processed['rtmp']);
     }
 }

@@ -284,19 +284,37 @@ anzu_systems_core_dam:
         file_slots:
           default: default
           slots: [ default ]
-  domains:
-    admin_image:
-      domain: '%env(resolve:string:DOMAIN_ADMIN_IMAGE)%'
-      max_age: '%env(int:DOMAIN_ADMIN_IMAGE_MAX_AGE)%'
-      cache_ttl: '%env(int:DOMAIN_ADMIN_IMAGE_CACHE_TTL)%'
-      public: '%env(bool:DOMAIN_ADMIN_IMAGE_PUBLIC)%'
-    public_image:
-      domain: '%env(resolve:string:DOMAIN_PUBLIC_IMAGE)%'
-      max_age: '%env(int:DOMAIN_PUBLIC_IMAGE_MAX_AGE)%'
-      cache_ttl: '%env(int:DOMAIN_PUBLIC_IMAGE_CACHE_TTL)%'
-      public: '%env(bool:DOMAIN_PUBLIC_IMAGE_PUBLIC)%'
-    public_audio:
-      domain: '%env(resolve:string:DOMAIN_PUBLIC_AUDIO)%'
-      max_age: 0
-      cache_ttl: 60
-      public: false
+    scraper:
+      id: 11
+      image:
+        enabled: true
+        public_domain: public_image
+        admin_domain: admin_image
+        title: [ 'customData:title' ]
+        custom_metadata_pinned_amount: 2
+        storage_name: 'cms.image'
+        crop_storage_name: 'cms.crop'
+        chunk_storage_name: 'cms.chunk'
+        size_limit: '%env(byte_size:APP_CMS_IMAGE_MAX_SIZE)%'
+        roi_width: 16
+        roi_height: 9
+        file_slots:
+          default: default
+          slots: [ default ]
+    pressNews:
+      id: 10
+      image:
+        enabled: true
+        public_domain: public_image
+        admin_domain: admin_image
+        title: [ 'customData:title' ]
+        custom_metadata_pinned_amount: 2
+        storage_name: 'cms.image'
+        crop_storage_name: 'cms.crop'
+        chunk_storage_name: 'cms.chunk'
+        size_limit: '%env(byte_size:APP_CMS_IMAGE_MAX_SIZE)%'
+        roi_width: 16
+        roi_height: 9
+        file_slots:
+          default: default
+          slots: [ default ]

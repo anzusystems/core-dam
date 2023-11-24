@@ -6,6 +6,7 @@ namespace App\Configuration;
 
 use App\Model\Configuration\ArtemisAudioDistributionConfiguration;
 use App\Model\Configuration\ArtemisVideoDistributionConfiguration;
+use App\Model\Configuration\MediaApiSyncConfiguration;
 use App\Model\Configuration\RtmpConfiguration;
 
 final class ConfigurationProvider
@@ -13,12 +14,23 @@ final class ConfigurationProvider
     private ?ArtemisAudioDistributionConfiguration $distributionConfiguration = null;
     private ?ArtemisVideoDistributionConfiguration $videoDistributionConfiguration = null;
     private ?RtmpConfiguration $rtmpConfiguration = null;
+    private ?MediaApiSyncConfiguration $mediaApiSyncConfiguration = null;
 
     public function __construct(
         private readonly array $artemisAudioDistribution,
         private readonly array $artemisVideoDistribution,
         private readonly array $rtmp,
+        private readonly array $mediaApiConfiguration,
     ) {
+    }
+
+    public function getMediaApiSyncConfiguration(): MediaApiSyncConfiguration
+    {
+        if (null === $this->mediaApiSyncConfiguration) {
+            $this->mediaApiSyncConfiguration = MediaApiSyncConfiguration::getFromArrayConfiguration($this->mediaApiConfiguration);
+        }
+
+        return $this->mediaApiSyncConfiguration;
     }
 
     public function getRtmpConfiguration(): RtmpConfiguration

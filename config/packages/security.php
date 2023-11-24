@@ -24,8 +24,9 @@ return static function (SecurityConfig $config): void {
         ->roleHierarchy(User::ROLE_DAM_ADMIN, [AnzuUser::ROLE_USER])
         ->roleHierarchy(User::ROLE_UGC, [AnzuUser::ROLE_USER])
         ->roleHierarchy(AnzuUser::ROLE_USER, null)
-        ->roleHierarchy(User::ROLE_SYS_API, [User::ROLE_SYS_JOB_API])
+        ->roleHierarchy(User::ROLE_SYS_API, [User::ROLE_SYS_JOB_API, User::ROLE_SYS_ARTEMIS_API])
         ->roleHierarchy(User::ROLE_SYS_JOB_API, null)
+        ->roleHierarchy(User::ROLE_SYS_ARTEMIS_API, null)
     ;
     $config->passwordHasher(User::class, 'auto');
     $config
@@ -81,5 +82,6 @@ return static function (SecurityConfig $config): void {
     $config->accessControl()->path('^/api/ugc/')->roles([User::ROLE_UGC]);
     $config->accessControl()->path('^/adm/')->roles([User::ROLE_DAM_ADMIN]);
     $config->accessControl()->path('^/api/sys/v(\d+)/job')->roles([User::ROLE_SYS_JOB_API]);
+    $config->accessControl()->path('^/api/sys/v(\d+)/mediaapi')->roles([User::ROLE_SYS_MEDIAAPI_API]);
     $config->accessControl()->path('^/api/sys/')->roles([User::ROLE_SYS_API]);
 };

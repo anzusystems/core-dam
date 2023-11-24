@@ -91,6 +91,7 @@ final class MediaApiMigration
         protected FileAttributesProcessor $fileAttributesPostProcessor,
         protected readonly ImageFileRepository $imageFileRepository,
         protected AssetFileStorageOperator $assetFileStorageOperator,
+        //        private readonly MostDominantColorProcessor $mostDominantColorProcessor,
         private readonly OptimalCropsProcessor $optimalCropsProcessor,
         private readonly Exiftool $exiftool,
     ) {
@@ -270,7 +271,7 @@ final class MediaApiMigration
     private function storeAndProcess(ImageFile $imageFile, AdapterFile $file): void
     {
         $this->assetFileStorageOperator->save($imageFile, $file);
-        // todo temporary removed service for most dominant collor
+        //        $this->mostDominantColorProcessor->process($imageFile, $file);
         $this->optimalCropsProcessor->process($imageFile, $file);
     }
 

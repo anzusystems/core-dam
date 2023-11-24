@@ -1,4 +1,6 @@
 core_dam:
+  media_api:
+    storage_name: 'cms.media_api.storage'
   rtmp:
     storage_name: 'cms.rtmp'
     licence_id: 100000

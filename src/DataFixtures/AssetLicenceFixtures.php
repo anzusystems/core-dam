@@ -16,7 +16,7 @@ use Symfony\Component\Console\Helper\ProgressBar;
  */
 final class AssetLicenceFixtures extends AbstractFixtures
 {
-    public const BLOG_ONE_LICENCE_ID = BaseAssetLicenceFixtures::DEFAULT_LICENCE_ID + 1;
+    public const BLOG_ONE_LICENCE_ID = BaseAssetLicenceFixtures::DEFAULT_LICENCE_ID + 10_000;
     public const BLOG_ONE_EXT_ID = 1;
     public const BLOG_TWO_LICENCE_ID = self::BLOG_ONE_LICENCE_ID + 1;
     public const BLOG_TWO_EXT_ID = 2;

@@ -8,11 +8,13 @@ use AnzuSystems\CommonBundle\Messenger\Middleware\ContextIdentityMiddleware;
 use App\Messenger\Message\AudioCachePurgeMessage;
 use App\Messenger\Message\CdnPurgeMessage;
 use App\Messenger\Message\ImageCachePurgeMessage;
+use App\Messenger\Message\MediaApiCallbackMessage;
 use Symfony\Config\FrameworkConfig;
 
 return static function (FrameworkConfig $config): void {
     $appName = 'core_dam';
     $cachePurge = 'anzu_core_dam_cache_purge';
+    $anzuCoreMediaApiCallback = 'anzu_core_dam_media_api_callback';
 
     $messengerConfig = $config->messenger();
     $messengerConfig
@@ -22,6 +24,14 @@ return static function (FrameworkConfig $config): void {
                 'topic' => createBasicTopicConfig($cachePurge, $appName),
                 'subscription' => createBasicSubscriptionConfig($cachePurge, $appName),
             ])
+    ;
+    $messengerConfig
+        ->transport($anzuCoreMediaApiCallback)
+        ->dsn(env('MESSENGER_TRANSPORT_DSN'))
+        ->options([
+            'topic' => createBasicTopicConfig($anzuCoreMediaApiCallback, $appName),
+            'subscription' => createBasicSubscriptionConfig($anzuCoreMediaApiCallback, $appName),
+        ])
     ;
 
     $messengerConfig
@@ -39,6 +49,10 @@ return static function (FrameworkConfig $config): void {
     $messengerConfig
         ->routing(ImageCachePurgeMessage::class)
         ->senders([$cachePurge])
+    ;
+    $messengerConfig
+        ->routing(MediaApiCallbackMessage::class)
+        ->senders([$anzuCoreMediaApiCallback])
     ;
 };
 
@@ -65,7 +79,7 @@ function createBasicSubscriptionConfig(string $name, string $appName): array
                 'application' => $appName,
                 'name' => $name,
             ],
-            'retry_policy' => [
+            'retryPolicy' => [
                 'minimumBackoff' => '2s',
                 'maximumBackoff' => '600s',
             ],

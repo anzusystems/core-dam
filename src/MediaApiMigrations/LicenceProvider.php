@@ -32,10 +32,6 @@ final class LicenceProvider
         }
 
         return $licence;
-
-        return $this->licenceRepository->find(
-            $this->getLicenceId($title, $extSystemId)
-        );
     }
 
     /**

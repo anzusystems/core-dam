@@ -21,7 +21,7 @@ final readonly class MediaApiMigrateConfig
     public const STAGE_MIGRATE_USERS = 'migrateUsers';
     public const STAGE_IMAGE_POSTPROCESS = 'imagePostprocess';
 
-    public const REMOTE_STORAGE = 'cms.media_api.remote_storage';
+    public const REMOTE_STORAGE = 'cms.media_api.prod_storage';
     public const LOCAL_STORAGE = 'cms.media_api.local_storage';
 
     public const DEFAULT_STAGES = [
@@ -39,7 +39,7 @@ final readonly class MediaApiMigrateConfig
         private array $stages = [],
         private ?int $limit = null,
         private string $status = 'waiting',
-        private string $mediaApiSourceStorage = 'cms.media_api.remote_storage',
+        private string $mediaApiSourceStorage = 'cms.media_api.prod_storage',
     ) {
     }
 

@@ -13,6 +13,7 @@ SUPERVISOR_DEFAULT_MESSENGER_NAMES='
     core_dam_log
     anzu_core_dam_cache_purge
     anzu_core_dam_property_refresh
+    anzu_core_dam_media_api_callback
 '
 
 export SUPERVISOR_MESSENGER_NAMES=${SUPERVISOR_MESSENGER_NAMES:-${SUPERVISOR_DEFAULT_MESSENGER_NAMES}}
