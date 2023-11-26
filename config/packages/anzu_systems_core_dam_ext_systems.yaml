@@ -292,9 +292,9 @@ anzu_systems_core_dam:
         admin_domain: admin_image
         title: [ 'customData:title' ]
         custom_metadata_pinned_amount: 2
-        storage_name: 'cms.image'
-        crop_storage_name: 'cms.crop'
-        chunk_storage_name: 'cms.chunk'
+        storage_name: 'scraper.image'
+        crop_storage_name: 'scraper.crop'
+        chunk_storage_name: 'scraper.chunk'
         size_limit: '%env(byte_size:APP_CMS_IMAGE_MAX_SIZE)%'
         roi_width: 16
         roi_height: 9
@@ -309,9 +309,9 @@ anzu_systems_core_dam:
         admin_domain: admin_image
         title: [ 'customData:title' ]
         custom_metadata_pinned_amount: 2
-        storage_name: 'cms.image'
-        crop_storage_name: 'cms.crop'
-        chunk_storage_name: 'cms.chunk'
+        storage_name: 'pressNews.image'
+        crop_storage_name: 'pressNews.crop'
+        chunk_storage_name: 'pressNews.chunk'
         size_limit: '%env(byte_size:APP_CMS_IMAGE_MAX_SIZE)%'
         roi_width: 16
         roi_height: 9

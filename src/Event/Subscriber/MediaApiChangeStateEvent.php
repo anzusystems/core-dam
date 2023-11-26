@@ -16,6 +16,7 @@ use AnzuSystems\SerializerBundle\Exception\SerializerException;
 use App\Domain\AssetMetadata\AssetMetadataManager;
 use App\Domain\Image\MediaApi\ImageFacade;
 use App\Domain\Image\MediaApi\ImageManager;
+use App\Model\Domain\AssetMetadata\MediaApiMetadata;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 final class MediaApiChangeStateEvent implements EventSubscriberInterface
@@ -44,22 +45,30 @@ final class MediaApiChangeStateEvent implements EventSubscriberInterface
     public function onAssetChangeState(AssetFileChangeStateEvent $event): void
     {
         $imageFile = $event->getAsset();
+        if (false === ($imageFile instanceof ImageFile)) {
+            return;
+        }
+
+        $mediaApiMetadata = $this->assetMetadataManager->getObjectFromMetadata(
+            $imageFile->getAsset()->getMetadata(),
+            MediaApiMetadata::class
+        );
+
+        if (empty($mediaApiMetadata->getMediaApiIds())) {
+            return;
+        }
+
+        if ($imageFile->getAssetAttributes()->getStatus()->is(AssetFileProcessStatus::Processed)) {
+            $this->imageFacade->updateAfterProcessed($imageFile);
+
+            return;
+        }
+
         $originAssetFile = $this->imageFileRepository->find(
             $imageFile->getAssetAttributes()->getOriginAssetId()
         );
 
-        if (
-            $imageFile instanceof ImageFile &&
-            $imageFile->getAssetAttributes()->getStatus()->is(AssetFileProcessStatus::Processed)
-        ) {
-            $this->imageFacade->updateAfterProcessed($imageFile);
-        }
-
-        if (
-            $imageFile instanceof ImageFile &&
-            $originAssetFile &&
-            $imageFile->getAssetAttributes()->getStatus()->is(AssetFileProcessStatus::Duplicate)
-        ) {
+        if ($originAssetFile && $imageFile->getAssetAttributes()->getStatus()->is(AssetFileProcessStatus::Duplicate)) {
             $this->imageFacade->updateFromDuplicate($originAssetFile, $imageFile);
         }
     }

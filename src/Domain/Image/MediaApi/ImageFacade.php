@@ -130,9 +130,9 @@ final class ImageFacade
         try {
             $this->imageManager->beginTransaction();
             $this->imageManager->updateFromDuplicate($originImageFile, $imageFile);
-            $this->messageBus->dispatch(new MediaApiCallbackMessage($imageFile));
             $this->indexRelations($originImageFile);
             $this->imageManager->commit();
+            $this->messageBus->dispatch(new MediaApiCallbackMessage($imageFile));
         } catch (Throwable $exception) {
             $this->imageManager->rollback();
 

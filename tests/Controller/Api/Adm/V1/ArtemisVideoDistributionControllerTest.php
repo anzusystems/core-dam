@@ -99,7 +99,7 @@ final class ArtemisVideoDistributionControllerTest extends AbstractApiController
         $this->assertSame(self::TEST_CUSTOM_DATA['description'], $dto->getDescription());
         $this->assertSame(self::TEST_CUSTOM_DATA['rubricId'], $dto->getRubric()->getId());
         $this->assertSame($video->getAttributes()->getDuration(), $dto->getDuration());
-        $this->assertSame('video', $dto->getType()->toString());
+        $this->assertSame('video', $dto->getType());
         $this->assertSame('123YT', $dto->getYoutubeId());
         $this->assertSame('123JW', $dto->getJwId());
         $this->assertSame(self::TEST_CUSTOM_DATA['createArticle'], $dto->isCreateArticle());

@@ -26,7 +26,7 @@ class ArtemisAudioMediaDto extends ArtemisMediaDto
 
     public function __construct()
     {
-        $this->setType(ArtemisMediaType::Audio);
+        $this->setType(ArtemisMediaType::Audio->toString());
         $this->setMediaChannel(new ArtemisMediaChannel());
         parent::__construct();
     }

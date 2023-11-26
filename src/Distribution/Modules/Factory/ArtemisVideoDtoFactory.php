@@ -12,6 +12,7 @@ use AnzuSystems\CoreDamBundle\Repository\DistributionRepository;
 use App\Entity\ArtemisVideoDistribution;
 use App\Model\Dto\Artemis\ArtemisMediaDto;
 use App\Model\Dto\Artemis\ArtemisMediaRubricDto;
+use App\Model\Enum\ArtemisMediaType;
 
 final class ArtemisVideoDtoFactory extends AbstractArtemisDtoFactory
 {
@@ -33,6 +34,7 @@ final class ArtemisVideoDtoFactory extends AbstractArtemisDtoFactory
             ->setDuration($assetFile->getAttributes()->getDuration());
         $mediaDto->setAuthors($this->transformAuthors($distribution->getTexts()->getAuthors()));
         $mediaDto->setTags($this->transformKeywords($distribution->getTexts()->getKeywords()));
+        $mediaDto->setType(ArtemisMediaType::Video->toString());
         $mediaDto->setRubric((new ArtemisMediaRubricDto())->setId($distribution->getTexts()->getRubricId()));
         $previewImage = $assetFile->getImagePreview()?->getImageFile();
         if ($previewImage instanceof ImageFile) {

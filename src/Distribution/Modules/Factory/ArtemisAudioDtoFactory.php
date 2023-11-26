@@ -16,6 +16,7 @@ use App\Entity\ArtemisAudioDistribution;
 use App\Model\Dto\Artemis\ArtemisAudioMediaDto;
 use App\Model\Dto\Artemis\ArtemisMediaChannel;
 use App\Model\Dto\Artemis\ArtemisMediaRubricDto;
+use App\Model\Enum\ArtemisMediaType;
 use DateTime;
 use DateTimeImmutable;
 use DateTimeZone;
@@ -43,7 +44,8 @@ final class ArtemisAudioDtoFactory extends AbstractArtemisDtoFactory
             ->setMediaChannel((new ArtemisMediaChannel())->setAnzuId($distribution->getTexts()->getPodcastId()))
             ->setAnzuPodcastEpisodeId($distribution->getTexts()->getEpisodeId())
             ->setDuration($distribution->getAttributes()->getDuration())
-            ->setPremiumDirectSourceDuration($distribution->getAttributes()->getPremiumDuration());
+            ->setPremiumDirectSourceDuration($distribution->getAttributes()->getPremiumDuration())
+            ->setType(ArtemisMediaType::Audio->toString());
 
         if ($distribution->getPublishAt()) {
             $mediaDto->setPublishedAt(

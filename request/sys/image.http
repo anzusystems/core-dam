@@ -12,10 +12,10 @@ Authorization: Bearer {{mediaapiSysUserApiToken}}
 // /sme/6/31/3129176/3129176.jpeg
 
 {
-  "mediaApiId": 7008280,
+  "mediaApiId": 7008282,
   "fullPath": "/sme/6/31/3129176/3129176.jpeg",
-  "idStock": 8,
-  "author": "",
+  "idStock": 5,
+  "author": "cicik",
   "keywords": "airbus",
   "description": "",
   "focusX": 1891,

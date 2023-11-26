@@ -2,7 +2,7 @@ core_dam:
   media_api:
     storage_name: 'cms.media_api.storage'
   rtmp:
-    storage_name: 'cms.rtmp'
+    storage_name: 'ext.rtmp'
     licence_id: 100000
     keyword_id: '1ee0b4fa-f21d-6794-8abb-153fe932206a'
     title_template: 'Live záznam z %s'

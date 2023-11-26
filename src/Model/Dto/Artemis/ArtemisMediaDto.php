@@ -34,7 +34,7 @@ class ArtemisMediaDto
     protected ?int $premiumDirectSourceDuration = null;
 
     #[Serialize]
-    protected ArtemisMediaType $type = ArtemisMediaType::Default;
+    protected string $type = '';
 
     #[Serialize]
     protected string $anzuMediaId = '';
@@ -134,12 +134,12 @@ class ArtemisMediaDto
         return $this;
     }
 
-    public function getType(): ArtemisMediaType
+    public function getType(): string
     {
         return $this->type;
     }
 
-    public function setType(ArtemisMediaType $type): static
+    public function setType(string $type): static
     {
         $this->type = $type;
 

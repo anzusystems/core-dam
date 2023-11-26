@@ -144,7 +144,7 @@ final class ArtemisAudioDistributionControllerTest extends AbstractApiController
         $this->assertSame(self::TEST_CUSTOM_DATA['rubricId'], $dto->getRubric()->getId());
         $this->assertSame($this->audioFile->getAttributes()->getDuration(), $dto->getDuration());
         $this->assertSame($this->audioFile->getAttributes()->getDuration(), $dto->getPremiumDirectSourceDuration());
-        $this->assertSame('audio', $dto->getType()->toString());
+        $this->assertSame('audio', $dto->getType());
         $this->assertSame(self::TEST_CUSTOM_DATA['createArticle'], $dto->isCreateArticle());
         $this->assertSame(
             self::TEST_CUSTOM_DATA['authors'],

@@ -37,11 +37,16 @@ anzu_systems_core_dam:
                 client: 'anzu.google_storage.env_client'
                 bucket: '%env(string:GCS_VIDEO_STORAGE_BUCKET)%'
                 prefix: 'videos'
-        cms.rtmp:
+        ext.rtmp:
             adapter: 'gcloud'
             options:
                 client: 'anzu.google_storage.env_client'
                 bucket: '%env(string:GCS_RTMP_STORAGE_BUCKET)%'
+        ext.scraper:
+            adapter: 'gcloud'
+            options:
+                client: 'anzu.google_storage.env_client'
+                bucket: '%env(string:GCS_EXT_SCRAPER_STORAGE_BUCKET)%'
         blog.image:
             adapter: 'gcloud'
             fallback_enabled: '%env(bool:BLOG_IMAGE_FALLBACK_ENABLED)%'
@@ -104,3 +109,55 @@ anzu_systems_core_dam:
                 client: 'anzu.google_storage.env_fallback_client'
                 bucket: '%env(string:GCS_DOCUMENT_FALLBACK_STORAGE_BUCKET)%'
                 prefix: 'documents'
+        scraper.image_fallback:
+            adapter: 'gcloud'
+            options:
+                client: 'anzu.google_storage.env_fallback_client'
+                bucket: '%env(string:GCS_SCRAPER_IMAGE_FALLBACK_STORAGE_BUCKET)%'
+                prefix: 'images'
+        scraper.image:
+            adapter: 'gcloud'
+            fallback_enabled: '%env(bool:SCRAPER_IMAGE_FALLBACK_ENABLED)%'
+            fallback_storage: scraper.image_fallback
+            options:
+                client: 'anzu.google_storage.env_client'
+                bucket: '%env(string:GCS_SCRAPER_IMAGE_STORAGE_BUCKET)%'
+                prefix: 'images'
+        scraper.crop:
+            adapter: 'gcloud'
+            options:
+                client: 'anzu.google_storage.env_client'
+                bucket: '%env(string:GCS_SCRAPER_IMAGE_STORAGE_BUCKET)%'
+                prefix: 'crop'
+        scraper.chunk:
+            adapter: 'gcloud'
+            options:
+                client: 'anzu.google_storage.env_client'
+                bucket: '%env(string:GCS_SCRAPER_IMAGE_STORAGE_BUCKET)%'
+                prefix: 'chunk'
+        pressNews.image_fallback:
+            adapter: 'gcloud'
+            options:
+                client: 'anzu.google_storage.env_fallback_client'
+                bucket: '%env(string:GCS_PRESS_NEWS_FALLBACK_STORAGE_BUCKET)%'
+                prefix: 'images'
+        pressNews.image:
+            adapter: 'gcloud'
+            fallback_enabled: '%env(bool:PRESS_NEWS_IMAGE_FALLBACK_ENABLED)%'
+            fallback_storage: blog.image_fallback
+            options:
+                client: 'anzu.google_storage.env_client'
+                bucket: '%env(string:GCS_PRESS_NEWS_IMAGE_STORAGE_BUCKET)%'
+                prefix: 'images'
+        pressNews.crop:
+            adapter: 'gcloud'
+            options:
+                client: 'anzu.google_storage.env_client'
+                bucket: '%env(string:GCS_PRESS_NEWS_IMAGE_STORAGE_BUCKET)%'
+                prefix: 'crop'
+        pressNews.chunk:
+            adapter: 'gcloud'
+            options:
+                client: 'anzu.google_storage.env_client'
+                bucket: '%env(string:GCS_PRESS_NEWS_IMAGE_STORAGE_BUCKET)%'
+                prefix: 'chunk'

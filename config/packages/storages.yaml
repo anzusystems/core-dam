@@ -34,10 +34,14 @@ anzu_systems_core_dam:
             fallback_storage: cms.video_fallback
             options:
                 directory: '%kernel.project_dir%/var/mnt/data/video'
-        cms.rtmp:
+        ext.rtmp:
             adapter: 'local'
             options:
                 directory: '%kernel.project_dir%/var/mnt/data/rtmp'
+        ext.scraper:
+            adapter: 'local'
+            options:
+                directory: '%kernel.project_dir%/var/mnt/data/ext_scraper'
         cms.chunk:
             adapter: 'local'
             options:
@@ -111,3 +115,43 @@ anzu_systems_core_dam:
                 bucket: 'fs1sme-production-backup'
                 prefix: 'web/sme/home'
 
+        scraper.image_fallback:
+            adapter: 'gcloud'
+            options:
+                client: 'anzu.google_storage.env_fallback_client'
+                bucket: '%env(string:GCS_SCRAPER_IMAGE_FALLBACK_STORAGE_BUCKET)%'
+                prefix: 'images'
+        scraper.image:
+            adapter: 'local'
+            fallback_enabled: '%env(bool:SCRAPER_IMAGE_FALLBACK_ENABLED)%'
+            fallback_storage: scraper.image_fallback
+            options:
+                directory: '%kernel.project_dir%/var/mnt/data/scraper_image'
+        scraper.crop:
+            adapter: 'local'
+            options:
+                directory: '%kernel.project_dir%/var/mnt/data/scraper_crop'
+        scraper.chunk:
+            adapter: 'local'
+            options:
+                directory: '%kernel.project_dir%/var/mnt/data/scraper_chunk'
+        pressNews.image_fallback:
+            adapter: 'gcloud'
+            options:
+                client: 'anzu.google_storage.env_fallback_client'
+                bucket: '%env(string:GCS_PRESS_NEWS_FALLBACK_STORAGE_BUCKET)%'
+                prefix: 'images'
+        pressNews.image:
+            adapter: 'local'
+            fallback_enabled: '%env(bool:PRESS_NEWS_IMAGE_FALLBACK_ENABLED)%'
+            fallback_storage: blog.image_fallback
+            options:
+                directory: '%kernel.project_dir%/var/mnt/data/press_news_image'
+        pressNews.crop:
+            adapter: 'local'
+            options:
+                directory: '%kernel.project_dir%/var/mnt/data/press_news_image_crop'
+        pressNews.chunk:
+            adapter: 'local'
+            options:
+                directory: '%kernel.project_dir%/var/mnt/data/press_news_image_chunk'

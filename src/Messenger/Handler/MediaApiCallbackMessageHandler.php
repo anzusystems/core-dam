@@ -29,6 +29,7 @@ final readonly class MediaApiCallbackMessageHandler
     public function __invoke(MediaApiCallbackMessage $message): void
     {
         $imageFile = $this->imageFileRepository->find($message->getImageId());
+
         if ($imageFile) {
             $this->mediaApiClient->sendImageChangeState($imageFile);
         }
