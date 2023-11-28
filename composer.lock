@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "651cb71d93ebd46755b5e38fd6da9b1d",
+    "content-hash": "034e99331e839f781789f4753b0b397f",
     "packages": [
         {
             "name": "anzusystems/auth-bundle",
@@ -204,16 +204,16 @@
         },
         {
             "name": "anzusystems/core-dam-bundle",
-            "version": "1.3.2",
+            "version": "1.3.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/anzusystems/core-dam-bundle.git",
-                "reference": "6cd0f5b0a68b5f8f8f2dcde1d8591c5644cc2aef"
+                "reference": "fa2169012559bfa4916353bdcbe4b6efe9cab89f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/anzusystems/core-dam-bundle/zipball/6cd0f5b0a68b5f8f8f2dcde1d8591c5644cc2aef",
-                "reference": "6cd0f5b0a68b5f8f8f2dcde1d8591c5644cc2aef",
+                "url": "https://api.github.com/repos/anzusystems/core-dam-bundle/zipball/fa2169012559bfa4916353bdcbe4b6efe9cab89f",
+                "reference": "fa2169012559bfa4916353bdcbe4b6efe9cab89f",
                 "shasum": ""
             },
             "require": {
@@ -292,9 +292,9 @@
             "description": "Dam core bundle",
             "support": {
                 "issues": "https://github.com/anzusystems/core-dam-bundle/issues",
-                "source": "https://github.com/anzusystems/core-dam-bundle/tree/1.3.2"
+                "source": "https://github.com/anzusystems/core-dam-bundle/tree/1.3.3"
             },
-            "time": "2023-11-26T15:44:41+00:00"
+            "time": "2023-11-28T12:50:13+00:00"
         },
         {
             "name": "anzusystems/serializer-bundle",
@@ -13361,7 +13361,7 @@
         "ext-ctype": "*",
         "ext-fileinfo": "*",
         "ext-iconv": "*",
-        "ext-redis": "^5.3"
+        "ext-redis": "*"
     },
     "platform-dev": [],
     "plugin-api-version": "2.6.0"
