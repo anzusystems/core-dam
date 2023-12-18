@@ -37,4 +37,10 @@ final class AssetFileMediaApiResponseDecorator
     {
         return $this->assetFile->getAssetAttributes()->getStatus();
     }
+
+    #[Serialize]
+    public function getLicenceId(): int
+    {
+        return (int) $this->assetFile->getLicence()->getId();
+    }
 }
