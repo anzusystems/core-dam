@@ -286,6 +286,7 @@ anzu_systems_core_dam:
           slots: [ default ]
     scraper:
       id: 11
+      ext_storage: 'ext.scraper'
       image:
         enabled: true
         public_domain: public_image

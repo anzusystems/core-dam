@@ -7,3 +7,24 @@ Authorization: Bearer {{haproxySysUserApiToken}}
 {
   "path": "deep/test-1686749225.flv"
 }
+
+### Create licenced file from path
+POST {{host}}/api/sys/v1/asset-file
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{scraperSysUserApiToken}}
+
+{
+  "path": "img3.jpg",
+  "licence": 101000
+}
+
+> {%
+    client.global.set('assetFileId', response.body.id);
+%}
+
+### Get file
+GET {{host}}/api/sys/v1/asset-file/{{assetFileId}}
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{scraperSysUserApiToken}}
