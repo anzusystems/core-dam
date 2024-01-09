@@ -5,28 +5,28 @@ declare(strict_types=1);
 namespace App\Messenger\Handler;
 
 use AnzuSystems\CoreDamBundle\Cache\AssetFileCacheManager;
-use AnzuSystems\CoreDamBundle\Cache\AudioRouteGenerator;
+use AnzuSystems\CoreDamBundle\Cache\AssetFileRouteGenerator;
 use AnzuSystems\CoreDamBundle\Exception\RuntimeException;
 use AnzuSystems\CoreDamBundle\Traits\MessageBusAwareTrait;
 use App\HttpClient\NotificationClient;
-use App\Messenger\Message\AudioCachePurgeMessage;
+use App\Messenger\Message\AssetFileRouteMessage;
 use App\Messenger\Message\CdnPurgeMessage;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
-final class AudioCachePurgeMessageHandler
+final class AssetFileRouteMessageHandler
 {
     use MessageBusAwareTrait;
 
     public function __construct(
         private readonly NotificationClient $notificationClient,
-        private readonly AudioRouteGenerator $audioRouteGenerator,
+        private readonly AssetFileRouteGenerator $assetFileRouteGenerator,
         private readonly bool $cacheProxyPurgeEnabled,
         private readonly bool $cdnPurgeEnabled,
     ) {
     }
 
-    public function __invoke(AudioCachePurgeMessage $message): void
+    public function __invoke(AssetFileRouteMessage $message): void
     {
         if ($this->cacheProxyPurgeEnabled) {
             $this->purgeCacheProxy($message);
@@ -37,10 +37,10 @@ final class AudioCachePurgeMessageHandler
         }
     }
 
-    private function purgeCacheProxy(AudioCachePurgeMessage $message): void
+    private function purgeCacheProxy(AssetFileRouteMessage $message): void
     {
         $response = $this->notificationClient->purgeCacheProxy(
-            xKey: AssetFileCacheManager::getAssetFileXKey($message->getAudioId()),
+            xKey: AssetFileCacheManager::getAssetFileXKey($message->getAssetFileId()),
         );
 
         if ($response->hasError()) {
@@ -53,11 +53,11 @@ final class AudioCachePurgeMessageHandler
         }
     }
 
-    private function dispatchCdnPurge(AudioCachePurgeMessage $message): void
+    private function dispatchCdnPurge(AssetFileRouteMessage $message): void
     {
         $this->messageBus->dispatch(
             new CdnPurgeMessage(paths: [
-                $this->audioRouteGenerator->getFullUrl($message->getPath(), $message->getExtSystemSlug()),
+                $message->getFullUrl(),
             ])
         );
     }

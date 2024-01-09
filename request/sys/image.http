@@ -25,7 +25,7 @@ Authorization: Bearer {{mediaapiSysUserApiToken}}
   "idCentralUserCreated": 773001,
   "idCentralUserUpdated": 773001,
   "singleUse": false,
-  "public": false
+  "public": true
 }
 
 > {%

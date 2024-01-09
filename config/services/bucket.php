@@ -56,4 +56,14 @@ return static function (ContainerConfigurator $configurator): void {
             ]
         ])
     ;
+
+    $services->set('anzu.google_storage.dam_general_prod_client')
+        ->class(StorageClient::class)
+        ->lazy()
+        ->args([
+            [
+                'keyFile' => env('file:GOOGLE_GENERAL_PROD_BUCKET_CREDENTIALS')->json()->default('empty_array')
+            ]
+        ])
+    ;
 };

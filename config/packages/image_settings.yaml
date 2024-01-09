@@ -67,7 +67,7 @@ anzu_systems_core_dam:
           - { width: 240, height: 180 }   # blog web gallery image set
           - { width: 120, height: 90 }    # blog web gallery image set
           - { width: 300, height: 200 }   # blog web listing small image set
-          - { width: 450, height: 300 }   # blog web listing small image set
+          - { width: 450, height: 300 }   # blog web listing small image set, default not found crop
           - { width: 100, height: 100 }   # blog web listing small image set
           - { width: 150, height: 100 }   # blog web listing small image set
           - { width: 200, height: 200 }   # blog web listing small image set
@@ -89,6 +89,7 @@ anzu_systems_core_dam:
           - { width: 1920, height: 1080, tags: [ 'youtube_distribution', 'jw_distribution'] }
           - { width: 0, height: 600 }        # UGC DAM image preview
           - { width: 500, height: 281 }      # UGC DAM image preview after upload# admin DAM image crop
+          - { width: 450, height: 300 }   # default not found crop
       public_image:
         quality_whitelist: [ 90 ]
         crops:
@@ -103,7 +104,7 @@ anzu_systems_core_dam:
           - { width: 972, height: 648 }   # web list article image set
           - { width: 150, height: 100 }   # web list article image set
           - { width: 300, height: 200 }   # web list article image set
-          - { width: 450, height: 300 }   # web list article image set
+          - { width: 450, height: 300 }   # web list article image set, default not found crop
           - { width: 100, height: 100 }   # web article author
           - { width: 200, height: 200 }   # web article author
       blog_public_image:
@@ -116,7 +117,7 @@ anzu_systems_core_dam:
           - { width: 240, height: 180 }   # blog web gallery image set
           - { width: 120, height: 90 }    # blog web gallery image set
           - { width: 300, height: 200 }   # blog web listing small image set
-          - { width: 450, height: 300 }   # blog web listing small image set
+          - { width: 450, height: 300 }   # blog web listing small image set, default not found crop
           - { width: 100, height: 100 }   # blog web listing small image set
           - { width: 150, height: 100 }   # blog web listing small image set
           - { width: 200, height: 200 }   # blog web listing small image set

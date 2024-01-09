@@ -23,7 +23,7 @@ final readonly class Fs1ApiMigrateConfig
         private bool $clean = false,
         private bool $jwDistribute = false,
         private string $status = 'waiting',
-        private string $fileName = 'fs1_migrate_data.csv',
+        private string $fileName = 'document_migrate_data.csv',
         private string $storageName = 'cms.video',
         private string $showId = '',
         private ?int $limit = null,

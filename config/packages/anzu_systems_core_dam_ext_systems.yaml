@@ -247,9 +247,23 @@ anzu_systems_core_dam:
         title: ['customData:title']
         custom_metadata_pinned_amount: 3
         storage_name: 'cms.document'
+        public_domain_name: '%env(resolve:string:DOMAIN_PUBLIC_DOCUMENT)%'
         chunk_storage_name: 'cms.document'
         size_limit: '%env(byte_size:APP_CMS_DOCUMENT_MAX_SIZE)%'
         file_slots: ~
+        keywords:
+          enabled: true
+          required: false
+          autocomplete_from_exif_metadata_tags:
+            Keywords: ','
+            Subjects: ','
+        authors:
+          enabled: true
+          required: false
+          autocomplete_from_exif_metadata_tags:
+            Artist: ','
+            Owners: ','
+            OwnerName: ~
     blog:
       id: 4
       image:

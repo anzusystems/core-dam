@@ -55,12 +55,14 @@ final class ArtemisClient implements LoggerAwareInterface
      */
     private function mediaRequest(string $method, string $url, ArtemisMediaDto $mediaDto): ArtemisMediaResponseDto
     {
+        /** @var array $array */
+        $array = $this->serializer->toArray($mediaDto);
         $response = $this->loggedRequest(
             client: $this->artemisApiClient,
             message: '[Artemis] Distribute',
             url: $url,
             method: $method,
-            json: $this->serializer->toArray($mediaDto),
+            json: $array,
             timeout: 15,
         );
 

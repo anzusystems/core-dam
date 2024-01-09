@@ -7,6 +7,7 @@ namespace App\Model\Domain\Asset;
 use AnzuSystems\SerializerBundle\Attributes\Serialize;
 use App\App;
 use App\Exception\ValidationException;
+use App\Validator\Constraints as AppAssert;
 use DateTimeImmutable;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -18,6 +19,7 @@ class AssetFileMediaApiDecorator
 
     #[Serialize]
     #[Assert\NotBlank(message: ValidationException::ERROR_FIELD_EMPTY)]
+    #[AppAssert\MediaApiPath]
     protected string $fullPath = '';
 
     #[Serialize]

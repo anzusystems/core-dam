@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use AnzuSystems\CommonBundle\Messenger\Middleware\ContextIdentityMiddleware;
-use App\Messenger\Message\AudioCachePurgeMessage;
+use App\Messenger\Message\AssetFileRouteMessage;
 use App\Messenger\Message\CdnPurgeMessage;
 use App\Messenger\Message\ImageCachePurgeMessage;
 use App\Messenger\Message\MediaApiCallbackMessage;
@@ -39,7 +39,7 @@ return static function (FrameworkConfig $config): void {
             ->middleware(ContextIdentityMiddleware::class)
     ;
     $messengerConfig
-        ->routing(AudioCachePurgeMessage::class)
+        ->routing(AssetFileRouteMessage::class)
         ->senders([$cachePurge])
     ;
     $messengerConfig

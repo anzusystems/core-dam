@@ -94,7 +94,7 @@ resources:
 extends:
   template: composer-deploy-k8s.yaml@templates
   parameters:
-    containerDockerImageVersion: php82
+    containerDockerImageVersion: php83
     containerDockerImageVariant: cli-ci-node-vipsffmpeg-xdebug
     version: $(VERSION)
     runBuild: ${{ parameters.runBuild }}

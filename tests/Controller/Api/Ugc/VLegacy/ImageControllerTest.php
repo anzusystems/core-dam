@@ -41,7 +41,7 @@ final class ImageControllerTest extends AbstractApiController
     public function testSearchList()
     {
         // 1. Basic list
-        $client = $this->getClient(UserFixtures::USER_ONE_SSO_ID, ApiClientFirewall::Ugc);
+        $client = $this->getApiClient(UserFixtures::USER_ONE_SSO_ID, ApiClientFirewall::Ugc);
         $response = $client->get(ImageUgcLegacyUrl::getImageSearchListPath());
         $json = $this->assertResponseAndGetJsonContent($response);
         $this->assertListResponse($json, 2);
@@ -67,7 +67,7 @@ final class ImageControllerTest extends AbstractApiController
 
     public function testGetOne(): void
     {
-        $client = $this->getClient(UserFixtures::USER_ONE_SSO_ID, ApiClientFirewall::Ugc);
+        $client = $this->getApiClient(UserFixtures::USER_ONE_SSO_ID, ApiClientFirewall::Ugc);
         $response = $client->get(ImageUgcLegacyUrl::getSingleImagePath(ImageFixtures::IMAGE_1_ID));
         $json = $this->assertResponseAndGetJsonContent($response);
         $this->assertSame($json['id'], ImageFixtures::IMAGE_1_ID);
@@ -75,7 +75,7 @@ final class ImageControllerTest extends AbstractApiController
 
     public function testUploadDuplicate(): void
     {
-        $client = $this->getClient(UserFixtures::USER_ONE_SSO_ID, ApiClientFirewall::Ugc);
+        $client = $this->getApiClient(UserFixtures::USER_ONE_SSO_ID, ApiClientFirewall::Ugc);
         $response = $this->createImage($client, $this->getFile('text_image_200x200.jpg'), Response::HTTP_OK);
         $id = json_decode($response->getContent(), true)['id'];
         $this->assertSame(ImageFixtures::IMAGE_2_ID, $id);
@@ -86,7 +86,7 @@ final class ImageControllerTest extends AbstractApiController
      */
     public function testUpload(): void
     {
-        $client = $this->getClient(UserFixtures::USER_ONE_SSO_ID, ApiClientFirewall::Ugc);
+        $client = $this->getApiClient(UserFixtures::USER_ONE_SSO_ID, ApiClientFirewall::Ugc);
 
         // 1. Test to upload
         $uploadedFileJson = $this->uploadImage(
@@ -130,7 +130,7 @@ final class ImageControllerTest extends AbstractApiController
     {
         $updatedDescription = 'Updated description 1';
         $updatedAuthor = 'Updated author 1';
-        $client = $this->getClient(UserFixtures::USER_ONE_SSO_ID, ApiClientFirewall::Ugc);
+        $client = $this->getApiClient(UserFixtures::USER_ONE_SSO_ID, ApiClientFirewall::Ugc);
         $response = $client->put(ImageUgcLegacyUrl::getUpdateImagePath(ImageFixtures::IMAGE_1_ID) , [
             'texts' => ['description' => $updatedDescription],
             'author' => ['customAuthor' => $updatedAuthor],
@@ -145,7 +145,7 @@ final class ImageControllerTest extends AbstractApiController
     {
         $updatedDescription = 'Updated description';
         $updatedAuthor = 'Updated author';
-        $client = $this->getClient(UserFixtures::USER_ONE_SSO_ID, ApiClientFirewall::Ugc);
+        $client = $this->getApiClient(UserFixtures::USER_ONE_SSO_ID, ApiClientFirewall::Ugc);
         $response = $client->patch(ImageUgcLegacyUrl::getUpdateBulkImagePath() , [
             [
                 'id' => ImageFixtures::IMAGE_2_ID,

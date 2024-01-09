@@ -22,6 +22,10 @@ final class AuthorProvider
         $this->connectionDecorator = new ConnectionDecorator($this->defaultConnection);
     }
 
+    public function clearCache(): void
+    {
+        $this->cache = [];
+    }
 
     /**
      * @throws Exception

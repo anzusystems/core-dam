@@ -16,6 +16,7 @@ return static function (FrameworkConfig $config): void {
             'x-forwarded-port',
             'x-forwarded-proto',
         ])
+        ->handleAllThrowables(true)
     ;
     $config
         ->session()
@@ -29,5 +30,14 @@ return static function (FrameworkConfig $config): void {
         ->router()
             ->utf8(true)
             ->strictRequirements(null)
+    ;
+    $config
+        ->validation()
+            ->emailValidationMode('html5')
+    ;
+    $config
+        ->uid()
+            ->defaultUuidVersion(4)
+            ->timeBasedUuidVersion(6)
     ;
 };

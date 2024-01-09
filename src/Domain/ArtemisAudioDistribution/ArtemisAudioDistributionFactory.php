@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\ArtemisAudioDistribution;
 
-use AnzuSystems\CoreDamBundle\Cache\AudioRouteGenerator;
+use AnzuSystems\CoreDamBundle\Cache\AssetFileRouteGenerator;
 use AnzuSystems\CoreDamBundle\Distribution\AbstractDistributionDtoFactory;
 use AnzuSystems\CoreDamBundle\Domain\Distribution\DistributionBodyBuilder;
 use AnzuSystems\CoreDamBundle\Entity\Asset;
@@ -12,6 +12,7 @@ use AnzuSystems\CoreDamBundle\Entity\AssetFile;
 use AnzuSystems\CoreDamBundle\Entity\AudioFile;
 use AnzuSystems\CoreDamBundle\Entity\Distribution;
 use AnzuSystems\CoreDamBundle\Entity\PodcastEpisode;
+use AnzuSystems\CoreDamBundle\Repository\AssetFileRouteRepository;
 use AnzuSystems\CoreDamBundle\Repository\DistributionRepository;
 use App\Configuration\ConfigurationProvider;
 use App\Entity\ArtemisAudioDistribution;
@@ -21,10 +22,11 @@ use Doctrine\ORM\NonUniqueResultException;
 final class ArtemisAudioDistributionFactory extends AbstractDistributionDtoFactory
 {
     public function __construct(
-        private readonly AudioRouteGenerator $audioRouteGenerator,
+        private readonly AssetFileRouteGenerator $assetFileRouteGenerator,
         private readonly ConfigurationProvider $configurationProvider,
         private readonly DistributionBodyBuilder $distributionBodyBuilder,
         private readonly DistributionRepository $distributionRepository,
+        private readonly AssetFileRouteRepository $assetFileRouteRepository,
     ) {
     }
 
@@ -99,12 +101,14 @@ final class ArtemisAudioDistributionFactory extends AbstractDistributionDtoFacto
             $premiumFile = $this->getSlotAssetFile($audioFile->getAsset(), $config->getAudioPremiumSlotName());
         }
 
-        if ($premiumFile && $premiumFile->getAudioPublicLink()->isPublic()) {
+        if (null === $premiumFile) {
+            return;
+        }
+
+        $mainUrl = $this->assetFileRouteRepository->findMainByAssetFile((string) $premiumFile->getId());
+        if ($mainUrl) {
             $audioDistribution->getTexts()->setPremiumUrl(
-                $this->audioRouteGenerator->getFullUrl(
-                    path: $premiumFile->getAudioPublicLink()->getPath(),
-                    extSlug: $premiumFile->getExtSystem()->getSlug()
-                )
+                $this->assetFileRouteGenerator->getFullUrl($mainUrl)
             );
 
             $audioDistribution->getAttributes()->setPremiumDuration($audioFile->getAttributes()->getDuration());

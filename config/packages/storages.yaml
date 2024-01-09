@@ -155,3 +155,10 @@ anzu_systems_core_dam:
             adapter: 'local'
             options:
                 directory: '%kernel.project_dir%/var/mnt/data/press_news_image_chunk'
+
+        general.documents:
+            adapter: 'gcloud'
+            options:
+                client: 'anzu.google_storage.dam_general_prod_client'
+                bucket: '%env(string:GCS_GENERAL_DOCUMENT_BUCKET)%'
+                prefix: 'public'

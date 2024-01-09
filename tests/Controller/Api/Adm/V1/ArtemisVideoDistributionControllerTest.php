@@ -42,7 +42,7 @@ final class ArtemisVideoDistributionControllerTest extends AbstractApiController
 
     public function testPreparePayload(): void
     {
-        $client = $this->getClient(App::getUserIdAdmin());
+        $client = $this->getApiClient(App::getUserIdAdmin());
         $response = $client->get(sprintf(
             '/api/adm/v1/custom-distribution/asset-file/%s/prepare-payload/%s',
             VideoFixtures::VIDEO_ID_1,
@@ -56,7 +56,7 @@ final class ArtemisVideoDistributionControllerTest extends AbstractApiController
 
     public function testDistributeSuccess(): void
     {
-        $client = $this->getClient(App::getUserIdAdmin());
+        $client = $this->getApiClient(App::getUserIdAdmin());
 
         $video = $this->entityManager->getRepository(VideoFile::class)->find(VideoFixtures::VIDEO_ID_1);
         $yt = $this->setupYtDistribution($video);
@@ -115,7 +115,7 @@ final class ArtemisVideoDistributionControllerTest extends AbstractApiController
 
     public function testDistributeFailed(): void
     {
-        $client = $this->getClient(App::getUserIdAdmin());
+        $client = $this->getApiClient(App::getUserIdAdmin());
 
         $response = $client->post(
             sprintf(

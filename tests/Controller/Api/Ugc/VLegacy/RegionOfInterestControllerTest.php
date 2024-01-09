@@ -29,7 +29,7 @@ final class RegionOfInterestControllerTest extends AbstractApiController
 
     public function testList(): void
     {
-        $client = $this->getClient(UserFixtures::USER_ONE_SSO_ID, ApiClientFirewall::Ugc);
+        $client = $this->getApiClient(UserFixtures::USER_ONE_SSO_ID, ApiClientFirewall::Ugc);
         $response = $client->get(RegionOfInterestUgcLegacyUrl::getListPath(ImageFixtures::IMAGE_1_ID));
         $json = $this->assertResponseAndGetJsonContent($response);
         $this->assertListResponse($json, 2);
@@ -38,7 +38,7 @@ final class RegionOfInterestControllerTest extends AbstractApiController
 
     public function testGetOne(): void
     {
-        $client = $this->getClient(UserFixtures::USER_ONE_SSO_ID, ApiClientFirewall::Ugc);
+        $client = $this->getApiClient(UserFixtures::USER_ONE_SSO_ID, ApiClientFirewall::Ugc);
         $response = $client->get(RegionOfInterestUgcLegacyUrl::getOnePath($this->regionOfInterest->getId()));
         $json = $this->assertResponseAndGetJsonContent($response);
         $this->assertSame($this->regionOfInterest->getId(), $json['id']);
@@ -50,7 +50,7 @@ final class RegionOfInterestControllerTest extends AbstractApiController
 
     public function testUpdate(): void
     {
-        $client = $this->getClient(UserFixtures::USER_ONE_SSO_ID, ApiClientFirewall::Ugc);
+        $client = $this->getApiClient(UserFixtures::USER_ONE_SSO_ID, ApiClientFirewall::Ugc);
         $response = $client->put(RegionOfInterestUgcLegacyUrl::getUpdatePath($this->regionOfInterest->getId()), [
             'id' => $this->regionOfInterest->getId(),
             'pointX' => 1,

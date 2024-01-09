@@ -23,7 +23,9 @@ Add this entry to your hosts:
 
     127.0.0.1   core-dam.sme.local
     127.0.0.1   image.smedata.local
+    127.0.0.1   uimage.smedata.local
     127.0.0.1   audio.smedata.local
+    127.0.0.1   document.smedata.local
     127.0.0.1   admin-image.smedata.local
 
 - Linux/Mac location:

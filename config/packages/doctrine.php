@@ -25,6 +25,7 @@ return static function (DoctrineConfig $config): void {
     ;
     $ormConfig = $config->orm();
     $ormConfig
+        ->enableLazyGhostObjects(false)
         ->defaultEntityManager('default')
         ->autoGenerateProxyClasses(true)
         ->resolveTargetEntity(AnzuUser::class,  User::class)

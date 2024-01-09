@@ -6,11 +6,8 @@ namespace App\Domain\Image\MediaApi;
 
 use AnzuSystems\CoreDamBundle\Entity\AssetLicence;
 use AnzuSystems\CoreDamBundle\Entity\ExtSystem;
-use AnzuSystems\CoreDamBundle\Exception\DomainException;
 use AnzuSystems\CoreDamBundle\Repository\AssetLicenceRepository;
 use App\Model\Domain\Asset\AssetFileMediaApiCreateDecorator;
-use App\Model\Domain\Asset\AssetFileMediaApiDecorator;
-use App\Model\Domain\Asset\AssetFileMediaApiResponseDecorator;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 final readonly class LicenceProvider

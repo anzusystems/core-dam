@@ -4,13 +4,11 @@ declare(strict_types=1);
 
 namespace App\Event\Listener;
 
-use AnzuSystems\CoreDamBundle\Cache\CachePurgeManager;
-use AnzuSystems\CoreDamBundle\Entity\AudioFile;
 use AnzuSystems\CoreDamBundle\Entity\ImageFile;
 use AnzuSystems\CoreDamBundle\Event\AssetFileDeleteEvent;
 use AnzuSystems\CoreDamBundle\Traits\MessageBusAwareTrait;
 use App\HttpClient\NotificationClient;
-use App\Messenger\Message\AudioCachePurgeMessage;
+use App\Messenger\Message\AssetFileRouteMessage;
 use App\Messenger\Message\ImageCachePurgeMessage;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 
@@ -36,15 +34,13 @@ final class AssetFileDeleteListener
             ));
         }
 
-        // todo break into separate events
-        if ($assetFile instanceof AudioFile && $assetFile->getAudioPublicLink()->isPublic()) {
-            // todo remove public link from bucket
-
-            $this->messageBus->dispatch(new AudioCachePurgeMessage(
-                audioId: $event->getDeleteId(),
-                path: $assetFile->getAudioPublicLink()->getPath(),
-                extSystemSlug: $event->getExtSystem()
-            ));
+        foreach ($event->getRoutePaths() as $path) {
+            $this->messageBus->dispatch(
+                new AssetFileRouteMessage(
+                    assetFileId: $event->getDeleteId(),
+                    fullUrl: $path
+                )
+            );
         }
     }
 }

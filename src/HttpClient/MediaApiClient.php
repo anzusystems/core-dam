@@ -35,14 +35,16 @@ final class MediaApiClient implements LoggerAwareInterface
      */
     public function sendImageChangeState(ImageFile $imageFile): void
     {
+        /** @var array $array */
+        $array = $this->serializer->toArray(
+            AssetFileMediaApiCallbackDecorator::getInstance($imageFile)
+        );
         $response = $this->loggedRequest(
             client: $this->mediaapiApiClient,
             message: '[Mediaapi] image change state',
             url: '/api/v1/images/anzu-dam/' . (string) $imageFile->getId(),
             method: Request::METHOD_PATCH,
-            json: $this->serializer->toArray(
-                AssetFileMediaApiCallbackDecorator::getInstance($imageFile)
-            ),
+            json: $array,
             timeout: 15,
         );
 

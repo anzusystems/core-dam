@@ -15,3 +15,8 @@ anzu_systems_core_dam:
       max_age: 0
       cache_ttl: 60
       public: false
+    public_document:
+      domain: '%env(resolve:string:DOMAIN_PUBLIC_DOCUMENT)%'
+      max_age: '%env(int:DOMAIN_PUBLIC_DOCUMENT_MAX_AGE)%'
+      cache_ttl: '%env(int:DOMAIN_PUBLIC_DOCUMENT_CACHE_TTL)%'
+      public: '%env(bool:DOMAIN_PUBLIC_DOCUMENT_PUBLIC)%'

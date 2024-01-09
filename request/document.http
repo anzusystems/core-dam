@@ -1,0 +1,20 @@
+### Create assest with associated image file
+PATCH {{host}}/api/adm/v1/document/ad967cf4-0ea9-499e-be2a-13bf0b63eabc/make-public
+Content-Type: application/json
+Authorization: Bearer {{adm_access_token}}
+
+### Create assest with associated image file
+PATCH {{host}}/api/adm/v1/document/ad967cf4-0ea9-499e-be2a-13bf0b63eabc/make-private
+Content-Type: application/json
+Authorization: Bearer {{adm_access_token}}
+
+
+### Create assest with associated image file
+PATCH {{host}}/api/adm/v1/audio/7994f48d-118e-4dc6-8245-98b546cda6dc/make-public
+Content-Type: application/json
+Authorization: Bearer {{adm_access_token}}
+
+### Create assest with associated image file
+PATCH {{host}}/api/adm/v1/audio/7994f48d-118e-4dc6-8245-98b546cda6dc/make-private
+Content-Type: application/json
+Authorization: Bearer {{adm_access_token}}

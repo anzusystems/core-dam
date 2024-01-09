@@ -13,7 +13,7 @@ final class UserControllerTest extends AbstractApiController
 {
     public function testCurrentApi(): void
     {
-        $client = $this->getClient(App::getUserIdAdmin());
+        $client = $this->getApiClient(App::getUserIdAdmin());
         $response = $client->get('/api/adm/v1/user/current');
         $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
 

@@ -8,12 +8,17 @@ use AnzuSystems\CoreDamBundle\DataFixtures\AudioFixtures;
 use AnzuSystems\CoreDamBundle\DataFixtures\ImageFixtures;
 use AnzuSystems\CoreDamBundle\DataFixtures\PodcastEpisodeFixtures;
 use AnzuSystems\CoreDamBundle\DataFixtures\PodcastFixtures;
+use AnzuSystems\CoreDamBundle\Domain\AssetFileRoute\AssetFileRouteManager;
 use AnzuSystems\CoreDamBundle\Domain\AssetSlot\AssetSlotFactory;
 use AnzuSystems\CoreDamBundle\Domain\Configuration\DistributionConfigurationProvider;
 use AnzuSystems\CoreDamBundle\Domain\PodcastEpisode\PodcastEpisodeFactory;
+use AnzuSystems\CoreDamBundle\Entity\AssetFileRoute;
 use AnzuSystems\CoreDamBundle\Entity\AudioFile;
+use AnzuSystems\CoreDamBundle\Entity\Embeds\RouteUri;
 use AnzuSystems\CoreDamBundle\Entity\ImageFile;
 use AnzuSystems\CoreDamBundle\Entity\Podcast;
+use AnzuSystems\CoreDamBundle\Model\Enum\RouteMode;
+use AnzuSystems\CoreDamBundle\Model\Enum\RouteStatus;
 use App\App;
 use App\Distribution\Modules\Factory\ArtemisAudioDtoFactory;
 use App\Entity\ArtemisAudioDistribution;
@@ -43,6 +48,7 @@ final class ArtemisAudioDistributionControllerTest extends AbstractApiController
 
     private AssetSlotFactory $assetSlotFactory;
     private ArtemisAudioDtoFactory $artemisAudioDtoFactory;
+    private AssetFileRouteManager $assetFileRouteManager;
     private AudioFile $audioFile;
 
     protected function setUp(): void
@@ -51,6 +57,7 @@ final class ArtemisAudioDistributionControllerTest extends AbstractApiController
 
         $this->assetSlotFactory = $this->getService(AssetSlotFactory::class);
         $this->artemisAudioDtoFactory = $this->getService(ArtemisAudioDtoFactory::class);
+        $this->assetFileRouteManager = $this->getService(AssetFileRouteManager::class);
     }
 
     /**
@@ -59,7 +66,7 @@ final class ArtemisAudioDistributionControllerTest extends AbstractApiController
     public function testPreparePayload(string $id, array $expectedData): void
     {
         $this->setupAudioData();
-        $client = $this->getClient(App::getUserIdAdmin());
+        $client = $this->getApiClient(App::getUserIdAdmin());
         $response = $client->get(sprintf(
             '/api/adm/v1/custom-distribution/asset-file/%s/prepare-payload/%s',
             $id,
@@ -103,7 +110,7 @@ final class ArtemisAudioDistributionControllerTest extends AbstractApiController
     public function testDistributeSuccess(): void
     {
         $this->setupAudioData();
-        $client = $this->getClient(App::getUserIdAdmin());
+        $client = $this->getApiClient(App::getUserIdAdmin());
 
         $response = $client->post(
             sprintf(
@@ -162,7 +169,7 @@ final class ArtemisAudioDistributionControllerTest extends AbstractApiController
 
     public function testDistributeFailed(): void
     {
-        $client = $this->getClient(App::getUserIdAdmin());
+        $client = $this->getApiClient(App::getUserIdAdmin());
 
         $response = $client->post(
             sprintf(
@@ -201,10 +208,21 @@ final class ArtemisAudioDistributionControllerTest extends AbstractApiController
             slotName: 'premium',
             flush: false
         );
-        $this->audioFile->getAudioPublicLink()
-            ->setPublic(true)
-            ->setSlug('public')
-            ->setPath('public-path');
+
+        $route = (new AssetFileRoute())
+            ->setUri(
+                (new RouteUri())
+                    ->setSlug('public-path')
+                    ->setMain(true)
+                    ->setPath('public-path')
+            )
+            ->setMode(RouteMode::StorageCopy)
+            ->setStatus(RouteStatus::Active)
+        ;
+
+        $route->setTargetAssetFile($this->audioFile);
+        $this->audioFile->getRoutes()->add($route);
+        $this->assetFileRouteManager->create($route);
 
         $this->entityManager->flush();
     }

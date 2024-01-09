@@ -161,3 +161,10 @@ anzu_systems_core_dam:
                 client: 'anzu.google_storage.env_client'
                 bucket: '%env(string:GCS_PRESS_NEWS_IMAGE_STORAGE_BUCKET)%'
                 prefix: 'chunk'
+
+        general.documents:
+            adapter: 'gcloud'
+            options:
+                client: 'anzu.google_storage.dam_general_prod_client'
+                bucket: '%env(string:GCS_GENERAL_DOCUMENT_BUCKET)%'
+                prefix: 'public'
