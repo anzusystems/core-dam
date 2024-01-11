@@ -19,7 +19,7 @@ final readonly class LicenceProvider
     private const int STOCK_MAGAZIN = 17;
     //    private const int PRESS_NEWS = 19; // skip
     private const int STOCK_KOMERCNE = 25;
-    //    private const int VIDEO = 32; // skip
+    private const int VIDEO = 32;
     //    private const int WASTE = 34; // skip
     //    private const int WASTE_MACRO = 37; // skip
     private const int STOCK_AUTHORS = 38;
@@ -40,6 +40,7 @@ final readonly class LicenceProvider
     private const array LICENCE_MAP = [
         self::STOCK_SPECTATOR => self::LICENCE_SPECTATOR,
         self::STOCK_SME => self::LICENCE_CMS,
+        self::VIDEO => self::LICENCE_CMS,
         self::STOCK_XBLOCK => self::LICENCE_X_BLOCK,
         self::STOCK_QUIZ => self::LICENCE_CMS,
         self::STOCK_MAGAZIN => self::LICENCE_MAGAZIN,
