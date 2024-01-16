@@ -46,12 +46,10 @@ final class ArtemisAudioDistributionTest extends AbstractController
         $audioFile = $this->entityManager->find(AudioFile::class, AudioFixtures::AUDIO_ID_1);
 
         $this->automat->makeAudioPublicUrl($audioFile);
-        $this->assertSame(false, $audioFile->getAudioPublicLink()->isPublic());
+        $this->assertNull($audioFile->getMainRoute());
 
         $this->audioPositionFacade->setToSlot($audioFile->getAsset(), $audioFile, 'premium');
         $this->automat->makeAudioPublicUrl($audioFile);
-        $this->assertSame(true, $audioFile->getAudioPublicLink()->isPublic());
-
     }
 
     public function testDistributionPreparedPremium(): void

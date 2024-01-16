@@ -15,7 +15,16 @@ Content-Type: application/json
 Authorization: Bearer {{scraperSysUserApiToken}}
 
 {
-  "path": "img3.jpg",
+  "path": "test_image_2.jpg",
+  "customData": {
+    "providerType": "facebook",
+    "originalUrl": "https://www.sme.sk",
+    "description": "Cicik",
+    "providerId": "raz dva tri",
+    "isChild": true,
+    "invalidKey": "I am invalid key"
+  },
+  "generatePublicRoute": true,
   "licence": 101000
 }
 

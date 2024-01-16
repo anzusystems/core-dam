@@ -18,6 +18,7 @@ use AnzuSystems\CoreDamBundle\Entity\AssetFileRoute;
 use AnzuSystems\CoreDamBundle\Entity\AssetLicence;
 use AnzuSystems\CoreDamBundle\Entity\Author;
 use AnzuSystems\CoreDamBundle\Entity\Embeds\RouteUri;
+use AnzuSystems\CoreDamBundle\Entity\ImageFile;
 use AnzuSystems\CoreDamBundle\Entity\Keyword;
 use AnzuSystems\CoreDamBundle\Entity\VideoFile;
 use AnzuSystems\CoreDamBundle\Exception\AssetFileProcessFailed;
@@ -53,18 +54,18 @@ final class DocumentMigrator
     use OutputUtilTrait;
     use IndexManagerAwareTrait;
 
-    public const STATUS_WAITING = 'waiting';
-    public const STATUS_MIGRATED = 'migrated';
-    public const STATUS_FAILED = 'failed';
+    public const string STATUS_WAITING = 'waiting';
+    public const string STATUS_MIGRATED = 'migrated';
+    public const string STATUS_FAILED = 'failed';
 
-    public const FAIL_REASON_FILE_NOT_EXISTS = 'file_not_exist';
-    public const FAIL_REASON_UNKNOWN = 'unknown';
+    public const string FAIL_REASON_FILE_NOT_EXISTS = 'file_not_exist';
+    public const string FAIL_REASON_UNKNOWN = 'unknown';
 
-    private const CMS_LICENCE_ID = 100_000;
-    private const SPECTATOR_LICENCE_ID = 100_001;
+    private const int CMS_LICENCE_ID = 100_000;
+    private const int SPECTATOR_LICENCE_ID = 100_001;
 
-    private const ARTEMIS_DISTRIBUTION_SERVICE = 'artemis_video_cms';
-    private const YOUTUBE_DISTRIBUTION_SERVICE = 'youtube_cms_main';
+    private const string ARTEMIS_DISTRIBUTION_SERVICE = 'artemis_video_cms';
+    private const string YOUTUBE_DISTRIBUTION_SERVICE = 'youtube_cms_main';
 
     private AbstractFilesystem $sourceFileSystem;
     private TmpLocalFilesystem $tmpFileSystem;
@@ -248,7 +249,9 @@ final class DocumentMigrator
             return;
         }
 
-        $route = $this->routeFactory->createFromDto($assetFile, (new AssetFileRouteAdmCreateDto()));
+        $route = $assetFile instanceof ImageFile
+            ? $this->routeFactory->createForImage($assetFile)
+            : $this->routeFactory->createFromDto($assetFile, (new AssetFileRouteAdmCreateDto()));
 
         if ($route->getMode()->is(RouteMode::StorageCopy)) {
             $this->assetFileRouteStorageManager->writeRouteFile($assetFile, $route);

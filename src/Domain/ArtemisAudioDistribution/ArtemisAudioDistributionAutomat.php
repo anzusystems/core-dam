@@ -7,8 +7,6 @@ namespace App\Domain\ArtemisAudioDistribution;
 use AnzuSystems\CoreDamBundle\Distribution\DistributionBroker;
 use AnzuSystems\CoreDamBundle\Domain\AbstractManager;
 use AnzuSystems\CoreDamBundle\Domain\AssetFileRoute\AssetFileRouteFacade;
-use AnzuSystems\CoreDamBundle\Domain\Audio\AudioPublicFacade;
-use AnzuSystems\CoreDamBundle\Domain\Audio\AudioPublicManager;
 use AnzuSystems\CoreDamBundle\Domain\JwDistribution\JwDistributionManager;
 use AnzuSystems\CoreDamBundle\Entity\AssetFile;
 use AnzuSystems\CoreDamBundle\Entity\AssetSlot;
@@ -17,9 +15,7 @@ use AnzuSystems\CoreDamBundle\Entity\JwDistribution;
 use AnzuSystems\CoreDamBundle\Entity\PodcastEpisode;
 use AnzuSystems\CoreDamBundle\Helper\StringHelper;
 use AnzuSystems\CoreDamBundle\Logger\DamLogger;
-use AnzuSystems\CoreDamBundle\Model\Dto\AssetFileRoute\AssetFilePublicRouteAdmDto;
 use AnzuSystems\CoreDamBundle\Model\Dto\AssetFileRoute\AssetFileRouteAdmCreateDto;
-use AnzuSystems\CoreDamBundle\Model\Dto\Audio\AudioPublicationAdmDto;
 use AnzuSystems\CoreDamBundle\Model\Enum\AssetFileProcessStatus;
 use AnzuSystems\CoreDamBundle\Repository\AssetFileRouteRepository;
 use AnzuSystems\CoreDamBundle\Repository\JwDistributionRepository;
@@ -27,15 +23,13 @@ use AnzuSystems\SerializerBundle\Exception\SerializerException;
 use App\Configuration\ConfigurationProvider;
 use App\Entity\ArtemisAudioDistribution;
 use App\Repository\ArtemisAudioDistributionRepository;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\NonUniqueResultException;
-use League\Flysystem\FilesystemException;
 use Throwable;
 
 final class ArtemisAudioDistributionAutomat extends AbstractManager
 {
-    private const ARTEMIS_AUDIO_DISTRIBUTION_SERVICE = 'artemis_podcast_cms';
-    private const JW_AUDIO_DISTRIBUTION_SERVICE = 'jw_cms';
+    private const string ARTEMIS_AUDIO_DISTRIBUTION_SERVICE = 'artemis_podcast_cms';
+    private const string JW_AUDIO_DISTRIBUTION_SERVICE = 'jw_cms';
 
     public function __construct(
         private readonly ArtemisAudioDistributionRepository $repository,
@@ -46,7 +40,6 @@ final class ArtemisAudioDistributionAutomat extends AbstractManager
         private readonly DistributionBroker $distributionBroker,
         private readonly ConfigurationProvider $configurationProvider,
         private readonly DamLogger $logger,
-        //        private readonly AudioPublicFacade $audioPublicFacade,
         private readonly AssetFileRouteFacade $assetFileRouteFacade,
         private readonly AssetFileRouteRepository $assetFileRouteRepository,
     ) {
@@ -214,7 +207,7 @@ final class ArtemisAudioDistributionAutomat extends AbstractManager
         $mainRoute = $this->assetFileRouteRepository->findMainByAssetFile((string) $audioFile->getId());
         if (null === $mainRoute) {
             try {
-                $this->assetFileRouteFacade->makePublic($audioFile, new AssetFileRouteAdmCreateDto());
+                $this->assetFileRouteFacade->makePublicFromDto($audioFile, new AssetFileRouteAdmCreateDto());
             } catch (Throwable $exception) {
                 $this->logger->error(self::class, 'Make public audio link failed', $exception);
             }
