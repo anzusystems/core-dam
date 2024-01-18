@@ -108,9 +108,10 @@ final class JwVideoDistribution
                 $this->outputUtil->writeln('Already distributed to JW');
                 $this->updateRow(
                     mediaApiId: $dto->getMediaId(),
-                    status: self::STATUS_DISTRIBUTION_FAILED,
-                    failReason: 'already_distributed',
+                    status: self::STATUS_DISTRIBUTED,
+                    jwId: $existingJwDistribution->getExtId(),
                 );
+
                 return;
             }
 
