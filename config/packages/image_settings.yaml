@@ -26,11 +26,11 @@ anzu_systems_core_dam:
     crop_allow_map:
       admin_image:
         crop_allow_list: admin_image
-        ext_system_slugs: [tools, blog, cms, pressNews, scraper]
+        ext_system_slugs: [tools, blog, cms, pressNews, people, scraper]
         domain: admin_image
       public_image:
         crop_allow_list: public_image
-        ext_system_slugs: [ cms ]
+        ext_system_slugs: [ cms, people ]
         domain: public_image
       tools_image:
         crop_allow_list: tools_image

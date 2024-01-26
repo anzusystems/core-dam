@@ -161,6 +161,32 @@ anzu_systems_core_dam:
                 client: 'anzu.google_storage.env_client'
                 bucket: '%env(string:GCS_PRESS_NEWS_IMAGE_STORAGE_BUCKET)%'
                 prefix: 'chunk'
+        people.image_fallback:
+            adapter: 'gcloud'
+            options:
+                client: 'anzu.google_storage.env_fallback_client'
+                bucket: '%env(string:GCS_PEOPLE_FALLBACK_STORAGE_BUCKET)%'
+                prefix: 'images'
+        people.image:
+            adapter: 'gcloud'
+            fallback_enabled: '%env(bool:PEOPLE_IMAGE_FALLBACK_ENABLED)%'
+            fallback_storage: people.image_fallback
+            options:
+                client: 'anzu.google_storage.env_client'
+                bucket: '%env(string:GCS_PEOPLE_IMAGE_STORAGE_BUCKET)%'
+                prefix: 'images'
+        people.crop:
+            adapter: 'gcloud'
+            options:
+                client: 'anzu.google_storage.env_client'
+                bucket: '%env(string:GCS_PEOPLE_IMAGE_STORAGE_BUCKET)%'
+                prefix: 'crop'
+        people.chunk:
+            adapter: 'gcloud'
+            options:
+                client: 'anzu.google_storage.env_client'
+                bucket: '%env(string:GCS_PEOPLE_IMAGE_STORAGE_BUCKET)%'
+                prefix: 'chunk'
 
         general.documents:
             adapter: 'gcloud'

@@ -316,6 +316,26 @@ anzu_systems_core_dam:
         file_slots:
           default: default
           slots: [ default ]
+    people:
+      id: 12
+      image:
+        enabled: true
+        public_domain: public_image
+        admin_domain: admin_image
+        title: [ 'customData:title' ]
+        custom_metadata_pinned_amount: 2
+        storage_name: 'people.image'
+        crop_storage_name: 'people.crop'
+        chunk_storage_name: 'people.chunk'
+        size_limit: '%env(byte_size:APP_CMS_IMAGE_MAX_SIZE)%'
+        roi_width: 16
+        roi_height: 9
+        file_slots:
+          default: default
+          slots: [ default ]
+        authors:
+          enabled: true
+          required: false
     pressNews:
       id: 10
       image:
