@@ -74,24 +74,30 @@ final class ArtemisAudioDtoFactory extends AbstractArtemisDtoFactory
         return $mediaDto;
     }
 
-    private function getImagePreview(Asset $asset, ArtemisAudioDistribution $distribution): ?ImageFile
+    public function getImagePreview(Asset $asset, ArtemisAudioDistribution $distribution): ?ImageFile
     {
         $episodes = $asset->getEpisodes()->filter(
             fn (PodcastEpisode $episode): bool => $episode->getPodcast()->getId() === $distribution->getTexts()->getPodcastId()
         );
 
         foreach ($episodes as $episode) {
-            $imageFile = null;
-            if ($episode->getImagePreview()?->getImageFile()->getAssetAttributes()->getStatus()->is(AssetFileProcessStatus::Processed)) {
-                $imageFile = $episode->getImagePreview()?->getImageFile();
-            }
-            if ($episode->getPodcast()->getImagePreview()?->getImageFile()->getAssetAttributes()->getStatus()->is(AssetFileProcessStatus::Processed)) {
-                $imageFile = $episode->getPodcast()->getImagePreview()?->getImageFile();
-            }
+            $imageFile = $this->getEpisodeImage($episode);
 
             if ($imageFile) {
                 return $imageFile;
             }
+        }
+
+        return null;
+    }
+
+    private function getEpisodeImage(PodcastEpisode $episode): ?ImageFile
+    {
+        if ($episode->getImagePreview()?->getImageFile()->getAssetAttributes()->getStatus()->is(AssetFileProcessStatus::Processed)) {
+            return $episode->getImagePreview()?->getImageFile();
+        }
+        if ($episode->getPodcast()->getImagePreview()?->getImageFile()->getAssetAttributes()->getStatus()->is(AssetFileProcessStatus::Processed)) {
+            return $episode->getPodcast()->getImagePreview()?->getImageFile();
         }
 
         return null;
