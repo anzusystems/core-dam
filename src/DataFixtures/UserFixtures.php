@@ -114,7 +114,7 @@ final class UserFixtures extends AbstractFixtures
             ->setPerson(
                 (new Person())
                     ->setFullName('User1 Anzu')
-                )
+            )
         => (new User())
             ->setSelectedLicence($defaultCmsLicence)
             ->setAssetLicences(new ArrayCollection([$defaultCmsLicence, $blogOneLicence]))
@@ -130,7 +130,7 @@ final class UserFixtures extends AbstractFixtures
             ->setPerson(
                 (new Person())
                     ->setFullName('User2 Anzu')
-                )
+            )
         => (new User())
             ->setSelectedLicence($defaultCmsLicence)
             ->setAssetLicences(new ArrayCollection([$defaultCmsLicence, $blogTwoLicence]))
@@ -145,7 +145,7 @@ final class UserFixtures extends AbstractFixtures
             ->setPerson(
                 (new Person())
                     ->setFullName('User3 Anzu')
-                )
+            )
         => (new User())
             ->setSelectedLicence($blogThreeLicence)
             ->setAssetLicences(new ArrayCollection([$blogThreeLicence]))
@@ -164,7 +164,7 @@ final class UserFixtures extends AbstractFixtures
             ->setPerson(
                 (new Person())
                     ->setFullName('Admin Anzu')
-                )
+            )
         => $userAdmin
             ->setSelectedLicence($defaultCmsLicence)
             ->setAssetLicences(new ArrayCollection([$blogFourLicence]))
@@ -179,7 +179,7 @@ final class UserFixtures extends AbstractFixtures
             ->setPerson(
                 (new Person())
                     ->setFullName('User1 Test')
-                )
+            )
         => (new User())
             ->setSelectedLicence($blogFiveLicence)
             ->setAssetLicences(new ArrayCollection([$blogFiveLicence]))
@@ -194,7 +194,7 @@ final class UserFixtures extends AbstractFixtures
             ->setPerson(
                 (new Person())
                     ->setFullName('User2 Test')
-                )
+            )
         => (new User())
             ->setSelectedLicence($blogSixLicence)
             ->setAssetLicences(new ArrayCollection([$blogSixLicence]))
@@ -208,7 +208,7 @@ final class UserFixtures extends AbstractFixtures
             ->setPerson(
                 (new Person())
                     ->setFullName('Ľubomír Stanko')
-                )
+            )
         => (new User())
             ->setSelectedLicence($defaultCmsLicence)
         ;
@@ -220,7 +220,7 @@ final class UserFixtures extends AbstractFixtures
             ->setPerson(
                 (new Person())
                     ->setFullName('Lukáš Budoš')
-                )
+            )
         => (new User())
             ->setSelectedLicence($defaultCmsLicence)
         ;
@@ -232,7 +232,7 @@ final class UserFixtures extends AbstractFixtures
             ->setPerson(
                 (new Person())
                     ->setFullName('Ronald Márföldi')
-                )
+            )
         => (new User())
             ->setSelectedLicence($defaultCmsLicence)
         ;
@@ -244,7 +244,7 @@ final class UserFixtures extends AbstractFixtures
             ->setPerson(
                 (new Person())
                     ->setFullName('Igor Petriska')
-                )
+            )
         => (new User())
             ->setSelectedLicence($defaultCmsLicence)
         ;
@@ -256,7 +256,7 @@ final class UserFixtures extends AbstractFixtures
             ->setPerson(
                 (new Person())
                     ->setFullName('Stanislav Volár')
-                )
+            )
         => (new User())
             ->setSelectedLicence($defaultCmsLicence)
         ;
@@ -268,7 +268,7 @@ final class UserFixtures extends AbstractFixtures
             ->setPerson(
                 (new Person())
                     ->setFullName('Tomáš Hermánek')
-                )
+            )
         => (new User())
             ->setSelectedLicence($defaultCmsLicence)
         ;
@@ -280,7 +280,7 @@ final class UserFixtures extends AbstractFixtures
             ->setPerson(
                 (new Person())
                     ->setFullName('Michal Stanko')
-                )
+            )
         => (new User())
             ->setSelectedLicence($defaultCmsLicence)
         ;
@@ -292,7 +292,7 @@ final class UserFixtures extends AbstractFixtures
             ->setPerson(
                 (new Person())
                     ->setFullName('Andrea Kamenská Beláňová')
-                )
+            )
         => (new User())
             ->setSelectedLicence($defaultCmsLicence)
         ;
