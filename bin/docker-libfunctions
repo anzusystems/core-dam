@@ -131,6 +131,10 @@ function docker_project_setup() {
     # Create tests/coverage folder - needed for PhpStorm Test Coverage
     mkdir -p "tests/coverage"
 
+    # Create ${HOME}/workspace/docker/shared/scraper/image folder - needed for Scraper local data sharing
+    mkdir -p "${HOME}/workspace/docker/shared/scraper/image"
+    mkdir -p "var/mnt/data/ext_scraper"
+
     # Setup docker environment variables for docker-compose configuration
     docker_env_vars
 

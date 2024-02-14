@@ -23,6 +23,7 @@ services:
       - ssh_private_key
     volumes:
       - .:/var/www/html:cached
+      - ${HOME}/workspace/docker/shared/scraper/image:/var/www/html/var/mnt/data/ext_scraper:cached
       - ./tests/coverage:/opt/phpstorm-coverage:cached
     ports:
       - ${NGINX_PORT:-8130}:${NGINX_PORT:-8130}
@@ -46,6 +47,7 @@ services:
       - .env.docker.local
     volumes:
       - .:/var/www/html:cached
+      - ${HOME}/workspace/docker/shared/scraper/image:/var/www/html/var/mnt/data/ext_scraper:cached
     hostname: core-dam-cron
     networks:
       - ${DOCKER_NETWORK_NAME:-petitpress_network}
