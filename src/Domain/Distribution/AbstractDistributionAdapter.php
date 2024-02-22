@@ -35,6 +35,9 @@ abstract class AbstractDistributionAdapter implements DistributionAdapterInterfa
         $distribution->setDistributionService($distributionDto->getDistributionService());
         $distribution->setAssetId((string) $assetFile->getAsset()->getId());
         $distribution->setAssetFileId((string) $assetFile->getId());
+        $distribution->setAsset($assetFile->getAsset());
+        $distribution->setAssetFile($assetFile);
+
         $distribution->setBlockedBy($distributionDto->getBlockedBy());
         $distribution->setPublishAt($distributionDto->getPublishAt());
     }

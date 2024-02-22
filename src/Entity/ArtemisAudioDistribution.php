@@ -18,6 +18,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[AppAssert\ArtemisAudioConstraint]
 class ArtemisAudioDistribution extends Distribution
 {
+    private const string DISCRIMINATOR = 'customDistribution';
+
     #[ORM\Embedded(ArtemisAudioTexts::class)]
     #[Assert\Valid]
     #[Serialize]
@@ -75,5 +77,10 @@ class ArtemisAudioDistribution extends Distribution
         $this->attributes = $attributes;
 
         return $this;
+    }
+
+    public function getDiscriminator(): string
+    {
+        return self::DISCRIMINATOR;
     }
 }

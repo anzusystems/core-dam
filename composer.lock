@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2ca0bec68417475102d3ad268b39c307",
+    "content-hash": "de7a3dc525f026f432a7d33a32305587",
     "packages": [
         {
             "name": "anzusystems/auth-bundle",
@@ -204,16 +204,16 @@
         },
         {
             "name": "anzusystems/core-dam-bundle",
-            "version": "1.7.0",
+            "version": "dev-feature/distribution_elastic",
             "source": {
                 "type": "git",
                 "url": "https://github.com/anzusystems/core-dam-bundle.git",
-                "reference": "644f2a82cd8655d3506df2b4d57f755782488c99"
+                "reference": "a24dab5fafec745c37dcb647c6377d58faa0dead"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/anzusystems/core-dam-bundle/zipball/644f2a82cd8655d3506df2b4d57f755782488c99",
-                "reference": "644f2a82cd8655d3506df2b4d57f755782488c99",
+                "url": "https://api.github.com/repos/anzusystems/core-dam-bundle/zipball/a24dab5fafec745c37dcb647c6377d58faa0dead",
+                "reference": "a24dab5fafec745c37dcb647c6377d58faa0dead",
                 "shasum": ""
             },
             "require": {
@@ -292,9 +292,9 @@
             "description": "Dam core bundle",
             "support": {
                 "issues": "https://github.com/anzusystems/core-dam-bundle/issues",
-                "source": "https://github.com/anzusystems/core-dam-bundle/tree/1.7.0"
+                "source": "https://github.com/anzusystems/core-dam-bundle/tree/feature/distribution_elastic"
             },
-            "time": "2024-01-18T17:12:04+00:00"
+            "time": "2024-02-22T09:05:10+00:00"
         },
         {
             "name": "anzusystems/serializer-bundle",
@@ -13289,6 +13289,12 @@
     ],
     "aliases": [
         {
+            "package": "anzusystems/core-dam-bundle",
+            "version": "dev-feature/distribution_elastic",
+            "alias": "1.8",
+            "alias_normalized": "1.8.0.0"
+        },
+        {
             "package": "petitpress/gps-messenger-bundle",
             "version": "dev-forced_transport",
             "alias": "1.5",
@@ -13297,6 +13303,7 @@
     ],
     "minimum-stability": "dev",
     "stability-flags": {
+        "anzusystems/core-dam-bundle": 20,
         "petitpress/gps-messenger-bundle": 20
     },
     "prefer-stable": true,

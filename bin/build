@@ -98,10 +98,12 @@ if [ -f /.dockerenv ]; then
 
     if ${FIXTURES_LOAD}; then
         echo "[INFO] Loading fixtures"
+        curl -XDELETE http://elasticsearch-anzu:9200/core_dam_*
         bin/console anzusystems:fixtures:generate
         bin/console anzu:elastic:rebuild asset
         bin/console anzu:elastic:rebuild keyword
         bin/console anzu:elastic:rebuild author
+        bin/console anzu:elastic:rebuild distribution
         echo ""
     fi
 

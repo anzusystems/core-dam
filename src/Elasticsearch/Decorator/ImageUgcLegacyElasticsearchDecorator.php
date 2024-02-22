@@ -10,6 +10,7 @@ use AnzuSystems\CommonBundle\Exception\ValidationException;
 use AnzuSystems\CommonBundle\Traits\ValidatorAwareTrait;
 use AnzuSystems\CoreDamBundle\Elasticsearch\ElasticSearch;
 use AnzuSystems\CoreDamBundle\Elasticsearch\SearchDto\AssetAdmSearchDto;
+use AnzuSystems\CoreDamBundle\Elasticsearch\SearchDto\AssetAdmSearchLicenceCollectionDto;
 use AnzuSystems\CoreDamBundle\Entity\Asset;
 use AnzuSystems\CoreDamBundle\Entity\AssetLicence;
 use AnzuSystems\CoreDamBundle\Entity\ImageFile;
@@ -18,6 +19,7 @@ use AnzuSystems\CoreDamBundle\Model\Enum\AssetType;
 use AnzuSystems\SerializerBundle\Exception\SerializerException;
 use App\ApiFilter\ApiUgcLegacyParams;
 use App\Model\Ugc\Legacy\ImageListDto;
+use Doctrine\Common\Collections\ArrayCollection;
 
 final class ImageUgcLegacyElasticsearchDecorator
 {
@@ -60,11 +62,11 @@ final class ImageUgcLegacyElasticsearchDecorator
     private function createSearchDto(
         AssetLicence $licence,
         ApiUgcLegacyParams $apiUgcLegacyParams,
-    ): AssetAdmSearchDto {
-        return (new AssetAdmSearchDto())
+    ): AssetAdmSearchLicenceCollectionDto {
+        return (new AssetAdmSearchLicenceCollectionDto())
+            ->setLicences(new ArrayCollection([$licence]))
             ->setType([AssetType::Image->toString()])
             ->setText($apiUgcLegacyParams->getText())
-            ->setLicences([$licence])
             ->setStatus([AssetStatus::WithFile->toString()])
             ->setOrder(['modifiedAt' => 'desc', 'id' => 'desc'])
             ->setOffset($apiUgcLegacyParams->getOffset())

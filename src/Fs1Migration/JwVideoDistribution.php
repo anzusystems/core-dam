@@ -6,6 +6,7 @@ namespace App\Fs1Migration;
 
 use AnzuSystems\CoreDamBundle\Command\Traits\OutputUtilTrait;
 use AnzuSystems\CoreDamBundle\Distribution\Modules\JwPlayerDistributionModule;
+use AnzuSystems\CoreDamBundle\Domain\Distribution\DistributionStatusFacade;
 use AnzuSystems\CoreDamBundle\Domain\Distribution\DistributionStatusManager;
 use AnzuSystems\CoreDamBundle\Domain\JwDistribution\JwDistributionManager;
 use AnzuSystems\CoreDamBundle\Entity\JwDistribution;
@@ -44,7 +45,7 @@ final class JwVideoDistribution
         private readonly JwPlayerDistributionModule $jwPlayerDistributionModule,
         private readonly JwDistributionManager $distributionManager,
         private readonly DistributionRepository $distributionRepository,
-        private readonly DistributionStatusManager $distributionStatusManager,
+        private readonly DistributionStatusFacade $distributionStatusFacade,
         private readonly Connection $damMediaApiMigConnection,
         private readonly FileSystemProvider $fileSystemProvider,
         private readonly EntityManagerInterface $entityManager,
@@ -123,7 +124,7 @@ final class JwVideoDistribution
 
             $this->distributionManager->create($jwDistribution);
             $this->jwPlayerDistributionModule->distribute($jwDistribution);
-            $this->distributionStatusManager->toRemoteProcessing($jwDistribution);
+            $this->distributionStatusFacade->toRemoteProcessing($jwDistribution);
 
             $this->messageBus->dispatch(new DistributionRemoteProcessingCheckMessage($jwDistribution));
 

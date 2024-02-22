@@ -15,6 +15,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: ArtemisVideoDistributionRepository::class)]
 class ArtemisVideoDistribution extends Distribution
 {
+    private const string DISCRIMINATOR = 'customDistribution';
+
     #[ORM\Embedded(ArtemisVideoTexts::class)]
     #[Assert\Valid]
     #[Serialize]
@@ -54,5 +56,10 @@ class ArtemisVideoDistribution extends Distribution
         $this->flags = $flags;
 
         return $this;
+    }
+
+    public function getDiscriminator(): string
+    {
+        return self::DISCRIMINATOR;
     }
 }
