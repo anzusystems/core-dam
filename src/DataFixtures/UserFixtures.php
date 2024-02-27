@@ -10,10 +10,13 @@ use AnzuSystems\Contracts\Entity\Embeds\Person;
 use AnzuSystems\CoreDamBundle\DataFixtures\AssetLicenceFixtures as BaseAssetLicenceFixtures;
 use AnzuSystems\CoreDamBundle\DataFixtures\PermissionGroupFixtures;
 use AnzuSystems\CoreDamBundle\Entity\AssetLicence;
+use AnzuSystems\CoreDamBundle\Entity\AssetLicenceGroup;
+use AnzuSystems\CoreDamBundle\Repository\AssetLicenceGroupRepository;
 use AnzuSystems\CoreDamBundle\Repository\AssetLicenceRepository;
 use App\App;
 use App\Domain\User\UserManager;
 use App\Entity\User;
+use App\Security\Permission\DamPermissions;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Console\Helper\ProgressBar;
 
@@ -22,17 +25,18 @@ use Symfony\Component\Console\Helper\ProgressBar;
  */
 final class UserFixtures extends AbstractFixtures
 {
-    public const USER_ONE_SSO_ID = 10_001_040;
-    public const USER_TWO_SSO_ID = 10_001_043;
-    public const USER_THREE_SSO_ID = 10_001_045;
-    public const USER_FOUR_SSO_ID = 111_000_000;
-    public const USER_FIVE_SSO_ID = 111_000_001;
+    public const int USER_ONE_SSO_ID = 10_001_040;
+    public const int USER_TWO_SSO_ID = 10_001_043;
+    public const int USER_THREE_SSO_ID = 10_001_045;
+    public const int USER_FOUR_SSO_ID = 111_000_000;
+    public const int USER_FIVE_SSO_ID = 111_000_001;
 
     public function __construct(
         private readonly UserManager $userManager,
         private readonly AssetLicenceFixtures $assetLicenceFixtures,
         private readonly PermissionGroupFixtures $permissionGroupFixtures,
         private readonly AssetLicenceRepository $assetLicenceRepository,
+        private readonly AssetLicenceGroupRepository $assetLicenceGroupRepository,
     ) {
     }
 
@@ -79,6 +83,8 @@ final class UserFixtures extends AbstractFixtures
         $permissionGroup = $this->permissionGroupFixtures->getOneFromRegistry(PermissionGroupFixtures::BASIC_GROUP_TITLE);
         /** @var AssetLicence $defaultCmsLicence */
         $defaultCmsLicence = $this->assetLicenceRepository->find(BaseAssetLicenceFixtures::DEFAULT_LICENCE_ID);
+        /** @var AssetLicenceGroup $cmsLicenceGroup */
+        $cmsLicenceGroup = $this->assetLicenceGroupRepository->find(1);
 
         /** @var AssetLicence $blogOneLicence */
         $blogOneLicence = $this->assetLicenceFixtures->getOneFromRegistry(
@@ -132,8 +138,9 @@ final class UserFixtures extends AbstractFixtures
                     ->setFullName('User2 Anzu')
             )
         => (new User())
+            ->setLicenceGroups(new ArrayCollection([$cmsLicenceGroup]))
             ->setSelectedLicence($defaultCmsLicence)
-            ->setAssetLicences(new ArrayCollection([$defaultCmsLicence, $blogTwoLicence]))
+            ->setAssetLicences(new ArrayCollection([$blogTwoLicence]))
             ->setUserToExtSystems(new ArrayCollection([$defaultCmsLicence->getExtSystem(), $blogTwoLicence->getExtSystem()]))
         ;
 

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Model\Domain\User;
 
 use AnzuSystems\CoreDamBundle\Entity\AssetLicence;
+use AnzuSystems\CoreDamBundle\Entity\AssetLicenceGroup;
 use AnzuSystems\CoreDamBundle\Entity\ExtSystem;
 use AnzuSystems\SerializerBundle\Attributes\Serialize;
 use AnzuSystems\SerializerBundle\Handler\Handlers\EntityIdHandler;
@@ -19,6 +20,9 @@ final class UpdateUserDto
     #[Serialize(handler: EntityIdHandler::class, type: AssetLicence::class)]
     private Collection $assetLicences;
 
+    #[Serialize(handler: EntityIdHandler::class, type: AssetLicenceGroup::class)]
+    private Collection $licenceGroups;
+
     #[Serialize]
     private array $allowedAssetExternalProviders;
 
@@ -29,6 +33,7 @@ final class UpdateUserDto
     {
         $this->setAdminToExtSystems(new ArrayCollection());
         $this->setAssetLicences(new ArrayCollection());
+        $this->setLicenceGroups(new ArrayCollection());
         $this->setAllowedAssetExternalProviders([]);
         $this->setAllowedDistributionServices([]);
     }
@@ -60,6 +65,23 @@ final class UpdateUserDto
     {
         $this->assetLicences = $assetLicences;
 
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, AssetLicenceGroup>
+     */
+    public function getLicenceGroups(): Collection
+    {
+        return $this->licenceGroups;
+    }
+
+    /**
+     * @param Collection<int, AssetLicenceGroup> $licenceGroups
+     */
+    public function setLicenceGroups(Collection $licenceGroups): self
+    {
+        $this->licenceGroups = $licenceGroups;
         return $this;
     }
 

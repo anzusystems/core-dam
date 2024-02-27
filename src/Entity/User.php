@@ -36,16 +36,16 @@ class User extends DamUser implements
     use UserTrackingTrait;
     use TimeTrackingTrait;
 
-    public const ID_ANONYMOUS = 1_763_600;
-    public const ID_CONSOLE = 1_000_000;
-    public const ID_ADMIN = 10_001_039;
+    public const int ID_ANONYMOUS = 1_763_600;
+    public const int ID_CONSOLE = 1_000_000;
+    public const int ID_ADMIN = 10_001_039;
 
-    public const ROLE_UGC = 'ROLE_UGC';
-    public const ROLE_DAM_ADMIN = 'ROLE_DAM_ADMIN';
-    public const ROLE_SYS_JOB_API = 'ROLE_SYS_JOB_API';
-    public const ROLE_SYS_ARTEMIS_API = 'ROLE_SYS_ARTEMIS_API';
-    public const ROLE_SYS_MEDIAAPI_API = 'ROLE_SYS_MEDIAAPI_API';
-    public const ROLE_SYS_API = 'ROLE_SYS_API';
+    public const string ROLE_UGC = 'ROLE_UGC';
+    public const string ROLE_DAM_ADMIN = 'ROLE_DAM_ADMIN';
+    public const string ROLE_SYS_JOB_API = 'ROLE_SYS_JOB_API';
+    public const string ROLE_SYS_ARTEMIS_API = 'ROLE_SYS_ARTEMIS_API';
+    public const string ROLE_SYS_MEDIAAPI_API = 'ROLE_SYS_MEDIAAPI_API';
+    public const string ROLE_SYS_API = 'ROLE_SYS_API';
 
     #[ORM\ManyToMany(targetEntity: PermissionGroup::class, inversedBy: 'users', fetch: App::DOCTRINE_EXTRA_LAZY, indexBy: 'id')]
     #[ORM\JoinTable]
@@ -70,6 +70,7 @@ class User extends DamUser implements
         $this->setAssetLicences(new ArrayCollection());
         $this->setAdminToExtSystems(new ArrayCollection());
         $this->setUserToExtSystems(new ArrayCollection());
+        $this->setLicenceGroups(new ArrayCollection());
         $this->setSelectedLicence(null);
     }
 

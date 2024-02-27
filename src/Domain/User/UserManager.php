@@ -11,6 +11,7 @@ use AnzuSystems\Contracts\Entity\AnzuUser;
 use AnzuSystems\Contracts\Entity\Embeds\Avatar;
 use AnzuSystems\Contracts\Entity\Embeds\Person;
 use AnzuSystems\CoreDamBundle\Entity\AssetLicence;
+use AnzuSystems\CoreDamBundle\Entity\AssetLicenceGroup;
 use AnzuSystems\CoreDamBundle\Entity\ExtSystem;
 use App\Entity\User;
 use App\Model\Domain\User\UpdateCurrentUserDto;
@@ -95,6 +96,23 @@ final class UserManager extends AbstractUserManager
             removeElementFn: function (Collection $oldCollection, ExtSystem $oldExtSystem) use ($user): bool {
                 $oldExtSystem->getAdminUsers()->removeElement($user);
                 $oldCollection->removeElement($oldExtSystem);
+
+                return true;
+            }
+        );
+        /** @psalm-suppress InvalidArgument */
+        $this->colUpdate(
+            oldCollection: $user->getLicenceGroups(),
+            newCollection: $userDto->getLicenceGroups(),
+            addElementFn: function (Collection $oldCollection, AssetLicenceGroup $assetLicenceGroup) use ($user): bool {
+                $assetLicenceGroup->getUsers()->add($user);
+                $oldCollection->add($assetLicenceGroup);
+
+                return true;
+            },
+            removeElementFn: function (Collection $oldCollection, AssetLicenceGroup $oldAssetLicenceGroup) use ($user): bool {
+                $oldAssetLicenceGroup->getUsers()->removeElement($user);
+                $oldCollection->removeElement($oldAssetLicenceGroup);
 
                 return true;
             }

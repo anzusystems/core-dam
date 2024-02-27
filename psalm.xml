@@ -21,6 +21,7 @@
         </ignoreFiles>
     </projectFiles>
     <issueHandlers>
+        <RiskyTruthyFalsyComparison errorLevel="suppress"/>
         <MoreSpecificImplementedParamType errorLevel="suppress"/>
         <UnnecessaryVarAnnotation errorLevel="suppress"/>
         <ImplicitToStringCast errorLevel="suppress"/>

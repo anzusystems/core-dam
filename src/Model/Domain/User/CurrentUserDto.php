@@ -8,11 +8,13 @@ use AnzuSystems\Contracts\AnzuApp;
 use AnzuSystems\Contracts\Entity\Embeds\Avatar;
 use AnzuSystems\Contracts\Entity\Embeds\Person;
 use AnzuSystems\CoreDamBundle\Entity\AssetLicence;
+use AnzuSystems\CoreDamBundle\Entity\AssetLicenceGroup;
 use AnzuSystems\CoreDamBundle\Entity\ExtSystem;
 use AnzuSystems\SerializerBundle\Attributes\Serialize;
 use AnzuSystems\SerializerBundle\Handler\Handlers\EntityIdHandler;
 use App\Entity\User;
 use App\Model\Domain\AssetLicence\AssetLicenceDto;
+use App\Model\Domain\AssetLicenceGroup\AssetLicenceGroupDto;
 use App\Model\Domain\ExtSystem\ExtSystemDto;
 use Doctrine\Common\Collections\Collection;
 
@@ -81,6 +83,12 @@ final class CurrentUserDto
     public function getAdminToExtSystems(): Collection
     {
         return $this->user->getAdminToExtSystems()->map(fn (ExtSystem $extSystem) => ExtSystemDto::getInstance($extSystem));
+    }
+
+    #[Serialize(type: AssetLicenceGroupDto::class)]
+    public function getLicenceGroups(): Collection
+    {
+        return $this->user->getLicenceGroups()->map(fn (AssetLicenceGroup $group) => AssetLicenceGroupDto::getInstance($group));
     }
 
     #[Serialize]
