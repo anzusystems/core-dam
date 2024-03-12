@@ -34,10 +34,22 @@ class ArtemisMediaDto
     protected ?int $premiumDirectSourceDuration = null;
 
     #[Serialize]
+    protected ?int $bonusDuration = null;
+
+    #[Serialize]
     protected string $type = '';
 
     #[Serialize]
     protected string $anzuMediaId = '';
+
+    #[Serialize]
+    protected string $assetFileId = '';
+
+    #[Serialize]
+    protected string $assetId = '';
+
+    #[Serialize]
+    protected string $imagePreviewFileId = '';
 
     #[Serialize]
     protected ?string $youtubeId = null;
@@ -251,6 +263,50 @@ class ArtemisMediaDto
     {
         $this->premiumDirectSourceDuration = $premiumDirectSourceDuration;
 
+        return $this;
+    }
+
+    public function getAssetFileId(): string
+    {
+        return $this->assetFileId;
+    }
+
+    public function setAssetFileId(string $assetFileId): static
+    {
+        $this->assetFileId = $assetFileId;
+        return $this;
+    }
+
+    public function getAssetId(): string
+    {
+        return $this->assetId;
+    }
+
+    public function setAssetId(string $assetId): static
+    {
+        $this->assetId = $assetId;
+        return $this;
+    }
+
+    public function getImagePreviewFileId(): string
+    {
+        return $this->imagePreviewFileId;
+    }
+
+    public function setImagePreviewFileId(string $imagePreviewFileId): static
+    {
+        $this->imagePreviewFileId = $imagePreviewFileId;
+        return $this;
+    }
+
+    public function getBonusDuration(): ?int
+    {
+        return $this->bonusDuration;
+    }
+
+    public function setBonusDuration(?int $bonusDuration): static
+    {
+        $this->bonusDuration = $bonusDuration;
         return $this;
     }
 }

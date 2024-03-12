@@ -29,13 +29,14 @@ use Symfony\Component\HttpFoundation\Response;
 
 final class ArtemisAudioDistributionControllerTest extends AbstractApiController
 {
-    private const TEST_CUSTOM_DATA = [
+    private const array TEST_CUSTOM_DATA = [
         'title' => '783: Kids These Days',
         'description' => 'Custom audio description',
         'keywords' => ['News', 'Podcast', 'Politics'],
         'authors' => ['Aarne Ormonde', 'Larry Queen', 'Malka Raisa'],
         'freeUrl' => 'http://core.dam.localhost/rssurl',
         'premiumUrl' => 'http://audio.smedata.localhost/public-path',
+        'bonusUrl' => '',
         'createArticle' => false,
         'extRssId' => '123',
         'rubricId' => 6978,
@@ -43,6 +44,7 @@ final class ArtemisAudioDistributionControllerTest extends AbstractApiController
         'episodeId' => PodcastEpisodeFixtures::EPISODE_1_ID,
         'duration' => 1,
         'premiumDuration' => 1,
+        'bonusDuration' => 0,
         'bonusEpisode' => false,
     ];
 
@@ -94,6 +96,7 @@ final class ArtemisAudioDistributionControllerTest extends AbstractApiController
                     'authors' => [],
                     'freeUrl' => '',
                     'premiumUrl' => '',
+                    'bonusUrl' => '',
                     'createArticle' => false,
                     'bonusEpisode' => false,
                     'extRssId' => '',
@@ -101,6 +104,7 @@ final class ArtemisAudioDistributionControllerTest extends AbstractApiController
                     'podcastId' => '',
                     'episodeId' => '',
                     'duration' => 0,
+                    'bonusDuration' => 0,
                     'premiumDuration' => 0,
                 ]
             ]

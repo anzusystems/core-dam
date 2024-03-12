@@ -9,7 +9,7 @@
         "ext-iconv": "*",
         "ext-redis": "*",
         "anzusystems/auth-bundle": "^1.1",
-        "anzusystems/core-dam-bundle": "^1.8",
+        "anzusystems/core-dam-bundle": "1.8.2",
         "anzusystems/common-bundle": "5.0.3",
         "doctrine/doctrine-migrations-bundle": "^3.2",
         "doctrine/orm": "^2.13",

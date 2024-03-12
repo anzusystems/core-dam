@@ -19,10 +19,18 @@ class ArtemisAudioAttributes
     #[Serialize]
     private int $premiumDuration;
 
+    #[ORM\Column(type: Types::INTEGER, options: [
+        'unsigned' => true,
+        'default' => 0,
+    ])]
+    #[Serialize]
+    private int $bonusDuration;
+
     public function __construct()
     {
         $this->setDuration(0);
         $this->setPremiumDuration(0);
+        $this->setBonusDuration(0);
     }
 
     public function getDuration(): int
@@ -46,6 +54,17 @@ class ArtemisAudioAttributes
     {
         $this->premiumDuration = $premiumDuration;
 
+        return $this;
+    }
+
+    public function getBonusDuration(): int
+    {
+        return $this->bonusDuration;
+    }
+
+    public function setBonusDuration(int $bonusDuration): self
+    {
+        $this->bonusDuration = $bonusDuration;
         return $this;
     }
 }

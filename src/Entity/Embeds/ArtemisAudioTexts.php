@@ -42,6 +42,12 @@ class ArtemisAudioTexts
     #[Serialize]
     private string $premiumUrl;
 
+    #[Assert\Url(message: ValidationException::ERROR_FIELD_INVALID)]
+    #[Assert\Length(max: 2_048, maxMessage: ValidationException::ERROR_FIELD_LENGTH_MAX)]
+    #[ORM\Column(type: Types::STRING, length: 2_048, options: ['default' => ''])]
+    #[Serialize]
+    private string $bonusUrl;
+
     #[ORM\Column(type: Types::JSON)]
     #[Serialize]
     private array $authors;
@@ -74,6 +80,7 @@ class ArtemisAudioTexts
         $this->setRubricId(0);
         $this->setEpisodeId('');
         $this->setPodcastId('');
+        $this->setBonusUrl('');
     }
 
     public function getExtRssId(): string
@@ -193,6 +200,17 @@ class ArtemisAudioTexts
     {
         $this->podcastId = $podcastId;
 
+        return $this;
+    }
+
+    public function getBonusUrl(): string
+    {
+        return $this->bonusUrl;
+    }
+
+    public function setBonusUrl(string $bonusUrl): self
+    {
+        $this->bonusUrl = $bonusUrl;
         return $this;
     }
 }

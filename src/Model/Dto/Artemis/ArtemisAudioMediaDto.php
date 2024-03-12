@@ -21,6 +21,9 @@ class ArtemisAudioMediaDto extends ArtemisMediaDto
     #[Serialize]
     private string $premiumSourceUrl = '';
 
+    #[Serialize]
+    private string $bonusUrl = '';
+
     #[Serialize(type: 'Y-m-d\TH:i:sP')]
     private ?DateTimeImmutable $publishedAt = null;
 
@@ -88,6 +91,17 @@ class ArtemisAudioMediaDto extends ArtemisMediaDto
     {
         $this->publishedAt = $publishedAt;
 
+        return $this;
+    }
+
+    public function getBonusUrl(): string
+    {
+        return $this->bonusUrl;
+    }
+
+    public function setBonusUrl(string $bonusUrl): self
+    {
+        $this->bonusUrl = $bonusUrl;
         return $this;
     }
 }

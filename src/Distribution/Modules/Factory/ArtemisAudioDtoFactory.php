@@ -37,14 +37,18 @@ final class ArtemisAudioDtoFactory extends AbstractArtemisDtoFactory
             ->setTitle($distribution->getTexts()->getTitle())
             ->setDescription($distribution->getTexts()->getDescription())
             ->setAnzuMediaId((string) $assetFile->getAsset()->getId())
+            ->setAssetId((string) $assetFile->getAsset()->getId())
+            ->setAssetFileId((string) $assetFile->getAsset()->getId())
             ->setPremiumSourceUrl($distribution->getTexts()->getPremiumUrl())
             ->setDirectSourceUrl($distribution->getTexts()->getFreeUrl())
             ->setCreateArticle($distribution->getFlags()->isCreateArticle())
+            ->setBonusUrl($distribution->getTexts()->getBonusUrl())
             ->setBonus($distribution->getFlags()->isBonusEpisode())
             ->setMediaChannel((new ArtemisMediaChannel())->setAnzuId($distribution->getTexts()->getPodcastId()))
             ->setAnzuPodcastEpisodeId($distribution->getTexts()->getEpisodeId())
             ->setDuration($distribution->getAttributes()->getDuration())
             ->setPremiumDirectSourceDuration($distribution->getAttributes()->getPremiumDuration())
+            ->setBonusDuration($distribution->getAttributes()->getBonusDuration())
             ->setType(ArtemisMediaType::Audio->toString());
 
         if ($distribution->getPublishAt()) {
@@ -61,7 +65,10 @@ final class ArtemisAudioDtoFactory extends AbstractArtemisDtoFactory
 
         $imagFile = $this->getImagePreview($assetFile->getAsset(), $distribution);
         if ($imagFile) {
-            $mediaDto->setImage($this->getImage($imagFile));
+            $mediaDto
+                ->setImage($this->getImage($imagFile))
+                ->setImagePreviewFileId((string) $imagFile->getId())
+            ;
         }
 
         $distributions = $this->repository->findByAssetFile((string) $assetFile->getId());

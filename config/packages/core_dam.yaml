@@ -35,6 +35,9 @@ core_dam:
       premium_url:
         source_property_path: 'texts.premiumUrl'
         destination_property_path: 'customData[premiumUrl]'
+      bonus_url:
+        source_property_path: 'texts.bonusUrl'
+        destination_property_path: 'customData[bonusUrl]'
       create_article:
         source_property_path: 'flags.createArticle'
         destination_property_path: 'customData[createArticle]'
@@ -56,6 +59,9 @@ core_dam:
       duration:
         source_property_path: 'attributes.duration'
         destination_property_path: 'customData[duration]'
+      bonus_duration:
+        source_property_path: 'attributes.bonusDuration'
+        destination_property_path: 'customData[bonusDuration]'
       premium_duration:
         source_property_path: 'attributes.premiumDuration'
         destination_property_path: 'customData[premiumDuration]'

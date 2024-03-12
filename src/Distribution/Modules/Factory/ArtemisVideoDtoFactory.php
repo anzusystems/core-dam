@@ -28,6 +28,8 @@ final class ArtemisVideoDtoFactory extends AbstractArtemisDtoFactory
         $mediaDto = new ArtemisMediaDto();
         $mediaDto
             ->setAnzuMediaId((string) $assetFile->getAsset()->getId())
+            ->setAssetId((string) $assetFile->getAsset()->getId())
+            ->setAssetFileId((string) $assetFile->getAsset()->getId())
             ->setTitle($distribution->getTexts()->getTitle())
             ->setDescription($distribution->getTexts()->getDescription())
             ->setCreateArticle($distribution->getFlags()->isCreateArticle())
@@ -38,7 +40,10 @@ final class ArtemisVideoDtoFactory extends AbstractArtemisDtoFactory
         $mediaDto->setRubric((new ArtemisMediaRubricDto())->setId($distribution->getTexts()->getRubricId()));
         $previewImage = $assetFile->getImagePreview()?->getImageFile();
         if ($previewImage instanceof ImageFile) {
-            $mediaDto->setImage($this->getImage($previewImage));
+            $mediaDto
+                ->setImage($this->getImage($previewImage))
+                ->setImagePreviewFileId((string) $previewImage->getId())
+            ;
         }
 
         $distributions = $this->repository->findByAssetFile((string) $assetFile->getId());

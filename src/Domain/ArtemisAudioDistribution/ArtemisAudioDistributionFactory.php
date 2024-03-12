@@ -55,6 +55,7 @@ final class ArtemisAudioDistributionFactory extends AbstractDistributionDtoFacto
 
         $this->setFreeDistributionProperties($audioDistribution, $audioFile, $episode);
         $this->setPremiumDistributionProperties($audioDistribution, $audioFile);
+        $this->setBonusDistributionProperties($audioDistribution, $audioFile, $episode);
         $this->setRubricId($audioDistribution, $audioFile);
         $audioDistribution->getTexts()->setEpisodeId((string) $episode->getId());
         $audioDistribution->getTexts()->setPodcastId((string) $episode->getPodcast()->getId());
@@ -73,6 +74,7 @@ final class ArtemisAudioDistributionFactory extends AbstractDistributionDtoFacto
             $audioDistribution->getTexts()->setEpisodeId((string) $episode->getId());
             $audioDistribution->getTexts()->setPodcastId((string) $episode->getPodcast()->getId());
             $this->setFreeDistributionProperties($audioDistribution, $audioFile, $episode);
+            $this->setBonusDistributionProperties($audioDistribution, $audioFile, $episode);
         }
         $this->setRubricId($audioDistribution, $audioFile);
 
@@ -84,6 +86,25 @@ final class ArtemisAudioDistributionFactory extends AbstractDistributionDtoFacto
         return $audioDistribution;
     }
 
+
+    /**
+     * Set premium properties from premium audio file
+     */
+    public function setBonusDistributionProperties(
+        ArtemisAudioDistribution $audioDistribution,
+        AudioFile $audioFile,
+        PodcastEpisode $episode
+    ): void {
+        $config = $this->configurationProvider->getAudioDistribution();
+        $bonusFile = $this->getSlotAssetFile($audioFile->getAsset(), $config->getAudioBonusSlotName());
+        if ($bonusFile) {
+            $audioDistribution->getFlags()->setBonusEpisode(true);
+            $audioDistribution->getAttributes()->setBonusDuration($bonusFile->getAttributes()->getDuration());
+        }
+
+        $audioDistribution->getTexts()->setBonusUrl($episode->getAttributes()->getExtUrl());
+    }
+
     /**
      * Set premium properties from premium audio file
      */
@@ -92,14 +113,7 @@ final class ArtemisAudioDistributionFactory extends AbstractDistributionDtoFacto
         AudioFile $audioFile,
     ): void {
         $config = $this->configurationProvider->getAudioDistribution();
-        $premiumFile = $this->getSlotAssetFile($audioFile->getAsset(), $config->getAudioBonusSlotName());
-        if ($premiumFile) {
-            $audioDistribution->getFlags()->setBonusEpisode(true);
-        }
-
-        if (null === $premiumFile) {
-            $premiumFile = $this->getSlotAssetFile($audioFile->getAsset(), $config->getAudioPremiumSlotName());
-        }
+        $premiumFile = $this->getSlotAssetFile($audioFile->getAsset(), $config->getAudioPremiumSlotName());
 
         if (null === $premiumFile) {
             return;
