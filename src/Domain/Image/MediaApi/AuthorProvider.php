@@ -92,7 +92,6 @@ final readonly class AuthorProvider
             author: (new Author())
                 ->setExtSystem($extSystem)
                 ->setName($title),
-            flush: false
         );
     }
 }

@@ -83,7 +83,6 @@ final readonly class KeywordProvider
             keyword: (new Keyword())
                 ->setExtSystem($extSystem)
                 ->setName($title),
-            flush: false
         );
     }
 }
