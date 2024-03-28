@@ -51,7 +51,7 @@ final class ArtemisVideoDistributionModule extends AbstractDistributionModule im
             ? $this->artemisClient->createMedia($mediaDto)
             : $this->artemisClient->updateMedia($distribution->getExtId(), $mediaDto);
 
-        $distribution->setExtId($response->getMedia()->getExternalId());
+        $distribution->setExtId((string) $response->getMedia()->getId());
         $distribution->setDistributionData($this->customDataFactory->createDistributionData($response));
     }
 
