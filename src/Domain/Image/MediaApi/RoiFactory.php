@@ -13,9 +13,7 @@ use App\App;
 use App\Configuration\ConfigurationProvider;
 use App\MediaApiMigrations\PoiToRoiTransformer;
 use App\Model\Domain\Asset\AssetFileMediaApiDecorator;
-use App\Model\Domain\Asset\AssetFileMediaApiResponseDecorator;
 use App\Model\Dto\Image\PoiDto;
-use JetBrains\PhpStorm\ArrayShape;
 use League\Flysystem\FilesystemException;
 
 final readonly class RoiFactory

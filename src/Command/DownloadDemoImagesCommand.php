@@ -42,15 +42,15 @@ final class DownloadDemoImagesCommand extends Command
             (int) $input->getArgument(self::ARG_COUNT),
             ['nature', 'people', 'city', 'politics', 'animals', 'girls', 'food'],
             [
-                [1024, 768],
-                [768, 1024],
-                [1280, 1024],
+                [1_024, 768],
+                [768, 1_024],
+                [1_280, 1_024],
                 [720, 576],
                 [576, 720],
-                [1280, 720],
-                [1920, 1080],
-                [1080, 1920],
-                [1080, 1080],
+                [1_280, 720],
+                [1_920, 1_080],
+                [1_080, 1_920],
+                [1_080, 1_080],
                 [576, 576],
             ]
         );

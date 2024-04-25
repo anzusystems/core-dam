@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Command;
 
-use AnzuSystems\CoreDamBundle\DataFixtures\Provider\UnsplashImageProvider;
-use AnzuSystems\CoreDamBundle\Entity\Asset;
 use AnzuSystems\CoreDamBundle\Entity\Distribution;
 use AnzuSystems\CoreDamBundle\Repository\AssetFileRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -15,7 +13,6 @@ use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 

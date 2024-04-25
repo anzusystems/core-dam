@@ -7,7 +7,6 @@ namespace App\Fs1Migration;
 use AnzuSystems\CoreDamBundle\Command\Traits\OutputUtilTrait;
 use AnzuSystems\CoreDamBundle\Distribution\Modules\JwPlayerDistributionModule;
 use AnzuSystems\CoreDamBundle\Domain\Distribution\DistributionStatusFacade;
-use AnzuSystems\CoreDamBundle\Domain\Distribution\DistributionStatusManager;
 use AnzuSystems\CoreDamBundle\Domain\JwDistribution\JwDistributionManager;
 use AnzuSystems\CoreDamBundle\Entity\JwDistribution;
 use AnzuSystems\CoreDamBundle\FileSystem\FileSystemProvider;

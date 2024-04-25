@@ -30,7 +30,6 @@ final class ArtemisAudioDistributionFactory extends AbstractDistributionDtoFacto
     ) {
     }
 
-
     /**
      * Creates minimal version of Distribution used to automatic updates to CMS
      *
@@ -85,7 +84,6 @@ final class ArtemisAudioDistributionFactory extends AbstractDistributionDtoFacto
 
         return $audioDistribution;
     }
-
 
     /**
      * Set premium properties from premium audio file

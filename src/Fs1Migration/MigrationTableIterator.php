@@ -9,7 +9,6 @@ use App\App;
 use App\MediaApiMigrations\ConnectionDecorator;
 use App\Model\Fs1ApiMigrateConfig;
 use App\Model\Fs1Migration\VideoMigrationDto;
-use App\Model\MediaApiMigrateConfig;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Result;
@@ -45,7 +44,6 @@ final class MigrationTableIterator
             $rows = $this->getMigrationItem($lastId, $config)->fetchAllAssociative();
         }
     }
-
 
     /**
      * @throws Exception

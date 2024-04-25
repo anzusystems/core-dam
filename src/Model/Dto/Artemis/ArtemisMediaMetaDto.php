@@ -10,10 +10,13 @@ final class ArtemisMediaMetaDto
 {
     #[Serialize]
     private int $articleId;
+
     #[Serialize]
     private string $articleAdminUrl;
+
     #[Serialize]
     private string $mediaAdminUrl;
+
     #[Serialize]
     private string $articleUrl;
 

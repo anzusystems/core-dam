@@ -173,7 +173,7 @@ final class Version20230303080257 extends AbstractMigration
                 'position' => 3,
                 'attributes_type' => 'string',
                 'attributes_min_value' => null,
-                'attributes_max_value' => 5000,
+                'attributes_max_value' => 5_000,
                 'attributes_min_count' => null,
                 'attributes_max_count' => null,
                 'attributes_required' => 0,

@@ -6,14 +6,11 @@ namespace App\MediaApiMigrations;
 
 use AnzuSystems\CoreDamBundle\Command\Traits\OutputUtilTrait;
 use AnzuSystems\CoreDamBundle\Domain\Image\ImageManager;
-use AnzuSystems\CoreDamBundle\Entity\AssetFile;
 use AnzuSystems\CoreDamBundle\Entity\ImageFile;
-use AnzuSystems\CoreDamBundle\FileSystem\FileSystemProvider;
 use AnzuSystems\CoreDamBundle\Repository\ImageFileRepository;
 use App\Model\MediaApiMigrateConfig;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;
-use League\Flysystem\FilesystemException;
 
 final class ImageMigrationPostProcessor
 {

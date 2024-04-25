@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Model\Dto\Artemis;
 
 use AnzuSystems\SerializerBundle\Attributes\Serialize;
-use App\Model\Enum\ArtemisMediaType;
 
 class ArtemisMediaDto
 {

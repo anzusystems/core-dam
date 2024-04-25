@@ -6,8 +6,6 @@ namespace App\Model\Ugc\Legacy;
 
 use AnzuSystems\CoreDamBundle\Entity\ImageFile;
 use AnzuSystems\CoreDamBundle\Model\Enum\ApiViewType;
-use AnzuSystems\CoreDamBundle\Model\Enum\ImageCropTag;
-use AnzuSystems\CoreDamBundle\Serializer\Handler\Handlers\ImageLinksHandler;
 use AnzuSystems\SerializerBundle\Attributes\Serialize;
 use AnzuSystems\SerializerBundle\Handler\Handlers\EntityIdHandler;
 use App\Entity\User;

@@ -4,12 +4,7 @@ declare(strict_types=1);
 
 namespace App\Fs1Migration;
 
-use AnzuSystems\AuthBundle\Exception\UnsuccessfulAccessTokenRequestException;
-use AnzuSystems\AuthBundle\Exception\UnsuccessfulUserInfoRequestException;
-use AnzuSystems\AuthBundle\HttpClient\OAuth2HttpClient;
 use AnzuSystems\CoreDamBundle\Command\Traits\OutputUtilTrait;
-use AnzuSystems\CoreDamBundle\Helper\StringHelper;
-use App\App;
 use App\Entity\User;
 use App\MediaApiMigrations\ConnectionDecorator;
 use App\Model\Csv\Fs1CsvFile;
@@ -28,11 +23,11 @@ final class VideoShowProvider
      * @var array<string, string>
      */
     private array $showCache = [];
+
     /**
      * @var array<string, string>
      */
     private array $episodeCache = [];
-
     private ConnectionDecorator $connectionDecorator;
 
     public function __construct(

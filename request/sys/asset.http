@@ -15,7 +15,7 @@ Content-Type: application/json
 Authorization: Bearer {{scraperSysUserApiToken}}
 
 {
-  "path": "test_image_2.jpg",
+  "path": "SampleJPGImage_1mbmb.jpg",
   "customData": {
     "providerType": "facebook",
     "originalUrl": "https://www.sme.sk",
@@ -37,3 +37,33 @@ GET {{host}}/api/sys/v1/asset-file/{{assetFileId}}
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{scraperSysUserApiToken}}
+
+
+### Create licenced file from path
+POST {{host}}/api/sys/v1/asset-file/from-url
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{cmsSysUserApiToken}}
+
+{
+  "url": "https://m.smedata.sk/api-media/media/image/sme/9/87/8708329/8708329_180x120.jpg?rev=2",
+  "customData": {
+    "title": "Popis",
+    "description": "poopo"
+  },
+  "authors": [
+    "author 3",
+    "Teta"
+  ],
+  "keywords": [
+    "keyword 1",
+    "keyword 2",
+    "Teta v obrazku"
+  ],
+  "generatePublicRoute": false,
+  "licence": 100000
+}
+
+> {%
+    client.global.set('assetFileId', response.body.id);
+%}

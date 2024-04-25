@@ -12,6 +12,7 @@ class ArtemisAudioMediaDto extends ArtemisMediaDto
 {
     #[Serialize]
     protected string $anzuPodcastEpisodeId = '';
+
     #[Serialize]
     private ArtemisMediaChannel $mediaChannel;
 

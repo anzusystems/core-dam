@@ -11,7 +11,6 @@ use AnzuSystems\CoreDamBundle\Helper\StringHelper;
 use AnzuSystems\CoreDamBundle\Repository\AuthorRepository;
 use App\Model\Domain\Asset\AssetFileMediaApiCreateDecorator;
 use App\Model\Domain\Asset\AssetFileMediaApiDecorator;
-use App\Model\Domain\Asset\AssetFileMediaApiResponseDecorator;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 

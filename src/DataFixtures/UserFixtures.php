@@ -16,7 +16,6 @@ use AnzuSystems\CoreDamBundle\Repository\AssetLicenceRepository;
 use App\App;
 use App\Domain\User\UserManager;
 use App\Entity\User;
-use App\Security\Permission\DamPermissions;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Console\Helper\ProgressBar;
 

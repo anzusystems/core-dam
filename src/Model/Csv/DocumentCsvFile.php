@@ -5,9 +5,6 @@ declare(strict_types=1);
 namespace App\Model\Csv;
 
 use AnzuSystems\SerializerBundle\Attributes\Serialize;
-use AnzuSystems\SerializerBundle\Handler\Handlers\ArrayStringHandler;
-use AnzuSystems\SerializerBundle\Handler\Handlers\DateTimeHandler;
-use DateTimeImmutable;
 
 final class DocumentCsvFile
 {

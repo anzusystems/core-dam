@@ -46,7 +46,6 @@ final class MigrationTableIterator
         }
     }
 
-
     /**
      * @throws Exception
      */

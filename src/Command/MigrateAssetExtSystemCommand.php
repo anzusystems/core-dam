@@ -5,12 +5,6 @@ declare(strict_types=1);
 namespace App\Command;
 
 use AnzuSystems\CoreDamBundle\Entity\Asset;
-use AnzuSystems\CoreDamBundle\Repository\AssetRepository;
-use App\MediaApiMigrations\ImageMigrationPostProcessor;
-use App\MediaApiMigrations\MediaApiMigration;
-use App\MediaApiMigrations\MigrationTableBuilder;
-use App\MediaApiMigrations\UsersMigration;
-use App\Model\MediaApiMigrateConfig;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;

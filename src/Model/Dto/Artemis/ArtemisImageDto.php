@@ -10,8 +10,10 @@ final class ArtemisImageDto
 {
     #[Serialize]
     private ?string $title = null;
+
     #[Serialize]
     private string $url = '';
+
     #[Serialize]
     private ?string $description = null;
 

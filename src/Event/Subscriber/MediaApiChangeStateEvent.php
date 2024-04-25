@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace App\Event\Subscriber;
 
-use AnzuSystems\CoreDamBundle\Domain\Asset\AssetTextsProcessor;
 use AnzuSystems\CoreDamBundle\Entity\ImageFile;
 use AnzuSystems\CoreDamBundle\Event\AssetFileChangeStateEvent;
-use AnzuSystems\CoreDamBundle\Exception\RuntimeException;
 use AnzuSystems\CoreDamBundle\Model\Enum\AssetFileProcessStatus;
 use AnzuSystems\CoreDamBundle\Repository\AudioFileRepository;
 use AnzuSystems\CoreDamBundle\Repository\ImageFileRepository;

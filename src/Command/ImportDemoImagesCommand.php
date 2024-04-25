@@ -7,7 +7,6 @@ namespace App\Command;
 use AnzuSystems\CoreDamBundle\DataFixtures\Provider\FixtureImageProvider;
 use AnzuSystems\CoreDamBundle\Domain\Configuration\ConfigurationProvider;
 use AnzuSystems\CoreDamBundle\Entity\AssetLicence;
-use AnzuSystems\CoreDamBundle\Repository\AssetLicenceRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Exception\ORMException;
 use League\Flysystem\FilesystemException;

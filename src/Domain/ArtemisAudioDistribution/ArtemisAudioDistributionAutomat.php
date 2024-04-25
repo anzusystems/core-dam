@@ -194,8 +194,7 @@ final class ArtemisAudioDistributionAutomat extends AbstractManager
     private function isAtSlot(AssetFile $assetFile, string $slotName): bool
     {
         return (bool) $assetFile->getSlots()->filter(
-            fn (AssetSlot $slot): bool =>
-                $slot->getName() === $slotName
+            fn (AssetSlot $slot): bool => $slot->getName() === $slotName
         )->first();
     }
 

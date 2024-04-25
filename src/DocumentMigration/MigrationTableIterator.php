@@ -7,10 +7,7 @@ namespace App\DocumentMigration;
 use AnzuSystems\CoreDamBundle\Command\Traits\OutputUtilTrait;
 use App\App;
 use App\MediaApiMigrations\ConnectionDecorator;
-use App\Model\Fs1ApiMigrateConfig;
 use App\Model\Fs1Migration\DocumentMigrationDto;
-use App\Model\Fs1Migration\VideoMigrationDto;
-use App\Model\MediaApiMigrateConfig;
 use App\Model\StaticFilesMigrateConfig;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;
@@ -47,7 +44,6 @@ final class MigrationTableIterator
             $rows = $this->getMigrationItem($lastId, $config)->fetchAllAssociative();
         }
     }
-
 
     /**
      * @throws Exception

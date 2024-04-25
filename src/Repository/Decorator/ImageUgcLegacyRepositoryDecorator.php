@@ -10,7 +10,6 @@ use AnzuSystems\CommonBundle\Exception\ValidationException;
 use AnzuSystems\CoreDamBundle\ApiFilter\AssetStatusForAssetFileApiParams;
 use AnzuSystems\CoreDamBundle\ApiFilter\LicensedEntityApiParams;
 use AnzuSystems\CoreDamBundle\Entity\AssetLicence;
-use AnzuSystems\CoreDamBundle\Entity\ImageFile;
 use AnzuSystems\CoreDamBundle\Model\Enum\AssetStatus;
 use AnzuSystems\CoreDamBundle\Repository\CustomFilter\CustomAssetStatusForAssetFileFilter;
 use AnzuSystems\CoreDamBundle\Repository\CustomFilter\LicensedEntityFilter;

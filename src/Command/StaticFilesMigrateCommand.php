@@ -6,8 +6,6 @@ namespace App\Command;
 
 use App\DocumentMigration\DocumentMigrator;
 use App\DocumentMigration\MigrationTableBuilder;
-use App\DocumentMigration\MigrationTableIterator;
-use App\Model\Fs1ApiMigrateConfig;
 use App\Model\StaticFilesMigrateConfig;
 use Exception;
 use Symfony\Component\Console\Attribute\AsCommand;

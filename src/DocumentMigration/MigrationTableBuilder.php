@@ -12,16 +12,10 @@ use App\App;
 use App\Csv\CsvFactory;
 use App\MediaApiMigrations\ConnectionDecorator;
 use App\Model\Csv\DocumentCsvFile;
-use App\Model\Csv\Fs1CsvFile;
-use App\Model\Fs1ApiMigrateConfig;
-use App\Model\Fs1Migration\VideoMigrationDto;
-use App\Model\MediaApiMigrateConfig;
 use App\Model\StaticFilesMigrateConfig;
 use DateTimeImmutable;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;
-use Doctrine\DBAL\Result;
-use Generator;
 use Symfony\Component\String\ByteString;
 
 final class MigrationTableBuilder

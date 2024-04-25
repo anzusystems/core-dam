@@ -91,7 +91,7 @@ final readonly class DocumentMigrationDto
 
     private static function parseDateTimeImmutableFromRow(array $row, string $key): DateTimeImmutable
     {
-        $defaultDate = (new DateTimeImmutable())->setTimestamp(1699697471);
+        $defaultDate = (new DateTimeImmutable())->setTimestamp(1_699_697_471);
 
         if (false === isset($row[$key])) {
             return $defaultDate;

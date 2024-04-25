@@ -74,7 +74,6 @@ final class RefreshAssetFilePropertiesCommand extends Command
         $this->flushAndClear();
     }
 
-
     protected function configure(): void
     {
         $this->addArgument(

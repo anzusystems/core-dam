@@ -19,6 +19,7 @@ final class UsersMigration
     use OutputUtilTrait;
 
     private readonly ConnectionDecorator $connectionDecorator;
+
     /**
      * @var array<int, null|string>
      */

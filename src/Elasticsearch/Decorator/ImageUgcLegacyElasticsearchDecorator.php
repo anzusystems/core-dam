@@ -9,7 +9,6 @@ use AnzuSystems\CommonBundle\ApiFilter\ApiResponseList;
 use AnzuSystems\CommonBundle\Exception\ValidationException;
 use AnzuSystems\CommonBundle\Traits\ValidatorAwareTrait;
 use AnzuSystems\CoreDamBundle\Elasticsearch\ElasticSearch;
-use AnzuSystems\CoreDamBundle\Elasticsearch\SearchDto\AssetAdmSearchDto;
 use AnzuSystems\CoreDamBundle\Elasticsearch\SearchDto\AssetAdmSearchLicenceCollectionDto;
 use AnzuSystems\CoreDamBundle\Entity\Asset;
 use AnzuSystems\CoreDamBundle\Entity\AssetLicence;

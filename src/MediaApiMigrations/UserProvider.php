@@ -8,7 +8,6 @@ use AnzuSystems\AuthBundle\Exception\UnsuccessfulAccessTokenRequestException;
 use AnzuSystems\AuthBundle\Exception\UnsuccessfulUserInfoRequestException;
 use AnzuSystems\AuthBundle\HttpClient\OAuth2HttpClient;
 use AnzuSystems\CoreDamBundle\Command\Traits\OutputUtilTrait;
-use AnzuSystems\CoreDamBundle\Helper\StringHelper;
 use App\App;
 use App\Entity\User;
 use DateTimeInterface;
@@ -31,7 +30,6 @@ final class UserProvider
     ) {
         $this->connectionDecorator = new ConnectionDecorator($this->defaultConnection);
     }
-
 
     /**
      * @throws Exception

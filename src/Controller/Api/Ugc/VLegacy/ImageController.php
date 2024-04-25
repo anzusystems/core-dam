@@ -64,7 +64,8 @@ final class ImageController extends AbstractApiController
     #[Route('/blog/{blogId}/image/search', name: 'search', methods: [Request::METHOD_GET])]
     #[OAResponseList(ImageListDto::class)]
     public function searchList(
-        #[AssetLicenceByBlogIdParam(name: 'blogId')] AssetLicence $licence,
+        #[AssetLicenceByBlogIdParam(name: 'blogId')]
+        AssetLicence $licence,
         ApiUgcLegacyParams $apiUgcLegacyParams,
     ): JsonResponse {
         $this->denyAccessUnlessGranted(UgcVoter::DAM_UGC_ACCESS, $licence);
@@ -100,8 +101,10 @@ final class ImageController extends AbstractApiController
     #[Route('/blog/{blogId}/image', name: 'create', methods: [Request::METHOD_POST])]
     #[OAResponse(ImageDetailDto::class)]
     public function create(
-        #[SerializeParam] ImageCreateDto $imageCreateDto,
-        #[AssetLicenceByBlogIdParam(name: 'blogId')] AssetLicence $licence,
+        #[SerializeParam]
+        ImageCreateDto $imageCreateDto,
+        #[AssetLicenceByBlogIdParam(name: 'blogId')]
+        AssetLicence $licence,
     ): JsonResponse {
         App::throwOnReadOnlyMode();
         $this->denyAccessUnlessGranted(UgcVoter::DAM_UGC_ACCESS, $licence);
@@ -162,7 +165,8 @@ final class ImageController extends AbstractApiController
     #[Route(path: '/image/bulk-update', name: 'update_bulk', methods: [Request::METHOD_PATCH])]
     #[Route(path: '/image/bulk-update-undescribed', name: 'update_bulk_undescribed', defaults: ['onlyUndescribed' => true], methods: [Request::METHOD_PATCH])]
     public function updateBulk(
-        #[SerializeIterableParam(type: ImageUpdateDto::class, maxItems: 10)] ArrayCollection $newImageFiles,
+        #[SerializeIterableParam(type: ImageUpdateDto::class, maxItems: 10)]
+        ArrayCollection $newImageFiles,
         bool $onlyUndescribed = false,
     ): JsonResponse {
         App::throwOnReadOnlyMode();

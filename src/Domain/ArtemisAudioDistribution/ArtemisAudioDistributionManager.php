@@ -4,15 +4,9 @@ declare(strict_types=1);
 
 namespace App\Domain\ArtemisAudioDistribution;
 
-use AnzuSystems\CoreDamBundle\Domain\AbstractManager;
-use AnzuSystems\CoreDamBundle\Domain\AssetLicence\AssetLicenceManager as BaseAssetLicenceManager;
 use AnzuSystems\CoreDamBundle\Domain\Distribution\AbstractDistributionManager;
-use AnzuSystems\CoreDamBundle\Entity\AssetLicence;
-use AnzuSystems\CoreDamBundle\Entity\Author;
 use AnzuSystems\CoreDamBundle\Entity\Distribution;
-use AnzuSystems\CoreDamBundle\Entity\Keyword;
 use App\Entity\ArtemisAudioDistribution;
-use App\Model\Domain\AssetLicence\UpsertAssertLicenceDto;
 
 final class ArtemisAudioDistributionManager extends AbstractDistributionManager
 {

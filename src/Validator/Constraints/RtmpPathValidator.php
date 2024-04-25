@@ -4,10 +4,7 @@ declare(strict_types=1);
 
 namespace App\Validator\Constraints;
 
-use AnzuSystems\CommonBundle\Domain\User\CurrentAnzuUserProvider;
-use App\Entity\User;
 use App\FileSystem\DamFileSystemProvider;
-use App\Model\Domain\User\UpdateCurrentUserDto;
 use League\Flysystem\FilesystemException;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;

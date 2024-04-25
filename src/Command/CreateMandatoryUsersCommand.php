@@ -51,7 +51,6 @@ final class CreateMandatoryUsersCommand extends Command
             );
     }
 
-
     /**
      * @throws Exception
      */

@@ -26,7 +26,6 @@ final class SsoUserInitializerCollectionHandler extends AbstractHandler
     ) {
     }
 
-
     public function serialize(mixed $value, Metadata $metadata): ?array
     {
         if (null === $value) {

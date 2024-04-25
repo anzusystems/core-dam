@@ -13,7 +13,6 @@ use AnzuSystems\CoreDamBundle\Model\Dto\CustomDistribution\CustomDistributionAdm
 use App\Configuration\ConfigurationProvider;
 use App\Domain\Distribution\AbstractDistributionAdapter;
 use App\Entity\ArtemisAudioDistribution;
-use Doctrine\Common\Collections\ArrayCollection;
 
 final class ArtemisAudioDistributionAdapter extends AbstractDistributionAdapter
 {

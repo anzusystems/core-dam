@@ -25,7 +25,6 @@ final class UpsertAssertLicenceDto
 
     #[Serialize(handler: SsoUserInitializerCollectionHandler::class)]
     private ArrayCollection $users;
-
     private ExtSystem $extSystem;
 
     public function getExtSystemSlug(): string

@@ -6,15 +6,12 @@ namespace App\Domain\Image\MediaApi;
 
 use AnzuSystems\CommonBundle\Domain\AbstractManager;
 use AnzuSystems\CommonBundle\Traits\SerializerAwareTrait;
-use AnzuSystems\CoreDamBundle\Domain\AssetFile\AssetFileManager;
 use AnzuSystems\CoreDamBundle\Entity\ImageFile;
 use AnzuSystems\SerializerBundle\Exception\SerializerException;
 use App\Domain\AssetMetadata\AssetMetadataManager;
 use App\Model\Domain\Asset\AssetFileMediaApiDecorator;
-use App\Model\Domain\Asset\AssetFileMediaApiResponseDecorator;
 use App\Model\Domain\AssetMetadata\ExifMetadata;
 use App\Model\Domain\AssetMetadata\MediaApiMetadata;
-use Doctrine\Common\Collections\ArrayCollection;
 
 final class ImageManager extends AbstractManager
 {

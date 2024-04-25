@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Model\Domain\AssetLicenceGroup;
 
-use AnzuSystems\CoreDamBundle\Entity\AssetLicence;
 use AnzuSystems\CoreDamBundle\Entity\AssetLicenceGroup;
 use AnzuSystems\CoreDamBundle\Entity\ExtSystem;
 use AnzuSystems\SerializerBundle\Attributes\Serialize;
