@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "38e9981ce808c44ced81db1bdaf540ee",
+    "content-hash": "205c7bd49d328baa1661e95c8ed4015f",
     "packages": [
         {
             "name": "anzusystems/auth-bundle",
@@ -206,16 +206,16 @@
         },
         {
             "name": "anzusystems/core-dam-bundle",
-            "version": "dev-feature_76556_sys_url_api",
+            "version": "1.9.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/anzusystems/core-dam-bundle.git",
-                "reference": "10ba14bdf76d7c799d3d24f6be34a9c148769213"
+                "reference": "771b935a91c3b8a409421cfefea2016ca7907ea7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/anzusystems/core-dam-bundle/zipball/10ba14bdf76d7c799d3d24f6be34a9c148769213",
-                "reference": "10ba14bdf76d7c799d3d24f6be34a9c148769213",
+                "url": "https://api.github.com/repos/anzusystems/core-dam-bundle/zipball/771b935a91c3b8a409421cfefea2016ca7907ea7",
+                "reference": "771b935a91c3b8a409421cfefea2016ca7907ea7",
                 "shasum": ""
             },
             "require": {
@@ -295,9 +295,9 @@
             "description": "Dam core bundle",
             "support": {
                 "issues": "https://github.com/anzusystems/core-dam-bundle/issues",
-                "source": "https://github.com/anzusystems/core-dam-bundle/tree/feature_76556_sys_url_api"
+                "source": "https://github.com/anzusystems/core-dam-bundle/tree/1.9.0"
             },
-            "time": "2024-04-25T09:37:38+00:00"
+            "time": "2024-04-25T11:28:27+00:00"
         },
         {
             "name": "anzusystems/serializer-bundle",
@@ -13533,12 +13533,6 @@
     ],
     "aliases": [
         {
-            "package": "anzusystems/core-dam-bundle",
-            "version": "dev-feature_76556_sys_url_api",
-            "alias": "1.9",
-            "alias_normalized": "1.9.0.0"
-        },
-        {
             "package": "petitpress/gps-messenger-bundle",
             "version": "dev-forced_transport",
             "alias": "1.5",
@@ -13547,7 +13541,6 @@
     ],
     "minimum-stability": "dev",
     "stability-flags": {
-        "anzusystems/core-dam-bundle": 20,
         "petitpress/gps-messenger-bundle": 20
     },
     "prefer-stable": true,
