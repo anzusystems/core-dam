@@ -118,7 +118,7 @@ anzu_systems_core_dam:
                 required: true
         file_slots:
           default: free
-          slots: [ free, premium, bonus ]
+          slots: [ free, premium, bonus, long ]
         podcast_episode_rss_map:
           title:
             source_property_path: 'title'
