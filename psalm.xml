@@ -18,7 +18,6 @@
             <file name="src/DependencyInjection/Configuration.php"/>
             <file name="src/Controller/Api/Adm/V1/TestController.php"/>
             <file name="src/Command/ImportDemoImagesCommand.php"/>
-            <directory name="src/JwVideoMigration/"/>
         </ignoreFiles>
     </projectFiles>
     <issueHandlers>

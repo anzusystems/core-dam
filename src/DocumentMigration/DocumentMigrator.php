@@ -232,8 +232,8 @@ final class DocumentMigrator
 
         $this->updateTrackableFields($assetFile, $dto);
         $this->updateTrackableFields($assetFile->getMetadata(), $dto);
-        $this->updateTrackableFields($assetFile, $dto);
-        $this->updateTrackableFields($assetFile->getMetadata(), $dto);
+        $this->updateTrackableFields($assetFile->getAsset(), $dto);
+        $this->updateTrackableFields($assetFile->getAsset()->getMetadata(), $dto);
 
         $this->facadeProvider->getStatusFacade($assetFile)->storeAndProcess($assetFile);
         $this->setupRouting($assetFile, $dto);
