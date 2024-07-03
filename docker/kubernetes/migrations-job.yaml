@@ -37,6 +37,11 @@ spec:
             - secretRef:
                 name: #{APP_NAME}#
           env:
+            - name: APP_TRUSTED_PROXIES
+              valueFrom:
+                configMapKeyRef:
+                  name: #{APP_NAME}#-infra
+                  key: trusted_ips
             - name: REDIS_HOST
               valueFrom:
                 configMapKeyRef:

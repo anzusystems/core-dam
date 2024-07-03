@@ -46,6 +46,11 @@ spec:
             - secretRef:
                 name: #{APP_NAME}#
           env:
+            - name: APP_TRUSTED_PROXIES
+              valueFrom:
+                configMapKeyRef:
+                  name: #{APP_NAME}#-infra
+                  key: trusted_ips
             - name: AZURE_DEPLOYMENT_START_TIME
               value: #{SYSTEM_PIPELINESTARTTIME}#
             - name: REDIS_HOST
