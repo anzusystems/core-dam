@@ -23,7 +23,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 )]
 final class MigrateAssetExtSystemCommand extends Command
 {
-    private const MAX_RESULTS = 1_000;
+    private const int MAX_RESULTS = 1_000;
 
     public function __construct(
         private readonly EntityManagerInterface $em

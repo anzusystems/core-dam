@@ -8,10 +8,11 @@ use AnzuSystems\AuthBundle\Exception\UnsuccessfulAccessTokenRequestException;
 use AnzuSystems\AuthBundle\Exception\UnsuccessfulUserInfoRequestException;
 use AnzuSystems\AuthBundle\HttpClient\OAuth2HttpClient;
 use AnzuSystems\Contracts\Entity\AnzuUser;
+use AnzuSystems\SerializerBundle\Context\SerializationContext;
 use AnzuSystems\SerializerBundle\Exception\SerializerException;
 use AnzuSystems\SerializerBundle\Handler\Handlers\AbstractHandler;
 use AnzuSystems\SerializerBundle\Metadata\Metadata;
-use App\Domain\User\UserManager;
+use App\Domain\User\UgcUserManager;
 use App\Entity\User;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -22,11 +23,11 @@ final class SsoUserInitializerCollectionHandler extends AbstractHandler
     public function __construct(
         private readonly OAuth2HttpClient $OAuth2HttpClient,
         private readonly UserRepository $userRepository,
-        private readonly UserManager $userManager,
+        private readonly UgcUserManager $userManager,
     ) {
     }
 
-    public function serialize(mixed $value, Metadata $metadata): ?array
+    public function serialize(mixed $value, Metadata $metadata, SerializationContext $context): ?array
     {
         if (null === $value) {
             return null;

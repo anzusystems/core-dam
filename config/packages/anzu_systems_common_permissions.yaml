@@ -1,46 +1,55 @@
 anzu_systems_common:
   permissions:
-    roles: [ ROLE_USER, ROLE_UGC, ROLE_ADMIN, ROLE_DAM_ADMIN, ROLE_SYS_API, ROLE_SYS_JOB_API ]
+    roles: [ ROLE_SUPER_ADMIN, ROLE_ADMIN, ROLE_DAM_ADMIN, ROLE_UGC, ROLE_SYS_API, ROLE_SYS_JOB_API ]
     config:
       dam_asset:
         create:
         update:
         view:
+        read:
         delete:
       dam_video:
         create:
         update:
         view:
+        read:
         delete:
       dam_audio:
         create:
         update:
         view:
+        read:
         delete:
       dam_document:
         create:
         update:
         view:
+        read:
         delete:
       dam_image:
         create:
         update:
         view:
+        read:
         delete:
       dam_assetCustomForm:
         create:
         update:
         view:
+        read:
       dam_customFormElement:
         view:
+        read:
       dam_regionOfInterest:
         create:
         update:
         view:
+        read:
         delete:
       dam_extSystem:
         update:
         view:
+        read:
         list:
         ui:
       dam_assetLicence:
@@ -48,40 +57,47 @@ anzu_systems_common:
         update:
         list:
         view:
+        read:
         ui:
       dam_author:
         create:
         update:
         view:
+        read:
         delete:
         ui:
       dam_keyword:
         create:
         update:
         view:
+        read:
         delete:
         ui:
       dam_podcast:
         create:
         update:
         view:
+        read:
         delete:
         ui:
       dam_podcastEpisode:
         create:
         update:
         view:
+        read:
         delete:
         ui:
       dam_distributionCategory:
         create:
         update:
         view:
+        read:
         delete:
         ui:
       dam_distributionCategorySelect:
         update:
         view:
+        read:
         ui:
       dam_distribution:
         access:
@@ -91,30 +107,35 @@ anzu_systems_common:
         create:
         update:
         view:
+        read:
         ugcImpersonate:
         ui:
       dam_permissionGroup:
         create:
         update:
         view:
+        read:
         delete:
         ui:
       dam_videoShow:
         create:
         update:
         view:
+        read:
         delete:
         ui:
       dam_videoShowEpisode:
         create:
         update:
         view:
+        read:
         delete:
         ui:
       dam_log:
         ui:
       dam_job:
         view:
+        read:
         create:
         delete:
         ui:
@@ -123,12 +144,15 @@ anzu_systems_common:
         ROLE_USER:
           en: User
           sk: Používateľ
-        ROLE_ADMIN:
+        ROLE_SUPER_ADMIN:
           en: Super Admin
           sk: Super Administrátor
+        ROLE_ADMIN:
+          en: Basic Admin
+          sk: Základný Administrátor
         ROLE_DAM_ADMIN:
-          en: DAM Admin
-          sk: DAM Administrátor
+          en: DAM Admin (Deprecated)
+          sk: DAM Administrátor (Deprecated)
         ROLE_UGC:
           sk: UGC Používateľ
           en: UGC User
@@ -143,6 +167,9 @@ anzu_systems_common:
           en: UI
           sk: UI
         view:
+          en: View (Deprecated)
+          sk: Zobraz (Deprecated)
+        read:
           en: View
           sk: Zobraz
         update:

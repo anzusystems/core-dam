@@ -7,14 +7,10 @@ namespace App\Entity;
 use AnzuSystems\AuthBundle\Contracts\AnzuAuthUserInterface;
 use AnzuSystems\AuthBundle\Contracts\ApiTokenUserInterface;
 use AnzuSystems\CommonBundle\Validator\Constraints\UniqueEntity;
-use AnzuSystems\Contracts\Entity\Interfaces\TimeTrackingInterface;
-use AnzuSystems\Contracts\Entity\Interfaces\UserTrackingInterface;
-use AnzuSystems\Contracts\Entity\Traits\TimeTrackingTrait;
 use AnzuSystems\CoreDamBundle\App;
 use AnzuSystems\CoreDamBundle\Entity\AssetLicence;
 use AnzuSystems\CoreDamBundle\Entity\DamUser;
 use AnzuSystems\CoreDamBundle\Entity\PermissionGroup;
-use AnzuSystems\CoreDamBundle\Entity\Traits\UserTrackingTrait;
 use AnzuSystems\SerializerBundle\Attributes\Serialize;
 use AnzuSystems\SerializerBundle\Handler\Handlers\EntityIdHandler;
 use App\Repository\UserRepository;
@@ -24,23 +20,22 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
+#[ORM\Table(name: 'user')]
 #[ORM\UniqueConstraint(name: 'UNIQ_email', fields: ['email'])]
 #[UniqueEntity(fields: ['id'])]
 #[UniqueEntity(fields: ['email'])]
 class User extends DamUser implements
     AnzuAuthUserInterface,
-    ApiTokenUserInterface,
-    UserTrackingInterface,
-    TimeTrackingInterface
+    ApiTokenUserInterface
 {
-    use UserTrackingTrait;
-    use TimeTrackingTrait;
-
     public const int ID_ANONYMOUS = 1_763_600;
     public const int ID_CONSOLE = 1_000_000;
     public const int ID_ADMIN = 10_001_039;
 
     public const string ROLE_UGC = 'ROLE_UGC';
+    /**
+     * @deprecated ROLE IS GOING TO BE REMOVED
+     */
     public const string ROLE_DAM_ADMIN = 'ROLE_DAM_ADMIN';
     public const string ROLE_SYS_JOB_API = 'ROLE_SYS_JOB_API';
     public const string ROLE_SYS_ARTEMIS_API = 'ROLE_SYS_ARTEMIS_API';

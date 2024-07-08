@@ -16,8 +16,8 @@ final class NotificationClient implements LoggerAwareInterface
     use LoggerAwareRequest;
     use SerializerAwareTrait;
 
-    private const CACHE_PATH = '/api/v1/sys/cache-proxy/purge';
-    private const CDN_PATH = '/api/v1/sys/cdn/purge';
+    private const string CACHE_PATH = '/api/v1/sys/cache-proxy/purge';
+    private const string CDN_PATH = '/api/v1/sys/cdn/purge';
 
     public function __construct(
         private readonly HttpClientInterface $anzuNotificationApiClient,

@@ -22,11 +22,11 @@ use Symfony\Component\Console\Helper\ProgressBar;
  */
 final class ToolsImageFixtures extends AbstractAssetFileFixtures
 {
-    public const DATA_PATH = __DIR__ . '/../../tests/data/files/';
+    public const string DATA_PATH = __DIR__ . '/../../tests/data/files/';
 
-    public const NOT_FOUND_IMAGE_ID = 'c41ca3a7-af73-46ee-a517-5f3748815c01';
+    public const string NOT_FOUND_IMAGE_ID = 'c41ca3a7-af73-46ee-a517-5f3748815c01';
 
-    private const TOOLS_LICENCE_ID = 200_000;
+    private const int TOOLS_LICENCE_ID = 200_000;
 
     public function __construct(
         private readonly ImageManager $imageManager,

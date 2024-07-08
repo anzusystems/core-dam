@@ -24,9 +24,9 @@ use Symfony\Component\String\ByteString;
 final class MigrationTableBuilder
 {
     use OutputUtilTrait;
-    public const CMS_EXT_ID = 1;
-    private const BULK_SIZE = 100;
-    private const IGNORE_RUBRIC_IDS = [8, 98];
+    public const int CMS_EXT_ID = 1;
+    private const int BULK_SIZE = 100;
+    private const array IGNORE_RUBRIC_IDS = [8, 98];
 
     private readonly ConnectionDecorator $damMediaApiMigConnectionDecorator;
 

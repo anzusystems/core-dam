@@ -16,11 +16,11 @@ use AnzuSystems\CoreDamBundle\Model\OpenApi\Request\OARequest;
 use AnzuSystems\SerializerBundle\Attributes\SerializeParam;
 use AnzuSystems\SerializerBundle\Exception\SerializerException;
 use App\App;
-use App\Domain\User\UserFacade;
+use App\Domain\User\DeprecatedUserFacade;
 use App\Entity\User;
-use App\Model\Domain\User\CurrentUserDto;
+use App\Model\Domain\User\DeprecatedCurrentUserDto;
+use App\Model\Domain\User\DeprecatedUpdateUserDto;
 use App\Model\Domain\User\UpdateCurrentUserDto;
-use App\Model\Domain\User\UpdateUserDto;
 use App\Repository\UserRepository;
 use App\Security\Permission\DamPermissions;
 use Doctrine\ORM\Exception\ORMException;
@@ -37,7 +37,7 @@ use Symfony\Component\Routing\Annotation\Route;
 final class UserController extends AbstractApiController
 {
     public function __construct(
-        private readonly UserFacade $userFacade,
+        private readonly DeprecatedUserFacade $userFacade,
         private readonly UserRepository $userRepo,
     ) {
     }
@@ -46,11 +46,11 @@ final class UserController extends AbstractApiController
      * Get one item.
      */
     #[Route('/current', 'get_current', methods: [Request::METHOD_GET])]
-    #[OAResponse(CurrentUserDto::class)]
+    #[OAResponse(DeprecatedCurrentUserDto::class)]
     public function getCurrent(): JsonResponse
     {
         return $this->okResponse(
-            CurrentUserDto::getInstance($this->getUser())
+            DeprecatedCurrentUserDto::getInstance($this->getUser())
         );
     }
 
@@ -64,7 +64,7 @@ final class UserController extends AbstractApiController
     {
         $user = $this->userFacade->updateFromCurrentUserDto($this->getUser(), $updateDto);
 
-        return $this->okResponse(CurrentUserDto::getInstance($user));
+        return $this->okResponse(DeprecatedCurrentUserDto::getInstance($user));
     }
 
     /**
@@ -74,7 +74,7 @@ final class UserController extends AbstractApiController
     #[OAParameterPath('user'), OAResponse(User::class)]
     public function getOne(User $user): JsonResponse
     {
-        $this->denyAccessUnlessGranted(DamPermissions::DAM_USER_VIEW, $user);
+        $this->denyAccessUnlessGranted(DamPermissions::DAM_USER_READ, $user);
 
         return $this->okResponse($user);
     }
@@ -88,7 +88,7 @@ final class UserController extends AbstractApiController
     #[OAResponseInfiniteList(User::class)]
     public function getList(ApiParams $apiParams): JsonResponse
     {
-        $this->denyAccessUnlessGranted(DamPermissions::DAM_USER_VIEW);
+        $this->denyAccessUnlessGranted(DamPermissions::DAM_USER_READ);
 
         return $this->okResponse(
             $this->userRepo->findByApiParamsWithInfiniteListing($apiParams),
@@ -103,8 +103,8 @@ final class UserController extends AbstractApiController
      * @throws SerializerException
      */
     #[Route('/{user}', 'update', ['user' => '\d+'], methods: [Request::METHOD_PUT])]
-    #[OAParameterPath('user'), OARequest(UpdateUserDto::class), OAResponse(User::class), OAResponseValidation]
-    public function update(User $user, #[SerializeParam] UpdateUserDto $updateUserDto): JsonResponse
+    #[OAParameterPath('user'), OARequest(DeprecatedUpdateUserDto::class), OAResponse(User::class), OAResponseValidation]
+    public function update(User $user, #[SerializeParam] DeprecatedUpdateUserDto $updateUserDto): JsonResponse
     {
         App::throwOnReadOnlyMode();
         $this->denyAccessUnlessGranted(DamPermissions::DAM_USER_UPDATE, $user);

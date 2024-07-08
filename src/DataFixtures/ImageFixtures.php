@@ -24,14 +24,14 @@ use Symfony\Component\Console\Helper\ProgressBar;
  */
 final class ImageFixtures extends AbstractAssetFileFixtures
 {
-    public const DATA_PATH = __DIR__ . '/../../vendor/anzusystems/core-dam-bundle/src/Resources/fixtures/';
+    public const string DATA_PATH = __DIR__ . '/../../vendor/anzusystems/core-dam-bundle/src/Resources/fixtures/';
 
-    public const IMAGE_1_ID = '1d584443-2718-470a-b9b1-10d2d9c7447c';
-    public const IMAGE_1_AUTHOR = 'Author Name 1';
-    public const IMAGE_1_DESCRIPTION = 'Custom Data Description 1';
-    public const IMAGE_2_ID = '2d584443-2718-470a-b9b1-10d2d9c7447c';
-    public const IMAGE_2_AUTHOR = 'Author Name 2';
-    public const IMAGE_2_DESCRIPTION = 'Custom Data Description 2';
+    public const string IMAGE_1_ID = '1d584443-2718-470a-b9b1-10d2d9c7447c';
+    public const string IMAGE_1_AUTHOR = 'Author Name 1';
+    public const string IMAGE_1_DESCRIPTION = 'Custom Data Description 1';
+    public const string IMAGE_2_ID = '2d584443-2718-470a-b9b1-10d2d9c7447c';
+    public const string IMAGE_2_AUTHOR = 'Author Name 2';
+    public const string IMAGE_2_DESCRIPTION = 'Custom Data Description 2';
 
     public function __construct(
         private readonly ImageManager $imageManager,

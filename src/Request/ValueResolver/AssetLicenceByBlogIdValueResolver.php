@@ -18,7 +18,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 #[AutoconfigureTag(name: 'controller.argument_value_resolver', attributes: ['priority' => 200])]
 final readonly class AssetLicenceByBlogIdValueResolver implements ValueResolverInterface
 {
-    private const BLOG_EXT_SYSTEM_ID = 4;
+    private const int BLOG_EXT_SYSTEM_ID = 4;
 
     public function __construct(
         private AssetLicenceRepository $assetLicenceRepo,

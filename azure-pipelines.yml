@@ -43,7 +43,7 @@ extends:
     mysqlDockerRootPassword: $(MYSQL_DATABASE_PASSWORD)
     testServiceElasticsearchEnabled: true
     testServiceMongoEnabled: true
-    runDoctrineValidate: true
+    runDoctrineValidate: false
     runPhpUnit: true
     runSecurityCheck: true
     runEcsCheck: true

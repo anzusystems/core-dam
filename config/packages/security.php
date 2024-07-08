@@ -20,13 +20,20 @@ return static function (SecurityConfig $config): void {
                 ->property('id')
     ;
     $config
+        // Deprecated HIERARCHY
         ->roleHierarchy(AnzuUser::ROLE_ADMIN, [User::ROLE_DAM_ADMIN, User::ROLE_SYS_API, User::ROLE_UGC])
         ->roleHierarchy(User::ROLE_DAM_ADMIN, [AnzuUser::ROLE_USER])
+        // ADM HIERARCHY
+        ->roleHierarchy(User::ROLE_SUPER_ADMIN, [AnzuUser::ROLE_ADMIN, User::ROLE_SYS_API, User::ROLE_UGC])
+        ->roleHierarchy(AnzuUser::ROLE_ADMIN, [AnzuUser::ROLE_USER])
+        // UGC hierarchy
         ->roleHierarchy(User::ROLE_UGC, [AnzuUser::ROLE_USER])
-        ->roleHierarchy(AnzuUser::ROLE_USER, null)
+        // SYS hierarchy
         ->roleHierarchy(User::ROLE_SYS_API, [User::ROLE_SYS_JOB_API, User::ROLE_SYS_ARTEMIS_API])
         ->roleHierarchy(User::ROLE_SYS_JOB_API, null)
         ->roleHierarchy(User::ROLE_SYS_ARTEMIS_API, null)
+        // Base user ROLE
+        ->roleHierarchy(AnzuUser::ROLE_USER, null)
     ;
     $config->passwordHasher(User::class, 'auto');
     $config
@@ -78,9 +85,9 @@ return static function (SecurityConfig $config): void {
     ;
     $config->accessControl()->path('^/api/pub/')->roles(['PUBLIC_ACCESS']);
     $config->accessControl()->path('^/api/auth/')->roles(['PUBLIC_ACCESS']);
-    $config->accessControl()->path('^/api/adm/')->roles([User::ROLE_DAM_ADMIN]);
+    $config->accessControl()->path('^/api/adm/')->roles([User::ROLE_DAM_ADMIN, AnzuUser::ROLE_ADMIN]);
     $config->accessControl()->path('^/api/ugc/')->roles([User::ROLE_UGC]);
-    $config->accessControl()->path('^/adm/')->roles([User::ROLE_DAM_ADMIN]);
+    $config->accessControl()->path('^/adm/')->roles([User::ROLE_DAM_ADMIN, AnzuUser::ROLE_ADMIN]);
     $config->accessControl()->path('^/api/sys/v(\d+)/job')->roles([User::ROLE_SYS_JOB_API]);
     $config->accessControl()->path('^/api/sys/v(\d+)/mediaapi')->roles([User::ROLE_SYS_MEDIAAPI_API]);
     $config->accessControl()->path('^/api/sys/')->roles([User::ROLE_SYS_API]);

@@ -15,7 +15,7 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 final class UgcVoter extends Voter
 {
     // UGC access
-    public const DAM_UGC_ACCESS = 'dam_ugc_access';
+    public const string DAM_UGC_ACCESS = 'dam_ugc_access';
 
     protected function supports(string $attribute, $subject): bool
     {

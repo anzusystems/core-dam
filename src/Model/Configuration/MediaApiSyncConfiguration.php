@@ -6,7 +6,7 @@ namespace App\Model\Configuration;
 
 final class MediaApiSyncConfiguration
 {
-    public const STORAGE_NAME = 'storage_name';
+    public const string STORAGE_NAME = 'storage_name';
 
     public function __construct(
         private readonly string $storageName,

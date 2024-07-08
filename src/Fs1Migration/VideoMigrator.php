@@ -75,16 +75,16 @@ final class VideoMigrator
     use OutputUtilTrait;
     use IndexManagerAwareTrait;
 
-    public const STATUS_WAITING = 'waiting';
-    public const STATUS_MIGRATED = 'migrated';
-    public const STATUS_FAILED = 'failed';
+    public const string STATUS_WAITING = 'waiting';
+    public const string STATUS_MIGRATED = 'migrated';
+    public const string STATUS_FAILED = 'failed';
 
-    public const FAIL_REASON_FILE_NOT_EXISTS = 'file_not_exist';
-    public const FAIL_REASON_UNKNOWN = 'unknown';
+    public const string FAIL_REASON_FILE_NOT_EXISTS = 'file_not_exist';
+    public const string FAIL_REASON_UNKNOWN = 'unknown';
 
-    private const LICENCE_ID = 100_000;
-    private const ARTEMIS_DISTRIBUTION_SERVICE = 'artemis_video_cms';
-    private const YOUTUBE_DISTRIBUTION_SERVICE = 'youtube_cms_main';
+    private const int LICENCE_ID = 100_000;
+    private const string ARTEMIS_DISTRIBUTION_SERVICE = 'artemis_video_cms';
+    private const string YOUTUBE_DISTRIBUTION_SERVICE = 'youtube_cms_main';
 
     private AbstractFilesystem $sourceFileSystem;
     private TmpLocalFilesystem $tmpFileSystem;

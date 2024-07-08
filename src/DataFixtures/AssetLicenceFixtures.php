@@ -16,18 +16,18 @@ use Symfony\Component\Console\Helper\ProgressBar;
  */
 final class AssetLicenceFixtures extends AbstractFixtures
 {
-    public const BLOG_ONE_LICENCE_ID = BaseAssetLicenceFixtures::DEFAULT_LICENCE_ID + 10_000;
-    public const BLOG_ONE_EXT_ID = 1;
-    public const BLOG_TWO_LICENCE_ID = self::BLOG_ONE_LICENCE_ID + 1;
-    public const BLOG_TWO_EXT_ID = 2;
-    public const BLOG_THREE_LICENCE_ID = self::BLOG_TWO_LICENCE_ID + 1;
-    public const BLOG_THREE_EXT_ID = 3;
-    public const BLOG_FOUR_LICENCE_ID = self::BLOG_THREE_LICENCE_ID + 1;
-    public const BLOG_FOUR_EXT_ID = 4;
-    public const BLOG_FIVE_LICENCE_ID = self::BLOG_FOUR_LICENCE_ID + 1;
-    public const BLOG_FIVE_EXT_ID = 5;
-    public const BLOG_SIX_LICENCE_ID = self::BLOG_FIVE_LICENCE_ID + 1;
-    public const BLOG_SIX_EXT_ID = 6;
+    public const int BLOG_ONE_LICENCE_ID = BaseAssetLicenceFixtures::DEFAULT_LICENCE_ID + 10_000;
+    public const int BLOG_ONE_EXT_ID = 1;
+    public const int BLOG_TWO_LICENCE_ID = self::BLOG_ONE_LICENCE_ID + 1;
+    public const int BLOG_TWO_EXT_ID = 2;
+    public const int BLOG_THREE_LICENCE_ID = self::BLOG_TWO_LICENCE_ID + 1;
+    public const int BLOG_THREE_EXT_ID = 3;
+    public const int BLOG_FOUR_LICENCE_ID = self::BLOG_THREE_LICENCE_ID + 1;
+    public const int BLOG_FOUR_EXT_ID = 4;
+    public const int BLOG_FIVE_LICENCE_ID = self::BLOG_FOUR_LICENCE_ID + 1;
+    public const int BLOG_FIVE_EXT_ID = 5;
+    public const int BLOG_SIX_LICENCE_ID = self::BLOG_FIVE_LICENCE_ID + 1;
+    public const int BLOG_SIX_EXT_ID = 6;
 
     public function __construct(
         private readonly AssetLicenceManager $assetLicenceManager,

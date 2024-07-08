@@ -16,7 +16,7 @@ final class ImageMigrationPostProcessor
 {
     use OutputUtilTrait;
 
-    private const BULK_COUNT = 50;
+    private const int BULK_COUNT = 50;
 
     public function __construct(
         private readonly ImageFileRepository $imageFileRepository,

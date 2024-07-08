@@ -10,7 +10,7 @@ use AnzuSystems\CoreDamBundle\FileSystem\StorageProviderContainer;
 
 final class DamFileSystemProvider
 {
-    private const RTMP_FILE_SYSTEM_NAME = 'ext.rtmp';
+    private const string RTMP_FILE_SYSTEM_NAME = 'ext.rtmp';
     public function __construct(
         private readonly StorageProviderContainer $storageProviderContainer,
     ) {

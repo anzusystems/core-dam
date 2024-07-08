@@ -14,7 +14,7 @@ use AnzuSystems\CoreDamBundle\Entity\AssetLicenceGroup;
 use AnzuSystems\CoreDamBundle\Repository\AssetLicenceGroupRepository;
 use AnzuSystems\CoreDamBundle\Repository\AssetLicenceRepository;
 use App\App;
-use App\Domain\User\UserManager;
+use App\Domain\User\DeprecatedUserManager;
 use App\Entity\User;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Console\Helper\ProgressBar;
@@ -31,7 +31,7 @@ final class UserFixtures extends AbstractFixtures
     public const int USER_FIVE_SSO_ID = 111_000_001;
 
     public function __construct(
-        private readonly UserManager $userManager,
+        private readonly DeprecatedUserManager $userManager,
         private readonly AssetLicenceFixtures $assetLicenceFixtures,
         private readonly PermissionGroupFixtures $permissionGroupFixtures,
         private readonly AssetLicenceRepository $assetLicenceRepository,
@@ -115,7 +115,7 @@ final class UserFixtures extends AbstractFixtures
             ->setId(self::USER_ONE_SSO_ID)
             ->setEmail('user1.anzu@smeonline.sk')
             ->setPermissionGroups(new ArrayCollection([$permissionGroup]))
-            ->setRoles([User::ROLE_UGC, User::ROLE_DAM_ADMIN])
+            ->setRoles([User::ROLE_UGC, User::ROLE_SUPER_ADMIN])
             ->setPerson(
                 (new Person())
                     ->setFullName('User1 Anzu')
@@ -131,7 +131,7 @@ final class UserFixtures extends AbstractFixtures
             ->setId(self::USER_TWO_SSO_ID)
             ->setEmail('user2.anzu@smeonline.sk')
             ->setPermissionGroups(new ArrayCollection([$permissionGroup]))
-            ->setRoles([User::ROLE_UGC, User::ROLE_DAM_ADMIN])
+            ->setRoles([User::ROLE_UGC, User::ROLE_SUPER_ADMIN])
             ->setPerson(
                 (new Person())
                     ->setFullName('User2 Anzu')
@@ -166,7 +166,7 @@ final class UserFixtures extends AbstractFixtures
         yield (new UserDto())
             ->setId(App::getUserIdAdmin())
             ->setEmail('admin.anzu@smeonline.sk')
-            ->setRoles([User::ROLE_UGC, User::ROLE_ADMIN])
+            ->setRoles([User::ROLE_UGC, User::ROLE_SUPER_ADMIN])
             ->setPerson(
                 (new Person())
                     ->setFullName('Admin Anzu')
@@ -205,102 +205,6 @@ final class UserFixtures extends AbstractFixtures
             ->setSelectedLicence($blogSixLicence)
             ->setAssetLicences(new ArrayCollection([$blogSixLicence]))
             ->setUserToExtSystems(new ArrayCollection([$blogSixLicence->getExtSystem()]))
-        ;
-
-        yield (new UserDto())
-            ->setId(1_799_719)
-            ->setEmail('lubomir.stanko@petitpress.sk')
-            ->setRoles([User::ROLE_ADMIN])
-            ->setPerson(
-                (new Person())
-                    ->setFullName('Ľubomír Stanko')
-            )
-        => (new User())
-            ->setSelectedLicence($defaultCmsLicence)
-        ;
-
-        yield (new UserDto())
-            ->setId(1_791_571)
-            ->setEmail('lukas.budos@petitpress.sk')
-            ->setRoles([User::ROLE_ADMIN])
-            ->setPerson(
-                (new Person())
-                    ->setFullName('Lukáš Budoš')
-            )
-        => (new User())
-            ->setSelectedLicence($defaultCmsLicence)
-        ;
-
-        yield (new UserDto())
-            ->setId(1_459_820)
-            ->setEmail('ronald.marfoldi@petitpress.sk')
-            ->setRoles([User::ROLE_ADMIN])
-            ->setPerson(
-                (new Person())
-                    ->setFullName('Ronald Márföldi')
-            )
-        => (new User())
-            ->setSelectedLicence($defaultCmsLicence)
-        ;
-
-        yield (new UserDto())
-            ->setId(1_777_852)
-            ->setEmail('igor.petriska@petitpress.sk')
-            ->setRoles([User::ROLE_ADMIN])
-            ->setPerson(
-                (new Person())
-                    ->setFullName('Igor Petriska')
-            )
-        => (new User())
-            ->setSelectedLicence($defaultCmsLicence)
-        ;
-
-        yield (new UserDto())
-            ->setId(1_651_144)
-            ->setEmail('stanislav.volar@petitpress.sk')
-            ->setRoles([User::ROLE_ADMIN])
-            ->setPerson(
-                (new Person())
-                    ->setFullName('Stanislav Volár')
-            )
-        => (new User())
-            ->setSelectedLicence($defaultCmsLicence)
-        ;
-
-        yield (new UserDto())
-            ->setId(1_476_581)
-            ->setEmail('tomas.hermanek@petitpress.sk')
-            ->setRoles([User::ROLE_ADMIN])
-            ->setPerson(
-                (new Person())
-                    ->setFullName('Tomáš Hermánek')
-            )
-        => (new User())
-            ->setSelectedLicence($defaultCmsLicence)
-        ;
-
-        yield (new UserDto())
-            ->setId(1_548_214)
-            ->setEmail('michal.stanko@petitpress.sk')
-            ->setRoles([User::ROLE_ADMIN])
-            ->setPerson(
-                (new Person())
-                    ->setFullName('Michal Stanko')
-            )
-        => (new User())
-            ->setSelectedLicence($defaultCmsLicence)
-        ;
-
-        yield (new UserDto())
-            ->setId(18_796)
-            ->setEmail('andrea.belanova@petitpress.sk')
-            ->setRoles([User::ROLE_ADMIN])
-            ->setPerson(
-                (new Person())
-                    ->setFullName('Andrea Kamenská Beláňová')
-            )
-        => (new User())
-            ->setSelectedLicence($defaultCmsLicence)
         ;
     }
 }

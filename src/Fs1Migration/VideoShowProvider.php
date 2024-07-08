@@ -17,7 +17,7 @@ use Symfony\Component\Uid\Uuid;
 final class VideoShowProvider
 {
     use OutputUtilTrait;
-    private const LICENCE_ID = 100_000;
+    private const int LICENCE_ID = 100_000;
 
     /**
      * @var array<string, string>

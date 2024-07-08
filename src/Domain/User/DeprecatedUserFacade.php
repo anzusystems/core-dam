@@ -5,26 +5,40 @@ declare(strict_types=1);
 namespace App\Domain\User;
 
 use AnzuSystems\CommonBundle\Exception\ValidationException;
-use AnzuSystems\CommonBundle\Model\User\BaseUserDto;
 use AnzuSystems\CommonBundle\Model\User\UserDto;
 use AnzuSystems\CommonBundle\Traits\ValidatorAwareTrait;
 use AnzuSystems\SerializerBundle\Exception\SerializerException;
 use App\Entity\User;
-use App\Model\Domain\User\DamUserDto;
+use App\Model\Domain\User\DeprecatedUpdateUserDto;
 use App\Model\Domain\User\UpdateCurrentUserDto;
 use App\Notification\UserNotificationDispatcher;
 
 /**
  * Complete User processing.
  */
-final class UserFacade
+final class DeprecatedUserFacade
 {
     use ValidatorAwareTrait;
 
     public function __construct(
-        private readonly UserManager $manager,
+        private readonly DeprecatedUserManager $manager,
         private readonly UserNotificationDispatcher $userNotificationDispatcher,
     ) {
+    }
+
+    /**
+     * Process updating of users permissions/roles.
+     *
+     * @throws ValidationException
+     * @throws SerializerException
+     */
+    public function updateAnzuUser(User $user, UserDto $userDto): User
+    {
+        $this->validator->validate($userDto);
+        $this->manager->updateAnzuUser($user, $userDto);
+        $this->userNotificationDispatcher->notifyUserUpdated((int) $user->getId());
+
+        return $user;
     }
 
     /**
@@ -32,7 +46,7 @@ final class UserFacade
      *
      * @throws ValidationException
      */
-    public function createUser(UserDto $userDto): User
+    public function createAnzuUser(UserDto $userDto): User
     {
         $this->validator->validate($userDto);
 
@@ -43,26 +57,15 @@ final class UserFacade
     }
 
     /**
+     * Process updating of user from DTO.
+     *
      * @throws ValidationException
      * @throws SerializerException
      */
-    public function updateFromBaseUserDto(User $user, BaseUserDto $baseUserDto): User
+    public function updateFromDto(User $user, DeprecatedUpdateUserDto $updateUserDto): User
     {
-        $this->validator->validate($baseUserDto);
-        $this->manager->updateBaseAnzuUser($user, $baseUserDto);
-        $this->userNotificationDispatcher->notifyUserUpdated((int) $user->getId());
-
-        return $user;
-    }
-
-    /**
-     * @throws ValidationException
-     * @throws SerializerException
-     */
-    public function updateFromDamUserDto(User $user, DamUserDto $userDto): User
-    {
-        $this->validator->validate($userDto);
-        $this->manager->updateFromDamUserDto($user, $userDto);
+        $this->validator->validate($updateUserDto);
+        $user = $this->manager->updateFromUserDto($user, $updateUserDto);
         $this->userNotificationDispatcher->notifyUserUpdated((int) $user->getId());
 
         return $user;

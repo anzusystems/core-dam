@@ -11,17 +11,17 @@ use Symfony\Component\Routing\Exception\InvalidParameterException;
 
 final class ApiUgcLegacyParams
 {
-    public const ALLOWED_LIMIT = 25;
+    public const int ALLOWED_LIMIT = 25;
 
-    private const LIMIT = 'limit';
-    private const OFFSET = 'offset';
-    private const CREATED_AT_FROM = 'createdAtFrom';
-    private const CREATED_AT_UNTIL = 'createdAtUntil';
-    private const TEXT = 'text';
-    private const FILTER_IN = 'filter_in';
-    private const ID = 'id';
+    private const string LIMIT = 'limit';
+    private const string OFFSET = 'offset';
+    private const string CREATED_AT_FROM = 'createdAtFrom';
+    private const string CREATED_AT_UNTIL = 'createdAtUntil';
+    private const string TEXT = 'text';
+    private const string FILTER_IN = 'filter_in';
+    private const string ID = 'id';
 
-    private const DEFAULTS = [
+    private const array DEFAULTS = [
         self::LIMIT => self::ALLOWED_LIMIT,
         self::OFFSET => 0,
         self::CREATED_AT_FROM => null,
@@ -62,11 +62,11 @@ final class ApiUgcLegacyParams
 
         try {
             $createdAtFrom = $request->query->get(self::CREATED_AT_FROM, self::DEFAULTS[self::CREATED_AT_FROM]);
-            if ($createdAtFrom) {
+            if (is_string($createdAtFrom)) {
                 $this->createdAtFrom = new DateTimeImmutable($createdAtFrom);
             }
             $createdAtUntil = $request->query->get(self::CREATED_AT_UNTIL, self::DEFAULTS[self::CREATED_AT_UNTIL]);
-            if ($createdAtUntil) {
+            if (is_string($createdAtUntil)) {
                 $this->createdAtUntil = new DateTimeImmutable($createdAtUntil);
             }
         } catch (Exception) {

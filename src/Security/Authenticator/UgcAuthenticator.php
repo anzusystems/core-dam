@@ -84,8 +84,8 @@ final class UgcAuthenticator extends AbstractUgcAuthenticator
 
         return sprintf(
             '%s.%s',
-            $request->cookies->get($this->ugcSecurityConfiguration->getJwtPayloadPartName()),
-            $request->cookies->get($this->ugcSecurityConfiguration->getJwtSignaturePartName()),
+            (string) $request->cookies->get($this->ugcSecurityConfiguration->getJwtPayloadPartName()),
+            (string) $request->cookies->get($this->ugcSecurityConfiguration->getJwtSignaturePartName()),
         );
     }
 }

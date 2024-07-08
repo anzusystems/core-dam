@@ -9,10 +9,10 @@ use AnzuSystems\CommonBundle\Model\User\UserDto;
 use AnzuSystems\Contracts\AnzuApp;
 use AnzuSystems\Contracts\Entity\AnzuUser;
 use App\App;
-use App\Domain\User\UserManager;
+use App\Domain\User\DeprecatedUserManager;
 use App\Entity\User;
 use Doctrine\ORM\Id\AssignedGenerator;
-use Doctrine\ORM\Mapping\ClassMetadataInfo;
+use Doctrine\ORM\Mapping\ClassMetadata;
 use Exception;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -30,12 +30,12 @@ use Symfony\Component\Validator\Validation;
 )]
 final class CreateMandatoryUsersCommand extends Command
 {
-    private const ADMIN_USER_SSO_ID_ARG = 'sso-id';
+    private const string ADMIN_USER_SSO_ID_ARG = 'sso-id';
 
     private QuestionHelper $questionHelper;
 
     public function __construct(
-        private readonly UserManager $userManager,
+        private readonly DeprecatedUserManager $userManager,
         private readonly CurrentAnzuUserProvider $currentAnzuUserProvider,
     ) {
         parent::__construct();
@@ -65,7 +65,7 @@ final class CreateMandatoryUsersCommand extends Command
 
         $userClassMetadata = $this->userManager->getEntityManager()->getClassMetadata(User::class);
         $userClassMetadata->setIdGenerator(new AssignedGenerator());
-        $userClassMetadata->setIdGeneratorType(ClassMetadataInfo::GENERATOR_TYPE_NONE);
+        $userClassMetadata->setIdGeneratorType(ClassMetadata::GENERATOR_TYPE_NONE);
 
         $anonymousUser = $this->userManager->getEntityManager()->find(User::class, $anonymousUserId);
         if ($anonymousUser instanceof AnzuUser) {

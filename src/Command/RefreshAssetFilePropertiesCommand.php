@@ -30,8 +30,8 @@ final class RefreshAssetFilePropertiesCommand extends Command
 {
     use OutputUtilTrait;
 
-    private const ASSET_TYPE_ARG = 'asset_type';
-    private const BULK_COUNT = 50;
+    private const string ASSET_TYPE_ARG = 'asset_type';
+    private const int BULK_COUNT = 50;
 
     public function __construct(
         private readonly AudioFileRepository $audioFileRepository,

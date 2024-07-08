@@ -9,8 +9,8 @@ use App\Model\Dto\Image\RoiDto;
 
 final class PoiToRoiTransformer
 {
-    private const DEFAULT_ROI_WIDTH = 16;
-    private const DEFAULT_ROI_HEIGHT = 9;
+    private const int DEFAULT_ROI_WIDTH = 16;
+    private const int DEFAULT_ROI_HEIGHT = 9;
 
     public function transformPoi(PoiDto $dto): RoiDto
     {

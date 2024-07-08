@@ -16,7 +16,6 @@
             <directory name="vendor"/>
             <directory name="src/Migrations"/>
             <file name="src/DependencyInjection/Configuration.php"/>
-            <file name="src/Controller/Api/Adm/V1/TestController.php"/>
             <file name="src/Command/ImportDemoImagesCommand.php"/>
         </ignoreFiles>
     </projectFiles>
@@ -40,6 +39,7 @@
         <MethodSignatureMustProvideReturnType>
             <errorLevel type="suppress">
                 <file name="src/Controller/Api/Adm/V1/UserController.php"/>
+                <file name="src/Controller/Api/Adm/UserController.php"/>
             </errorLevel>
         </MethodSignatureMustProvideReturnType>
     </issueHandlers>

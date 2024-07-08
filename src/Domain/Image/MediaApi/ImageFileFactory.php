@@ -26,7 +26,7 @@ use Symfony\Contracts\Service\Attribute\Required;
  */
 final class ImageFileFactory extends AbstractAssetFileFactory
 {
-    private const CONVERT_MAP = [
+    private const array CONVERT_MAP = [
         'image/bmp' => ImageMimeTypes::MimeJpeg->value,
     ];
 

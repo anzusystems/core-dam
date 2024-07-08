@@ -16,7 +16,7 @@ use Symfony\Contracts\Service\Attribute\Required;
 
 abstract class AbstractArtemisDtoFactory extends AbstractDistributionDtoFactory
 {
-    private const ARTEMIS_DISTRIBUTION_TAG = 'artemis_distribution';
+    private const string ARTEMIS_DISTRIBUTION_TAG = 'artemis_distribution';
 
     protected ConfigurationProvider $configurationProvider;
     protected ImageUrlFactory $imageUrlFactory;

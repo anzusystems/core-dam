@@ -11,7 +11,7 @@ use DateTimeImmutable;
 
 final class Fs1CsvFile
 {
-    private const DATETIME_HANDLER = 'Y-m-d H:i:s';
+    private const string DATETIME_HANDLER = 'Y-m-d H:i:s';
 
     #[Serialize]
     private int $id;

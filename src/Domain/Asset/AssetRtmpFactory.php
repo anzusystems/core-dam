@@ -21,7 +21,7 @@ use League\Flysystem\FilesystemException;
 
 final readonly class AssetRtmpFactory
 {
-    private const DATE_TIME_FORMAT = 'd.m.Y H:i';
+    private const string DATE_TIME_FORMAT = 'd.m.Y H:i';
 
     public function __construct(
         private AssetLicenceRepository $assetLicenceRepository,

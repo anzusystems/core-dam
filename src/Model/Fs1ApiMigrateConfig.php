@@ -8,14 +8,14 @@ use Symfony\Component\Console\Input\InputInterface;
 
 final readonly class Fs1ApiMigrateConfig
 {
-    public const DROP_OPTION = 'drop';
-    public const MIGRATE_OPTION = 'migrate';
-    public const CLEAN_OPTION = 'clean';
-    public const STATUS_OPTION = 'status';
-    public const JW_DISTRIBUTE_OPTION = 'jw';
-    public const SHOW_ID_OPTION = 'show';
+    public const string DROP_OPTION = 'drop';
+    public const string MIGRATE_OPTION = 'migrate';
+    public const string CLEAN_OPTION = 'clean';
+    public const string STATUS_OPTION = 'status';
+    public const string JW_DISTRIBUTE_OPTION = 'jw';
+    public const string SHOW_ID_OPTION = 'show';
 
-    public const LIMIT_OPTION = 'limit';
+    public const string LIMIT_OPTION = 'limit';
 
     public function __construct(
         private bool $drop = false,

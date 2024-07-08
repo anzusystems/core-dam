@@ -21,11 +21,11 @@ use Symfony\Component\String\ByteString;
 final class MigrationTableBuilder
 {
     use OutputUtilTrait;
-    public const ALLOWED_EXTENSION_LIST = [
+    public const array ALLOWED_EXTENSION_LIST = [
         'pdf', 'jpg', 'jpeg', 'png', 'gif', 'xlsx', 'doc', 'ppt', 'gif', 'mp3', 'html', 'xls', 'docx', 'svg', 'mp4',
     ];
 
-    private const BULK_SIZE = 15;
+    private const int BULK_SIZE = 15;
 
     private readonly ConnectionDecorator $damMediaApiMigConnectionDecorator;
     private AbstractFilesystem $docsFilesystem;

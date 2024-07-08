@@ -45,6 +45,10 @@ return static function (RoutingConfigurator $routes): void {
         ->prefix('/');
 
     $routes
+        ->import(__DIR__ . '/../../src/Controller/Api/Adm', type: 'attribute')
+        ->prefix('/api/adm/');
+
+    $routes
         ->import(__DIR__ . '/../../src/Controller/Api/Adm/V1', type: 'attribute')
         ->prefix('/api/adm/v1/');
 

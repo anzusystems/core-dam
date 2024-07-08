@@ -12,7 +12,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 final class UpsertAssertLicenceDto
 {
-    private const DEFAULT_EXT_SYSTEM_SLUG = 'blog';
+    private const string DEFAULT_EXT_SYSTEM_SLUG = 'blog';
 
     #[Serialize]
     private string $extSystemSlug = self::DEFAULT_EXT_SYSTEM_SLUG;

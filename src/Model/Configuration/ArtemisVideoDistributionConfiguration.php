@@ -8,8 +8,8 @@ use AnzuSystems\CoreDamBundle\Model\Configuration\TextsWriter\TextsWriterConfigu
 
 final class ArtemisVideoDistributionConfiguration
 {
-    public const DEFAULT_RUBRIC_ID = 'default_rubric_id';
-    public const CUSTOM_DATA_TO_DISTRIBUTION_MAP = 'custom_data_to_distribution_map';
+    public const string DEFAULT_RUBRIC_ID = 'default_rubric_id';
+    public const string CUSTOM_DATA_TO_DISTRIBUTION_MAP = 'custom_data_to_distribution_map';
 
     public function __construct(
         private readonly int $defaultRubricId,

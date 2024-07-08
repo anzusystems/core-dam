@@ -12,12 +12,12 @@ use App\Model\Ugc\Legacy\ImageUpdateDto;
 
 final class ImageUgcLegacyManager extends AbstractManager
 {
-    private const TEXTS_DESCRIPTION_WRITER_MAPPING = [
+    private const array TEXTS_DESCRIPTION_WRITER_MAPPING = [
         TextsWriterConfiguration::SOURCE_PROPERTY_PATH_KEY => 'texts.description',
         TextsWriterConfiguration::DESTINATION_PROPERTY_PATH_KEY => 'asset.metadata.customData[description]',
     ];
 
-    private const AUTHOR_WRITER_MAPPING = [
+    private const array AUTHOR_WRITER_MAPPING = [
         TextsWriterConfiguration::SOURCE_PROPERTY_PATH_KEY => 'author.customAuthor',
         TextsWriterConfiguration::DESTINATION_PROPERTY_PATH_KEY => 'asset.metadata.customData[author]',
     ];

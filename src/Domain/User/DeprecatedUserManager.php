@@ -11,15 +11,17 @@ use AnzuSystems\CoreDamBundle\Entity\AssetLicence;
 use AnzuSystems\CoreDamBundle\Entity\AssetLicenceGroup;
 use AnzuSystems\CoreDamBundle\Entity\ExtSystem;
 use App\Entity\User;
-use App\Model\Domain\User\DamUserDto;
+use App\Model\Domain\User\DeprecatedUpdateUserDto;
 use App\Model\Domain\User\UpdateCurrentUserDto;
 use Doctrine\Common\Collections\Collection;
 
-final class UserManager extends AbstractUserManager
+/**
+ * User persistence management.
+ */
+final class DeprecatedUserManager extends AbstractUserManager
 {
-    public function updateFromDamUserDto(User $user, DamUserDto $updateUserDto, bool $flush = true): User
+    public function updateFromUserDto(User $user, DeprecatedUpdateUserDto $updateUserDto, bool $flush = true): User
     {
-        $this->updateAnzuUser($user, $updateUserDto, false);
         $user
             ->setAllowedAssetExternalProviders($updateUserDto->getAllowedAssetExternalProviders())
             ->setAllowedDistributionServices($updateUserDto->getAllowedDistributionServices());
@@ -46,6 +48,15 @@ final class UserManager extends AbstractUserManager
     }
 
     /**
+     * Delete user from persistence.
+     */
+    public function delete(User $user, bool $flush = true): void
+    {
+        $this->entityManager->remove($user);
+        $this->flush($flush);
+    }
+
+    /**
      * Update user with fields from new user and persist it.
      */
     private function updateExisting(User $user, bool $flush = true): User
@@ -56,7 +67,7 @@ final class UserManager extends AbstractUserManager
         return $user;
     }
 
-    private function assignLicencesAndExtSystems(User $user, DamUserDto $userDto): User
+    private function assignLicencesAndExtSystems(User $user, DeprecatedUpdateUserDto $userDto): User
     {
         /** @psalm-suppress InvalidArgument */
         $this->colUpdate(

@@ -22,8 +22,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 )]
 final class ImportDemoImagesCommand extends Command
 {
-    private const OPT_LICENCE_ID = 'licence-id';
-    private const OPT_LICENCE_ALL_VALUE = 'all';
+    private const string OPT_LICENCE_ID = 'licence-id';
+    private const string OPT_LICENCE_ALL_VALUE = 'all';
 
     public function __construct(
         private readonly FixtureImageProvider $fixtureImageProvider,

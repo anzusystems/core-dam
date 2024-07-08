@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 
 final class Version20230127154302 extends AbstractMigration
 {
-    private const UNSPLASH_AUTHOR_ID = '0185f3e8-7f5e-750e-9075-29cdd412b988';
+    private const string UNSPLASH_AUTHOR_ID = '0185f3e8-7f5e-750e-9075-29cdd412b988';
 
     public function up(Schema $schema): void
     {

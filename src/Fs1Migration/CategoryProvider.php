@@ -8,7 +8,7 @@ use App\Model\Csv\Fs1CsvFile;
 
 final class CategoryProvider
 {
-    private const CATEGORY_MAP = [
+    private const array CATEGORY_MAP = [
         118 => '1edd902c-ea71-6978-b0f1-2bf75087e621',
         117 => '1edd902c-f038-6816-90f0-2bf75087e621',
         119 => '1edd902c-eec7-6432-bb44-2bf75087e621',

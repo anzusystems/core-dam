@@ -12,5 +12,5 @@ enum ArtemisMediaType: string implements EnumInterface
     case Video = 'video';
     case Audio = 'audio';
 
-    public const Default = self::Video;
+    public const ArtemisMediaType Default = self::Video;
 }

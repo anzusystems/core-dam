@@ -9,8 +9,8 @@ use AnzuSystems\SerializerBundle\Attributes\Serialize;
 
 final class ExifMetadata
 {
-    private const KEYWORD_SEPARATOR = ' ';
-    private const AUTHOR_SEPARATOR = ',';
+    private const string KEYWORD_SEPARATOR = ' ';
+    private const string AUTHOR_SEPARATOR = ',';
 
     #[Serialize(serializedName: 'Description')]
     private string $description = '';

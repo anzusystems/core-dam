@@ -8,7 +8,7 @@ use AnzuSystems\AuthBundle\Exception\UnsuccessfulAccessTokenRequestException;
 use AnzuSystems\AuthBundle\Exception\UnsuccessfulUserInfoRequestException;
 use AnzuSystems\AuthBundle\HttpClient\OAuth2HttpClient;
 use AnzuSystems\CommonBundle\Model\User\UserDto;
-use App\Domain\User\UserManager;
+use App\Domain\User\DeprecatedUserManager;
 use App\Entity\User;
 use App\Repository\UserRepository;
 
@@ -16,7 +16,7 @@ final readonly class UserProvider
 {
     public function __construct(
         private OAuth2HttpClient $OAuth2HttpClient,
-        private UserManager $manager,
+        private DeprecatedUserManager $manager,
         private UserRepository $repository,
     ) {
     }

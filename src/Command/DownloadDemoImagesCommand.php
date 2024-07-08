@@ -17,8 +17,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 )]
 final class DownloadDemoImagesCommand extends Command
 {
-    private const ARG_COUNT = 'count';
-    private const ARG_COUNT_DEFAULT = 20;
+    private const string ARG_COUNT = 'count';
+    private const int ARG_COUNT_DEFAULT = 20;
 
     public function __construct(
         private readonly UnsplashImageProvider $imageProvider,

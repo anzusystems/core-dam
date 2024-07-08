@@ -25,7 +25,7 @@ return static function (DoctrineConfig $config): void {
     ;
     $ormConfig = $config->orm();
     $ormConfig
-        ->enableLazyGhostObjects(false)
+        ->enableLazyGhostObjects(true)
         ->defaultEntityManager('default')
         ->autoGenerateProxyClasses(true)
         ->resolveTargetEntity(AnzuUser::class,  User::class)
@@ -60,9 +60,9 @@ return static function (DoctrineConfig $config): void {
         ->mapping('AnzuSystemsContractsEmbeds')
         ->isBundle(false)
         ->type('attribute')
-        ->dir(param('kernel.project_dir') . '/vendor/anzusystems/contracts/src/Entity/Embeds')
-        ->prefix('AnzuSystems\Contracts\Entity\Embeds')
-        ->alias('AnzuSystems\ContractsEmbeds')
+        ->dir(param('kernel.project_dir') . '/vendor/anzusystems/contracts/src/Entity')
+        ->prefix('AnzuSystems\Contracts\Entity')
+        ->alias('AnzuSystems\Contracts')
     ;
     $ormDefaultEntityManagerConfig
         ->namingStrategy('doctrine.orm.naming_strategy.underscore_number_aware')

@@ -15,6 +15,7 @@ use AnzuSystems\CoreDamBundle\Model\Dto\Image\Crop\RequestedCropDto;
 use AnzuSystems\CoreDamBundle\Model\Dto\Image\CropAllowItem;
 use AnzuSystems\CoreDamBundle\Model\Enum\AssetFileProcessStatus;
 use AnzuSystems\CoreDamBundle\Repository\RegionOfInterestRepository;
+use AnzuSystems\SerializerBundle\Context\SerializationContext;
 use AnzuSystems\SerializerBundle\Exception\SerializerException;
 use AnzuSystems\SerializerBundle\Handler\Handlers\AbstractHandler;
 use AnzuSystems\SerializerBundle\Metadata\Metadata;
@@ -35,7 +36,7 @@ final class LegacyUgcImageLinksHandler extends AbstractHandler
      * @throws NonUniqueResultException
      * @throws SerializerException
      */
-    public function serialize(mixed $value, Metadata $metadata): mixed
+    public function serialize(mixed $value, Metadata $metadata, SerializationContext $context): mixed
     {
         if (null === $metadata->customType) {
             return null;

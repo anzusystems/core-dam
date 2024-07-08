@@ -18,7 +18,7 @@ use AnzuSystems\CoreDamBundle\App;
 use AnzuSystems\CoreDamBundle\Controller\Api\AbstractApiController;
 use AnzuSystems\SerializerBundle\Attributes\SerializeParam;
 use AnzuSystems\SerializerBundle\Exception\SerializerException;
-use App\Domain\User\UserFacade;
+use App\Domain\User\DeprecatedUserFacade;
 use App\Entity\User;
 use App\Repository\UserRepository;
 use App\Security\Permission\DamPermissions;
@@ -33,7 +33,7 @@ use Symfony\Component\Routing\Annotation\Route;
 final class AnzuUserController extends AbstractApiController
 {
     public function __construct(
-        private readonly UserFacade $userFacade,
+        private readonly DeprecatedUserFacade $userFacade,
         private readonly UserRepository $userRepo,
     ) {
     }

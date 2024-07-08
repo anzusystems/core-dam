@@ -18,7 +18,7 @@ final class ImageCachePurgeMessageHandler
 {
     use MessageBusAwareTrait;
 
-    private const MAX_CDN_PATHS = 30;
+    private const int MAX_CDN_PATHS = 30;
 
     public function __construct(
         private readonly NotificationClient $notificationClient,

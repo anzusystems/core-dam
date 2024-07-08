@@ -8,5 +8,5 @@ use AnzuSystems\CoreDamBundle\Exception\ValidationException as BaseValidationExc
 
 final class ValidationException extends BaseValidationException
 {
-    public const ERROR_COMPROMISED_PASSWORD = 'error_compromised_password';
+    public const string ERROR_COMPROMISED_PASSWORD = 'error_compromised_password';
 }

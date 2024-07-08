@@ -8,12 +8,12 @@ use AnzuSystems\CoreDamBundle\Model\Configuration\TextsWriter\TextsWriterConfigu
 
 final class ArtemisAudioDistributionConfiguration
 {
-    public const AUDIO_FREE_SLOT_NAME_KEY = 'audio_free_slot_name';
-    public const AUDIO_PREMIUM_SLOT_NAME_KEY = 'audio_premium_slot_name';
-    public const AUDIO_BONUS_SLOT_NAME_KEY = 'audio_bonus_slot_name';
-    public const DEFAULT_RUBRIC_ID = 'default_rubric_id';
-    public const CUSTOM_DATA_TO_DISTRIBUTION_MAP = 'custom_data_to_distribution_map';
-    public const RSS_JW_DISTRIBUTE = 'rss_jw_distribute';
+    public const string AUDIO_FREE_SLOT_NAME_KEY = 'audio_free_slot_name';
+    public const string AUDIO_PREMIUM_SLOT_NAME_KEY = 'audio_premium_slot_name';
+    public const string AUDIO_BONUS_SLOT_NAME_KEY = 'audio_bonus_slot_name';
+    public const string DEFAULT_RUBRIC_ID = 'default_rubric_id';
+    public const string CUSTOM_DATA_TO_DISTRIBUTION_MAP = 'custom_data_to_distribution_map';
+    public const string RSS_JW_DISTRIBUTE = 'rss_jw_distribute';
 
     public function __construct(
         private readonly string $audioFreeSlotName,

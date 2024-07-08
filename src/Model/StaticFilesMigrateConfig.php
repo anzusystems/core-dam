@@ -8,11 +8,11 @@ use Symfony\Component\Console\Input\InputInterface;
 
 final class StaticFilesMigrateConfig
 {
-    public const DROP_OPTION = 'drop';
-    public const MIGRATE_OPTION = 'migrate';
-    public const LIMIT_OPTION = 'limit';
-    public const EXTENSION_OPTION = 'extension';
-    public const STATUS_OPTION = 'status';
+    public const string DROP_OPTION = 'drop';
+    public const string MIGRATE_OPTION = 'migrate';
+    public const string LIMIT_OPTION = 'limit';
+    public const string EXTENSION_OPTION = 'extension';
+    public const string STATUS_OPTION = 'status';
 
     public function __construct(
         private readonly bool $drop = false,

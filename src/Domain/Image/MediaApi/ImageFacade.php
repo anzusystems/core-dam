@@ -28,7 +28,7 @@ final class ImageFacade
     use IndexManagerAwareTrait;
     use MessageBusAwareTrait;
 
-    private const MEDIA_API_NAMESPACE = 'MediaApi sync';
+    private const string MEDIA_API_NAMESPACE = 'MediaApi sync';
 
     public function __construct(
         private readonly Validator $validator,

@@ -59,12 +59,12 @@ final class MediaApiMigration
 {
     use OutputUtilTrait;
 
-    public const STATUS_WAITING = 'waiting';
-    public const STATUS_MIGRATED = 'migrated';
-    public const STATUS_FAILED = 'failed';
+    public const string STATUS_WAITING = 'waiting';
+    public const string STATUS_MIGRATED = 'migrated';
+    public const string STATUS_FAILED = 'failed';
 
-    public const FAIL_REASON_FILE_NOT_EXISTS = 'file_not_exist';
-    public const FAIL_REASON_UNKNOWN = 'unknown';
+    public const string FAIL_REASON_FILE_NOT_EXISTS = 'file_not_exist';
+    public const string FAIL_REASON_UNKNOWN = 'unknown';
 
     private AbstractFilesystem $sourceFileSystem;
     private TmpLocalFilesystem $tmpFileSystem;

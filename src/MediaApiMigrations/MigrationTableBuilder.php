@@ -14,7 +14,7 @@ final class MigrationTableBuilder
 {
     use OutputUtilTrait;
 
-    public const CMS_EXT_ID = 1;
+    public const int CMS_EXT_ID = 1;
 
     private readonly ConnectionDecorator $damMediaApiMigConnectionDecorator;
 

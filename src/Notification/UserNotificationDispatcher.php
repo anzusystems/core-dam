@@ -9,7 +9,7 @@ use AnzuSystems\SerializerBundle\Exception\SerializerException;
 
 final class UserNotificationDispatcher extends AbstractNotificationDispatcher
 {
-    private const EVENT_NAME = 'user_updated';
+    private const string EVENT_NAME = 'user_updated';
 
     /**
      * @throws SerializerException

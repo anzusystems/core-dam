@@ -29,11 +29,11 @@ final class JwVideoDistribution
 
     use OutputUtilTrait;
 
-    public const STATUS_DISTRIBUTED = 'distributed';
-    public const STATUS_DISTRIBUTION_FAILED = 'distribution_failed';
+    public const string STATUS_DISTRIBUTED = 'distributed';
+    public const string STATUS_DISTRIBUTION_FAILED = 'distribution_failed';
 
-    private const JW_CMS_SERVICE = 'jw_cms';
-    private const ARTEMIS_VIDEO = 'artemis_video_cms';
+    private const string JW_CMS_SERVICE = 'jw_cms';
+    private const string ARTEMIS_VIDEO = 'artemis_video_cms';
 
     private readonly ConnectionDecorator $damMediaApiMigConnectionDecorator;
     private TmpLocalFilesystem $tmpLocalFilesystem;

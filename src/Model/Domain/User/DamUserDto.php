@@ -4,38 +4,61 @@ declare(strict_types=1);
 
 namespace App\Model\Domain\User;
 
+use AnzuSystems\CommonBundle\Model\User\UserDto;
+use AnzuSystems\Contracts\Entity\AnzuUser;
 use AnzuSystems\CoreDamBundle\Entity\AssetLicence;
 use AnzuSystems\CoreDamBundle\Entity\AssetLicenceGroup;
 use AnzuSystems\CoreDamBundle\Entity\ExtSystem;
 use AnzuSystems\SerializerBundle\Attributes\Serialize;
 use AnzuSystems\SerializerBundle\Handler\Handlers\EntityIdHandler;
+use App\Entity\User;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
-final class UpdateUserDto
+class DamUserDto extends UserDto
 {
     #[Serialize(handler: EntityIdHandler::class, type: ExtSystem::class)]
-    private Collection $adminToExtSystems;
+    protected Collection $adminToExtSystems;
+
+    #[Serialize(handler: EntityIdHandler::class, type: ExtSystem::class)]
+    protected Collection $userToExtSystems;
 
     #[Serialize(handler: EntityIdHandler::class, type: AssetLicence::class)]
-    private Collection $assetLicences;
+    protected Collection $assetLicences;
 
     #[Serialize(handler: EntityIdHandler::class, type: AssetLicenceGroup::class)]
-    private Collection $licenceGroups;
+    protected Collection $licenceGroups;
 
     #[Serialize]
-    private array $allowedAssetExternalProviders;
+    protected array $allowedAssetExternalProviders = [];
 
     #[Serialize]
-    private array $allowedDistributionServices;
+    protected array $allowedDistributionServices = [];
 
     public function __construct()
     {
-        $this->setAdminToExtSystems(new ArrayCollection());
-        $this->setAssetLicences(new ArrayCollection());
-        $this->setLicenceGroups(new ArrayCollection());
-        $this->setAllowedAssetExternalProviders([]);
-        $this->setAllowedDistributionServices([]);
+        parent::__construct();
+        $this->adminToExtSystems = new ArrayCollection();
+        $this->userToExtSystems = new ArrayCollection();
+        $this->assetLicences = new ArrayCollection();
+        $this->licenceGroups = new ArrayCollection();
+    }
+
+    public static function createFromUser(AnzuUser|User $user): static
+    {
+        if ($user instanceof User) {
+            /** @psalm-suppress UndefinedMethod */
+            return parent::createFromUser($user)
+                ->setAllowedDistributionServices($user->getAllowedDistributionServices())
+                ->setAdminToExtSystems($user->getAdminToExtSystems())
+                ->setAssetLicences($user->getAssetLicences())
+                ->setUserToExtSystems($user->getUserToExtSystems())
+                ->setLicenceGroups($user->getLicenceGroups())
+                ->setAllowedAssetExternalProviders($user->getAllowedAssetExternalProviders())
+            ;
+        }
+
+        return parent::createFromUser($user);
     }
 
     /**
@@ -106,6 +129,17 @@ final class UpdateUserDto
     {
         $this->allowedDistributionServices = $allowedDistributionServices;
 
+        return $this;
+    }
+
+    public function getUserToExtSystems(): Collection
+    {
+        return $this->userToExtSystems;
+    }
+
+    public function setUserToExtSystems(Collection $userToExtSystems): self
+    {
+        $this->userToExtSystems = $userToExtSystems;
         return $this;
     }
 }

@@ -8,23 +8,23 @@ use Symfony\Component\Console\Input\InputInterface;
 
 final readonly class MediaApiMigrateConfig
 {
-    public const FROM_ID_ARG = 'fromId';
-    public const LIMIT_OPT = 'limit';
-    public const TO_ID_ARG = 'toId';
-    public const DROP_MIGRATION_TABLE_OPTION = 'dropMigrationTable';
-    public const STAGES_OPT = 'stages';
-    public const MEDIA_API_SOURCE_STORAGE_OPT = 'storage';
-    public const MAX_INT_SIZE = 4_294_967_295;
+    public const string FROM_ID_ARG = 'fromId';
+    public const string LIMIT_OPT = 'limit';
+    public const string TO_ID_ARG = 'toId';
+    public const string DROP_MIGRATION_TABLE_OPTION = 'dropMigrationTable';
+    public const string STAGES_OPT = 'stages';
+    public const string MEDIA_API_SOURCE_STORAGE_OPT = 'storage';
+    public const int MAX_INT_SIZE = 4_294_967_295;
 
-    public const STAGE_BUILD_TABLE = 'buildTable';
-    public const STAGE_MIGRATE_IMAGES = 'migrateImages';
-    public const STAGE_MIGRATE_USERS = 'migrateUsers';
-    public const STAGE_IMAGE_POSTPROCESS = 'imagePostprocess';
+    public const string STAGE_BUILD_TABLE = 'buildTable';
+    public const string STAGE_MIGRATE_IMAGES = 'migrateImages';
+    public const string STAGE_MIGRATE_USERS = 'migrateUsers';
+    public const string STAGE_IMAGE_POSTPROCESS = 'imagePostprocess';
 
-    public const REMOTE_STORAGE = 'cms.media_api.prod_storage';
-    public const LOCAL_STORAGE = 'cms.media_api.local_storage';
+    public const string REMOTE_STORAGE = 'cms.media_api.prod_storage';
+    public const string LOCAL_STORAGE = 'cms.media_api.local_storage';
 
-    public const DEFAULT_STAGES = [
+    public const array DEFAULT_STAGES = [
         self::STAGE_BUILD_TABLE,
         self::STAGE_MIGRATE_IMAGES,
         self::STAGE_MIGRATE_USERS,

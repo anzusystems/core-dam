@@ -17,7 +17,7 @@ final class CloudFlareClient implements LoggerAwareInterface
     use LoggerAwareRequest;
     use SerializerAwareTrait;
 
-    private const URL_TEMPLATE = '/client/v4/zones/%s/purge_cache';
+    private const string URL_TEMPLATE = '/client/v4/zones/%s/purge_cache';
 
     public function __construct(
         private readonly HttpClientInterface $cloudFlareApiClient,

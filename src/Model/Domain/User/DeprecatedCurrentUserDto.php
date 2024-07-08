@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Model\Domain\User;
 
-use AnzuSystems\Contracts\AnzuApp;
 use AnzuSystems\Contracts\Entity\Embeds\Avatar;
 use AnzuSystems\Contracts\Entity\Embeds\Person;
 use AnzuSystems\CoreDamBundle\Entity\AssetLicence;
@@ -18,7 +17,7 @@ use App\Model\Domain\AssetLicenceGroup\AssetLicenceGroupDto;
 use App\Model\Domain\ExtSystem\ExtSystemDto;
 use Doctrine\Common\Collections\Collection;
 
-final class CurrentUserDto
+final class DeprecatedCurrentUserDto
 {
     #[Serialize(serializedName: 'id', handler: EntityIdHandler::class)]
     private User $user;
@@ -113,17 +112,5 @@ final class CurrentUserDto
     public function getResolvedPermissions(): array
     {
         return $this->user->getResolvedPermissions();
-    }
-
-    #[Serialize(serializedName: '_resourceName')]
-    public function getResourceName(): string
-    {
-        return User::getResourceName();
-    }
-
-    #[Serialize(serializedName: '_system')]
-    public static function getSystem(): string
-    {
-        return AnzuApp::getAppSystem();
     }
 }
