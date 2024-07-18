@@ -1,0 +1,14 @@
+#!/bin/bash
+# Script used to run post database import commands in the application container
+
+PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")"/.. && pwd)"
+cd "${PROJECT_ROOT}" || exit 1
+
+echo "[INFO] Run anzu user sync"
+bin/console anzusystems:user:sync-base --file="${USER_SYNC_DATA_FILE_PATH:-/var/tmp/users.json}"
+
+echo "[INFO] Run elastic rebuild"
+bin/console anzu:elastic:rebuild keyword
+bin/console anzu:elastic:rebuild author
+bin/console anzu:elastic:rebuild distribution
+bin/console anzu:elastic:rebuild asset
