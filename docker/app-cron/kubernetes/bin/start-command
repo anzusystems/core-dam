@@ -27,7 +27,7 @@ tail-cmd -s 1 -f "\
 " &
 
 echo "[INFO] Setup system wide environment variables for cron"
-printenv | sort | grep -E -v '^HOME|^TERM|^ANZU_USER_SYNC_DATA' >> /etc/environment
+printenv | sort | grep -E -v '^HOME|^TERM' >> /etc/environment
 
 echo "[INFO] Setup crontab"
 if [ -f "docker/crontab/crontab_${DEPLOY_ENV}" ]; then
