@@ -1,4 +1,4 @@
-FROM google/cloud-sdk:329.0.0-alpine
+FROM google/cloud-sdk:490.0.0-alpine
 
 LABEL description="Google Cloud Pub/Sub Emulator"
 
@@ -18,6 +18,7 @@ ENV PUBSUB_LISTEN_ADDRESS=${PUBSUB_LISTEN_HOST}:${PUBSUB_LISTEN_PORT}
 RUN apk --no-cache --update add openjdk11-jre && \
     mkdir -p /opt/config && \
     gcloud components install pubsub-emulator beta --quiet && \
+    gcloud components update && \
     rm -rf /var/cache/apk/* && \
     rm -rf /tmp/*
 
