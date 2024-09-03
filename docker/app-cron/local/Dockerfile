@@ -1,4 +1,4 @@
-FROM anzusystems/php:1.1.0-php82-cli-vipsffmpeg
+FROM anzusystems/php:3.4.0-php82-cli-vipsffmpeg
 
 LABEL maintainer="CloudOps Team <it.online@petitpress.sk>"
 #

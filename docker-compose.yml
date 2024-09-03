@@ -47,7 +47,7 @@ services:
       - anzusystems_network
 
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:8.10.2
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.15.0
     environment:
       - cluster.routing.allocation.disk.threshold_enabled=false
       - discovery.type=single-node
@@ -85,7 +85,7 @@ services:
       - anzusystems_network
 
   mongo:
-    image: mongo:6.0
+    image: mongo:7.0
     command: ${MONGO_LOGAPPEND:-} ${MONGO_NOTABLESCAN:-}
     env_file:
       - .env.docker.dist
@@ -108,7 +108,7 @@ services:
       - anzusystems_network
 
   redis:
-    image: redis:6.2
+    image: redis:7.2
     volumes:
       - redis_data:/data:cached
     ports:
