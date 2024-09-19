@@ -30,7 +30,7 @@ anzu_systems_core_dam:
         domain: admin_image
       public_image:
         crop_allow_list: public_image
-        ext_system_slugs: [ cms, people ]
+        ext_system_slugs: [ cms, people, scraper ]
         domain: public_image
       tools_image:
         crop_allow_list: tools_image

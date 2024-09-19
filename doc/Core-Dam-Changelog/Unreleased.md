@@ -8,5 +8,6 @@ planned
   - Update php to 8.3.10
   - Update nginx to 1.26.2
   - Update lot of other packages and nginx configuration - see php83 docu for more info
+  - added `scraper` ext system to crop allow map for `public_image`
 
 ### Removed
