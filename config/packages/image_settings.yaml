@@ -54,6 +54,7 @@ anzu_systems_core_dam:
           - { width: 300, height: 0 }     # web article detail image set (automatic height)
           - { width: 288, height: 0 }     # web article detail image set (automatic height)
           - { width: 972, height: 648 }   # web list article image set
+          - { width: 660, height: 440 }   # web list article image set
           - { width: 150, height: 100 }   # web list article image set
           - { width: 300, height: 200 }   # web list article image set
           - { width: 450, height: 300 }   # web list article image set
@@ -103,6 +104,7 @@ anzu_systems_core_dam:
           - { width: 300, height: 0 }     # web article detail image set (automatic height)
           - { width: 288, height: 0 }     # web article detail image set (automatic height)
           - { width: 972, height: 648 }   # web list article image set
+          - { width: 660, height: 440 }   # web list article image set
           - { width: 150, height: 100 }   # web list article image set
           - { width: 300, height: 200 }   # web list article image set
           - { width: 450, height: 300 }   # web list article image set, default not found crop
