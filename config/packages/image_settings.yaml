@@ -47,6 +47,7 @@ anzu_systems_core_dam:
         crops:
           - { width: 800, height: 450 }   # anzu web general
           - { width: 350, height: 197 }   # anzu web box item photo
+          - { width: 2000, height: 0 }    # web gallery zoom-in (lightbox)
           - { width: 1000, height: 0 }    # web article detail image set (automatic height)
           - { width: 970, height: 0 }     # web article detail image set (automatic height)
           - { width: 625, height: 0 }     # web article detail image set (automatic height)
@@ -104,6 +105,7 @@ anzu_systems_core_dam:
         crops:
           - { width: 800, height: 450 }   # anzu web general
           - { width: 350, height: 197 }   # anzu web box item photo
+          - { width: 2000, height: 0 }    # web gallery zoom-in (lightbox)
           - { width: 1000, height: 0 }    # web article detail image set (automatic height)
           - { width: 970, height: 0 }     # web article detail image set (automatic height)
           - { width: 625, height: 0 }     # web article detail image set (automatic height)
