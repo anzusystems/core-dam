@@ -40,8 +40,7 @@ return static function (AnzuSystemsAuthConfig $config): void {
         ->redirectUrl(env('AUTH_OAUTH2_REDIRECT_URL'))
         ->userInfoByEmailUrl(env('AUTH_OAUTH2_USER_INFO_BY_EMAIL_URL'))
         ->userInfoUrl(env('AUTH_OAUTH2_USER_INFO_URL'))
-//        ->clientId('anzusystems-dam')
-        ->clientId('anzusystems-cms')
+        ->clientId('anzusystems-dam')
         ->clientSecret(env('AUTH_OAUTH2_CLIENT_SECRET'))
         ->publicCert(env('AUTH_OAUTH2_JWT_PUBLIC_CERT')->base64())
     ;
