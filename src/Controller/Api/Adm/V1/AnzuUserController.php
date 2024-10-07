@@ -20,6 +20,7 @@ use AnzuSystems\SerializerBundle\Attributes\SerializeParam;
 use AnzuSystems\SerializerBundle\Exception\SerializerException;
 use App\Domain\User\DeprecatedUserFacade;
 use App\Entity\User;
+use App\Repository\CustomFilter\AnzuUserPermissionGroupFilter;
 use App\Repository\UserRepository;
 use App\Security\Permission\DamPermissions;
 use Doctrine\ORM\Exception\ORMException;
@@ -68,7 +69,12 @@ final class AnzuUserController extends AbstractApiController
     public function getList(ApiParams $apiParams): JsonResponse
     {
         return $this->okResponse(
-            $this->userRepo->findByApiParamsWithInfiniteListing($apiParams),
+            $this->userRepo->findByApiParamsWithInfiniteListing(
+                $apiParams,
+                customFilters: [
+                    new AnzuUserPermissionGroupFilter(),
+                ]
+            ),
         );
     }
 

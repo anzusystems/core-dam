@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace App\MediaApiMigrations;
 
 use AnzuSystems\CoreDamBundle\Command\Traits\OutputUtilTrait;
+use App\Domain\Image\MediaApi\LicenceProvider;
 use App\Model\MediaApiMigrateConfig;
+use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Result;
@@ -15,6 +17,8 @@ final class MigrationTableBuilder
     use OutputUtilTrait;
 
     public const int CMS_EXT_ID = 1;
+    private const int BATCH_LIMIT = 200;
+    private const int CLEAR_CAHCE_BATCH = 5_000;
 
     private readonly ConnectionDecorator $damMediaApiMigConnectionDecorator;
 
@@ -60,9 +64,12 @@ final class MigrationTableBuilder
         $progress->setFormat('debug');
         $progress->start();
 
-        $rows = $this->getMediaApiImages($fromId, $toId)->fetchAllAssociative();
-        while (false === empty($rows)) {
+        $lastId = $fromId;
+        $i = 0;
+        do {
+            $rows = $this->getMediaApiImages($lastId, $toId)->fetchAllAssociative();
             foreach ($rows as $row) {
+                $i++;
                 $progress->advance();
                 $lastId = $row['id_image'];
 
@@ -70,8 +77,11 @@ final class MigrationTableBuilder
             }
 
             $this->damMediaApiMigConnectionDecorator->flush();
-            $rows = $this->getMediaApiImages($lastId, $toId)->fetchAllAssociative();
-        }
+            if (0 === $i % self::CLEAR_CAHCE_BATCH) {
+                $this->keywordProvider->clearCache();
+                $this->authorProvider->clearCache();
+            }
+        } while (self::BATCH_LIMIT === count($rows));
 
         $progress->finish();
         $this->outputUtil->writeln('');
@@ -223,11 +233,18 @@ final class MigrationTableBuilder
             FROM mediaapi_image img
             INNER JOIN mediaapi_stock stock ON img.id_stock = stock.id_stock
             WHERE img.id_image > :fromId and img.id_image <= :toId 
-            LIMIT 100
-        ',
+            AND anzu_dam_uuid is null
+            AND img.id_stock in (:stocks)
+            AND img.id_status = 1 -- do not migrate removed images
+            ORDER BY img.id_image ASC
+            LIMIT ' . self::BATCH_LIMIT,
             [
                 'fromId' => $fromId ?? 0,
                 'toId' => $toId ?? MediaApiMigrateConfig::MAX_INT_SIZE,
+                'stocks' => array_keys(LicenceProvider::LICENCE_MAP),
+            ],
+            [
+                'stocks' => ArrayParameterType::INTEGER,
             ]
         );
     }
@@ -238,10 +255,14 @@ final class MigrationTableBuilder
     private function getMediaApiImagesCount(?int $fromId, ?int $toId): int
     {
         $res = $this->mediaApiConnection->fetchOne(
-            'SELECT count(id_image) FROM mediaapi_image WHERE id_image > :fromId and id_image <= :toId ',
+            'SELECT count(id_image) FROM mediaapi_image WHERE id_image > :fromId AND id_image <= :toId AND anzu_dam_uuid is null AND id_stock in (:stocks) AND id_status = 1',
             [
                 'fromId' => $fromId ?? 0,
                 'toId' => $toId ?? MediaApiMigrateConfig::MAX_INT_SIZE,
+                'stocks' => array_keys(LicenceProvider::LICENCE_MAP),
+            ],
+            [
+                'stocks' => ArrayParameterType::INTEGER,
             ]
         );
 

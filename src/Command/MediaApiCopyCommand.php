@@ -4,12 +4,7 @@ declare(strict_types=1);
 
 namespace App\Command;
 
-use AnzuSystems\CoreDamBundle\Command\Traits\OutputUtilTrait;
-use App\MediaApiMigrations\ImageMigrationPostProcessor;
 use App\MediaApiMigrations\MediaApiFileCopy;
-use App\MediaApiMigrations\MediaApiMigration;
-use App\MediaApiMigrations\MigrationTableBuilder;
-use App\MediaApiMigrations\UsersMigration;
 use App\Model\MediaApiMigrateConfig;
 use Exception;
 use League\Flysystem\FilesystemException;
@@ -21,19 +16,13 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 #[AsCommand(
-    name: 'anzu:media-api:migrate',
+    name: 'anzu:media-api:copy',
     description: 'Migrate MediaApi'
 )]
-final class MediaApiMigrateCommand extends Command
+final class MediaApiCopyCommand extends Command
 {
-    use OutputUtilTrait;
-
     public function __construct(
-        private readonly MediaApiMigration $mediaApiMigration,
         private readonly MediaApiFileCopy $mediaApiFileCopy,
-        private readonly MigrationTableBuilder $migrationTableBuilder,
-        private readonly UsersMigration $usersMigration,
-        private readonly ImageMigrationPostProcessor $postProcessor
     ) {
         parent::__construct();
     }
@@ -76,10 +65,8 @@ final class MediaApiMigrateCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $config = MediaApiMigrateConfig::createFromInput($input);
-        $this->migrationTableBuilder->buildTable($config);
-        $this->usersMigration->migrate($config);
-        $this->mediaApiMigration->migrate($config);
-        $this->postProcessor->postProcess($config);
+
+        $this->mediaApiFileCopy->migrate($config);
         $output->writeln('');
 
         return Command::SUCCESS;

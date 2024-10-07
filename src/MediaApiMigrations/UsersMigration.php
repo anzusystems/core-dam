@@ -7,8 +7,10 @@ namespace App\MediaApiMigrations;
 use AnzuSystems\AuthBundle\Exception\UnsuccessfulAccessTokenRequestException;
 use AnzuSystems\AuthBundle\Exception\UnsuccessfulUserInfoRequestException;
 use AnzuSystems\AuthBundle\HttpClient\OAuth2HttpClient;
+use AnzuSystems\CommonBundle\Model\User\UserDto;
 use AnzuSystems\CoreDamBundle\Command\Traits\OutputUtilTrait;
 use App\App;
+use App\Domain\Image\MediaApi\UserProvider as MediaApiUserProvider;
 use App\Entity\User;
 use App\Model\MediaApiMigrateConfig;
 use DateTimeInterface;
@@ -29,6 +31,7 @@ final class UsersMigration
         private readonly MigrationTableIterator $migrationIterator,
         private readonly OAuth2HttpClient $OAuth2HttpClient,
         private readonly Connection $defaultConnection,
+        private readonly MediaApiUserProvider $mediaApiUserProvider,
     ) {
         $this->connectionDecorator = new ConnectionDecorator($this->defaultConnection);
     }
@@ -50,7 +53,7 @@ final class UsersMigration
         }
     }
 
-    protected function getEmail(int $userId): ?string
+    protected function getEmail(int $userId): string
     {
         try {
             return $this->OAuth2HttpClient->getSsoUserInfo((string) $userId)->getEmail();
@@ -68,6 +71,11 @@ final class UsersMigration
         }
 
         $email = $this->getEmail($userId);
+        $userDto = (new UserDto())
+            ->setEmail($email)
+        ;
+        $this->mediaApiUserProvider->setupPerson($userDto);
+
         $this->connectionDecorator->prepareBulkInsert(
             'user',
             [
@@ -79,11 +87,11 @@ final class UsersMigration
                 'roles' => json_encode(['ROLE_DAM_ADMIN']),
                 'enabled' => '0',
                 'email' => $email,
-                'person_first_name' => '',
-                'person_last_name' => '',
-                'person_full_name' => '',
+                'person_first_name' => $userDto->getPerson()->getFirstName(),
+                'person_last_name' => $userDto->getPerson()->getLastName(),
+                'person_full_name' => $userDto->getPerson()->getFullName(),
                 'avatar_color' => '',
-                'avatar_text' => '',
+                'avatar_text' => $userDto->getAvatar()->getText(),
                 'api_token' => null,
                 'permissions' => '{}',
                 'allowed_asset_external_providers' => '[]',

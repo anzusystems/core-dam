@@ -27,6 +27,13 @@ use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Symfony\Config\AnzuSystemsCommonConfig;
 
 return static function (AnzuSystemsCommonConfig $config): void {
+    $config->jobs()
+        ->batchSize(env('ANZU_JOBS_BATCH_SIZE')->int())
+        ->maxExecTime(env('ANZU_JOBS_MAX_EXEC_TIME')->int())
+        ->maxMemory(env('byte_size:ANZU_JOBS_MAX_MEMORY')->int())
+        ->noJobIdleTime(env('ANZU_JOBS_NO_JOB_IDLE_TIME')->int())
+    ;
+
     $config
         ->settings()
             ->appRedis('DamRedis')

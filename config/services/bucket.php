@@ -52,7 +52,8 @@ return static function (ContainerConfigurator $configurator): void {
         ->lazy()
         ->args([
             [
-                'keyFile' => env('file:GOOGLE_MEDIA_API_PROD_BUCKET_CREDENTIALS')->json()->default('empty_array')
+//                'keyFile' => env('file:GOOGLE_MEDIA_API_PROD_BUCKET_CREDENTIALS')->json()->default('empty_array')
+                'keyFile' => env('file:GOOGLE_GENERAL_PROD_BUCKET_CREDENTIALS')->json()->default('empty_array')
             ]
         ])
     ;

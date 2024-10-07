@@ -1,0 +1,16 @@
+#!/bin/bash
+
+cd /var/www/html
+
+echo "Building table"
+bin/console anzu:media-api:migrate --stages=buildTable 6700000 6705000 --dropMigrationTable --no-debug
+
+echo "Building table"
+bin/console a:media-api:migra --stages=migrateUsers --no-debug
+
+echo "Building table"
+bin/console anzu:media-api:migrate --stages=migrateImages 6700000 6705000 --storage=cms.media_api.local_storage --limit=100  --no-debug
+
+bin/console a:e:reb asset
+bin/console a:e:reb author
+bin/console a:e:reb keyword

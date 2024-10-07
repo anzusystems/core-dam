@@ -122,7 +122,7 @@ final class CreateMandatoryUsersCommand extends Command
             $adminUser->setId((int) $ssoId);
             $adminUser->setEmail($email);
             $adminUser->setEnabled(true);
-            $adminUser->setRoles([User::ROLE_ADMIN]);
+            $adminUser->setRoles([User::ROLE_ADMIN, User::ROLE_SUPER_ADMIN]);
 
             $this->userManager->createAnzuUser($user, $adminUser);
         }

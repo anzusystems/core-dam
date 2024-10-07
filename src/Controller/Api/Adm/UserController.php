@@ -97,6 +97,7 @@ final class UserController extends AbstractApiController
     /**
      * @throws ValidationException
      * @throws AppReadOnlyModeException
+     * @throws SerializerException
      */
     #[Route('', 'create', methods: [Request::METHOD_POST])]
     #[OARequest(DamUserDto::class), OAResponseCreated(DamUserDto::class), OAResponseValidation]

@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# select count(dam_media_api_mig.media_api_id) from dam_media_api_mig WHERE media_api_id >= 2600000 and media_api_id < 3100000;
+
+cd /var/www/html
+
+bin/console anzu:media-api:migrate --stages=migrateImages 2600000 3100000 --no-debug

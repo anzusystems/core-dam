@@ -88,7 +88,7 @@ anzu_systems_core_dam:
                 client: 'anzu.google_storage.env_fallback_client'
                 bucket: '%env(string:GCS_DOCUMENT_FALLBACK_STORAGE_BUCKET)%'
                 prefix: 'documents'
-
+        # MediaAPi migrations
         cms.media_api.prod_storage:
             adapter: 'gcloud'
             options:
@@ -96,6 +96,7 @@ anzu_systems_core_dam:
                 bucket: 'mediaapi-content-production-bel'
                 prefix: 'public/api-media/media/image'
 
+        # mediaapi sync storage
         cms.media_api.storage:
             adapter: 'gcloud'
             options:
@@ -107,13 +108,6 @@ anzu_systems_core_dam:
             adapter: 'local'
             options:
                 directory: '%kernel.project_dir%/var/mnt/data/media'
-
-        cms.media_api.fs1_storage:
-            adapter: 'gcloud'
-            options:
-                client: 'anzu.google_storage.env_fallback_client'
-                bucket: 'fs1sme-production-backup'
-                prefix: 'web/sme/home'
 
         scraper.image_fallback:
             adapter: 'gcloud'
@@ -176,10 +170,3 @@ anzu_systems_core_dam:
             adapter: 'local'
             options:
                 directory: '%kernel.project_dir%/var/mnt/data/people_chunk'
-
-        general.documents:
-            adapter: 'gcloud'
-            options:
-                client: 'anzu.google_storage.dam_general_prod_client'
-                bucket: '%env(string:GCS_GENERAL_DOCUMENT_BUCKET)%'
-                prefix: 'public'

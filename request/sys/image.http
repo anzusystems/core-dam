@@ -10,22 +10,26 @@ Authorization: Bearer {{mediaapiSysUserApiToken}}
 // /sme/6/22/2255366/2255366.jpeg
 // https://m.smedata.sk/api-media/media/image/sme/6/31/3129176/3129176.jpeg
 // /sme/6/31/3129176/3129176.jpeg
+// https://m.smedata.sk/api-media/media/image/sme/3/88/8893563/8893563.jpg
+
+// /sme/0/67/67000030/6700030.jpeg
+// /sme/3/88/8893563/8893563.jpg
 
 {
-  "mediaApiId": 7008282,
-  "fullPath": "/sme/6/31/3129176/3129176.jpeg",
+  "mediaApiId": 8893563,
+  "fullPath": "/sme/6/22/2255366/2255366.jpeg",
   "idStock": 5,
-  "author": "cicik",
-  "keywords": "airbus",
+  "keywords": "",
+  "author": "",
   "description": "",
-  "focusX": 1891,
-  "focusY": 1309,
-  "createdAt": "2021-05-11T00:00:00.000000Z",
-  "updatedAt": "2021-05-11T00:00:00.000000Z",
-  "idCentralUserCreated": 773001,
-  "idCentralUserUpdated": 773001,
-  "singleUse": false,
-  "public": true
+  "focusX": 1500,
+  "focusY": 1334,
+  "createdAt": "2024-09-30T18:00:14.000000Z",
+  "updatedAt": "2024-09-30T18:00:16.000000Z",
+  "idCentralUserCreated": 770907,
+  "idCentralUserUpdated": 770907,
+  "public": true,
+  "singleUse": false
 }
 
 > {%
@@ -47,8 +51,8 @@ Authorization: Bearer {{mediaapiSysUserApiToken}}
 
 // https://m.smedata.sk/api-media/media/image/sme/0/70/7008280/7008280.jpeg
 {
-  "mediaApiId": 7008281,
-  "fullPath": "/video/1/39/3950851/bmp.bmp",
+  "mediaApiId": 7008282,
+  "fullPath": "/sme/6/31/3129176/3129176.jpeg",
   "idStock": 5,
   "author": "Duplicate author",
   "keywords": "duplicate",
@@ -68,23 +72,25 @@ Authorization: Bearer {{mediaapiSysUserApiToken}}
 %}
 
 ### Update image file
-PUT {{host}}/api/sys/v1/mediaapi/image/{{id}}
+PUT {{host}}/api/sys/v1/mediaapi/image/1ef7fe12-922d-69d8-a07b-bd70646462a4
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{mediaapiSysUserApiToken}}
 
 // https://m.smedata.sk/api-media/media/image/sme/0/70/7008280/7008280.jpeg
 {
-  "mediaApiId": 7008280,
-  "fullPath": "/sme/0/70/7008280/7008280.jpeg",
+  "mediaApiId": 8893563,
+  "fullPath": "/sme/6/22/2255366/2255366.jpeg",
   "idStock": 5,
-  "author": "TASR",
-  "keywords": "airbus, lietadlo",
-  "description": "Lietadlo padlo.",
-  "focusX": 50,
-  "focusY": 50,
-  "updatedAt": "2021-05-11T00:00:00.000000Z",
-  "createdAt": "2021-05-11T00:00:00.000000Z",
-  "idCentralUserUpdated": 773001,
-  "idCentralUserCreated": 773001
+  "keywords": "",
+  "author": "(DH)",
+  "description": "Dominik a jeho rekordný dubák.",
+  "focusX": 1500,
+  "focusY": 1334,
+  "createdAt": "2024-09-30T18:00:14.000000Z",
+  "updatedAt": "2024-09-30T18:00:35.000000Z",
+  "idCentralUserCreated": 770907,
+  "idCentralUserUpdated": 770907,
+  "public": true,
+  "singleUse": false
 }

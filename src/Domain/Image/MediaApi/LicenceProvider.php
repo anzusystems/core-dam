@@ -12,6 +12,19 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 final readonly class LicenceProvider
 {
+    public const array LICENCE_MAP = [
+        self::STOCK_SPECTATOR => self::LICENCE_SPECTATOR,
+        self::STOCK_SME => self::LICENCE_CMS,
+        self::VIDEO => self::LICENCE_CMS,
+        self::STOCK_XBLOCK => self::LICENCE_X_BLOCK,
+        self::STOCK_QUIZ => self::LICENCE_CMS,
+        self::STOCK_MAGAZIN => self::LICENCE_MAGAZIN,
+        self::STOCK_KOMERCNE => self::LICENCE_KOMERCNE,
+        self::STOCK_AUTHORS => self::LICENCE_AUTHOR,
+        self::STOCK_ACCELERATED_WIGET => self::LICENCE_SCRAPER,
+        self::STOCK_ARTICLE_SHORT => self::LICENCE_SOCIAL,
+        self::STOCK_ARTICLE_BACKGROUND => self::LICENCE_SOCIAL,
+    ];
     private const int STOCK_SPECTATOR = 2;
     private const int STOCK_SME = 5;
     private const int STOCK_XBLOCK = 8;
@@ -36,20 +49,6 @@ final readonly class LicenceProvider
     private const int LICENCE_AUTHOR = 100_006;
     private const int LICENCE_SOCIAL = 100_007;
     private const int LICENCE_SCRAPER = 101_000;
-
-    private const array LICENCE_MAP = [
-        self::STOCK_SPECTATOR => self::LICENCE_SPECTATOR,
-        self::STOCK_SME => self::LICENCE_CMS,
-        self::VIDEO => self::LICENCE_CMS,
-        self::STOCK_XBLOCK => self::LICENCE_X_BLOCK,
-        self::STOCK_QUIZ => self::LICENCE_CMS,
-        self::STOCK_MAGAZIN => self::LICENCE_MAGAZIN,
-        self::STOCK_KOMERCNE => self::LICENCE_KOMERCNE,
-        self::STOCK_AUTHORS => self::LICENCE_AUTHOR,
-        self::STOCK_ACCELERATED_WIGET => self::LICENCE_SCRAPER,
-        self::STOCK_ARTICLE_SHORT => self::LICENCE_SOCIAL,
-        self::STOCK_ARTICLE_BACKGROUND => self::LICENCE_SOCIAL,
-    ];
 
     public function __construct(
         private AssetLicenceRepository $assetLicenceRepository,
