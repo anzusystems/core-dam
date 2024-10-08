@@ -53,6 +53,8 @@ spec:
                   key: trusted_ips
             - name: AZURE_DEPLOYMENT_START_TIME
               value: #{SYSTEM_PIPELINESTARTTIME}#
+            - name: PHP_MEMORY_LIMIT
+              value: "#{CRON_PHP_MEMORY_LIMIT}#"
             - name: REDIS_HOST
               valueFrom:
                 configMapKeyRef:

@@ -39,7 +39,6 @@ logrotate-cmd -p /var/www/html/var/log/fpm\*.log &
 logrotate-cmd -p /var/www/html/var/log/nginx\*.log &
 
 echo "[INFO] Starting supervisor"
-messenger-supervisor-conf
 set +e
 supervisord
 sleep 1

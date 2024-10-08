@@ -149,7 +149,6 @@ data:
   PHP_ACCESS_LOG: "/var/www/html/var/log/fpm_access.log"
   PHP_ERROR_LOG: "/var/www/html/var/log/fpm_error.log"
   PHP_MAX_EXECUTION_TIME: "#{PHP_MAX_EXECUTION_TIME}#"
-  PHP_MEMORY_LIMIT: "#{PHP_MEMORY_LIMIT}#"
   PHP_OPCACHE_PRELOAD_PATH: "/var/www/html/var/cache/prod/App_KernelProdContainer.preload.php"
   PHP_PM_MAX_CHILDREN: "#{PHP_PM_MAX_CHILDREN}#"
   PHP_SLOW_LOG: "/var/www/html/var/log/fpm_error.log"

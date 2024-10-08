@@ -4,16 +4,9 @@ set -e
 
 cd /var/www/html || exit 1
 
-POST_DATABASE_IMPORT_LOG=/var/www/html/var/log/post_database_import.log
-
 if [ -f "${MAIN_TERMINATED_FILE}" ]; then
     echo "[INFO] Remove terminated file for logging containers"
     rm -f "${MAIN_TERMINATED_FILE}"
-fi
-
-if [ "${APP_DEPLOY_ENV}" == "production" ]; then
-    rm -f bin/post-database-import
-    unset POST_DATABASE_IMPORT_LOG
 fi
 
 echo "[INFO] Copy tail-cmd executable to sidecar logging containers shared folder"
@@ -21,17 +14,8 @@ su -c "cp /usr/local/bin/tail-cmd var/log/tail-cmd" user
 
 echo "[INFO] Redirecting logs to stdout"
 tail-cmd -s 1 -f "\
-    ${POST_DATABASE_IMPORT_LOG:-} \
-    /var/log/cron/cron.log \
     /var/log/newrelic/newrelic-daemon.log \
 " &
-
-echo "[INFO] Setup crontab"
-if [ -f "docker/crontab/crontab_${DEPLOY_ENV}" ]; then
-    su -c "crontab docker/crontab/crontab_${DEPLOY_ENV}" user
-else
-    su -c "crontab docker/crontab/crontab" user
-fi
 
 echo "[INFO] Composer install"
 su --preserve-environment -c "composer -n install --no-scripts --no-dev 2>&1" user
@@ -39,10 +23,9 @@ su --preserve-environment -c "composer -n install --no-scripts --no-dev 2>&1" us
 echo "[INFO] Composer dump-autoload"
 su --preserve-environment -c "composer dump-autoload --classmap-authoritative 2>&1" user
 
-echo "[INFO] Starting cron"
+echo "[INFO] Starting supervisor"
+SUPERVISOR_USER=user messenger-supervisor-conf
 set +e
-# Starting in bacground and waiting is the only way how to supress Terminated stderr message for cron
-cron -f &
-wait $!
+supervisord -c /etc/supervisor/supervisord.conf
 sleep 1
 exit 0

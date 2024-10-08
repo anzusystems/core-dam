@@ -86,7 +86,7 @@ variables:
   # Cron dockerfile location
   - name: CRON_DOCKERFILE
     value: '$(Build.SourcesDirectory)/docker/app-cron/kubernetes/Dockerfile'
-  # Kubernetes migration job manifest filename
+  # Kubernetes configuration manifest filename
   - name: CONFIGURATION_MANIFEST_FILE_NAME
     value: 'configuration.yaml'
   # Kubernetes migration job name
@@ -104,6 +104,12 @@ variables:
   # Kubernetes cron deployment name
   - name: CRON_KUBERNETES_DEPLOYMENT_NAME
     value: '$(APP_NAME)-cron'
+  # Kubernetes messenger deployment name
+  - name: MESSENGER_KUBERNETES_DEPLOYMENT_NAME
+    value: '$(APP_NAME)-messenger'
+  # Kubernetes messenger deployment manifest filename
+  - name: MESSENGER_MANIFEST_FILE_NAME
+    value: 'messenger-deployment.yaml'
   # Kubernetes service connection name
   - name: KUBERNETES_SERVICE_CONNECTION_NAME
     value: '$(DEPLOYMENT_KUBERNETES_NAMESPACE)-${{ parameters.environment }}'
@@ -139,6 +145,8 @@ extends:
     kubernetesJobManifestFileName: $(JOB_MIGRATIONS_MANIFEST_FILE_NAME)
     appKubernetesJobName: $(JOB_MIGRATIONS_NAME)
     appKubernetesDeploymentName: $(APP_KUBERNETES_DEPLOYMENT_NAME)
+    kubernetesMessengerManifestFileName: $(MESSENGER_MANIFEST_FILE_NAME)
+    messengerKubernetesDeploymentName: $(MESSENGER_KUBERNETES_DEPLOYMENT_NAME)
     cronKubernetesDeploymentName: $(CRON_KUBERNETES_DEPLOYMENT_NAME)
     kubernetesServiceConnectionName: $(KUBERNETES_SERVICE_CONNECTION_NAME)
     kubernetesNamespace: $(KUBERNETES_NAMESPACE)

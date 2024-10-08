@@ -42,6 +42,8 @@ spec:
                 configMapKeyRef:
                   name: #{APP_NAME}#-infra
                   key: trusted_ips
+            - name: PHP_MEMORY_LIMIT
+              value: "#{JOB_PHP_MEMORY_LIMIT}#"
             - name: REDIS_HOST
               valueFrom:
                 configMapKeyRef:
