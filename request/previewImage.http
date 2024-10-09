@@ -1,5 +1,5 @@
 ### Login admin
-POST {{host}}/force/login/10001039
+POST {{host}}/force/login/adm/10001039
 Content-Type: application/json
 
 {

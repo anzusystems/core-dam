@@ -1,5 +1,5 @@
 ### Auth UGC user
-POST http://core-blog.sme.localhost/force/login/18949
+POST http://core-blog.sme.localhost/force/login/adm/18949
 Content-Type: application/json
 
 ### Get image list

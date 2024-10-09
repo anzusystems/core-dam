@@ -29,7 +29,7 @@ final class ForceLoginController extends AbstractApiController
      * @throws MissingConfigurationException
      * @throws InvalidJwtException
      */
-    #[Route('/force/login/{user}', condition: "env('APP_DEPLOY_ENV') !== 'production'")]
+    #[Route('/force/login/adm/{user}', condition: "env('APP_DEPLOY_ENV') !== 'production'")]
     public function login(Request $request, User $user): Response
     {
         $expiresAt = new DateTimeImmutable('+1 week');

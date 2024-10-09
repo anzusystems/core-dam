@@ -1,5 +1,5 @@
 ### Login admin
-GET {{host}}/force/login/10001039
+GET {{host}}/force/login/adm/10001039
 Accept: application/json
 Content-Type: application/json
 
