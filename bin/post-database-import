@@ -12,25 +12,26 @@ function help() {
     \nBash script used to run post database import commands in the application container
 
     Options:
-        --elastic-only   (Optional) Run only elasticsearch index rebuild
-        --user-sync-only (Optional) Run only user sync base
+        --elastic-rebuild (Optional) Run specifically elasticsearch index rebuild
+        --user-sync-base  (Optional) Run specifically user sync base
 
     Examples:
-        $(printf %q "${BASH_SOURCE[0]}") --root
-        $(printf %q "${BASH_SOURCE[0]}") core-dam-cron
+        $(printf %q "${BASH_SOURCE[0]}") --elastic-rebuild
+        $(printf %q "${BASH_SOURCE[0]}") --elastic-rebuild --user-sync-base
+        $(printf %q "${BASH_SOURCE[0]}")
     \n"
 }
 
 # Go through all command line arguments and setup variables accordingly
 while [ "$#" -gt 0 ]; do
     case $1 in
-    --elastic-only)
-        USER_SYNC_BASE=false
+    --elastic-rebuild)
+        ELASTIC_REBUILD_ARG=true
         shift 1
         continue
         ;;
-    --user-sync-only)
-        ELASTIC_REBUILD=false
+    --user-sync-base)
+        USER_SYNC_BASE_ARG=true
         shift 1
         continue
         ;;
@@ -40,11 +41,15 @@ while [ "$#" -gt 0 ]; do
         ;;
     *)
         echo "[WARN] Unknown command line switch: $1"
-        help
-        exit
+        shift 1
         ;;
     esac
 done
+
+if [ -n "${ELASTIC_REBUILD_ARG}" ] || [ -n "${USER_SYNC_BASE_ARG}" ] ; then
+    ELASTIC_REBUILD=${ELASTIC_REBUILD_ARG:-false}
+    USER_SYNC_BASE=${USER_SYNC_BASE_ARG:-false}
+fi
 
 if ${USER_SYNC_BASE}; then
     echo "[INFO] Run anzu user sync"
