@@ -2,13 +2,59 @@
 # Script used to run post database import commands in the application container
 
 PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")"/.. && pwd)"
+ELASTIC_REBUILD=true
+USER_SYNC_BASE=true
+
 cd "${PROJECT_ROOT}" || exit 1
 
-echo "[INFO] Run anzu user sync"
-bin/console anzusystems:user:sync-base --file="${USER_SYNC_DATA_FILE_PATH:-/var/tmp/users.json}"
+function help() {
+    echo -en "$(printf %q "${BASH_SOURCE[0]}") [OPERATION] [OPTIONS]...
+    \nBash script used to run post database import commands in the application container
 
-echo "[INFO] Run elastic rebuild"
-bin/console anzu:elastic:rebuild keyword
-bin/console anzu:elastic:rebuild author
-bin/console anzu:elastic:rebuild distribution
-bin/console anzu:elastic:rebuild asset
+    Options:
+        --elastic-only   (Optional) Run only elasticsearch index rebuild
+        --user-sync-only (Optional) Run only user sync base
+
+    Examples:
+        $(printf %q "${BASH_SOURCE[0]}") --root
+        $(printf %q "${BASH_SOURCE[0]}") core-dam-cron
+    \n"
+}
+
+# Go through all command line arguments and setup variables accordingly
+while [ "$#" -gt 0 ]; do
+    case $1 in
+    --elastic-only)
+        USER_SYNC_BASE=false
+        shift 1
+        continue
+        ;;
+    --user-sync-only)
+        ELASTIC_REBUILD=false
+        shift 1
+        continue
+        ;;
+    -h | --help)
+        help
+        exit
+        ;;
+    *)
+        echo "[WARN] Unknown command line switch: $1"
+        help
+        exit
+        ;;
+    esac
+done
+
+if ${USER_SYNC_BASE}; then
+    echo "[INFO] Run anzu user sync"
+    bin/console anzusystems:user:sync-base --file="${USER_SYNC_DATA_FILE_PATH:-/var/tmp/users.json}"
+fi
+
+if ${ELASTIC_REBUILD}; then
+    echo "[INFO] Run elastic rebuild"
+    bin/console anzu:elastic:rebuild keyword
+    bin/console anzu:elastic:rebuild author
+    bin/console anzu:elastic:rebuild distribution
+    bin/console anzu:elastic:rebuild asset
+fi
