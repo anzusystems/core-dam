@@ -317,8 +317,8 @@ spec:
     apiVersion: apps/v1
     kind: Deployment
     name: #{MESSENGER_KUBERNETES_DEPLOYMENT_NAME}#
-  minReplicas: #{HPA_APP_MIN_REPLICA_COUNT}#
-  maxReplicas: #{HPA_APP_MAX_REPLICA_COUNT}#
+  minReplicas: #{HPA_MESSENGER_MIN_REPLICA_COUNT}#
+  maxReplicas: #{HPA_MESSENGER_MAX_REPLICA_COUNT}#
   metrics:
     - type: Resource
       resource:
