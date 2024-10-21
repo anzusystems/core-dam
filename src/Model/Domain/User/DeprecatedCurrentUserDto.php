@@ -12,6 +12,7 @@ use AnzuSystems\CoreDamBundle\Entity\ExtSystem;
 use AnzuSystems\SerializerBundle\Attributes\Serialize;
 use AnzuSystems\SerializerBundle\Handler\Handlers\EntityIdHandler;
 use App\Entity\User;
+use App\Helper\UserHelper;
 use App\Model\Domain\AssetLicence\AssetLicenceDto;
 use App\Model\Domain\AssetLicenceGroup\AssetLicenceGroupDto;
 use App\Model\Domain\ExtSystem\ExtSystemDto;
@@ -21,11 +22,13 @@ final class DeprecatedCurrentUserDto
 {
     #[Serialize(serializedName: 'id', handler: EntityIdHandler::class)]
     private User $user;
+    private Collection $resolvedAssetLicences;
 
     public static function getInstance(User $user): self
     {
         return (new self())
             ->setUser($user)
+            ->setResolvedAssetLicences(UserHelper::getAllUserLicences($user))
         ;
     }
 
@@ -112,5 +115,21 @@ final class DeprecatedCurrentUserDto
     public function getResolvedPermissions(): array
     {
         return $this->user->getResolvedPermissions();
+    }
+
+    #[Serialize(type: AssetLicenceDto::class)]
+    public function getResolvedAssetLicences(): Collection
+    {
+        return $this->resolvedAssetLicences->map(fn (AssetLicence $licence) => AssetLicenceDto::getInstance($licence));
+    }
+
+    /**
+     * @param Collection<int, AssetLicence> $resolvedAssetLicences
+     */
+    public function setResolvedAssetLicences(Collection $resolvedAssetLicences): self
+    {
+        $this->resolvedAssetLicences = $resolvedAssetLicences;
+
+        return $this;
     }
 }
