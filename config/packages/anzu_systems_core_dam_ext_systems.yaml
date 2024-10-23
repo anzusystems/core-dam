@@ -9,7 +9,7 @@ anzu_systems_core_dam:
       image:
         enabled: true
         title: ['customData:title']
-        custom_metadata_pinned_amount: 3
+        custom_metadata_pinned_amount: 1
         storage_name: 'cms.image'
         crop_storage_name: 'cms.crop'
         chunk_storage_name: 'cms.image'

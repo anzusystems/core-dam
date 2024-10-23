@@ -210,16 +210,16 @@
         },
         {
             "name": "anzusystems/core-dam-bundle",
-            "version": "1.14.0",
+            "version": "1.15.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/anzusystems/core-dam-bundle.git",
-                "reference": "3db2b485d0aae16a4999aca4f5f9c914999a63ed"
+                "reference": "96318cf89ba19ad70bbc6a1a7d117e3443bd09ac"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/anzusystems/core-dam-bundle/zipball/3db2b485d0aae16a4999aca4f5f9c914999a63ed",
-                "reference": "3db2b485d0aae16a4999aca4f5f9c914999a63ed",
+                "url": "https://api.github.com/repos/anzusystems/core-dam-bundle/zipball/96318cf89ba19ad70bbc6a1a7d117e3443bd09ac",
+                "reference": "96318cf89ba19ad70bbc6a1a7d117e3443bd09ac",
                 "shasum": ""
             },
             "require": {
@@ -298,9 +298,9 @@
             "description": "Dam core bundle",
             "support": {
                 "issues": "https://github.com/anzusystems/core-dam-bundle/issues",
-                "source": "https://github.com/anzusystems/core-dam-bundle/tree/1.14.0"
+                "source": "https://github.com/anzusystems/core-dam-bundle/tree/1.15.0"
             },
-            "time": "2024-10-23T08:54:15+00:00"
+            "time": "2024-10-23T12:47:36+00:00"
         },
         {
             "name": "anzusystems/serializer-bundle",
