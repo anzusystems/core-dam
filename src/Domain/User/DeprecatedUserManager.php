@@ -94,11 +94,22 @@ final class DeprecatedUserManager extends AbstractUserManager
                 $assetLicenceGroup->getUsers()->add($user);
                 $oldCollection->add($assetLicenceGroup);
 
+                if (false === $user->getUserToExtSystems()->containsKey((int) $assetLicenceGroup->getExtSystem()->getId())) {
+                    $user->getUserToExtSystems()->add($assetLicenceGroup->getExtSystem());
+                }
+
                 return true;
             },
             removeElementFn: function (Collection $oldCollection, AssetLicenceGroup $oldAssetLicenceGroup) use ($user): bool {
                 $oldAssetLicenceGroup->getUsers()->removeElement($user);
                 $oldCollection->removeElement($oldAssetLicenceGroup);
+
+                if ($user->getUserToExtSystems()->containsKey((int) $oldAssetLicenceGroup->getExtSystem()->getId())) {
+                    $user->getUserToExtSystems()->removeElement($oldAssetLicenceGroup->getExtSystem());
+                }
+                if ($user->getSelectedLicence() instanceof AssetLicence && $oldAssetLicenceGroup->getLicences()->contains($user->getSelectedLicence())) {
+                    $user->setSelectedLicence(null);
+                }
 
                 return true;
             }
@@ -126,13 +137,34 @@ final class DeprecatedUserManager extends AbstractUserManager
                     $user->getUserToExtSystems()->removeElement($oldAssetLicence->getExtSystem());
                 }
                 if ($user->getSelectedLicence() instanceof AssetLicence && $oldAssetLicence->is($user->getSelectedLicence())) {
-                    $user->setSelectedLicence($oldCollection->first() ?: null);
+                    $user->setSelectedLicence(null);
                 }
 
                 return true;
             }
         );
 
+        if (null === $user->getSelectedLicence()) {
+            $user->setSelectedLicence($this->findFirstLicence($user));
+        }
+
         return $user;
+    }
+
+    private function findFirstLicence(User $user): ?AssetLicence
+    {
+        foreach ($user->getLicenceGroups() as $group) {
+            $licence = $group->getLicences()->first();
+            if ($licence instanceof AssetLicence) {
+                return $licence;
+            }
+        }
+
+        $licence = $user->getAssetLicences()->first();
+        if ($licence instanceof AssetLicence) {
+            return $licence;
+        }
+
+        return null;
     }
 }

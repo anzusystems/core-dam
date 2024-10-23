@@ -9,7 +9,7 @@
         "ext-iconv": "*",
         "ext-redis": "*",
         "anzusystems/auth-bundle": "^2.0",
-        "anzusystems/core-dam-bundle": "^1.13.0",
+        "anzusystems/core-dam-bundle": "^1.14",
         "doctrine/doctrine-migrations-bundle": "^3.2",
         "league/flysystem-google-cloud-storage": "^3.0",
         "symfony/asset": "^7.0",

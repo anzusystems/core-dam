@@ -13,6 +13,30 @@ Content-Type: application/json
   client.global.set('assetId', response.body.asset)
 %}
 
+### Change flags
+PATCH {{host}}/api/adm/v1/image/copy-to-licence
+Content-Type: application/json
+Authorization: Bearer {{adm_access_token}}
+
+[
+  {
+    "asset": "1ef8da0b-70dd-6208-bd5a-1d258b33b908",
+    "targetAssetLicence": 100001
+  },
+  {
+    "asset": "1ef8d8b2-5f14-6ad0-94b3-df1133af20b1",
+    "targetAssetLicence": 100001
+  },
+  {
+    "asset": "1ef8d872-813a-6942-a31f-576bc4462ec8",
+    "targetAssetLicence": 100001
+  },
+  {
+    "asset": "1ef8d836-abba-6bd6-b93e-87046159e1f0",
+    "targetAssetLicence": 100001
+  }
+]
+
 ### Rotate
 PATCH {{host}}/api/adm/v1/image/892d7b56-7423-4428-86a0-2d366685d823/rotate/90
 Content-Type: application/json
