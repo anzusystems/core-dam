@@ -31,6 +31,7 @@ final class MediaApiMetadataUpdate
     private ?Statement $insertAuthorStatement = null;
     private ?Statement $insertKeywordStatement = null;
     private ?Statement $updateCustomDataStatement = null;
+    private ?Statement $updateSingleUseStatement = null;
 
     public function __construct(
         private readonly KeywordProvider $keywordProvider,
@@ -75,6 +76,7 @@ final class MediaApiMetadataUpdate
             return;
         }
 
+        $this->updateAssetFileSingleUse($row);
         $this->updateDescription($row, $assetRow);
         $this->updateKeywords($row, $assetRow);
         $this->updateAuthors($row, $assetRow);
@@ -89,6 +91,20 @@ final class MediaApiMetadataUpdate
             $metadata['description'] = $row['description'];
             $this->updateCustomData($assetRow['metadata_id'], $metadata);
         }
+    }
+
+    private function updateAssetFileSingleUse(array $row): void
+    {
+        $uuid = Uuid::fromBinary($row['anzu_dam_uuid']);
+        if (empty($this->updateSingleUseStatement)) {
+            $this->updateSingleUseStatement = $this->defaultConnection->prepare(
+                'UPDATE asset_file set flags_single_use = :flags_single_use WHERE id = :id'
+            );
+        }
+
+        $this->updateSingleUseStatement->bindValue('flags_single_use', $row['single_use']);
+        $this->updateSingleUseStatement->bindValue('id', $uuid->toRfc4122());
+        $this->updateSingleUseStatement->executeStatement();
     }
 
     private function updateCustomData(string $metadataId, array $customData): void
@@ -144,7 +160,7 @@ final class MediaApiMetadataUpdate
     {
         if (null === $this->insertKeywordStatement) {
             $this->insertKeywordStatement = $this->defaultConnection->prepare(
-                'INSERT INTO asset_keyword (asset_id, keyword_id) VALUES (:asset_id, :keyword_id)'
+                'INSERT INTO asset_keyword (asset_id, keyword_id) VALUES (:asset_id, :keyword_id) ON DUPLICATE KEY UPDATE asset_id = asset_id, keyword_id = keyword_id'
             );
         }
 
@@ -235,7 +251,7 @@ final class MediaApiMetadataUpdate
     {
         if (null === $this->insertAuthorStatement) {
             $this->insertAuthorStatement = $this->defaultConnection->prepare(
-                'INSERT INTO asset_author (asset_id, author_id) VALUES (:asset_id, :author_id)'
+                'INSERT INTO asset_author (asset_id, author_id) VALUES (:asset_id, :author_id) ON DUPLICATE KEY UPDATE asset_id = asset_id, author_id = author_id'
             );
         }
 
@@ -259,7 +275,8 @@ final class MediaApiMetadataUpdate
                     img.keywords,
                     img.source_url,
                     img.from_migration,
-                    img.anzu_dam_uuid
+                    img.anzu_dam_uuid,
+                    if (img.id_licence = 3, 1, 0) single_use
                 FROM mediaapi_image img
                 INNER JOIN mediaapi_stock stock ON img.id_stock = stock.id_stock
                 WHERE img.id_image > :fromId and img.id_image <= :toId 
