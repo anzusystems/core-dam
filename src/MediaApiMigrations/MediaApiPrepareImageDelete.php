@@ -16,7 +16,7 @@ final class MediaApiPrepareImageDelete
 {
     use OutputUtilTrait;
 
-    public const int LIMIT = 100;
+    public const int LIMIT = 1_000;
 
     private ?Statement $mediaSelectImageStatement = null;
     private ?Statement $mediaSelectImageByIdStatement = null;
@@ -52,7 +52,7 @@ final class MediaApiPrepareImageDelete
 
             foreach ($rows as $row) {
                 $progress->advance();
-                $lastId = $row['image_file'];
+                $lastId = $row['metadata_id'];
 
                 $mediaApiIds = json_decode($row['custom_data'], true)['mediaApiIds'] ?? [];
                 if (empty($mediaApiIds)) {
@@ -101,12 +101,17 @@ final class MediaApiPrepareImageDelete
                 'main_file_id' => $row['image_file'],
                 'possible_media_api_id_count' => $count,
                 'missing_anzu_id' => $missingAnzuId ? 1 : 0,
+                'ext_slug' => match ($row['ext_system_id']) {
+                    1 => 'cms',
+                    11 => 'scraper',
+                    default => 'unsupported'
+                },
                 'real_media_api_id_count' => $count,
                 'media_api_id' => $mediaApiId,
                 'metadata' => $row['custom_data'],
                 'media_api_data' => json_encode($mediaApiData),
             ],
-            ['media_api_id = new_row.media_api_id']
+            []
         );
     }
 
@@ -154,17 +159,19 @@ final class MediaApiPrepareImageDelete
             return $this->defaultConnection->executeQuery(
                 '
                     select
+                        afm.id metadata_id,
                         am.custom_data,
                         af.id image_file,
-                        ass.id asset_id
+                        ass.id asset_id,
+                        ass.ext_system_id
                     from asset_file_metadata afm
                         inner join asset_file af on afm.id = af.metadata_id
                         inner join image_file i on af.id = i.id
                         inner join asset ass on i.asset_id = ass.id
                     inner join asset_metadata am ON ass.metadata_id = am.id
                     where afm.created_by_id = 100004
-                    and af.id > :fromId
-                    order by af.id
+                    and afm.id > :fromId
+                    order by afm.id
                     LIMIT ' . self::LIMIT . '
                 ',
                 [
@@ -175,16 +182,18 @@ final class MediaApiPrepareImageDelete
         return $this->defaultConnection->executeQuery(
             '
                 select
+                    afm.id metadata_id,
                     am.custom_data,
                     af.id image_file,
-                    ass.id asset_id
+                    ass.id asset_id,
+                    ass.ext_system_id
                 from asset_file_metadata afm
                     inner join asset_file af on afm.id = af.metadata_id
                     inner join image_file i on af.id = i.id
                     inner join asset ass on i.asset_id = ass.id
                 inner join asset_metadata am ON ass.metadata_id = am.id
                 where afm.created_by_id = 100004
-                order by af.id
+                order by afm.id
                 LIMIT ' . self::LIMIT . '
             '
         );
@@ -225,12 +234,14 @@ final class MediaApiPrepareImageDelete
     {
         $sql = '
         CREATE TABLE IF NOT EXISTS dam_image_media_api_drop (
-            media_api_id int unsigned auto_increment primary key,
+            id int unsigned auto_increment primary key,
+            media_api_id int unsigned default 0,
             possible_media_api_id_count int unsigned default 0,
             real_media_api_id_count int unsigned default 0,
             missing_anzu_id tinyint unsigned default 0,
             main_file_id char(36) not null default \'\',
             asset_id char(36) not null default \'\',
+            ext_slug char(64) not null default \'\',
             metadata json not null,
             media_api_data json not null
         );';
