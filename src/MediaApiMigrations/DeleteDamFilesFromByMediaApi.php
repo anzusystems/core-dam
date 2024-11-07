@@ -105,9 +105,6 @@ final class DeleteDamFilesFromByMediaApi
                 $storage->delete($path);
             }
         }
-
-        // remove crop cache
-        $this->cropCache->removeCacheByOriginFilePath($extSystemSlug, $path);
     }
 
     private function getCmsImageStorage(string $slug): AbstractFilesystem
