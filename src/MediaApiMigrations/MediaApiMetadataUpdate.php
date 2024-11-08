@@ -282,6 +282,7 @@ final class MediaApiMetadataUpdate
                 WHERE img.id_image > :fromId and img.id_image <= :toId 
                 AND anzu_dam_uuid is not null
                 AND img.id_stock in (:stocks)
+                ORDER BY img.id_image ASC
                 LIMIT ' . self::LIMIT . '
             ',
             [
