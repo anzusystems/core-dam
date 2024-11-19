@@ -2,6 +2,8 @@ parameters:
   display_title_config:
     title:
       source_property_path: 'metadata.customData[title]'
+    description:
+      source_property_path: 'metadata.customData[description]'
     headline:
       source_property_path: 'metadata.customData[headline]'
     originFileName:

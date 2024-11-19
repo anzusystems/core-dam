@@ -49,6 +49,7 @@ xdebug.log
 
 # Test Command
 src/Command/TestCommand.php
+src/Controller/Api/Adm/V1/TestController.php
 
 # Docker
 .docker-sync*
