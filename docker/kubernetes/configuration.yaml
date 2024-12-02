@@ -149,6 +149,7 @@ data:
   PHP_PM_MAX_CHILDREN: "#{PHP_PM_MAX_CHILDREN}#"
   PHP_SLOW_LOG: "/var/www/html/var/log/fpm_error.log"
   PHP_UPLOAD_MAX_FILESIZE: "#{PHP_UPLOAD_MAX_FILESIZE}#"
+  PHP_ZEND_MAX_ALLOWED_STACK_SIZE: "#{PHP_ZEND_MAX_ALLOWED_STACK_SIZE}#"
   PUBLIC_IMAGE_ADMIN_DOMAIN: "#{PUBLIC_IMAGE_ADMIN_DOMAIN}#"
   PUBLIC_IMAGE_DOMAIN: "#{PUBLIC_IMAGE_DOMAIN}#"
   PUBSUB_EMULATOR_HOST: ""
@@ -197,3 +198,4 @@ stringData:
   NEWRELIC_LICENSE: "#{newrelic-license}#"
   YOUTUBE_API_KEY: "#{core-dam-youtube-api-key}#"
   CLOUD_FLARE_API_TOKEN: "#{core-dam-cloud-flare-api-token}#"
+  SENTRY_DSN: "#{core-dam-sentry-dsn}#"
