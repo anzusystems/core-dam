@@ -51,13 +51,15 @@ final class ImageFacade
         $this->validator->validate($dto);
         $assetFile = $this->factory->createFromMediaApi($dto);
 
+        $this->imageManager->beginTransaction();
         try {
-            $this->imageManager->beginTransaction();
             $this->imageManager->flush();
             $this->indexRelations($assetFile);
             $this->imageManager->commit();
         } catch (Throwable $exception) {
-            $this->imageManager->rollback();
+            if ($this->imageManager->isTransactionActive()) {
+                $this->imageManager->rollback();
+            }
 
             throw new RuntimeException('asset_file_create_failed', 0, $exception);
         }
@@ -74,13 +76,16 @@ final class ImageFacade
     {
         $this->validator->validate($dto);
 
+        $this->imageManager->beginTransaction();
         try {
-            $this->imageManager->beginTransaction();
             $this->imageManager->updateFromDto($image, $dto);
             $this->indexRelations($image);
+            $this->indexManager->index($image->getAsset());
             $this->imageManager->commit();
         } catch (Throwable $exception) {
-            $this->imageManager->rollback();
+            if ($this->imageManager->isTransactionActive()) {
+                $this->imageManager->rollback();
+            }
 
             throw new RuntimeException('asset_file_update_failed', 0, $exception);
         }
