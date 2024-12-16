@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "91c912d7782fa99a1d7219e632b18b32",
+    "content-hash": "2311b10f3f29ea3df1539420e5b0aec2",
     "packages": [
         {
             "name": "anzusystems/auth-bundle",
@@ -210,16 +210,16 @@
         },
         {
             "name": "anzusystems/core-dam-bundle",
-            "version": "1.20.2",
+            "version": "1.21.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/anzusystems/core-dam-bundle.git",
-                "reference": "b572cfff131e58c8434e5bb2b41abf5c28b93eff"
+                "reference": "7714ef813d66bc4768325c3b30cd077d53b551a8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/anzusystems/core-dam-bundle/zipball/b572cfff131e58c8434e5bb2b41abf5c28b93eff",
-                "reference": "b572cfff131e58c8434e5bb2b41abf5c28b93eff",
+                "url": "https://api.github.com/repos/anzusystems/core-dam-bundle/zipball/7714ef813d66bc4768325c3b30cd077d53b551a8",
+                "reference": "7714ef813d66bc4768325c3b30cd077d53b551a8",
                 "shasum": ""
             },
             "require": {
@@ -245,25 +245,25 @@
                 "php": ">=8.3",
                 "php-ffmpeg/php-ffmpeg": "^1.0",
                 "phpexiftool/exiftool": "^10.16",
-                "symfony/dependency-injection": "^7.0",
-                "symfony/doctrine-bridge": "^7.0",
-                "symfony/dotenv": "^7.0",
-                "symfony/expression-language": "^7.0",
-                "symfony/framework-bundle": "^7.0",
-                "symfony/http-client": "^7.0",
-                "symfony/http-kernel": "^7.0",
-                "symfony/lock": "^7.0",
-                "symfony/messenger": "^7.0",
-                "symfony/mime": "^7.0",
-                "symfony/options-resolver": "^7.0",
+                "symfony/dependency-injection": "^7.2",
+                "symfony/doctrine-bridge": "^7.2",
+                "symfony/dotenv": "^7.2",
+                "symfony/expression-language": "^7.2",
+                "symfony/framework-bundle": "^7.2",
+                "symfony/http-client": "^7.2",
+                "symfony/http-kernel": "^7.2",
+                "symfony/lock": "^7.2",
+                "symfony/messenger": "^7.2",
+                "symfony/mime": "^7.2",
+                "symfony/options-resolver": "^7.2",
                 "symfony/polyfill-uuid": "^1.24",
-                "symfony/process": "^7.0",
-                "symfony/property-access": "^7.0",
-                "symfony/runtime": "^7.0",
-                "symfony/security-bundle": "^7.0",
-                "symfony/uid": "^7.0",
-                "symfony/validator": "^7.0",
-                "symfony/yaml": "^7.0"
+                "symfony/process": "^7.2",
+                "symfony/property-access": "^7.2",
+                "symfony/runtime": "^7.2",
+                "symfony/security-bundle": "^7.2",
+                "symfony/uid": "^7.2",
+                "symfony/validator": "^7.2",
+                "symfony/yaml": "^7.2"
             },
             "replace": {
                 "symfony/polyfill-ctype": "*",
@@ -298,9 +298,9 @@
             "description": "Dam core bundle",
             "support": {
                 "issues": "https://github.com/anzusystems/core-dam-bundle/issues",
-                "source": "https://github.com/anzusystems/core-dam-bundle/tree/1.20.2"
+                "source": "https://github.com/anzusystems/core-dam-bundle/tree/1.21.0"
             },
-            "time": "2024-12-05T13:03:10+00:00"
+            "time": "2024-12-16T07:32:30+00:00"
         },
         {
             "name": "anzusystems/serializer-bundle",

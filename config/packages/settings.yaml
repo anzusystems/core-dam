@@ -71,6 +71,7 @@ anzu_systems_core_dam:
       DateCreated: ~
       Keywords: ~
       OwnerName: ~
+      Copyright: ~
     image_metadata:
       ColorSpace:
         autoFillField: 'description'
