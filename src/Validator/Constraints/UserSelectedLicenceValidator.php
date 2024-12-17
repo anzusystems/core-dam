@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Validator\Constraints;
 
 use AnzuSystems\CommonBundle\Domain\User\CurrentAnzuUserProvider;
+use AnzuSystems\CoreDamBundle\Security\Voter\LicenceVoterTrait;
 use App\Entity\User;
 use App\Model\Domain\User\UpdateCurrentUserDto;
 use Symfony\Component\Validator\Constraint;
@@ -13,6 +14,8 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 final class UserSelectedLicenceValidator extends ConstraintValidator
 {
+    use LicenceVoterTrait;
+
     public function __construct(
         private readonly CurrentAnzuUserProvider $currentAnzuUserProvider,
     ) {
@@ -33,14 +36,11 @@ final class UserSelectedLicenceValidator extends ConstraintValidator
 
         /** @var User $user */
         $user = $this->currentAnzuUserProvider->getCurrentUser();
-        if ($user->hasRole(User::ROLE_ADMIN)) {
-            return;
-        }
-        if ($user->getAdminToExtSystems()->contains($value->getSelectedLicence()->getExtSystem())) {
+        if ($user->hasRole(User::ROLE_SUPER_ADMIN)) {
             return;
         }
 
-        if (false === $user->getAssetLicences()->contains($value->getSelectedLicence())) {
+        if (false === $this->licencePermissionGranted($value->getSelectedLicence(), $user)) {
             $this->context
                 ->buildViolation($constraint->message)
                 ->atPath('selectedLicence')
