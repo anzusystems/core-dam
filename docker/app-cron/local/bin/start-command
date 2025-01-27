@@ -20,5 +20,5 @@ if ${ENABLE_AUTOMATIC_CRON_STARTUP}; then
     fi
 fi
 
-echo "[INFO] Starting cron"
-/usr/sbin/cron -f
+echo "[INFO] Starting supervisor"
+supervisord -c /etc/supervisor/supervisord.conf

@@ -27,7 +27,7 @@ spec:
           lifecycle:
             preStop:
               exec:
-                command: ["/bin/bash", "-c", "pre-stop-cron-container"]
+                command: ["/bin/bash", "-c", "pre-stop-cron-container --supervisor"]
           securityContext:
             privileged: true
             capabilities:

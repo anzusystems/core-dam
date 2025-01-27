@@ -12,6 +12,11 @@ fi
 echo "[INFO] Copy tail-cmd executable to sidecar logging containers shared folder"
 su -c "cp /usr/local/bin/tail-cmd var/log/tail-cmd" user
 
+echo "[INFO] Disable cron in supervisor if exists"
+if [ -f /etc/supervisor/conf.d/cron.conf ]; then
+    mv /etc/supervisor/conf.d/cron.conf /etc/supervisor/conf.d/cron.conf.bak
+fi
+
 echo "[INFO] Redirecting logs to stdout"
 tail-cmd -s 1 -f "\
     /var/log/newrelic/newrelic-daemon.log \

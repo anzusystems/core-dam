@@ -11,8 +11,12 @@ return static function (SentryConfig $config): void {
         ->dsn(env('SENTRY_DSN'))
         ->registerErrorListener(false)
         ->registerErrorHandler(false)
-        ->tracing()
-            ->enabled(false)
+    ;
+    $config
+        ->options()
+          ->enableTracing(true)
+          ->tracesSampleRate(env('SENTRY_TRACES_SAMPLE_RATE')->float())
+          ->profilesSampleRate(env('SENTRY_PROFILES_SAMPLE_RATE')->float())
     ;
 
     $config

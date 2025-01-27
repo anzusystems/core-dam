@@ -39,10 +39,8 @@ su --preserve-environment -c "composer -n install --no-scripts --no-dev 2>&1" us
 echo "[INFO] Composer dump-autoload"
 su --preserve-environment -c "composer dump-autoload --classmap-authoritative 2>&1" user
 
-echo "[INFO] Starting cron"
+echo "[INFO] Starting supervisor"
 set +e
-# Starting in bacground and waiting is the only way how to supress Terminated stderr message for cron
-cron -f &
-wait $!
+supervisord -c /etc/supervisor/supervisord.conf
 sleep 1
 exit 0
