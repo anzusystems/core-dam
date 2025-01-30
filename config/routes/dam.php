@@ -53,6 +53,10 @@ return static function (RoutingConfigurator $routes): void {
         ->prefix('/api/adm/v1/');
 
     $routes
+        ->import(__DIR__ . '/../../src/Controller/Api/Pub', type: 'attribute')
+        ->prefix('/api/pub/');
+
+    $routes
         ->import(__DIR__ . '/../../src/Controller/Api/Ugc/VLegacy', type: 'attribute')
         ->prefix('/api/ugc/vlegacy/');
 

@@ -33,6 +33,7 @@ anzu_systems_core_dam:
     cache_redis: CacheRedis
     unsplash_api_client_host: 'https://api.unsplash.com'
     jw_player_api_client_host: 'https://api.jwplayer.com'
+    jw_player_cdn_api_client_host: 'https://cdn.jwplayer.com'
     user_auth_type: oauth2
     limited_asset_licence_files_count: 100
     notifications:

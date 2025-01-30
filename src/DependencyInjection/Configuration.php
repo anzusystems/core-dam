@@ -7,6 +7,7 @@ namespace App\DependencyInjection;
 use AnzuSystems\CoreDamBundle\DependencyInjection\Configuration as BaseConfiguration;
 use App\Model\Configuration\ArtemisAudioDistributionConfiguration;
 use App\Model\Configuration\ArtemisVideoDistributionConfiguration;
+use App\Model\Configuration\AssetPubConfiguration;
 use App\Model\Configuration\MediaApiSyncConfiguration;
 use App\Model\Configuration\RtmpConfiguration;
 use Symfony\Component\Config\Definition\Builder\NodeDefinition;
@@ -24,6 +25,7 @@ class Configuration implements ConfigurationInterface
                 ->append($this->getAudioDistributionSection())
                 ->append($this->getVideoDistributionSection())
                 ->append($this->getRtmpConfigurationSection())
+                ->append($this->getAssetPubSection())
             ->end();
 
         return $treeBuilder;
@@ -71,6 +73,18 @@ class Configuration implements ConfigurationInterface
             ->append(BaseConfiguration::addTextMapperConfiguration(
                 ArtemisVideoDistributionConfiguration::CUSTOM_DATA_TO_DISTRIBUTION_MAP
             ))
+            ->end();
+    }
+
+    private function getAssetPubSection(): NodeDefinition
+    {
+        return (new TreeBuilder('asset_pub_configuration'))->getRootNode()
+            ->children()
+                ->scalarNode(AssetPubConfiguration::METADATA_TITLE)->isRequired()->end()
+                ->arrayNode(AssetPubConfiguration::VIDEO_ALLOWED_DISTRIBUTIONS)
+                    ->defaultValue([])
+                    ->scalarPrototype()->end()
+                ->end()
             ->end();
     }
 }

@@ -16,7 +16,9 @@ use AnzuSystems\CommonBundle\HealthCheck\Module\MongoModule;
 use AnzuSystems\CommonBundle\HealthCheck\Module\MysqlModule;
 use AnzuSystems\CommonBundle\HealthCheck\Module\OpCacheModule;
 use AnzuSystems\CommonBundle\HealthCheck\Module\RedisModule;
+use AnzuSystems\CoreDamBundle\Exception\RemoteProcessingWaitingException;
 use App\Entity\User;
+use App\Exception\PubNotFoundHttpException;
 use Symfony\Bundle\FrameworkBundle\Command\AssetsInstallCommand;
 use Symfony\Bundle\FrameworkBundle\Command\CacheWarmupCommand;
 use Symfony\Component\Finder\Exception\AccessDeniedException;
@@ -102,7 +104,9 @@ return static function (AnzuSystemsCommonConfig $config): void {
                 AccessDeniedException::class,
                 NotFoundHttpException::class,
                 ResourceNotFoundException::class,
-                ValidationException::class
+                ValidationException::class,
+                PubNotFoundHttpException::class,
+                RemoteProcessingWaitingException::class,
             ])
     ;
     $logsConfig

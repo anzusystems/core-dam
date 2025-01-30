@@ -8,6 +8,7 @@ use AnzuSystems\CoreDamBundle\Distribution\DistributionBroker;
 use AnzuSystems\CoreDamBundle\Domain\AbstractManager;
 use AnzuSystems\CoreDamBundle\Domain\AssetFileRoute\AssetFileRouteFacade;
 use AnzuSystems\CoreDamBundle\Domain\JwDistribution\JwDistributionManager;
+use AnzuSystems\CoreDamBundle\Domain\PodcastEpisode\PodcastEpisodeManager;
 use AnzuSystems\CoreDamBundle\Entity\AssetFile;
 use AnzuSystems\CoreDamBundle\Entity\AssetSlot;
 use AnzuSystems\CoreDamBundle\Entity\AudioFile;
@@ -42,6 +43,7 @@ final class ArtemisAudioDistributionAutomat extends AbstractManager
         private readonly DamLogger $logger,
         private readonly AssetFileRouteFacade $assetFileRouteFacade,
         private readonly AssetFileRouteRepository $assetFileRouteRepository,
+        private readonly PodcastEpisodeManager $podcastEpisodeManager,
     ) {
     }
 
@@ -77,6 +79,8 @@ final class ArtemisAudioDistributionAutomat extends AbstractManager
         }
 
         foreach ($audioFile->getAsset()->getEpisodes() as $episode) {
+            $this->activateEpisodeForPublicExport($episode);
+
             $distribution = $this->repository->findByEpisodeAndAsset(
                 (string) $audioFile->getAsset()->getId(),
                 (string) $episode->getId(),
@@ -91,6 +95,19 @@ final class ArtemisAudioDistributionAutomat extends AbstractManager
                 $this->tryRedistribute($distribution, $audioFile);
             }
         }
+    }
+
+    private function activateEpisodeForPublicExport(PodcastEpisode $episode): void
+    {
+        if ($episode->getFlags()->isMobilePublicExportEnabled() && $episode->getFlags()->isWebPublicExportEnabled()) {
+            return;
+        }
+        $episode->getFlags()
+            ->setMobilePublicExportEnabled(true)
+            ->setWebPublicExportEnabled(true)
+        ;
+
+        $this->podcastEpisodeManager->updateExisting($episode);
     }
 
     /**

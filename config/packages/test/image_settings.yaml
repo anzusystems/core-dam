@@ -52,6 +52,12 @@ anzu_systems_core_dam:
         crops:
           - { width: 777, height: 777 }   # anzu web general
           - { width: 350, height: 197 }   # anzu web box item photo
+          - { width: 614, height: 345, tags: [ 'video_thumbnail' ], title: 'small' }   # Video player
+          - { width: 1000, height: 563, tags: [ 'video_thumbnail' ], title: 'medium' }   # Video player
+          - { width: 2000, height: 0, tags: [ 'video_thumbnail' ], title: 'large' }
+          - { width: 75, height: 75, tags: [ 'audio_thumbnail' ], title: 'small' }
+          - { width: 200, height: 200, tags: [ 'audio_thumbnail' ], title: 'medium' }
+          - { width: 300, height: 300, tags: [ 'audio_thumbnail' ], title: 'large' }
       blog_public_image:
         quality_whitelist: [ 90 ]
         crops:

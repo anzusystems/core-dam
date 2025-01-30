@@ -19,6 +19,7 @@ return static function (ContainerConfigurator $configurator): void {
             ->autoconfigure()
             ->bind('$artemisAudioDistribution', param('anzu_systems.core_dam.artemis_audio_distribution'))
             ->bind('$artemisVideoDistribution', param('anzu_systems.core_dam.artemis_video_distribution'))
+            ->bind('$assetPubConfigurationData', param('anzu_systems.core_dam.asset_pub_configuration'))
             ->bind('$mediaApiConfiguration', param('anzu_systems.core_dam.media_api_configuration'))
             ->bind('$rtmp', param('anzu_systems.core_dam.rtmp'))
             ->bind('$privateUgcCert', env('AUTH_UGC_JWT_PRIVATE_CERT')->default('empty_string')->base64())

@@ -1,0 +1,13 @@
+# curl --request GET
+#     --url https://api.jwplayer.com/v2/sites/site_id/media/media_id/
+#     --header 'Authorization: 5UjEav_HxH-hiqCvQpreFGInVWpGeFdVNVlWMmwwYTFWeVZEaHNVa2syWVdwWFVtaGkn'
+#     --header 'accept: application/json'
+GET https://api.jwplayer.com/v2/sites/CkuuKp5S/media/z3LpVwT7/
+Authorization: 5UjEav_HxH-hiqCvQpreFGInVWpGeFdVNVlWMmwwYTFWeVZEaHNVa2syWVdwWFVtaGkn
+accept: application/json
+
+###
+
+GET https://cdn.jwplayer.com/v2/media/z3LpVwT7
+Authorization: 5UjEav_HxH-hiqCvQpreFGInVWpGeFdVNVlWMmwwYTFWeVZEaHNVa2syWVdwWFVtaGkn
+accept: application/json

@@ -33,4 +33,10 @@ return static function (NelmioApiDocConfig $config): void {
                 '^/api/sys/',
             ])
     ;
+    $config
+        ->areas('pub')
+        ->pathPatterns([
+            '^/api/pub/',
+        ])
+    ;
 };

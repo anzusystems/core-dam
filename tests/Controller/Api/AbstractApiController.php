@@ -6,6 +6,7 @@ namespace App\Tests\Controller\Api;
 
 
 use AnzuSystems\SerializerBundle\Serializer;
+use App\Controller\AbstractApiPubController;
 use App\Tests\ApiClient;
 use App\Tests\Controller\AbstractController;
 use App\Tests\data\Model\ApiClientFirewall;
@@ -60,5 +61,15 @@ abstract class AbstractApiController extends AbstractController
         $this->assertJson($response->getContent());
 
         return json_decode($response->getContent(), true);
+    }
+
+    protected function assertCacheHeaders(Response $response, bool $checkXKeys = false): void
+    {
+        $this->assertNotNull($response->headers->get(AbstractApiPubController::PRIVATE_CACHE_TTL_HEADER));
+        $xRemoveCookieHeader = $response->headers->get(AbstractApiPubController::REMOVE_COOKIE_HEADER);
+        $this->assertEquals('1', $xRemoveCookieHeader);
+        if ($checkXKeys) {
+            $this->assertNotNull($response->headers->get(AbstractApiPubController::PRIVATE_CACHE_XKEY_HEADER));
+        }
     }
 }

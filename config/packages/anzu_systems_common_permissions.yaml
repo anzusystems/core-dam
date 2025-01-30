@@ -131,6 +131,12 @@ anzu_systems_common:
         read:
         delete:
         ui:
+      dam_publicExport:
+        create:
+        update:
+        read:
+        delete:
+        ui:
       dam_log:
         ui:
       dam_job:
@@ -257,6 +263,9 @@ anzu_systems_common:
         dam_permissionGroup:
           en: Group permission
           sk: Skupinové povolenie
+        dam_publicExport:
+          en: Public export
+          sk: Verejné exporty
         dam_log:
           en: Log
           sk: Log

@@ -6,6 +6,11 @@ core_dam:
     licence_id: 100000
     keyword_id: '1ee0b4fa-f21d-6794-8abb-153fe932206a'
     title_template: 'Live záznam z %s'
+  asset_pub_configuration:
+    metadata_title: 'title'
+    video_allowed_distributions:
+      - 'youtube_cms_main'
+      - 'jw_cms'
   artemis_audio_distribution:
     audio_free_slot_name: 'free'
     audio_premium_slot_name: 'premium'
