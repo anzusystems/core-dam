@@ -20,28 +20,28 @@ final class Version20250117082114 extends AbstractMigration
                 ADD flags_mobile_public_export_enabled TINYINT(1) DEFAULT 0 NOT NULL
         ');
         $this->addSql('
-            ALTER TABLE podcast 
-                ADD attributes_web_order_position INT UNSIGNED DEFAULT 0 NOT NULL, 
-                ADD attributes_mobile_order_position INT UNSIGNED DEFAULT 0 NOT NULL, 
-                ADD flags_web_public_export_enabled TINYINT(1) DEFAULT 0 NOT NULL, 
+            ALTER TABLE podcast
+                ADD attributes_web_order_position INT UNSIGNED DEFAULT 0 NOT NULL,
+                ADD attributes_mobile_order_position INT UNSIGNED DEFAULT 0 NOT NULL,
+                ADD flags_web_public_export_enabled TINYINT(1) DEFAULT 0 NOT NULL,
                 ADD flags_mobile_public_export_enabled TINYINT(1) DEFAULT 0 NOT NULL
         ');
         $this->addSql('
             CREATE TABLE public_export (
                 id INT UNSIGNED AUTO_INCREMENT NOT NULL,
                 slug VARCHAR(255) NOT NULL,
-                type VARCHAR(255) NOT NULL, 
-                ext_system_id INT DEFAULT NULL, 
-                asset_licence_id INT DEFAULT NULL, 
-                created_at DATETIME NOT NULL, 
-                modified_at DATETIME NOT NULL, 
-                created_by_id INT DEFAULT NULL, 
-                modified_by_id INT DEFAULT NULL, 
-                INDEX IDX_427DB92BE961F7A (ext_system_id), 
-                INDEX IDX_427DB92BE00EE493 (asset_licence_id), 
-                INDEX IDX_427DB92BB03A8386 (created_by_id), 
-                INDEX IDX_427DB92B99049ECE (modified_by_id), 
-                UNIQUE INDEX UNIQ_slug (slug), 
+                type VARCHAR(255) NOT NULL,
+                ext_system_id INT DEFAULT NULL,
+                asset_licence_id INT DEFAULT NULL,
+                created_at DATETIME NOT NULL,
+                modified_at DATETIME NOT NULL,
+                created_by_id INT DEFAULT NULL,
+                modified_by_id INT DEFAULT NULL,
+                INDEX IDX_427DB92BE961F7A (ext_system_id),
+                INDEX IDX_427DB92BE00EE493 (asset_licence_id),
+                INDEX IDX_427DB92BB03A8386 (created_by_id),
+                INDEX IDX_427DB92B99049ECE (modified_by_id),
+                UNIQUE INDEX UNIQ_slug (slug),
                 PRIMARY KEY(id)
            ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci`');
         $this->addSql('ALTER TABLE public_export ADD CONSTRAINT FK_427DB92BE961F7A FOREIGN KEY (ext_system_id) REFERENCES ext_system (id)');
