@@ -176,6 +176,27 @@ anzu_systems_core_dam:
         distribution:
           distribution_services: [ youtube_cms_main, jw_cms, artemis_video_cms ]
           distribution_requirements:
+            youtube_cms_fici:
+              title: 'YouTube Fici'
+              blocked_by: [ ]
+              strategy: none
+              distribution_metadata_map:
+                title:
+                  source_property_path: 'metadata.customData[title]'
+                  destination_property_path: 'texts.title'
+                  normalizers:
+                    - { type: string, options: { empty_string: true } }
+                description:
+                  source_property_path: 'metadata.customData[description]'
+                  destination_property_path: 'texts.description'
+                  normalizers:
+                    - { type: string, options: { empty_string: true } }
+                keywords:
+                  source_property_path: 'keywords_as_string_array'
+                  destination_property_path: 'texts.keywords'
+              category_select:
+                enabled: true
+                required: false
             youtube_cms_main:
               title: 'YouTube'
               blocked_by: []

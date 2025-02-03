@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3d0a00b93f05a598e7b3571cca71ca93",
+    "content-hash": "6ea625c9813039ac76be7e9191cde10e",
     "packages": [
         {
             "name": "anzusystems/auth-bundle",
@@ -210,16 +210,16 @@
         },
         {
             "name": "anzusystems/core-dam-bundle",
-            "version": "1.27.0",
+            "version": "1.28.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/anzusystems/core-dam-bundle.git",
-                "reference": "d36d5788ba6da6c9a56679b486b9d4e26d5272f0"
+                "reference": "1d7b180d956a9876812e49fca8f04c939950bc39"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/anzusystems/core-dam-bundle/zipball/d36d5788ba6da6c9a56679b486b9d4e26d5272f0",
-                "reference": "d36d5788ba6da6c9a56679b486b9d4e26d5272f0",
+                "url": "https://api.github.com/repos/anzusystems/core-dam-bundle/zipball/1d7b180d956a9876812e49fca8f04c939950bc39",
+                "reference": "1d7b180d956a9876812e49fca8f04c939950bc39",
                 "shasum": ""
             },
             "require": {
@@ -298,9 +298,9 @@
             "description": "Dam core bundle",
             "support": {
                 "issues": "https://github.com/anzusystems/core-dam-bundle/issues",
-                "source": "https://github.com/anzusystems/core-dam-bundle/tree/1.27.0"
+                "source": "https://github.com/anzusystems/core-dam-bundle/tree/1.28.0"
             },
-            "time": "2025-01-30T08:22:53+00:00"
+            "time": "2025-02-03T13:14:51+00:00"
         },
         {
             "name": "anzusystems/serializer-bundle",
@@ -14062,7 +14062,7 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {},
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
@@ -14072,6 +14072,6 @@
         "ext-iconv": "*",
         "ext-redis": "*"
     },
-    "platform-dev": [],
+    "platform-dev": {},
     "plugin-api-version": "2.6.0"
 }
