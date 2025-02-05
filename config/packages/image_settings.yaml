@@ -1,7 +1,7 @@
 anzu_systems_core_dam:
   image_settings:
-    optimal_resizes: [ 2000, 1000 ]
-    enable_crop_cache: true  # todo implement
+    optimal_resizes: [ 1200 ]
+    enable_crop_cache: true
     color_set:
       red:
         rgb: [ 238, 2, 2 ]
