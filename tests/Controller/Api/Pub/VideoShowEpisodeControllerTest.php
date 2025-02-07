@@ -59,6 +59,7 @@ final class VideoShowEpisodeControllerTest extends AbstractApiController
                 'videoShowEpisodeId' => VideoShowEpisodeFixtures::EPISODE_1,
                 'expectedData' => [
                     'id' => VideoShowEpisodeFixtures::EPISODE_1,
+                    'videoShow' => VideoShowFixtures::SHOW_1,
                     'title' => 'Episode with asset',
                     'duration' => 0,
                     'thumbnail' => [

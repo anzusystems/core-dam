@@ -8,6 +8,7 @@ use AnzuSystems\CommonBundle\Helper\CollectionHelper;
 use AnzuSystems\CoreDamBundle\Entity\Podcast;
 use AnzuSystems\CoreDamBundle\Entity\PublicExport;
 use AnzuSystems\CoreDamBundle\Repository\PodcastEpisodeRepository as BasePodcastEpisodeRepository;
+use App\App;
 use App\Model\Request\ApiPubParams;
 use App\Repository\Trait\ApiPubParamsTrait;
 use App\Repository\Trait\ExportTypeFilterTrait;
@@ -26,7 +27,9 @@ final class PodcastEpisodeRepository extends BasePodcastEpisodeRepository
         $qb = $this->createQueryBuilder('entity')
             ->where('IDENTITY(entity.asset) IS NOT NULL')
             ->andWhere('IDENTITY(entity.podcast) = :podcast')
+            ->andWhere('entity.dates.publicationDate <= :now')
             ->setParameter('podcast', (string) $podcast->getId())
+            ->setParameter('now', App::getAppDate())
         ;
 
         $this->applyExportType($qb, $publicExport);
@@ -43,9 +46,11 @@ final class PodcastEpisodeRepository extends BasePodcastEpisodeRepository
     ): Collection {
         $qb = $this->createQueryBuilder('entity')
             ->where('IDENTITY(entity.asset) IS NOT NULL')
+            ->andWhere('entity.licence = :licence')
+            ->andWhere('entity.dates.publicationDate <= :now')
             ->innerJoin('entity.podcast', 'podcast')
-            ->where('entity.licence = :licence')
             ->setParameter('licence', $publicExport->getAssetLicence())
+            ->setParameter('now', App::getAppDate())
             ->addOrderBy('entity.dates.publicationDate', 'DESC')
         ;
 

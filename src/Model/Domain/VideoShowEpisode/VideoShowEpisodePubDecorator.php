@@ -6,6 +6,7 @@ namespace App\Model\Domain\VideoShowEpisode;
 
 use AnzuSystems\CoreDamBundle\Entity\Asset;
 use AnzuSystems\CoreDamBundle\Entity\VideoFile;
+use AnzuSystems\CoreDamBundle\Entity\VideoShow;
 use AnzuSystems\CoreDamBundle\Entity\VideoShowEpisode;
 use AnzuSystems\SerializerBundle\Attributes\Serialize;
 use AnzuSystems\SerializerBundle\Handler\Handlers\EntityIdHandler;
@@ -32,6 +33,12 @@ final class VideoShowEpisodePubDecorator
     {
         $this->videoShowEpisode = $videoShowEpisode;
         return $this;
+    }
+
+    #[Serialize(handler: EntityIdHandler::class)]
+    public function getVideoShow(): VideoShow
+    {
+        return $this->videoShowEpisode->getVideoShow();
     }
 
     #[Serialize]

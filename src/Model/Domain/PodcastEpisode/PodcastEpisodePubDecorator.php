@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Model\Domain\PodcastEpisode;
 
 use AnzuSystems\CoreDamBundle\Entity\Asset;
+use AnzuSystems\CoreDamBundle\Entity\Podcast;
 use AnzuSystems\CoreDamBundle\Entity\PodcastEpisode;
 use AnzuSystems\SerializerBundle\Attributes\Serialize;
 use AnzuSystems\SerializerBundle\Handler\Handlers\EntityIdHandler;
@@ -32,6 +33,12 @@ final class PodcastEpisodePubDecorator
     {
         $this->podcastEpisode = $podcastEpisode;
         return $this;
+    }
+
+    #[Serialize(handler: EntityIdHandler::class)]
+    public function getPodcast(): Podcast
+    {
+        return $this->podcastEpisode->getPodcast();
     }
 
     #[Serialize]

@@ -86,6 +86,7 @@ Example: [https://core-dam.smedevel.sk/api/pub/cms-web/video-shows](https://core
 ```typescript
 interface VideoShowEpisode {
     id: DocId
+    videoShow: DocId
     title: string,
     asset: DocId,
     duration: number,
@@ -104,6 +105,7 @@ Example: [https://core-dam.smedevel.sk/api/pub/cms-web/video-show-episodes/1efbd
 ```json
 {
   "id": "1ef9dc91-6313-6378-895e-7ffaf32a8f70",
+  "videoShow": "1ef7423a-1a86-67ca-ab02-1ded068ce5f7",
   "title": "Exprokurátor Harkabus: Bol som na štyroch výsluchoch. Keby sme toto robili my, kričali by, že sme gestapo",
   "asset": "1ef9c3aa-d93c-6158-82ab-79235fa09206",
   "thumbnail": {
@@ -205,9 +207,10 @@ Example: [https://core-dam.smedevel.sk/api/pub/cms-web/podcasts](https://core-da
 ```typescript
 interface PodcastEpisode {
     id: DocId
-    title: string,
-    description: string,
-    rssUrl: string,
+    podcast: DocId
+    title: string
+    description: string
+    rssUrl: string
     thumbnail: null | Thumbnail[]
 }
 ```
@@ -222,6 +225,7 @@ Example: [https://core-dam.smedevel.sk/api/pub/cms-web/podcast-episodes/1efdd1bb
 ```json
 {
   "id": "1efdd1bb-b04a-651a-81e0-b7fd5dddfa82",
+  "podcast": "1edc17e7-db15-63c6-8796-3126b6164b0b",
   "title": "Fico má istých len 72 hlasov, čas do schôdze sa kráti (28. 1. 2025)",
   "description": "Robert Fico prstom ukazuje na Andreja Danka či Matúša Šutaja Eštoka a tvrdí: „Ak táto vláda padne, s dôverou sa obráťte na SNS a Hlas.“\nČas do februárovej schôdze sa kráti, v parlamente však rebeluje sedem poslancov z pôvodnej sedemdesiatdeviatky. Podčiarknuté a spočítané, predsedu vlády v parlamente s istotou podporí len 72 hlasov.\nA o tom sa s redaktorom domáceho spravodajstva Michalom Katuškom, ktorý koaličnú krízu sleduje, rozpráva v podcaste Dobré ráno Jana Krescanko Dibáková.\nZdroj zvukov: TA3, Denník N\nOdporúčanie:\nHviezdoslavove Krvavé sonety v excelentnom viacjazyčnom podaní. Šokujúce prvky na scéne a výborné výkony herečiek. Ak máte chuť vidieť Hviezdoslava, ako ste ho určite ešte nikdy nevideli, zamierte práve do bratislavského Divadla Pavla Országa Hviezdoslava. Pochmúrno ideálne sa hodiace k dnešnej dobe.\n–\nVšetky podcasty denníka SME nájdete⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠",
   "duration": 0,

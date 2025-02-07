@@ -44,6 +44,7 @@ final class PodcastEpisodeControllerTest extends AbstractApiController
                 'podcastEpisodeId' => PodcastEpisodeFixtures::EPISODE_1_ID,
                 'expectedData' => [
                     'id' => PodcastEpisodeFixtures::EPISODE_1_ID,
+                    'podcast' => PodcastFixtures::PODCAST_1,
                     'title' => 'Episode 1',
                     'description' => 'Episode 1 description',
                     'duration' => 0,
@@ -177,10 +178,7 @@ final class PodcastEpisodeControllerTest extends AbstractApiController
                 'expectedPodcastList' => [
                     [
                         'id' => PodcastEpisodeFixtures::EPISODE_1_ID,
-                    ],
-                    [
-                        'id' => PodcastEpisodeFixtures::EPISODE_2_ID,
-                    ],
+                    ]
                 ]
             ],
         ];
