@@ -11,6 +11,8 @@ use AnzuSystems\CoreDamBundle\Elasticsearch\ElasticSearch;
 use AnzuSystems\CoreDamBundle\Elasticsearch\SearchDto\AssetAdmSearchDto;
 use AnzuSystems\CoreDamBundle\Entity\Asset;
 use AnzuSystems\CoreDamBundle\Entity\PodcastEpisode;
+use AnzuSystems\CoreDamBundle\Model\Enum\AssetFileProcessStatus;
+use AnzuSystems\CoreDamBundle\Model\Enum\AssetStatus;
 use AnzuSystems\CoreDamBundle\Model\Enum\AssetType;
 use AnzuSystems\CoreDamBundle\Repository\ExtSystemRepository;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -47,7 +49,7 @@ final class PairAudioVideoSiblingsCommand extends Command
         foreach ($this->entityIterator->iterateEntities(PodcastEpisode::class, $config) as $entity) {
             try {
                 $asset = $entity->getAsset();
-                if (null === $asset) {
+                if (null === $asset || $asset->getAttributes()->getStatus()->isNot(AssetFileProcessStatus::Processed)) {
                     continue;
                 }
                 $title = $asset->getMetadata()->getCustomData()['title'] ?? '';
@@ -56,6 +58,7 @@ final class PairAudioVideoSiblingsCommand extends Command
                     (new AssetAdmSearchDto())
                         ->setCustomDataKey('title')
                         ->setCustomDataValue($title)
+                        ->setStatus([AssetStatus::WithFile])
                         ->setType([AssetType::VIDEO]),
                     $extSystem
                 );
@@ -69,7 +72,9 @@ final class PairAudioVideoSiblingsCommand extends Command
 
                 $targetAssetTitle = $targetAsset->getMetadata()->getCustomData()['title'] ?? '';
 
-                if (false === ($title === $targetAssetTitle)) {
+                if (false === ($title === $targetAssetTitle)
+                    || $targetAsset->getAttributes()->getStatus()->isNot(AssetFileProcessStatus::Processed)
+                ) {
                     continue;
                 }
 

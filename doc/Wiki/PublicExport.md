@@ -248,12 +248,19 @@ Example: [https://core-dam.smedevel.sk/api/pub/cms-web/podcast-episodes/1efdd1bb
 }
 ```
 
-**Get List**
+**Get List by podcast**
 ```
 GET /api/pub/{export-identifier}/podcasts/{podcastId}/podcast-episodes
 ```
 
 Example: [https://core-dam.smedevel.sk/api/pub/cms-web/podcasts/1edc17e7-d704-628c-8d2d-3126b6164b0b/podcast-episodes](https://core-dam.smedevel.sk/api/pub/cms-web/podcasts/1edc17e7-d704-628c-8d2d-3126b6164b0b/podcast-episodes)
+
+**Get List ordered by publicationDate**
+```
+GET /api/pub/{export-identifier}/podcast-episodes
+```
+
+Example: [https://core-dam.smedevel.sk/api/pub/cms-web/podcast-episodes](https://core-dam.smedevel.sk/api/pub/cms-web/podcast-episodes)
 
 **Asset (Audio)**
 ------------------

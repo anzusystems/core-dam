@@ -24,7 +24,7 @@ final readonly class PodcastEpisodeRepositoryDecorator
     /**
      * @throws NotFoundHttpException
      */
-    public function getList(PublicExport $publicExport, Podcast $podcast, ApiPubParams $apiParams): ApiInfiniteResponseList
+    public function getListByPodcast(PublicExport $publicExport, Podcast $podcast, ApiPubParams $apiParams): ApiInfiniteResponseList
     {
         if ($podcast->getLicence()->isNot($publicExport->getAssetLicence())) {
             throw new NotFoundHttpException('Podcast not found');
@@ -33,7 +33,22 @@ final readonly class PodcastEpisodeRepositoryDecorator
             throw new NotFoundHttpException('Podcast not found');
         }
 
-        $data = $this->podcastEpisodeRepository->getByPublicExport($publicExport, $podcast, $apiParams);
+        $data = $this->podcastEpisodeRepository->getByPublicExportAndPodcast($publicExport, $podcast, $apiParams);
+
+        return (new ApiInfiniteResponseList())
+            ->setData($data->map(
+                fn (PodcastEpisode $episode): PodcastEpisodePubDecorator => PodcastEpisodePubDecorator::getInstance($episode)
+            )->slice(App::ZERO, $apiParams->getLimit()))
+            ->setHasNextPage(count($data) > $apiParams->getLimit())
+        ;
+    }
+
+    /**
+     * @throws NotFoundHttpException
+     */
+    public function getList(PublicExport $publicExport, ApiPubParams $apiParams): ApiInfiniteResponseList
+    {
+        $data = $this->podcastEpisodeRepository->getByPublicExport($publicExport, $apiParams);
 
         return (new ApiInfiniteResponseList())
             ->setData($data->map(

@@ -73,7 +73,7 @@ final class PodcastEpisodeController extends AbstractApiPubController
      */
     #[Route(
         path: '/{slug}/podcasts/{podcastId}/podcast-episodes',
-        name: 'getList',
+        name: 'list_by_podcast',
         requirements: [
             'slug' => Requirement::ASCII_SLUG,
             'podcast' => Requirement::UUID,
@@ -86,17 +86,46 @@ final class PodcastEpisodeController extends AbstractApiPubController
     #[OA\QueryParameter('excludeIds[]', 'excludeIds[]', schema: new OA\Schema(type: 'string', maxItems: ApiPubParams::MAX_EXCLUDED_IDS))]
     #[OA\PathParameter('slug', 'slug', description: 'PublicExport slug', schema: new OA\Schema(type: 'string'))]
     #[OAResponse([PodcastEpisodePubDecorator::class])]
-    public function getList(string $slug, string $podcastId, ApiPubParams $apiParams): JsonResponse
+    public function getListByPodcast(string $slug, string $podcastId, ApiPubParams $apiParams): JsonResponse
+    {
+        $publicExport = $this->getPublicExportBySlug($slug);
+
+        return $this->okCachedResponse(
+            data: $this->repositoryDecorator->getListByPodcast(
+                publicExport: $publicExport,
+                podcast: $this->getPodcast(
+                    publicExport: $publicExport,
+                    podcastId: $podcastId,
+                ),
+                apiParams: $apiParams
+            ),
+            cacheSettings: new CacheSettings()
+        );
+    }
+
+    /**
+     * @throws NotFoundHttpException
+     */
+    #[Route(
+        path: '/{slug}/podcast-episodes',
+        name: 'list',
+        requirements: [
+            'slug' => Requirement::ASCII_SLUG,
+        ],
+        methods: [Request::METHOD_GET]
+    )]
+    #[OA\QueryParameter('page', 'page', schema: new OA\Schema(type: 'integer', default: 1, maximum: ApiPubParams::MAX_PAGE, minimum: 1))]
+    #[OA\QueryParameter('limit', 'limit', schema: new OA\Schema(type: 'integer', default: ApiPubParams::LIMIT_DEFAULT, minimum: 1, enum: ApiPubParams::ALLOWED_LIMITS))]
+    #[OA\QueryParameter('excludeIds[]', 'excludeIds[]', schema: new OA\Schema(type: 'string', maxItems: ApiPubParams::MAX_EXCLUDED_IDS))]
+    #[OA\PathParameter('slug', 'slug', description: 'PublicExport slug', schema: new OA\Schema(type: 'string'))]
+    #[OAResponse([PodcastEpisodePubDecorator::class])]
+    public function getList(string $slug, ApiPubParams $apiParams): JsonResponse
     {
         $publicExport = $this->getPublicExportBySlug($slug);
 
         return $this->okCachedResponse(
             data: $this->repositoryDecorator->getList(
                 publicExport: $publicExport,
-                podcast: $this->getPodcast(
-                    publicExport: $publicExport,
-                    podcastId: $podcastId,
-                ),
                 apiParams: $apiParams
             ),
             cacheSettings: new CacheSettings()

@@ -73,10 +73,9 @@ final class VideoShowEpisodeController extends AbstractApiPubController
      */
     #[Route(
         path: '/{slug}/video-shows/{videoShowId}/video-show-episodes',
-        name: 'getList',
+        name: 'list_by_show',
         requirements: [
             'slug' => Requirement::ASCII_SLUG,
-            'podcast' => Requirement::UUID,
             'videoShow' => Requirement::UUID,
         ],
         methods: [Request::METHOD_GET]
@@ -87,12 +86,12 @@ final class VideoShowEpisodeController extends AbstractApiPubController
     #[OA\QueryParameter('excludeIds[]', 'excludeIds[]', schema: new OA\Schema(type: 'string', maxItems: ApiPubParams::MAX_EXCLUDED_IDS))]
     #[OA\PathParameter('slug', 'slug', description: 'PublicExport slug', schema: new OA\Schema(type: 'string'))]
     #[OAResponse([VideoShowEpisodePubDecorator::class])]
-    public function getList(string $slug, string $videoShowId, ApiPubParams $apiParams): JsonResponse
+    public function getListByVideoShow(string $slug, string $videoShowId, ApiPubParams $apiParams): JsonResponse
     {
         $publicExport = $this->getPublicExportBySlug($slug);
 
         return $this->okCachedResponse(
-            data: $this->repositoryDecorator->getList(
+            data: $this->repositoryDecorator->getListByVideoShow(
                 publicExport: $publicExport,
                 videoShow: $this->getVideoShow(
                     publicExport: $publicExport,

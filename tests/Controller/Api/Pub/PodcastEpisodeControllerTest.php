@@ -78,9 +78,9 @@ final class PodcastEpisodeControllerTest extends AbstractApiController
     }
 
     /**
-     * @dataProvider getListDataProvider
+     * @dataProvider getListDataProviderByPodcast
      */
-    public function testGetList(
+    public function testGetListByPodcast(
         string $publicExportSlug,
         string $podcast,
         array $expectedPodcastList,
@@ -100,7 +100,7 @@ final class PodcastEpisodeControllerTest extends AbstractApiController
         }
     }
 
-    public function getListDataProvider(): array
+    public function getListDataProviderByPodcast(): array
     {
         return [
             [
@@ -141,6 +141,47 @@ final class PodcastEpisodeControllerTest extends AbstractApiController
             [
                 'publicExportSlug' => 'zofia',
                 'podcast' => PodcastFixtures::PODCAST_1,
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider getListDataProvider
+     */
+    public function testGetList(
+        string $publicExportSlug,
+        string $podcast,
+        array $expectedPodcastList,
+        array $pubApiParams = [],
+    ): void {
+        $client = $this->getApiClient(null, ApiClientFirewall::Pub);
+
+        $url = "/api/pub/$publicExportSlug/podcast-episodes?" . http_build_query($pubApiParams);
+        $response = $client->get($url);
+        $json = $this->assertResponseAndGetJsonContent($response);
+        $this->assertCacheHeaders($response);
+
+        $this->assertCount(count($expectedPodcastList), $json['data']);
+        foreach ($expectedPodcastList as $index => $expectedPodcast) {
+            $this->assertArrayHasKey($index, $json['data']);
+            $this->assertEquals($expectedPodcast['id'], $json['data'][$index]['id']);
+        }
+    }
+
+    public function getListDataProvider(): array
+    {
+        return [
+            [
+                'publicExportSlug' => 'cms-web',
+                'podcast' => PodcastFixtures::PODCAST_1,
+                'expectedPodcastList' => [
+                    [
+                        'id' => PodcastEpisodeFixtures::EPISODE_1_ID,
+                    ],
+                    [
+                        'id' => PodcastEpisodeFixtures::EPISODE_2_ID,
+                    ],
+                ]
             ],
         ];
     }

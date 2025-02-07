@@ -19,7 +19,7 @@ final class VideoShowEpisodeRepository extends BaseVideoShowEpisodeRepository
     use ExportTypeFilterTrait;
     use ApiPubParamsTrait;
 
-    public function getByPublicExport(
+    public function getByPublicExportAndVideoShow(
         PublicExport $publicExport,
         VideoShow $videoShow,
         ApiPubParams $apiParams,

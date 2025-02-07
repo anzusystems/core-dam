@@ -18,7 +18,7 @@ final class PodcastEpisodeRepository extends BasePodcastEpisodeRepository
     use ExportTypeFilterTrait;
     use ApiPubParamsTrait;
 
-    public function getByPublicExport(
+    public function getByPublicExportAndPodcast(
         PublicExport $publicExport,
         Podcast $podcast,
         ApiPubParams $apiParams,
@@ -36,4 +36,26 @@ final class PodcastEpisodeRepository extends BasePodcastEpisodeRepository
             $qb->getQuery()->getResult()
         );
     }
+
+    public function getByPublicExport(
+        PublicExport $publicExport,
+        ApiPubParams $apiParams,
+    ): Collection {
+        $qb = $this->createQueryBuilder('entity')
+            ->where('IDENTITY(entity.asset) IS NOT NULL')
+            ->innerJoin('entity.podcast', 'podcast')
+            ->where('entity.licence = :licence')
+            ->setParameter('licence', $publicExport->getAssetLicence())
+            ->addOrderBy('entity.dates.publicationDate', 'DESC')
+        ;
+
+        $this->applyExportTypeEnable($qb, $publicExport);
+        $this->applyExportTypeEnable($qb, $publicExport, 'podcast');
+        $this->applyApiPubParams($qb, $apiParams);
+
+        return CollectionHelper::newCollection(
+            $qb->getQuery()->getResult()
+        );
+    }
+
 }

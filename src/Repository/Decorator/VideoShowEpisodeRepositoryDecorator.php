@@ -24,7 +24,7 @@ final readonly class VideoShowEpisodeRepositoryDecorator
     /**
      * @throws NotFoundHttpException
      */
-    public function getList(PublicExport $publicExport, VideoShow $videoShow, ApiPubParams $apiParams): ApiInfiniteResponseList
+    public function getListByVideoShow(PublicExport $publicExport, VideoShow $videoShow, ApiPubParams $apiParams): ApiInfiniteResponseList
     {
         if ($videoShow->getLicence()->isNot($publicExport->getAssetLicence())) {
             throw new NotFoundHttpException('VideoShow not found');
@@ -33,7 +33,7 @@ final readonly class VideoShowEpisodeRepositoryDecorator
             throw new NotFoundHttpException('VideoShow not found');
         }
 
-        $data = $this->videoShowEpisodeRepository->getByPublicExport($publicExport, $videoShow, $apiParams);
+        $data = $this->videoShowEpisodeRepository->getByPublicExportAndVideoShow($publicExport, $videoShow, $apiParams);
 
         return (new ApiInfiniteResponseList())
             ->setData($data->map(
