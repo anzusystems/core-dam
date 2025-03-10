@@ -59,6 +59,13 @@ anzu_systems_common:
         view:
         read:
         ui:
+      dam_assetLicenceGroup:
+        create:
+        update:
+        list:
+        view:
+        read:
+        ui:
       dam_author:
         create:
         update:
@@ -227,6 +234,9 @@ anzu_systems_common:
         dam_assetLicence:
           en: Asset Licence
           sk: Asset Licencia
+        dam_assetLicenceGroup:
+          en: Asset licence group
+          sk: Asset Licenčná skupina
         dam_author:
           en: Author
           sk: Autor
