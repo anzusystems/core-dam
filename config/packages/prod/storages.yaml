@@ -187,3 +187,43 @@ anzu_systems_core_dam:
                 client: 'anzu.google_storage.env_client'
                 bucket: '%env(string:GCS_PEOPLE_IMAGE_STORAGE_BUCKET)%'
                 prefix: 'chunk'
+        dennik_sport.image_fallback:
+            adapter: 'gcloud'
+            options:
+                client: 'anzu.google_storage.env_fallback_client'
+                bucket: '%env(string:GCS_DENNIK_SPORT_IMAGE_FALLBACK_STORAGE_BUCKET)%'
+                prefix: 'images'
+        dennik_sport.image:
+            adapter: 'gcloud'
+            fallback_enabled: '%env(bool:DENNIK_SPORT_IMAGE_FALLBACK_ENABLED)%'
+            fallback_storage: dennik_sport.image_fallback
+            options:
+                client: 'anzu.google_storage.env_client'
+                bucket: '%env(string:GCS_DENNIK_SPORT_IMAGE_STORAGE_BUCKET)%'
+                prefix: 'images'
+        dennik_sport.crop:
+            adapter: 'gcloud'
+            options:
+                client: 'anzu.google_storage.env_client'
+                bucket: '%env(string:GCS_DENNIK_SPORT_IMAGE_STORAGE_BUCKET)%'
+                prefix: 'crop'
+        dennik_sport.chunk:
+            adapter: 'gcloud'
+            options:
+                client: 'anzu.google_storage.env_client'
+                bucket: '%env(string:GCS_DENNIK_SPORT_IMAGE_STORAGE_BUCKET)%'
+                prefix: 'chunk'
+        dennik_sport.document:
+            adapter: 'gcloud'
+            fallback_enabled: '%env(bool:DENNIK_SPORT_DOCUMENT_FALLBACK_ENABLED)%'
+            fallback_storage: dennik_sport.document_fallback
+            options:
+                client: 'anzu.google_storage.env_client'
+                bucket: '%env(string:GCS_DENNIK_SPORT_DOCUMENT_STORAGE_BUCKET)%'
+                prefix: 'documents'
+        dennik_sport.document_fallback:
+            adapter: 'gcloud'
+            options:
+                client: 'anzu.google_storage.env_fallback_client'
+                bucket: '%env(string:GCS_DENNIK_SPORT_DOCUMENT_FALLBACK_STORAGE_BUCKET)%'
+                prefix: 'documents'

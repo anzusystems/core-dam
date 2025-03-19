@@ -378,3 +378,50 @@ anzu_systems_core_dam:
         file_slots:
           default: default
           slots: [ default ]
+    dennik_sport:
+      id: 13
+      image:
+        enabled: true
+        public_domain: public_image
+        admin_domain: admin_image
+        title: [ 'customData:description' ]
+        custom_metadata_pinned_amount: 1
+        storage_name: 'dennik_sport.image'
+        crop_storage_name: 'dennik_sport.crop'
+        chunk_storage_name: 'dennik_sport.chunk'
+        size_limit: '%env(byte_size:APP_CMS_IMAGE_MAX_SIZE)%'
+        roi_width: 16
+        roi_height: 9
+        file_slots:
+          default: default
+          slots: [ default ]
+        authors:
+          enabled: true
+          required: false
+        keywords:
+          enabled: true
+          required: false
+          autocomplete_from_exif_metadata_tags:
+            Keywords: ','
+            Subjects: ','
+      document:
+        enabled: true
+        title: [ 'customData:description' ]
+        custom_metadata_pinned_amount: 2
+        storage_name: 'dennik_sport.document'
+        public_domain_name: '%env(resolve:string:DOMAIN_PUBLIC_DOCUMENT)%'
+        chunk_storage_name: 'dennik_sport.document'
+        size_limit: '%env(byte_size:APP_CMS_DOCUMENT_MAX_SIZE)%'
+        file_slots: ~
+        keywords:
+          enabled: true
+          required: false
+          autocomplete_from_exif_metadata_tags:
+            Keywords: ','
+            Subjects: ','
+        authors:
+          enabled: true
+          required: false
+          autocomplete_from_exif_metadata_tags:
+            Keywords: ','
+            Subjects: ','

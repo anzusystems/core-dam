@@ -26,11 +26,15 @@ anzu_systems_core_dam:
     crop_allow_map:
       admin_image:
         crop_allow_list: admin_image
-        ext_system_slugs: [tools, blog, cms, pressNews, people, scraper]
+        ext_system_slugs: [tools, blog, cms, pressNews, people, scraper, dennik_sport ]
         domain: admin_image
       public_image:
         crop_allow_list: public_image
         ext_system_slugs: [ cms, people, scraper ]
+        domain: public_image
+      public_dennik_sport_image:
+        crop_allow_list: public_image
+        ext_system_slugs: [ dennik_sport ]
         domain: public_image
       tools_image:
         crop_allow_list: tools_image
@@ -140,6 +144,40 @@ anzu_systems_core_dam:
           - { width: 600, height: 450 }   # web gallery
           - { width: 614, height: 345, tags: ['video_thumbnail'], title: 'small' }   # Video player
           - { width: 1000, height: 563, tags: ['video_thumbnail'], title: 'medium' }   # Video player
+      public_dennik_sport_image:
+        quality_whitelist: [ 90 ]
+        crops:
+          - { width: 800, height: 450 }   # anzu web general
+          - { width: 350, height: 197 }   # anzu web box item photo
+          - { width: 2000, height: 0, tags: [ 'video_thumbnail' ], title: 'large' }    # web gallery zoom-in (lightbox)
+          - { width: 1200, height: 0 }    # web article share image
+          - { width: 1000, height: 0 }    # web article detail image set (automatic height)
+          - { width: 970, height: 0 }     # web article detail image set (automatic height)
+          - { width: 625, height: 0 }     # web article detail image set (automatic height)
+          - { width: 614, height: 0 }     # web article detail image set (automatic height), article detail lead-image
+          - { width: 448, height: 0 }     # web article detail image set (automatic height)
+          - { width: 400, height: 0 }     # web article detail image set (automatic height
+          - { width: 300, height: 0 }     # web article detail image set (automatic height)
+          - { width: 288, height: 0 }     # web article detail image set (automatic height)
+          - { width: 1200, height: 800 }  # web article detail fullscreen
+          - { width: 972, height: 648 }   # web list article image set
+          - { width: 660, height: 440 }   # web list article image set, article detail lead-image
+          - { width: 614, height: 409 }   # web list article image set, article detail lead-image
+          - { width: 150, height: 100 }   # web list article image set
+          - { width: 240, height: 160 }   # web list article image set
+          - { width: 300, height: 200 }   # web list article image set
+          - { width: 450, height: 300 }   # web list article image set, default not found crop
+          - { width: 75, height: 75 }     # web list article image set
+          - { width: 100, height: 100 }   # web article author
+          - { width: 200, height: 200, tags: [ 'audio_thumbnail' ], title: 'small' }   # web article author
+          - { width: 300, height: 300, tags: [ 'audio_thumbnail' ], title: 'medium' }   # web article author
+          - { width: 120, height: 90 }    # web gallery
+          - { width: 240, height: 180 }   # web gallery
+          - { width: 360, height: 270 }   # web gallery
+          - { width: 480, height: 360 }   # web gallery
+          - { width: 600, height: 450 }   # web gallery
+          - { width: 614, height: 345, tags: [ 'video_thumbnail' ], title: 'small' }   # Video player
+          - { width: 1000, height: 563, tags: [ 'video_thumbnail' ], title: 'medium' }   # Video player
       blog_public_image:
         quality_whitelist: [ 90 ]
         crops:

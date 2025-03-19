@@ -170,3 +170,35 @@ anzu_systems_core_dam:
             adapter: 'local'
             options:
                 directory: '%kernel.project_dir%/var/mnt/data/people_chunk'
+        dennik_sport.image_fallback:
+            adapter: 'gcloud'
+            options:
+                client: 'anzu.google_storage.env_fallback_client'
+                bucket: '%env(string:GCS_DENNIK_SPORT_IMAGE_FALLBACK_STORAGE_BUCKET)%'
+                prefix: 'images'
+        dennik_sport.image:
+            adapter: 'local'
+            fallback_enabled: '%env(bool:DENNIK_SPORT_IMAGE_FALLBACK_ENABLED)%'
+            fallback_storage: dennik_sport.image_fallback
+            options:
+                directory: '%kernel.project_dir%/var/mnt/data/dennik_sport_image'
+        dennik_sport.crop:
+            adapter: 'local'
+            options:
+                directory: '%kernel.project_dir%/var/mnt/data/dennik_sport_image_crop'
+        dennik_sport.chunk:
+            adapter: 'local'
+            options:
+                directory: '%kernel.project_dir%/var/mnt/data/dennik_sport_chunk'
+        dennik_sport.document:
+            adapter: 'local'
+            fallback_enabled: '%env(bool:DENNIK_SPORT_DOCUMENT_FALLBACK_ENABLED)%'
+            fallback_storage: dennik_sport.document_fallback
+            options:
+                directory: '%kernel.project_dir%/var/mnt/data/document'
+        dennik_sport.document_fallback:
+            adapter: 'gcloud'
+            options:
+                client: 'anzu.google_storage.env_fallback_client'
+                bucket: '%env(string:GCS_DENNIK_SPORT_DOCUMENT_FALLBACK_STORAGE_BUCKET)%'
+                prefix: 'documents'
