@@ -30,6 +30,13 @@ return static function (FrameworkConfig $config): void {
         ->header('Accept', 'application/json')
         ->header('Content-type', 'application/json')
     ;
+    $httpClient->scopedClient('anzu_cms.api_client')
+        ->baseUri(env('ANZU_CMS_API_HOST'))
+        ->authBearer(env('ANZU_CMS_API_TOKEN')->string())
+        ->header('Accept', 'application/json')
+        ->header('Content-type', 'application/json')
+    ;
+
     $httpClient->scopedClient('cloudFlare.api_client')
         ->baseUri(env('CLOUD_FLARE_API_HOST'))
         ->authBearer(env('CLOUD_FLARE_API_TOKEN')->string())

@@ -94,3 +94,19 @@ Authorization: Bearer {{mediaapiSysUserApiToken}}
   "public": true,
   "singleUse": false
 }
+
+### Update image file
+POST {{host}}/api/sys/v1/image/copy-job
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{cmsSysUserApiToken}}
+
+// https://m.smedata.sk/api-media/media/image/sme/0/70/7008280/7008280.jpeg
+{
+  "targetAssetLicence": 100001,
+  "items": [
+    {
+      "imageFile": "1f013cc7-d330-647e-8e25-df769310d019"
+    }
+  ]
+}

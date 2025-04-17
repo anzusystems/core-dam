@@ -1,0 +1,109 @@
+#!/bin/bash
+
+PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")"/.. && pwd)"
+
+# Find all SQL files matching the pattern
+SQL_DUMP_FILES=($(find "${PROJECT_ROOT}/var/mnt/data" -type f -name "core_dam*.sql.lz4"))
+
+ARGS="--no-drop --no-fixtures $*"
+ELASTIC_REBUILD=true
+
+function help() {
+    echo -en "$(printf %q "${BASH_SOURCE[0]}") [OPERATION] [OPTIONS]...
+    \nBash script used to run build in the application container and import DB from sql.lz4.
+
+    Options:
+        --no-cc        Run the build without cache clear
+        --no-messenger Run the build without messenger start
+        --no-elastic   Run the build elastic reindex
+
+    Examples:
+        $(printf %q "${BASH_SOURCE[0]}") --no-cc
+    \n"
+}
+
+while [ "$#" -gt 0 ]; do
+    case $1 in
+    --no-elastic)
+        ELASTIC_REBUILD=false
+        ARGS=${ARGS//"--no-elastic"/}
+        shift 1
+        continue
+        ;;
+    --no-cc)
+        shift 1
+        continue
+        ;;
+    --no-messenger)
+        shift 1
+        continue
+        ;;
+    -h | --help)
+        help
+        exit
+        ;;
+    *)
+        echo "[WARN] Unknown command line switch: $1" >&2
+        help
+        exit
+        ;;
+    esac
+done
+
+# Check if any files were found
+if [ ${#SQL_DUMP_FILES[@]} -eq 0 ]; then
+  echo "Error: No SQL dump file with prefix 'core_dam' found in '${PROJECT_ROOT}/var/mnt/data'"
+  exit 1
+fi
+
+# If only one file is found, use it automatically
+if [ ${#SQL_DUMP_FILES[@]} -eq 1 ]; then
+  SQL_DUMP_PATH="${SQL_DUMP_FILES[0]}"
+  echo "Auto-detected SQL dump file: $SQL_DUMP_PATH"
+else
+  # If multiple files are found, present options to the user
+  echo "Multiple SQL dump files found:"
+  for i in "${!SQL_DUMP_FILES[@]}"; do
+    echo "[$i] ${SQL_DUMP_FILES[$i]}"
+  done
+
+  # Ask user to select a file
+  read -p "Enter the number of the file to use: " selection
+
+  # Validate input
+  if [[ ! "$selection" =~ ^[0-9]+$ ]] || [ "$selection" -ge ${#SQL_DUMP_FILES[@]} ]; then
+    echo "Error: Invalid selection"
+    exit 1
+  fi
+
+  SQL_DUMP_PATH="${SQL_DUMP_FILES[$selection]}"
+  echo "Selected SQL dump file: $SQL_DUMP_PATH"
+fi
+
+cd "${PROJECT_ROOT}" || exit 1
+
+if [[ -z ${APP_DEPLOY_ENV} ]]; then
+  source .env
+fi
+
+if [[ ${APP_DEPLOY_ENV} != 'local' ]]; then
+  echo "Unable to run command on ${APP_DEPLOY_ENV} environment"
+  exit 1
+fi
+
+echo "Database drop"
+bin/docker-compose exec core-dam bash -c \'bin/console d:d:d --force --if-exists\'
+
+echo "Import SQL dump"
+unlz4 < "$SQL_DUMP_PATH" | pv | ../tools/anzu-docker-services/bin/docker-compose exec -itT mysql-anzu mysql -h 127.0.0.1 -u root -proot
+
+echo "Fix API Tokens"
+bin/docker-compose exec core-dam bash -c \'bin/mig/fix-api-tokens\'
+
+echo "Build app"
+bin/docker-compose exec core-dam bash -c \'bin/build "${ARGS}"\'
+
+if ${ELASTIC_REBUILD}; then
+  echo "Elastic rebuild all"
+  bin/docker-compose exec core-dam bash -c \'bin/mig/rebuild-elastic-all\'
+fi

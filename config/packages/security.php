@@ -90,5 +90,6 @@ return static function (SecurityConfig $config): void {
     $config->accessControl()->path('^/adm/')->roles([User::ROLE_DAM_ADMIN, AnzuUser::ROLE_ADMIN]);
     $config->accessControl()->path('^/api/sys/v(\d+)/job')->roles([User::ROLE_SYS_JOB_API]);
     $config->accessControl()->path('^/api/sys/v(\d+)/mediaapi')->roles([User::ROLE_SYS_MEDIAAPI_API]);
+    $config->accessControl()->path('^/api/sys/v(\d+)/image/copy-to-licence')->roles([User::ROLE_SYS_COPY_IMAGE_API]);
     $config->accessControl()->path('^/api/sys/')->roles([User::ROLE_SYS_API]);
 };

@@ -40,6 +40,7 @@ class User extends DamUser implements
     public const string ROLE_SYS_JOB_API = 'ROLE_SYS_JOB_API';
     public const string ROLE_SYS_ARTEMIS_API = 'ROLE_SYS_ARTEMIS_API';
     public const string ROLE_SYS_MEDIAAPI_API = 'ROLE_SYS_MEDIAAPI_API';
+    public const string ROLE_SYS_COPY_IMAGE_API = 'ROLE_SYS_COPY_IMAGE_API';
     public const string ROLE_SYS_API = 'ROLE_SYS_API';
 
     #[ORM\ManyToMany(targetEntity: PermissionGroup::class, inversedBy: 'users', fetch: App::DOCTRINE_EXTRA_LAZY, indexBy: 'id')]

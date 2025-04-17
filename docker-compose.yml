@@ -42,6 +42,8 @@ services:
     external_links:
       - local-proxy:core-dam.sme.localhost
       - local-proxy:core-dam.sme.local
+      - local-proxy:core-cms.sme.localhost
+      - local-proxy:core-cms.sme.local
     env_file:
       - .env.docker.dist
       - .env.docker.local

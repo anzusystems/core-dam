@@ -1,0 +1,14 @@
+#!/bin/bash
+
+cd /var/www/html
+
+if [[ -z ${APP_DEPLOY_ENV} ]]; then
+  source .env
+fi
+
+if [[ ${APP_DEPLOY_ENV} = 'production' ]]; then
+  echo 'This cannot be run in production...'
+  die
+fi
+
+bin/console anzu:token:change 100016 --token=TOKEN_sys_cms
