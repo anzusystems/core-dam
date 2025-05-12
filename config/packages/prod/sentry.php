@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use AnzuSystems\CommonBundle\Exception\ValidationException;
+use AnzuSystems\CoreDamBundle\Exception\InvalidCropException;
+use AnzuSystems\CoreDamBundle\Exception\RemoteProcessingWaitingException;
 use App\Exception\PubNotFoundHttpException;
 use Symfony\Component\Finder\Exception\AccessDeniedException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -27,7 +29,9 @@ return static function (SentryConfig $config): void {
               NotFoundHttpException::class,
               ResourceNotFoundException::class,
               ValidationException::class,
-              PubNotFoundHttpException::class
+              PubNotFoundHttpException::class,
+              InvalidCropException::class,
+              RemoteProcessingWaitingException::class,
           ])
     ;
 

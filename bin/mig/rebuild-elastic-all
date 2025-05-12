@@ -2,8 +2,7 @@
 
 cd /var/www/html
 
-bin/console anzusystems:fixtures:generate
-bin/console anzu:elastic:rebuild asset
 bin/console anzu:elastic:rebuild keyword
 bin/console anzu:elastic:rebuild author
 bin/console anzu:elastic:rebuild distribution
+bin/console anzu:elastic:rebuild asset
