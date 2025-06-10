@@ -16,8 +16,8 @@ anzu_systems_core_dam:
         size_limit: '%env(byte_size:APP_CMS_IMAGE_MAX_SIZE)%'
         public_domain: public_image
         admin_domain: admin_image
-        roi_width: 16
-        roi_height: 9
+        roi_width: 4
+        roi_height: 3
         file_slots:
           default: default
           slots: [ default ]
@@ -318,8 +318,8 @@ anzu_systems_core_dam:
         crop_storage_name: 'cms.crop'
         chunk_storage_name: 'cms.chunk'
         size_limit: '%env(byte_size:APP_CMS_IMAGE_MAX_SIZE)%'
-        roi_width: 16
-        roi_height: 9
+        roi_width: 4
+        roi_height: 3
         file_slots:
           default: default
           slots: [ default ]
@@ -353,8 +353,8 @@ anzu_systems_core_dam:
         crop_storage_name: 'people.crop'
         chunk_storage_name: 'people.chunk'
         size_limit: '%env(byte_size:APP_CMS_IMAGE_MAX_SIZE)%'
-        roi_width: 16
-        roi_height: 9
+        roi_width: 4
+        roi_height: 3
         file_slots:
           default: default
           slots: [ default ]
@@ -373,8 +373,8 @@ anzu_systems_core_dam:
         crop_storage_name: 'pressNews.crop'
         chunk_storage_name: 'pressNews.chunk'
         size_limit: '%env(byte_size:APP_CMS_IMAGE_MAX_SIZE)%'
-        roi_width: 16
-        roi_height: 9
+        roi_width: 4
+        roi_height: 3
         file_slots:
           default: default
           slots: [ default ]
@@ -390,8 +390,8 @@ anzu_systems_core_dam:
         crop_storage_name: 'dennik_sport.crop'
         chunk_storage_name: 'dennik_sport.chunk'
         size_limit: '%env(byte_size:APP_CMS_IMAGE_MAX_SIZE)%'
-        roi_width: 16
-        roi_height: 9
+        roi_width: 4
+        roi_height: 3
         file_slots:
           default: default
           slots: [ default ]
