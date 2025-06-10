@@ -5,17 +5,18 @@ declare(strict_types=1);
 namespace App\Model\Domain\PodcastEpisode;
 
 use AnzuSystems\CoreDamBundle\Entity\Asset;
-use AnzuSystems\CoreDamBundle\Entity\Podcast;
 use AnzuSystems\CoreDamBundle\Entity\PodcastEpisode;
 use AnzuSystems\SerializerBundle\Attributes\Serialize;
 use AnzuSystems\SerializerBundle\Handler\Handlers\EntityIdHandler;
 use App\App;
 use App\Model\Domain\Asset\AudioImageThumbnailPubDecorator;
+use App\Model\Domain\Podcast\PodcastTitlePubDecorator;
 use DateTimeImmutable;
 
-final class PodcastEpisodePubDecorator
+final class PodcastEpisodeLatestPubDecorator
 {
     private PodcastEpisode $podcastEpisode;
+
     public static function getInstance(PodcastEpisode $podcastEpisode): self
     {
         return (new self())
@@ -35,10 +36,10 @@ final class PodcastEpisodePubDecorator
         return $this;
     }
 
-    #[Serialize(handler: EntityIdHandler::class)]
-    public function getPodcast(): Podcast
+    #[Serialize]
+    public function getPodcast(): PodcastTitlePubDecorator
     {
-        return $this->podcastEpisode->getPodcast();
+        return PodcastTitlePubDecorator::getInstance($this->podcastEpisode->getPodcast());
     }
 
     #[Serialize]

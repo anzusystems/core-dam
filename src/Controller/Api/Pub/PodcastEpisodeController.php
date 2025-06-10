@@ -9,7 +9,7 @@ use AnzuSystems\CoreDamBundle\Entity\PodcastEpisode;
 use App\Controller\AbstractApiPubController;
 use App\Controller\Api\Pub\Traits\PodcastTrait;
 use App\Exception\PubNotFoundHttpException;
-use App\Model\Domain\PodcastEpisode\PodcastEpisodePubDecorator;
+use App\Model\Domain\PodcastEpisode\PodcastEpisodeLatestPubDecorator;
 use App\Model\Request\ApiPubParams;
 use App\Model\Request\CacheSettings;
 use App\Repository\Decorator\PodcastEpisodeRepositoryDecorator;
@@ -49,7 +49,7 @@ final class PodcastEpisodeController extends AbstractApiPubController
     )]
     #[OA\PathParameter('slug', 'slug', description: 'PublicExport slug', schema: new OA\Schema(type: 'string'))]
     #[OA\QueryParameter('podcastEpisodeId', 'podcastEpisodeId', description: 'Uuid of the PodcastEpisode', schema: new OA\Schema(type: 'string'))]
-    #[OAResponse(PodcastEpisodePubDecorator::class)]
+    #[OAResponse(PodcastEpisodeLatestPubDecorator::class)]
     public function getOne(string $slug, string $podcastEpisodeId): JsonResponse
     {
         $publicExport = $this->getPublicExportBySlug($slug);
@@ -63,7 +63,7 @@ final class PodcastEpisodeController extends AbstractApiPubController
         }
 
         return $this->okCachedResponse(
-            data: PodcastEpisodePubDecorator::getInstance($podcastEpisode),
+            data: PodcastEpisodeLatestPubDecorator::getInstance($podcastEpisode),
             cacheSettings: new CacheSettings()
         );
     }
@@ -85,7 +85,7 @@ final class PodcastEpisodeController extends AbstractApiPubController
     #[OA\QueryParameter('limit', 'limit', schema: new OA\Schema(type: 'integer', default: ApiPubParams::LIMIT_DEFAULT, minimum: 1, enum: ApiPubParams::ALLOWED_LIMITS))]
     #[OA\QueryParameter('excludeIds[]', 'excludeIds[]', schema: new OA\Schema(type: 'string', maxItems: ApiPubParams::MAX_EXCLUDED_IDS))]
     #[OA\PathParameter('slug', 'slug', description: 'PublicExport slug', schema: new OA\Schema(type: 'string'))]
-    #[OAResponse([PodcastEpisodePubDecorator::class])]
+    #[OAResponse([PodcastEpisodeLatestPubDecorator::class])]
     public function getListByPodcast(string $slug, string $podcastId, ApiPubParams $apiParams): JsonResponse
     {
         $publicExport = $this->getPublicExportBySlug($slug);
@@ -118,7 +118,7 @@ final class PodcastEpisodeController extends AbstractApiPubController
     #[OA\QueryParameter('limit', 'limit', schema: new OA\Schema(type: 'integer', default: ApiPubParams::LIMIT_DEFAULT, minimum: 1, enum: ApiPubParams::ALLOWED_LIMITS))]
     #[OA\QueryParameter('excludeIds[]', 'excludeIds[]', schema: new OA\Schema(type: 'string', maxItems: ApiPubParams::MAX_EXCLUDED_IDS))]
     #[OA\PathParameter('slug', 'slug', description: 'PublicExport slug', schema: new OA\Schema(type: 'string'))]
-    #[OAResponse([PodcastEpisodePubDecorator::class])]
+    #[OAResponse([PodcastEpisodeLatestPubDecorator::class])]
     public function getList(string $slug, ApiPubParams $apiParams): JsonResponse
     {
         $publicExport = $this->getPublicExportBySlug($slug);

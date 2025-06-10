@@ -9,7 +9,7 @@ use AnzuSystems\CoreDamBundle\Entity\Podcast;
 use AnzuSystems\CoreDamBundle\Entity\PodcastEpisode;
 use AnzuSystems\CoreDamBundle\Entity\PublicExport;
 use App\App;
-use App\Model\Domain\PodcastEpisode\PodcastEpisodePubDecorator;
+use App\Model\Domain\PodcastEpisode\PodcastEpisodeLatestPubDecorator;
 use App\Model\Request\ApiPubParams;
 use App\Repository\PodcastEpisodeRepository;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -37,7 +37,7 @@ final readonly class PodcastEpisodeRepositoryDecorator
 
         return (new ApiInfiniteResponseList())
             ->setData($data->map(
-                fn (PodcastEpisode $episode): PodcastEpisodePubDecorator => PodcastEpisodePubDecorator::getInstance($episode)
+                fn (PodcastEpisode $episode): PodcastEpisodeLatestPubDecorator => PodcastEpisodeLatestPubDecorator::getInstance($episode)
             )->slice(App::ZERO, $apiParams->getLimit()))
             ->setHasNextPage(count($data) > $apiParams->getLimit())
         ;
@@ -52,7 +52,7 @@ final readonly class PodcastEpisodeRepositoryDecorator
 
         return (new ApiInfiniteResponseList())
             ->setData($data->map(
-                fn (PodcastEpisode $episode): PodcastEpisodePubDecorator => PodcastEpisodePubDecorator::getInstance($episode)
+                fn (PodcastEpisode $episode): PodcastEpisodeLatestPubDecorator => PodcastEpisodeLatestPubDecorator::getInstance($episode)
             )->slice(App::ZERO, $apiParams->getLimit()))
             ->setHasNextPage(count($data) > $apiParams->getLimit())
         ;
