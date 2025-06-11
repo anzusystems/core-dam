@@ -80,6 +80,22 @@ final readonly class AudioAssetPubBuilder
         );
     }
 
+    public function getBonusAudioMedia(
+        ArtemisAudioDistributionConfiguration $configuration,
+        PodcastEpisode $podcastEpisode
+    ): ?AudioAssetMediaPubDecorator {
+        if (StringHelper::isNotEmpty($configuration->getAudioBonusSlotName())
+            && StringHelper::isNotEmpty($podcastEpisode->getAttributes()->getExtUrl())
+        ) {
+            return AudioAssetMediaPubDecorator::getInstance(
+                type: $configuration->getAudioBonusSlotName(),
+                mediaUrl: $podcastEpisode->getAttributes()->getExtUrl()
+            );
+        }
+
+        return null;
+    }
+
     private function getAudioSlotDecorator(
         AssetSlot $slot,
         ArtemisAudioDistributionConfiguration $configuration,
@@ -121,20 +137,6 @@ final readonly class AudioAssetPubBuilder
                 type: $configuration->getAudioPremiumSlotName(),
                 audioFile: $premiumSlotAssetFile,
                 mediaUrl: $this->assetFileRouteGenerator->getFullUrl($mainUrl)
-            );
-        }
-
-        return null;
-    }
-
-    private function getBonusAudioMedia(
-        ArtemisAudioDistributionConfiguration $configuration,
-        PodcastEpisode $podcastEpisode
-    ): ?AudioAssetMediaPubDecorator {
-        if (StringHelper::isNotEmpty($podcastEpisode->getAttributes()->getExtUrl())) {
-            return AudioAssetMediaPubDecorator::getInstance(
-                type: $configuration->getAudioBonusSlotName(),
-                mediaUrl: $podcastEpisode->getAttributes()->getExtUrl()
             );
         }
 

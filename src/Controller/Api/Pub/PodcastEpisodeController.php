@@ -8,6 +8,7 @@ use AnzuSystems\CommonBundle\Model\OpenApi\Response\OAResponse;
 use AnzuSystems\CoreDamBundle\Entity\PodcastEpisode;
 use App\Controller\AbstractApiPubController;
 use App\Controller\Api\Pub\Traits\PodcastTrait;
+use App\Domain\PodcastEpisode\PodcastEpisodePubBuilder;
 use App\Exception\PubNotFoundHttpException;
 use App\Model\Domain\PodcastEpisode\PodcastEpisodeLatestPubDecorator;
 use App\Model\Request\ApiPubParams;
@@ -32,6 +33,7 @@ final class PodcastEpisodeController extends AbstractApiPubController
     public function __construct(
         private readonly PodcastEpisodeRepositoryDecorator $repositoryDecorator,
         private readonly PodcastEpisodeRepository $podcastEpisodeRepository,
+        private readonly PodcastEpisodePubBuilder $podcastEpisodePubBuilder,
     ) {
     }
 
@@ -63,7 +65,7 @@ final class PodcastEpisodeController extends AbstractApiPubController
         }
 
         return $this->okCachedResponse(
-            data: PodcastEpisodeLatestPubDecorator::getInstance($podcastEpisode),
+            data: $this->podcastEpisodePubBuilder->buildPodcastEpisodePubDecorator($podcastEpisode),
             cacheSettings: new CacheSettings()
         );
     }

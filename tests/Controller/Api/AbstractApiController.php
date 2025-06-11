@@ -57,8 +57,9 @@ abstract class AbstractApiController extends AbstractController
 
     protected function assertResponseAndGetJsonContent(Response $response, int $expectedStatusCode = Response::HTTP_OK): array
     {
-        $this->assertSame($expectedStatusCode, $response->getStatusCode());
-        $this->assertJson($response->getContent());
+        $content = $response->getContent();
+        $this->assertSame($expectedStatusCode, $response->getStatusCode(), (string) $content);
+        $this->assertJson($content);
 
         return json_decode($response->getContent(), true);
     }

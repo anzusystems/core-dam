@@ -210,9 +210,22 @@ interface Podcast {
     title: string
 }
 
+interface AudioMedia {
+    type: string
+    linkUrl: string|null // playable url link
+    duration: number|null
+    mediaUrl: string|null // link to extPage (toldo fe)
+}
+
+interface Asset {
+    id: DocId
+    media: AudioMedia[]
+}
+
 interface PodcastEpisode {
     id: DocId
     podcast: Podcast
+    asset: Asset
     title: string
     description: string
     rssUrl: string
@@ -238,7 +251,15 @@ Example: [https://core-dam.smedevel.sk/api/pub/cms-web/podcast-episodes/1efdd1bb
   "description": "Robert Fico prstom ukazuje na Andreja Danka či Matúša Šutaja Eštoka a tvrdí: „Ak táto vláda padne, s dôverou sa obráťte na SNS a Hlas.“\nČas do februárovej schôdze sa kráti, v parlamente však rebeluje sedem poslancov z pôvodnej sedemdesiatdeviatky. Podčiarknuté a spočítané, predsedu vlády v parlamente s istotou podporí len 72 hlasov.\nA o tom sa s redaktorom domáceho spravodajstva Michalom Katuškom, ktorý koaličnú krízu sleduje, rozpráva v podcaste Dobré ráno Jana Krescanko Dibáková.\nZdroj zvukov: TA3, Denník N\nOdporúčanie:\nHviezdoslavove Krvavé sonety v excelentnom viacjazyčnom podaní. Šokujúce prvky na scéne a výborné výkony herečiek. Ak máte chuť vidieť Hviezdoslava, ako ste ho určite ešte nikdy nevideli, zamierte práve do bratislavského Divadla Pavla Országa Hviezdoslava. Pochmúrno ideálne sa hodiace k dnešnej dobe.\n–\nVšetky podcasty denníka SME nájdete⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠",
   "duration": 0,
   "publicationDate": "2025-01-28T01:30:00.000000Z",
-  "asset": "1efdd1bb-b040-6fd8-add0-b7fd5dddfa82",
+  "asset": {
+    "id": "1ef7ae85-be55-6e2a-a6f2-534fb46816a1",
+    "media": [
+      {
+        "type": "bonus",
+        "mediaUrl": "https://www.toldo.app/app/feed-post/28447353"
+      }
+    ]
+  },
   "thumbnail": {
     "links": [
       {

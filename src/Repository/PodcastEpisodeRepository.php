@@ -25,7 +25,12 @@ final class PodcastEpisodeRepository extends BasePodcastEpisodeRepository
         ApiPubParams $apiParams,
     ): Collection {
         $qb = $this->createQueryBuilder('entity')
+            ->select('entity, podcast, episodeImagePreview, episodeImagePreviewImageFile, asset')
             ->where('IDENTITY(entity.asset) IS NOT NULL')
+            ->innerJoin('entity.podcast', 'podcast')
+            ->leftJoin('entity.imagePreview', 'episodeImagePreview')
+            ->leftJoin('episodeImagePreview.imageFile', 'episodeImagePreviewImageFile')
+            ->leftJoin('entity.asset', 'asset')
             ->andWhere('IDENTITY(entity.podcast) = :podcast')
             ->andWhere('entity.dates.publicationDate <= :now')
             ->setParameter('podcast', (string) $podcast->getId())
@@ -45,10 +50,14 @@ final class PodcastEpisodeRepository extends BasePodcastEpisodeRepository
         ApiPubParams $apiParams,
     ): Collection {
         $qb = $this->createQueryBuilder('entity')
+            ->select('entity, podcast, episodeImagePreview, episodeImagePreviewImageFile, asset')
             ->where('IDENTITY(entity.asset) IS NOT NULL')
             ->andWhere('entity.licence = :licence')
             ->andWhere('entity.dates.publicationDate <= :now')
             ->innerJoin('entity.podcast', 'podcast')
+            ->leftJoin('entity.imagePreview', 'episodeImagePreview')
+            ->leftJoin('episodeImagePreview.imageFile', 'episodeImagePreviewImageFile')
+            ->leftJoin('entity.asset', 'asset')
             ->setParameter('licence', $publicExport->getAssetLicence())
             ->setParameter('now', App::getAppDate())
             ->addOrderBy('entity.dates.publicationDate', 'DESC')

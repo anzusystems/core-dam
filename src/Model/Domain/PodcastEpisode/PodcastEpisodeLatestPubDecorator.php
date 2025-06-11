@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace App\Model\Domain\PodcastEpisode;
 
-use AnzuSystems\CoreDamBundle\Entity\Asset;
 use AnzuSystems\CoreDamBundle\Entity\PodcastEpisode;
 use AnzuSystems\SerializerBundle\Attributes\Serialize;
 use AnzuSystems\SerializerBundle\Handler\Handlers\EntityIdHandler;
 use App\App;
+use App\Model\Domain\Asset\AssetPodcastEpisodePubDecorator;
+use App\Model\Domain\Asset\AudioAssetMediaPubDecorator;
 use App\Model\Domain\Asset\AudioImageThumbnailPubDecorator;
 use App\Model\Domain\Podcast\PodcastTitlePubDecorator;
 use DateTimeImmutable;
@@ -16,11 +17,15 @@ use DateTimeImmutable;
 final class PodcastEpisodeLatestPubDecorator
 {
     private PodcastEpisode $podcastEpisode;
+    private ?AudioAssetMediaPubDecorator $bonusAudioMedia = null;
 
-    public static function getInstance(PodcastEpisode $podcastEpisode): self
-    {
+    public static function getInstance(
+        PodcastEpisode $podcastEpisode,
+        ?AudioAssetMediaPubDecorator $assetBonusAudioMedia = null
+    ): self {
         return (new self())
             ->setPodcastEpisode($podcastEpisode)
+            ->setBonusAudioMedia($assetBonusAudioMedia)
         ;
     }
 
@@ -33,6 +38,18 @@ final class PodcastEpisodeLatestPubDecorator
     public function setPodcastEpisode(PodcastEpisode $podcastEpisode): self
     {
         $this->podcastEpisode = $podcastEpisode;
+        return $this;
+    }
+
+    public function getBonusAudioMedia(): ?AudioAssetMediaPubDecorator
+    {
+        return $this->bonusAudioMedia;
+    }
+
+    public function setBonusAudioMedia(?AudioAssetMediaPubDecorator $bonusAudioMedia): self
+    {
+        $this->bonusAudioMedia = $bonusAudioMedia;
+
         return $this;
     }
 
@@ -68,10 +85,16 @@ final class PodcastEpisodeLatestPubDecorator
             App::getAppDate();
     }
 
-    #[Serialize(handler: EntityIdHandler::class)]
-    public function getAsset(): ?Asset
+    #[Serialize]
+    public function getAsset(): ?AssetPodcastEpisodePubDecorator
     {
-        return $this->podcastEpisode->getAsset();
+        return $this->podcastEpisode->getAsset()
+            ? AssetPodcastEpisodePubDecorator::getInstance(
+                asset: $this->podcastEpisode->getAsset(),
+                media: [$this->getBonusAudioMedia()]
+            )
+            : null
+        ;
     }
 
     #[Serialize]

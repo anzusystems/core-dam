@@ -9,6 +9,8 @@ use AnzuSystems\CoreDamBundle\Entity\Podcast;
 use AnzuSystems\CoreDamBundle\Entity\PodcastEpisode;
 use AnzuSystems\CoreDamBundle\Entity\PublicExport;
 use App\App;
+use App\Domain\Asset\AssetPubFacade;
+use App\Domain\PodcastEpisode\PodcastEpisodePubBuilder;
 use App\Model\Domain\PodcastEpisode\PodcastEpisodeLatestPubDecorator;
 use App\Model\Request\ApiPubParams;
 use App\Repository\PodcastEpisodeRepository;
@@ -17,7 +19,9 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 final readonly class PodcastEpisodeRepositoryDecorator
 {
     public function __construct(
-        private PodcastEpisodeRepository $podcastEpisodeRepository
+        private PodcastEpisodeRepository $podcastEpisodeRepository,
+        private AssetPubFacade $assetPubFacade,
+        private PodcastEpisodePubBuilder $podcastEpisodePubBuilder,
     ) {
     }
 
@@ -37,7 +41,7 @@ final readonly class PodcastEpisodeRepositoryDecorator
 
         return (new ApiInfiniteResponseList())
             ->setData($data->map(
-                fn (PodcastEpisode $episode): PodcastEpisodeLatestPubDecorator => PodcastEpisodeLatestPubDecorator::getInstance($episode)
+                fn (PodcastEpisode $episode): PodcastEpisodeLatestPubDecorator => $this->podcastEpisodePubBuilder->buildPodcastEpisodePubDecorator($episode)
             )->slice(App::ZERO, $apiParams->getLimit()))
             ->setHasNextPage(count($data) > $apiParams->getLimit())
         ;
@@ -52,7 +56,7 @@ final readonly class PodcastEpisodeRepositoryDecorator
 
         return (new ApiInfiniteResponseList())
             ->setData($data->map(
-                fn (PodcastEpisode $episode): PodcastEpisodeLatestPubDecorator => PodcastEpisodeLatestPubDecorator::getInstance($episode)
+                fn (PodcastEpisode $episode): PodcastEpisodeLatestPubDecorator => $this->podcastEpisodePubBuilder->buildPodcastEpisodePubDecorator($episode)
             )->slice(App::ZERO, $apiParams->getLimit()))
             ->setHasNextPage(count($data) > $apiParams->getLimit())
         ;
