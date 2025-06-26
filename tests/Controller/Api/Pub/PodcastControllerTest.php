@@ -188,7 +188,7 @@ final class PodcastControllerTest extends AbstractApiController
         return [
             [
                 'publicExportSlug' => 'cms-web',
-                'pubApiParams' => ['excludeIds' => array_fill(0, 100, PodcastFixtures::PODCAST_1)],
+                'pubApiParams' => ['excludeIds' => array_fill(0, 101, PodcastFixtures::PODCAST_1)],
             ],
             [
                 'publicExportSlug' => 'cms-web',

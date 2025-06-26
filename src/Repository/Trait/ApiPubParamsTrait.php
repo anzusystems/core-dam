@@ -12,7 +12,7 @@ trait ApiPubParamsTrait
     protected function applyApiPubParams(QueryBuilder $qb, ApiPubParams $apiParams): void
     {
         $qb->setMaxResults($apiParams->getLimit() + 1)
-            ->setFirstResult($apiParams->getLimit() * ($apiParams->getPage() - 1))
+            ->setFirstResult(($apiParams->getPage() * $apiParams->getLimit()) - $apiParams->getLimit())
         ;
 
         if (false === empty($apiParams->getExcludeIds())) {

@@ -15,6 +15,7 @@ trait ExportTypeFilterTrait
     {
         $this->applyExportTypeOrdering($qb, $publicExport, $order);
         $this->applyExportTypeEnable($qb, $publicExport);
+        $qb->addOrderBy('entity.id', $order->value);
     }
 
     protected function applyExportTypeOrdering(QueryBuilder $qb, PublicExport $publicExport, Order $order = Order::Descending): void

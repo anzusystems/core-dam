@@ -12,7 +12,7 @@ final readonly class ApiPubParams
     public const int LIMIT_DEFAULT = 20;
     public const int MAX_PAGE = 100;
 
-    public const int MAX_EXCLUDED_IDS = 50;
+    public const int MAX_EXCLUDED_IDS = 100;
 
     /**
      * @var list<int>

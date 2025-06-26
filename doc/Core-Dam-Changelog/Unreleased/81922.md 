@@ -1,0 +1,5 @@
+2025-06-26
+===
+
+### Added
+- fixed order by position (duplicates) and small perf improvements [[#81922](https://dev.azure.com/petitpress/SME.sk%20Apka/_workitems/edit/81922)]
