@@ -2,3 +2,8 @@
 GET {{host}}/api/pub/cms-web/assets/1ee6d25b-6432-6dc4-8840-63d7195725b0
 Content-Type: application/json
 X-GW-Access-Content: 1
+
+### Create no file asset
+GET {{host}}/api/pub/cms-web/assets/1ef82c97-a142-6ee2-8041-079cea0b96ef
+Content-Type: application/json
+X-GW-Access-Content: 1

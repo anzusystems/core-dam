@@ -136,7 +136,7 @@ final readonly class AudioAssetPubBuilder
             return AudioAssetMediaPubDecorator::getInstance(
                 type: $configuration->getAudioPremiumSlotName(),
                 audioFile: $premiumSlotAssetFile,
-                mediaUrl: $this->assetFileRouteGenerator->getFullUrl($mainUrl)
+                linkUrl: $this->assetFileRouteGenerator->getFullUrl($mainUrl)
             );
         }
 
@@ -159,7 +159,7 @@ final readonly class AudioAssetPubBuilder
                 return AudioAssetMediaPubDecorator::getInstance(
                     type: $configuration->getAudioFreeSlotName(),
                     audioFile: $freeSlotAssetFile,
-                    mediaUrl: $this->assetFileRouteGenerator->getFullUrl($mainUrl)
+                    linkUrl: $this->assetFileRouteGenerator->getFullUrl($mainUrl)
                 );
             }
 
