@@ -23,8 +23,8 @@ SHELL=/bin/bash
 # At every minute
 * * * * * cron-cmd -n process_job      bin/console anzu:job:process
 
-# Every hour
-0 * * * * cron-cmd -n podcast_generate_import_job bin/console anzu-dam:podcast:generate-import
+# Every 20 minutes
+*/20 * * * * cron-cmd -n podcast_generate_import_job bin/console anzu-dam:podcast:generate-import
 
 # Every day
 0 1 * * * cron-cmd -n anzu_dam_asset_clear bin/console anzu-dam:asset:clear
