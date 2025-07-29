@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Domain\Asset;
 
 use AnzuSystems\CoreDamBundle\Entity\Asset;
-use AnzuSystems\CoreDamBundle\Entity\PublicExport;
 use AnzuSystems\CoreDamBundle\Model\Enum\AssetStatus;
 use AnzuSystems\CoreDamBundle\Model\Enum\AssetType;
 use App\Exception\PubNotFoundHttpException;
@@ -23,31 +22,31 @@ final readonly class AssetPubFacade
     /**
      * @throws NotFoundHttpException
      */
-    public function decorateAsset(Asset $asset, PublicExport $publicExport): AbstractAssetPubDecorator
+    public function decorateAsset(Asset $asset): AbstractAssetPubDecorator
     {
-        $decorator = $this->getDecorator($asset, $publicExport);
+        $decorator = $this->getDecorator($asset);
         if (null === $decorator) {
             throw new PubNotFoundHttpException('Asset not found');
         }
 
         if ($asset->getSiblingToAsset() instanceof Asset) {
-            $decorator->setSibling($this->getDecorator($asset->getSiblingToAsset(), $publicExport));
+            $decorator->setSibling($this->getDecorator($asset->getSiblingToAsset()));
         }
 
         return $decorator;
     }
 
-    private function getDecorator(Asset $asset, PublicExport $publicExport): ?AbstractAssetPubDecorator
+    private function getDecorator(Asset $asset): ?AbstractAssetPubDecorator
     {
         if ($asset->getAttributes()->getStatus()->isNot(AssetStatus::WithFile)) {
             return null;
         }
 
         if ($asset->getAssetType()->is(AssetType::Audio)) {
-            return $this->audioAssetPubBuilder->getAudioDecorator($asset, $publicExport);
+            return $this->audioAssetPubBuilder->getAudioDecorator($asset);
         }
         if ($asset->getAssetType()->is(AssetType::Video)) {
-            return $this->videoAssetPubBuilder->getVideoDecorator($asset, $publicExport);
+            return $this->videoAssetPubBuilder->getVideoDecorator($asset);
         }
 
         return null;

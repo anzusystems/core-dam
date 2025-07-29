@@ -6,7 +6,6 @@ namespace App\Domain\Asset;
 
 use AnzuSystems\CoreDamBundle\Entity\Asset;
 use AnzuSystems\CoreDamBundle\Entity\JwDistribution;
-use AnzuSystems\CoreDamBundle\Entity\PublicExport;
 use AnzuSystems\CoreDamBundle\Entity\VideoFile;
 use AnzuSystems\CoreDamBundle\Entity\VideoShowEpisode;
 use AnzuSystems\CoreDamBundle\Entity\YoutubeDistribution;
@@ -25,21 +24,12 @@ final readonly class VideoAssetPubBuilder
     ) {
     }
 
-    public function getVideoDecorator(Asset $asset, PublicExport $publicExport): ?VideoAssetPubDecorator
+    public function getVideoDecorator(Asset $asset): ?VideoAssetPubDecorator
     {
         $configuration = $this->configurationProvider->getAssetPubConfiguration();
 
         $videoShowEpisode = $asset->getVideoEpisodes()->first();
         $videoShowEpisode = $videoShowEpisode instanceof VideoShowEpisode ? $videoShowEpisode : null;
-
-        if (
-            $videoShowEpisode instanceof VideoShowEpisode && (
-                false === $publicExport->getType()->isEnabled($videoShowEpisode) ||
-                false === $publicExport->getType()->isEnabled($videoShowEpisode->getVideoShow())
-            )
-        ) {
-            $videoShowEpisode = null;
-        }
 
         $videoFile = $asset->getMainFile();
         if (false === ($videoFile instanceof VideoFile)) {

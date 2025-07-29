@@ -9,7 +9,6 @@ use AnzuSystems\CoreDamBundle\Entity\Asset;
 use AnzuSystems\CoreDamBundle\Entity\AssetSlot;
 use AnzuSystems\CoreDamBundle\Entity\AudioFile;
 use AnzuSystems\CoreDamBundle\Entity\PodcastEpisode;
-use AnzuSystems\CoreDamBundle\Entity\PublicExport;
 use AnzuSystems\CoreDamBundle\Helper\StringHelper;
 use AnzuSystems\CoreDamBundle\Repository\AssetFileRouteRepository;
 use App\Configuration\ConfigurationProvider;
@@ -29,22 +28,13 @@ final readonly class AudioAssetPubBuilder
     ) {
     }
 
-    public function getAudioDecorator(Asset $asset, PublicExport $publicExport): ?AudioAssetPubDecorator
+    public function getAudioDecorator(Asset $asset): ?AudioAssetPubDecorator
     {
         $configuration = $this->configurationProvider->getAudioDistribution();
         $assetPubConfiguration = $this->configurationProvider->getAssetPubConfiguration();
 
         $podcastEpisode = $asset->getEpisodes()->first();
         $podcastEpisode = $podcastEpisode instanceof PodcastEpisode ? $podcastEpisode : null;
-
-        if (
-            $podcastEpisode instanceof PodcastEpisode && (
-                false === $publicExport->getType()->isEnabled($podcastEpisode) ||
-                false === $publicExport->getType()->isEnabled($podcastEpisode->getPodcast())
-            )
-        ) {
-            $podcastEpisode = null;
-        }
 
         $media = [];
         foreach ($asset->getSlots() as $slot) {
@@ -54,9 +44,8 @@ final readonly class AudioAssetPubBuilder
             }
         }
 
-        if (
-            false === isset($media[$configuration->getAudioBonusSlotName()]) &&
-            $podcastEpisode instanceof PodcastEpisode
+        if ($podcastEpisode instanceof PodcastEpisode &&
+            false === isset($media[$configuration->getAudioBonusSlotName()])
         ) {
             $audio = $this->getBonusAudioMedia($configuration, $podcastEpisode);
             if ($audio) {

@@ -46,6 +46,7 @@ final class AssetController extends AbstractApiPubController
     {
         $publicExport = $this->getPublicExportBySlug($slug);
         $asset = $this->assetRepository->find($assetId);
+
         if (false === $asset instanceof Asset) {
             throw new PubNotFoundHttpException('Asset not found');
         }
@@ -54,7 +55,7 @@ final class AssetController extends AbstractApiPubController
         }
 
         return $this->okCachedResponse(
-            data: $this->assetPubFacade->decorateAsset($asset, $publicExport),
+            data: $this->assetPubFacade->decorateAsset($asset),
             cacheSettings: new CacheSettings()
         );
     }
