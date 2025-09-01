@@ -72,9 +72,10 @@ final class ArtemisAudioDtoFactory extends AbstractArtemisDtoFactory
         }
 
         $distributions = $this->repository->findByAssetFile((string) $assetFile->getId());
-        foreach ($distributions as $distribution) {
-            if ($distribution instanceof JwDistribution && false === empty($distribution->getExtId())) {
-                $mediaDto->setJwId($distribution->getExtId());
+
+        foreach ($distributions as $distrib) {
+            if ($distrib instanceof JwDistribution && false === empty($distrib->getExtId())) {
+                $mediaDto->setJwId($distrib->getExtId());
             }
         }
 
@@ -101,10 +102,10 @@ final class ArtemisAudioDtoFactory extends AbstractArtemisDtoFactory
     private function getEpisodeImage(PodcastEpisode $episode): ?ImageFile
     {
         if ($episode->getImagePreview()?->getImageFile()->getAssetAttributes()->getStatus()->is(AssetFileProcessStatus::Processed)) {
-            return $episode->getImagePreview()?->getImageFile();
+            return $episode->getImagePreview()->getImageFile();
         }
         if ($episode->getPodcast()->getImagePreview()?->getImageFile()->getAssetAttributes()->getStatus()->is(AssetFileProcessStatus::Processed)) {
-            return $episode->getPodcast()->getImagePreview()?->getImageFile();
+            return $episode->getPodcast()->getImagePreview()->getImageFile();
         }
 
         return null;

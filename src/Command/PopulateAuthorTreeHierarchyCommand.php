@@ -7,15 +7,10 @@ namespace App\Command;
 use AnzuSystems\CommonBundle\Csv\CsvHelper;
 use AnzuSystems\Contracts\AnzuApp;
 use AnzuSystems\CoreDamBundle\Command\Traits\OutputUtilTrait;
-use AnzuSystems\CoreDamBundle\Domain\Job\JobImageCopyFactory;
 use AnzuSystems\CoreDamBundle\Entity\Author;
-use AnzuSystems\CoreDamBundle\Repository\AssetFileRepository;
-use AnzuSystems\CoreDamBundle\Repository\AssetLicenceRepository;
-use AnzuSystems\CoreDamBundle\Repository\AssetRepository;
 use AnzuSystems\CoreDamBundle\Repository\AuthorRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use League\Flysystem\FilesystemException;
@@ -43,12 +38,6 @@ final class PopulateAuthorTreeHierarchyCommand extends Command
     private const string AUTHORS_CSV = 'entity_authors.csv';
 
     public function __construct(
-        private readonly Connection $damMediaApiMigConnection,
-        private readonly Connection $defaultConnection,
-        private readonly JobImageCopyFactory $imageCopyFactory,
-        private readonly AssetRepository $assetRepository,
-        private readonly AssetLicenceRepository $assetLicenceRepository,
-        private readonly AssetFileRepository $assetFileRepository,
         private readonly EntityManagerInterface $entityManager,
         private readonly AuthorRepository $authorRepository,
     ) {
@@ -145,7 +134,9 @@ final class PopulateAuthorTreeHierarchyCommand extends Command
 
         foreach ($currentAuthorColl as $author) {
             $author->addCurrentAuthor($author);
-            $author->addChildAuthor($sourceAuthor);
+            if ($sourceAuthor instanceof Author) {
+                $author->addChildAuthor($sourceAuthor);
+            }
         }
 
         return true;

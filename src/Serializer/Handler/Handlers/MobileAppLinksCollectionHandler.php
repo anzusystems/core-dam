@@ -31,7 +31,7 @@ final class MobileAppLinksCollectionHandler extends PublicLinksTagCollectionHand
         int $requestedWidth,
         int $requestedHeight,
         string $title,
-    ): string|array {
+    ): array {
         return [
             'url' => $url,
             'title' => $title,

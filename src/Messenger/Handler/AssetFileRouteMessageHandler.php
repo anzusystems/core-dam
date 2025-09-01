@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Messenger\Handler;
 
 use AnzuSystems\CoreDamBundle\Cache\AssetFileCacheManager;
-use AnzuSystems\CoreDamBundle\Cache\AssetFileRouteGenerator;
 use AnzuSystems\CoreDamBundle\Exception\RuntimeException;
 use AnzuSystems\CoreDamBundle\Traits\MessageBusAwareTrait;
 use App\HttpClient\NotificationClient;
@@ -20,7 +19,6 @@ final class AssetFileRouteMessageHandler
 
     public function __construct(
         private readonly NotificationClient $notificationClient,
-        private readonly AssetFileRouteGenerator $assetFileRouteGenerator,
         private readonly bool $cacheProxyPurgeEnabled,
         private readonly bool $cdnPurgeEnabled,
     ) {

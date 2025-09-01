@@ -8,13 +8,12 @@ use AnzuSystems\CoreDamBundle\DataFixtures\PodcastFixtures;
 use AnzuSystems\CoreDamBundle\DataFixtures\VideoShowFixtures;
 use App\Tests\Controller\Api\AbstractApiController;
 use App\Tests\data\Model\ApiClientFirewall;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\HttpFoundation\Response;
 
 final class VideoShowControllerTest extends AbstractApiController
 {
-    /**
-     * @dataProvider getOneDataProvider
-     */
+    #[DataProvider('getOneDataProvider')]
     public function testGetOne(
         string $publicExportSlug,
         string $videShowId,
@@ -30,7 +29,7 @@ final class VideoShowControllerTest extends AbstractApiController
         $this->assertCacheHeaders($response);
     }
 
-    public function getOneDataProvider(): array
+    public static function getOneDataProvider(): array
     {
         return [
             [
@@ -44,9 +43,7 @@ final class VideoShowControllerTest extends AbstractApiController
         ];
     }
 
-    /**
-     * @dataProvider getListDataProvider
-     */
+    #[DataProvider('getListDataProvider')]
     public function testGetList(
         string $publicExportSlug,
         array $expectedList,
@@ -66,7 +63,7 @@ final class VideoShowControllerTest extends AbstractApiController
         }
     }
 
-    public function getListDataProvider(): array
+    public static function getListDataProvider(): array
     {
         return [
             [
@@ -81,9 +78,7 @@ final class VideoShowControllerTest extends AbstractApiController
         ];
     }
 
-    /**
-     * @dataProvider getListNotFoundDataProvider
-     */
+    #[DataProvider('getListNotFoundDataProvider')]
     public function testGetListNotFound(
         string $publicExportSlug,
     ): void {
@@ -94,7 +89,7 @@ final class VideoShowControllerTest extends AbstractApiController
         $this->assertCacheHeaders($response);
     }
 
-    public function getListNotFoundDataProvider(): array
+    public static function getListNotFoundDataProvider(): array
     {
         return [
             [

@@ -26,7 +26,7 @@ final class VideoAssetPubDecorator extends AbstractAssetPubDecorator
         VideoFile $videoFile,
         array $distributions,
         string $metadataTitleField,
-        VideoShowEpisode $videoShowEpisode = null,
+        ?VideoShowEpisode $videoShowEpisode = null,
     ): static {
         return parent::getBaseInstance($asset, $metadataTitleField)
             ->setDistributions($distributions)

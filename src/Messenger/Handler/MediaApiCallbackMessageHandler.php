@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Messenger\Handler;
 
+use AnzuSystems\CoreDamBundle\Entity\ImageFile;
 use AnzuSystems\CoreDamBundle\Repository\ImageFileRepository;
 use AnzuSystems\SerializerBundle\Exception\SerializerException;
 use App\Exception\MediaApiClientException;
@@ -30,7 +31,7 @@ final readonly class MediaApiCallbackMessageHandler
     {
         $imageFile = $this->imageFileRepository->find($message->getImageId());
 
-        if ($imageFile) {
+        if ($imageFile instanceof ImageFile) {
             $this->mediaApiClient->sendImageChangeState($imageFile);
         }
     }

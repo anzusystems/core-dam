@@ -8,11 +8,14 @@ use AnzuSystems\CommonBundle\Traits\LoggerAwareRequest;
 use AnzuSystems\CommonBundle\Traits\SerializerAwareTrait;
 use AnzuSystems\CoreDamBundle\Model\Dto\Job\JobImageCopyResultDto;
 use AnzuSystems\SerializerBundle\Exception\SerializerException;
+use App\Model\Domain\Asset\AssetCmsSysDto;
 use App\Model\Domain\Image\CmsImageUsageListDto;
+use Doctrine\Common\Collections\Collection;
 use JsonException;
 use Psr\Log\LoggerAwareInterface;
 use RuntimeException;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Uid\Uuid;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
@@ -23,6 +26,7 @@ final class CmsClient implements LoggerAwareInterface
 
     private const string COMPLETE_COPY_JOB_PATH = '/api/sys/v1/dam/job-image-copy/%d/complete';
     private const string IMAGE_USAGAE_PATH = '/api/sys/v1/dam/image/usage';
+    private const string DAM_UPDATE_MEDIA = '/api/sys/v1/dam/media';
 
     public function __construct(
         private readonly HttpClientInterface $anzuCmsApiClient,
@@ -39,7 +43,7 @@ final class CmsClient implements LoggerAwareInterface
             message: '[Anzu CMS] get image usage',
             url: self::IMAGE_USAGAE_PATH . '?' . http_build_query([
                 'damIds' => implode(',', array_map(
-                    fn (Uuid $id): string => $id->toRfc4122(),
+                    static fn (Uuid $id): string => $id->toRfc4122(),
                     $damIds
                 )),
             ]),
@@ -70,6 +74,33 @@ final class CmsClient implements LoggerAwareInterface
 
         if ($result->hasError()) {
             throw new RuntimeException('Anzu CMS notify finished job image copy failed');
+        }
+    }
+
+    /**
+     * @param Collection<int, AssetCmsSysDto> $dtoList
+     *
+     * @throws JsonException
+     * @throws SerializerException
+     */
+    public function notifyAssetChanged(Collection $dtoList): void
+    {
+        /** @var array $data */
+        $data = $this->serializer->toArray($dtoList);
+        $result = $this->loggedRequest(
+            client: $this->anzuCmsApiClient,
+            message: '[Anzu CMS] Media update',
+            url: self::DAM_UPDATE_MEDIA,
+            method: Request::METHOD_PATCH,
+            json: ['damMediaSysList' => $data],
+        );
+
+        if (Response::HTTP_NOT_FOUND === $result->getStatusCode()) {
+            return;
+        }
+
+        if ($result->hasError()) {
+            throw new RuntimeException('Anzu CMS media update failed');
         }
     }
 }

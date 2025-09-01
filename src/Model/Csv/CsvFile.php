@@ -19,7 +19,7 @@ final class CsvFile
     private SplFileObject $csv;
 
     /**
-     * @var array{string, int}
+     * @var array<string, int<0, max>>
      */
     private array $headers;
 
@@ -27,10 +27,10 @@ final class CsvFile
      * @param class-string<T> $rowClassName
      */
     public function __construct(
-        readonly string $filePath,
+        public readonly string $filePath,
         private readonly Serializer $serializer,
         private readonly string $rowClassName,
-        readonly bool $hasHeaders = false,
+        public readonly bool $hasHeaders = false,
     ) {
         $this->csv = new SplFileObject($filePath);
         $this->csv->setFlags(SplFileObject::SKIP_EMPTY);
@@ -53,7 +53,6 @@ final class CsvFile
     public function readObject(): Generator
     {
         foreach ($this->readCsv() as $row) {
-            /** @var T $object */
             $object = $this->serializer->fromArray(
                 $this->addHeadersToRow($row),
                 $this->rowClassName
@@ -95,7 +94,7 @@ final class CsvFile
     }
 
     /**
-     * @return array{string, int}
+     * @return array<string, int<0, max>>
      */
     private function readHeaders(): array
     {

@@ -6,15 +6,16 @@ namespace App\DataFixtures;
 
 use AnzuSystems\CommonBundle\DataFixtures\Fixtures\AbstractFixtures;
 use AnzuSystems\CoreDamBundle\DataFixtures\VideoFixtures;
-use AnzuSystems\CoreDamBundle\Domain\Asset\AssetPropertiesRefresher;
 use AnzuSystems\CoreDamBundle\Domain\Distribution\DistributionManagerProvider;
 use AnzuSystems\CoreDamBundle\Domain\Distribution\DistributionStatusFacade;
 use AnzuSystems\CoreDamBundle\Domain\JwDistribution\JwDistributionFacade;
 use AnzuSystems\CoreDamBundle\Domain\YoutubeDistribution\YoutubeDistributionFacade;
+use AnzuSystems\CoreDamBundle\Entity\AssetFile;
 use AnzuSystems\CoreDamBundle\Entity\Distribution;
 use AnzuSystems\CoreDamBundle\Messenger\Message\AssetRefreshPropertiesMessage;
 use AnzuSystems\CoreDamBundle\Repository\AssetFileRepository;
 use AnzuSystems\CoreDamBundle\Traits\MessageBusAwareTrait;
+use RuntimeException;
 use Symfony\Component\Console\Helper\ProgressBar;
 
 /**
@@ -30,7 +31,6 @@ final class DistributionFixtures extends AbstractFixtures
         private readonly DistributionStatusFacade $distributionStatusFacade,
         private readonly AssetFileRepository $repository,
         private readonly DistributionManagerProvider $distributionManagerProvider,
-        private readonly AssetPropertiesRefresher $assetPropertiesRefresher,
     ) {
     }
 
@@ -56,6 +56,9 @@ final class DistributionFixtures extends AbstractFixtures
             return;
         }
 
+        if (false === ($video instanceof AssetFile)) {
+            throw new RuntimeException('Invalid video file type');
+        }
         $distribution = $this->youtubeDistributionFacade->preparePayload($video, 'youtube_cms_main');
         $this->distributionManagerProvider->get($distribution::class)->create($distribution);
         $distribution->setExtId('8ZMm3wUrZSY');

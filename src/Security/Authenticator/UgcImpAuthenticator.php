@@ -110,7 +110,11 @@ final class UgcImpAuthenticator extends AbstractUgcAuthenticator
         );
 
         try {
-            return $this->jwtUgcImpConfiguration->parser()->parse($plainImpersonateUserToken);
+            $token = $this->jwtUgcImpConfiguration->parser()->parse($plainImpersonateUserToken);
+            if (false === $token instanceof Plain) {
+                throw new AccessDeniedException('Invalid token type');
+            }
+            return $token;
         } catch (Exception $exception) {
             throw new AccessDeniedException($plainImpersonateUserToken, $exception);
         }

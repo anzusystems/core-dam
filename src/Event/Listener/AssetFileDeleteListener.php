@@ -7,7 +7,6 @@ namespace App\Event\Listener;
 use AnzuSystems\CoreDamBundle\Entity\ImageFile;
 use AnzuSystems\CoreDamBundle\Event\AssetFileDeleteEvent;
 use AnzuSystems\CoreDamBundle\Traits\MessageBusAwareTrait;
-use App\HttpClient\NotificationClient;
 use App\Messenger\Message\AssetFileRouteMessage;
 use App\Messenger\Message\ImageCachePurgeMessage;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
@@ -18,7 +17,6 @@ final class AssetFileDeleteListener
     use MessageBusAwareTrait;
 
     public function __construct(
-        private readonly NotificationClient $notificationClient,
     ) {
     }
 

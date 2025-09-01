@@ -13,7 +13,6 @@ use AnzuSystems\CoreDamBundle\Repository\AudioFileRepository;
 use AnzuSystems\CoreDamBundle\Repository\DocumentFileRepository;
 use AnzuSystems\CoreDamBundle\Repository\ImageFileRepository;
 use AnzuSystems\CoreDamBundle\Repository\VideoFileRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use Exception;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -39,7 +38,6 @@ final class RefreshAssetFilePropertiesCommand extends Command
         private readonly DocumentFileRepository $documentFileRepository,
         private readonly VideoFileRepository $videoFileRepository,
         private readonly AssetManager $manager,
-        private readonly EntityManagerInterface $entityManager,
     ) {
         parent::__construct();
     }

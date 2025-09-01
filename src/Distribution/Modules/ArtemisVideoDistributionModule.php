@@ -9,6 +9,7 @@ use AnzuSystems\CoreDamBundle\Distribution\CustomDistributionInterface;
 use AnzuSystems\CoreDamBundle\Distribution\DistributionAdapterInterface;
 use AnzuSystems\CoreDamBundle\Distribution\DistributionModuleInterface;
 use AnzuSystems\CoreDamBundle\Entity\Distribution;
+use AnzuSystems\CoreDamBundle\Entity\VideoFile;
 use AnzuSystems\CoreDamBundle\Model\Enum\AssetType;
 use AnzuSystems\CoreDamBundle\Repository\VideoFileRepository;
 use AnzuSystems\SerializerBundle\Exception\SerializerException;
@@ -16,6 +17,7 @@ use App\Distribution\Modules\Factory\ArtemisVideoDtoFactory;
 use App\Domain\ArtemisVideoDistribution\ArtemisVideoDistributionAdapter;
 use App\Entity\ArtemisVideoDistribution;
 use App\HttpClient\ArtemisClient;
+use RuntimeException;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 final class ArtemisVideoDistributionModule extends AbstractDistributionModule implements DistributionModuleInterface, CustomDistributionInterface
@@ -43,7 +45,7 @@ final class ArtemisVideoDistributionModule extends AbstractDistributionModule im
         }
 
         $mediaDto = $this->artemisVideoDtoFactory->createMediaDto(
-            assetFile: $assetFile,
+            assetFile: $assetFile instanceof VideoFile ? $assetFile : throw new RuntimeException('Invalid video file type'),
             distribution: $distribution,
         );
 

@@ -8,13 +8,12 @@ use AnzuSystems\CoreDamBundle\DataFixtures\PodcastEpisodeFixtures;
 use AnzuSystems\CoreDamBundle\DataFixtures\PodcastFixtures;
 use App\Tests\Controller\Api\AbstractApiController;
 use App\Tests\data\Model\ApiClientFirewall;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\HttpFoundation\Response;
 
 final class PodcastEpisodeControllerTest extends AbstractApiController
 {
-    /**
-     * @dataProvider getOneDataProvider
-     */
+    #[DataProvider('getOneDataProvider')]
     public function testGetOne(
         string $publicExportSlug,
         string $podcastEpisodeId,
@@ -36,7 +35,7 @@ final class PodcastEpisodeControllerTest extends AbstractApiController
         $this->assertCacheHeaders($response);
     }
 
-    public function getOneDataProvider(): array
+    public static function getOneDataProvider(): array
     {
         return [
             [
@@ -81,9 +80,7 @@ final class PodcastEpisodeControllerTest extends AbstractApiController
         ];
     }
 
-    /**
-     * @dataProvider getListDataProviderByPodcast
-     */
+    #[DataProvider('getListDataProviderByPodcast')]
     public function testGetListByPodcast(
         string $publicExportSlug,
         string $podcast,
@@ -104,7 +101,7 @@ final class PodcastEpisodeControllerTest extends AbstractApiController
         }
     }
 
-    public function getListDataProviderByPodcast(): array
+    public static function getListDataProviderByPodcast(): array
     {
         return [
             [
@@ -125,9 +122,7 @@ final class PodcastEpisodeControllerTest extends AbstractApiController
         ];
     }
 
-    /**
-     * @dataProvider getListNotFoundDataProvider
-     */
+    #[DataProvider('getListNotFoundDataProvider')]
     public function testGetListNotFound(
         string $publicExportSlug,
         string $podcast,
@@ -139,7 +134,7 @@ final class PodcastEpisodeControllerTest extends AbstractApiController
         $this->assertCacheHeaders($response);
     }
 
-    public function getListNotFoundDataProvider(): array
+    public static function getListNotFoundDataProvider(): array
     {
         return [
             [
@@ -149,9 +144,7 @@ final class PodcastEpisodeControllerTest extends AbstractApiController
         ];
     }
 
-    /**
-     * @dataProvider getListDataProvider
-     */
+    #[DataProvider('getListDataProvider')]
     public function testGetList(
         string $publicExportSlug,
         string $podcast,
@@ -172,7 +165,7 @@ final class PodcastEpisodeControllerTest extends AbstractApiController
         }
     }
 
-    public function getListDataProvider(): array
+    public static function getListDataProvider(): array
     {
         return [
             [

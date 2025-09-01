@@ -17,10 +17,10 @@ abstract class AbstractAssetPubDecorator
 
     public static function getBaseInstance(Asset $asset, string $metadataTitleField): static
     {
-        return (new static())
-            ->setAsset($asset)
-            ->setMetadataTitleField($metadataTitleField)
-        ;
+        $instance = new static();
+        $instance->setAsset($asset);
+        $instance->setMetadataTitleField($metadataTitleField);
+        return $instance;
     }
 
     public function getMetadataTitleField(): string

@@ -43,7 +43,7 @@ final readonly class Fs1ApiMigrateConfig
         );
     }
 
-    public function getStatus(): ?string
+    public function getStatus(): string
     {
         return $this->status;
     }

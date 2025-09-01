@@ -6,15 +6,19 @@ namespace App\Domain\ExtSystem;
 
 use AnzuSystems\CoreDamBundle\App;
 use AnzuSystems\CoreDamBundle\Domain\ExtSystem\ExtSystemCallbackInterface;
+use AnzuSystems\CoreDamBundle\Entity\Asset;
 use AnzuSystems\CoreDamBundle\Entity\ImageFile;
 use AnzuSystems\CoreDamBundle\Entity\JobImageCopy;
 use AnzuSystems\CoreDamBundle\Model\Dto\Job\JobImageCopyResultDto;
 use AnzuSystems\CoreDamBundle\Model\Dto\Job\JobImageCopyResultItemDto;
 use AnzuSystems\CoreDamBundle\Model\Enum\AssetFileProcessStatus;
 use AnzuSystems\CoreDamBundle\Repository\AssetRepository;
+use App\Domain\Asset\AssetCmsFactory;
 use App\HttpClient\CmsClient;
+use App\Model\Domain\Asset\AssetCmsSysDto;
 use App\Model\Domain\Image\CmsImageUsageDto;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Uid\Uuid;
 
 abstract readonly class AbstractExtSystemCallback implements ExtSystemCallbackInterface
@@ -25,6 +29,7 @@ abstract readonly class AbstractExtSystemCallback implements ExtSystemCallbackIn
     public function __construct(
         private AssetRepository $assetRepository,
         private CmsClient $cmsClient,
+        private AssetCmsFactory $assetCmsFactory,
     ) {
     }
 
@@ -32,6 +37,18 @@ abstract readonly class AbstractExtSystemCallback implements ExtSystemCallbackIn
     {
         $this->cmsClient->notifyFinishedJobImageCopy(
             $this->createJobImageCopyResult($jobImageCopy)
+        );
+    }
+
+    /**
+     * @param Collection<array-key, Asset> $collection
+     */
+    public function notifyAssetsChanged(Collection $collection): void
+    {
+        $this->cmsClient->notifyAssetChanged(
+            $collection->map(
+                fn (Asset $asset): AssetCmsSysDto => $this->assetCmsFactory->create($asset)
+            )
         );
     }
 
@@ -57,10 +74,10 @@ abstract readonly class AbstractExtSystemCallback implements ExtSystemCallbackIn
 
         foreach ($jobImageCopy->getItems() as $item) {
             $targetAsset = is_string($item->getTargetAssetId()) ? $this->assetRepository->find($item->getTargetAssetId()) : null;
-            $targetMainFile = $targetAsset?->getMainFile();
+            $targetMainFile = ($targetAsset instanceof Asset) ? $targetAsset->getMainFile() : null;
 
             $sourceAsset = $this->assetRepository->find($item->getSourceAssetId());
-            $sourceMainFile = $sourceAsset?->getMainFile();
+            $sourceMainFile = ($sourceAsset instanceof Asset) ? $sourceAsset->getMainFile() : null;
 
             if ($sourceMainFile instanceof ImageFile &&
                 $targetMainFile instanceof ImageFile &&

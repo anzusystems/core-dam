@@ -18,14 +18,14 @@ final class RoiDtoLegacyFixer
         // fixed point Y to be in range <0, imageWidth>
         $roiDto->setPointY(min(max(0, $roiDto->getPointY()), $imageHeight));
 
-        $roiEndX = ($roiDto->getPercentageWidth() * $imageWidth) + $roiDto->getPointX();
+        $roiEndX = ((float) $roiDto->getPercentageWidth() * (float) $imageWidth) + (float) $roiDto->getPointX();
         if ($roiEndX > $imageWidth) {
             $roiDto->setPercentageWidth($this->round(
                 ($imageWidth - $roiDto->getPointX()) / $imageWidth
             ));
         }
 
-        $roiEndY = ($roiDto->getPercentageHeight() * $imageHeight) + $roiDto->getPointY();
+        $roiEndY = ((float) $roiDto->getPercentageHeight() * (float) $imageHeight) + (float) $roiDto->getPointY();
         if ($roiEndY > $imageHeight) {
             $roiDto->setPercentageHeight($this->round(($imageHeight - $roiDto->getPointY()) / $imageHeight));
         }
@@ -35,6 +35,6 @@ final class RoiDtoLegacyFixer
 
     private function round(float $value): float
     {
-        return floor(($value * 100)) / 100;
+        return floor(((float) $value * 100.0)) / 100.0;
     }
 }

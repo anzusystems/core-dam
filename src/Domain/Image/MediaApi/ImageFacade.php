@@ -7,7 +7,6 @@ namespace App\Domain\Image\MediaApi;
 use AnzuSystems\CommonBundle\Exception\ValidationException;
 use AnzuSystems\CommonBundle\Validator\Validator;
 use AnzuSystems\CoreDamBundle\Domain\Asset\AssetTextsProcessor;
-use AnzuSystems\CoreDamBundle\Domain\AssetFile\AssetFileManagerProvider;
 use AnzuSystems\CoreDamBundle\Domain\AssetFile\AssetFileMessageDispatcher;
 use AnzuSystems\CoreDamBundle\Entity\AssetFile;
 use AnzuSystems\CoreDamBundle\Entity\ImageFile;
@@ -33,7 +32,6 @@ final class ImageFacade
     public function __construct(
         private readonly Validator $validator,
         private readonly ImageFactory $factory,
-        private readonly AssetFileManagerProvider $assetFileManagerProvider,
         private readonly AssetFileMessageDispatcher $assetFileMessageDispatcher,
         private readonly ImageManager $imageManager,
         private readonly AssetTextsProcessor $assetTextsProcessor,

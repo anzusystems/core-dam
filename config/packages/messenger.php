@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use AnzuSystems\CommonBundle\Messenger\Middleware\ContextIdentityMiddleware;
+use App\Messenger\Message\AssetChangedMessage;
 use App\Messenger\Message\AssetFileRouteMessage;
 use App\Messenger\Message\CdnPurgeMessage;
 use App\Messenger\Message\ImageCachePurgeMessage;
@@ -14,6 +15,7 @@ use Symfony\Config\FrameworkConfig;
 return static function (FrameworkConfig $config): void {
     $appName = 'core_dam';
     $cachePurge = 'anzu_core_dam_cache_purge';
+    $assetChangedSync = 'anzu_core_dam_asset_changed_sync';
     $anzuCoreMediaApiCallback = 'anzu_core_dam_media_api_callback';
 
     $messengerConfig = $config->messenger();
@@ -24,6 +26,14 @@ return static function (FrameworkConfig $config): void {
                 'topic' => createBasicTopicConfig($cachePurge, $appName),
                 'subscription' => createBasicSubscriptionConfig($cachePurge, $appName),
             ])
+    ;
+    $messengerConfig
+        ->transport($assetChangedSync)
+        ->dsn(env('MESSENGER_TRANSPORT_DSN'))
+        ->options([
+            'topic' => createBasicTopicConfig($assetChangedSync, $appName),
+            'subscription' => createBasicSubscriptionConfig($assetChangedSync, $appName),
+        ])
     ;
     $messengerConfig
         ->transport($anzuCoreMediaApiCallback)
@@ -53,6 +63,10 @@ return static function (FrameworkConfig $config): void {
     $messengerConfig
         ->routing(MediaApiCallbackMessage::class)
         ->senders([$anzuCoreMediaApiCallback])
+    ;
+    $messengerConfig
+        ->routing(AssetChangedMessage::class)
+        ->senders([$assetChangedSync])
     ;
 };
 

@@ -51,21 +51,21 @@ class ImageListDto
         /** @var User $modifiedBy */
         $modifiedBy = $imageFile->getModifiedBy();
 
-        return (new static())
-            ->setImageFile($imageFile)
-            ->setTags(ImageTagsDto::getInstance($imageFile))
-            ->setTexts(ImageTextsDto::getInstance($imageFile))
-            ->setFileAttributes(ImageFileAttributesDto::getInstance($imageFile))
-            ->setDates(ImageDatesDto::getInstance($imageFile))
-            ->setProcess(ImageProcessDto::getInstance($imageFile))
-            ->setAssetFlags(ImageAssetFlagsDto::getInstance($imageFile))
-            ->setAuthors($authors)
-            ->setImageAttributes(ImageAttributesDto::getInstance($imageFile))
-            ->setCreatedAt($imageFile->getCreatedAt())
-            ->setModifiedAt($imageFile->getModifiedAt())
-            ->setCreatedBy($createdBy)
-            ->setModifiedBy($modifiedBy)
-        ;
+        $instance = new static();
+        $instance->setImageFile($imageFile);
+        $instance->setTags(ImageTagsDto::getInstance($imageFile));
+        $instance->setTexts(ImageTextsDto::getInstance($imageFile));
+        $instance->setFileAttributes(ImageFileAttributesDto::getInstance($imageFile));
+        $instance->setDates(ImageDatesDto::getInstance($imageFile));
+        $instance->setProcess(ImageProcessDto::getInstance($imageFile));
+        $instance->setAssetFlags(ImageAssetFlagsDto::getInstance($imageFile));
+        $instance->setAuthors($authors);
+        $instance->setImageAttributes(ImageAttributesDto::getInstance($imageFile));
+        $instance->setCreatedAt($imageFile->getCreatedAt());
+        $instance->setModifiedAt($imageFile->getModifiedAt());
+        $instance->setCreatedBy($createdBy);
+        $instance->setModifiedBy($modifiedBy);
+        return $instance;
     }
 
     #[Serialize(serializedName: 'id', handler: EntityIdHandler::class)]

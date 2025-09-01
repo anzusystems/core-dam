@@ -5,11 +5,14 @@ declare(strict_types=1);
 namespace App\Event\Listener;
 
 use AnzuSystems\CoreDamBundle\Domain\VideoShowEpisode\VideoShowEpisodeManager;
+use AnzuSystems\CoreDamBundle\Entity\Asset;
+use AnzuSystems\CoreDamBundle\Event\Dispatcher\AssetChangedEventDispatcher;
 use AnzuSystems\CoreDamBundle\Event\DistributionStatusEvent;
 use AnzuSystems\CoreDamBundle\Model\Enum\DistributionProcessStatus;
 use AnzuSystems\CoreDamBundle\Repository\AssetRepository;
 use AnzuSystems\CoreDamBundle\Traits\MessageBusAwareTrait;
 use App\Configuration\ConfigurationProvider;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 
 #[AsEventListener(event: DistributionStatusEvent::class)]
@@ -21,6 +24,7 @@ final class DistributionStatusEventListener
         private readonly AssetRepository $assetRepository,
         private readonly VideoShowEpisodeManager $videoShowEpisodeManager,
         private readonly ConfigurationProvider $configurationProvider,
+        private readonly AssetChangedEventDispatcher $assetMetadataBulkEventDispatcher,
     ) {
     }
 
@@ -41,6 +45,10 @@ final class DistributionStatusEventListener
         }
 
         $changed = false;
+        if (false === $asset instanceof Asset) {
+            return;
+        }
+
         foreach ($asset->getVideoEpisodes() as $videoEpisode) {
             if (
                 false === $videoEpisode->getFlags()->isMobilePublicExportEnabled() ||
@@ -53,6 +61,8 @@ final class DistributionStatusEventListener
                 $this->videoShowEpisodeManager->updateExisting($videoEpisode, false);
             }
         }
+
+        $this->assetMetadataBulkEventDispatcher->dispatchAssetChangedEvent(new ArrayCollection([$asset]));
 
         if ($changed) {
             $this->videoShowEpisodeManager->flush();

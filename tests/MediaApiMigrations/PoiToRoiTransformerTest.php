@@ -13,6 +13,7 @@ use Jcupitt\Vips\BandFormat;
 use Jcupitt\Vips\Extend;
 use Jcupitt\Vips\Image;
 use Jcupitt\Vips\Interpretation;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 final class PoiToRoiTransformerTest extends AnzuKernelTestCase
 {
@@ -25,9 +26,7 @@ final class PoiToRoiTransformerTest extends AnzuKernelTestCase
     }
 
 
-    /**
-     * @dataProvider transformPoiDataProvider
-     */
+    #[DataProvider('transformPoiDataProvider')]
     public function testTransformPoi(PoiDto $dto, RoiDto $expectedRoiDto): void
     {
         $roi = $this->transformer->transformPoi($dto);
@@ -38,7 +37,7 @@ final class PoiToRoiTransformerTest extends AnzuKernelTestCase
         $this->assertSame($expectedRoiDto->getPercentageHeight(), $roi->getPercentageHeight());
     }
 
-    public function transformPoiDataProvider(): array
+    public static function transformPoiDataProvider(): array
     {
         return [
             [

@@ -14,6 +14,7 @@ use App\Entity\User;
 use Doctrine\ORM\Id\AssignedGenerator;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Exception;
+use RuntimeException;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\QuestionHelper;
@@ -60,8 +61,12 @@ final class CreateMandatoryUsersCommand extends Command
         $consoleUserId = AnzuApp::getUserIdConsole();
         $adminUserId = AnzuApp::getUserIdAdmin();
 
-        /** @var QuestionHelper questionHelper */
-        $this->questionHelper = $this->getHelper('question');
+        /** @var QuestionHelper $questionHelper */
+        $questionHelper = $this->getHelper('question');
+        if (false === $questionHelper instanceof QuestionHelper) {
+            throw new RuntimeException('Question helper not available');
+        }
+        $this->questionHelper = $questionHelper;
 
         $userClassMetadata = $this->userManager->getEntityManager()->getClassMetadata(User::class);
         $userClassMetadata->setIdGenerator(new AssignedGenerator());

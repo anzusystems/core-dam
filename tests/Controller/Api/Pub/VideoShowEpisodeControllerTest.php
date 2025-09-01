@@ -14,13 +14,12 @@ use AnzuSystems\CoreDamBundle\Entity\VideoShow;
 use AnzuSystems\CoreDamBundle\Entity\VideoShowEpisode;
 use App\Tests\Controller\Api\AbstractApiController;
 use App\Tests\data\Model\ApiClientFirewall;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\HttpFoundation\Response;
 
 final class VideoShowEpisodeControllerTest extends AbstractApiController
 {
-    /**
-     * @dataProvider getOneDataProvider
-     */
+    #[DataProvider('getOneDataProvider')]
     public function testGetOne(
         string $publicExportSlug,
         string $videoShowEpisodeId,
@@ -51,7 +50,7 @@ final class VideoShowEpisodeControllerTest extends AbstractApiController
         $this->assertCacheHeaders($response);
     }
 
-    public function getOneDataProvider(): array
+    public static function getOneDataProvider(): array
     {
         return [
             [
@@ -92,9 +91,7 @@ final class VideoShowEpisodeControllerTest extends AbstractApiController
         ];
     }
 
-    /**
-     * @dataProvider getListDataProvider
-     */
+    #[DataProvider('getListDataProvider')]
     public function testGetList(
         string $publicExportSlug,
         string $videoShow,
@@ -115,7 +112,7 @@ final class VideoShowEpisodeControllerTest extends AbstractApiController
         }
     }
 
-    public function getListDataProvider(): array
+    public static function getListDataProvider(): array
     {
         return [
             [
@@ -130,9 +127,7 @@ final class VideoShowEpisodeControllerTest extends AbstractApiController
         ];
     }
 
-    /**
-     * @dataProvider getListNotFoundDataProvider
-     */
+    #[DataProvider('getListNotFoundDataProvider')]
     public function testGetListNotFound(
         string $publicExportSlug,
         string $videoShow,
@@ -144,7 +139,7 @@ final class VideoShowEpisodeControllerTest extends AbstractApiController
         $this->assertCacheHeaders($response);
     }
 
-    public function getListNotFoundDataProvider(): array
+    public static function getListNotFoundDataProvider(): array
     {
         return [
             [

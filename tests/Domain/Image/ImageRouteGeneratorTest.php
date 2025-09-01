@@ -10,6 +10,7 @@ use AnzuSystems\CoreDamBundle\DataFixtures\ImageFixtures as CoraDamBundleImageFi
 use AnzuSystems\CoreDamBundle\Repository\ImageFileRepository;
 use App\DataFixtures\ImageFixtures;
 use App\Domain\Image\ImageRouteGenerator;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 final class ImageRouteGeneratorTest extends AnzuKernelTestCase
 {
@@ -86,11 +87,10 @@ final class ImageRouteGeneratorTest extends AnzuKernelTestCase
     }
 
     /**
-     * @dataProvider generateAllPublicDomainPathsDataProvider
-     *
      * @param array<int, int> $roiPositions
      * @param array<int, string> $expectedRoutes
      */
+    #[DataProvider('generateAllPublicDomainPathsDataProvider')]
     public function testGenerateAllPublicDomainPaths(array $roiPositions, string $imageId, array $expectedRoutes): void
     {
         $image = $this->imageFileRepository->find($imageId);
@@ -107,7 +107,7 @@ final class ImageRouteGeneratorTest extends AnzuKernelTestCase
         );
     }
 
-    private function generateAllPublicDomainPathsDataProvider(): array
+    public static function generateAllPublicDomainPathsDataProvider(): array
     {
         return [
             [

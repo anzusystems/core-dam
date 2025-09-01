@@ -63,7 +63,6 @@ final class UserFixtures extends AbstractFixtures
     {
         /** @var UserDto $userDto */
         foreach ($progressBar->iterate($this->getData()) as $userDto => $user) {
-            /** @var User|null $existingUser */
             if ($user->getId()) {
                 /** @var User $updated */
                 $updated = $this->userManager->updateAnzuUser($user, $userDto);

@@ -7,13 +7,12 @@ namespace App\Tests\Controller\Api\Pub;
 use AnzuSystems\CoreDamBundle\DataFixtures\PodcastFixtures;
 use App\Tests\Controller\Api\AbstractApiController;
 use App\Tests\data\Model\ApiClientFirewall;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\HttpFoundation\Response;
 
 final class PodcastControllerTest extends AbstractApiController
 {
-    /**
-     * @dataProvider getOneDataProvider
-     */
+    #[DataProvider('getOneDataProvider')]
     public function testGetOne(
         string $publicExportSlug,
         string $podcastId,
@@ -29,7 +28,7 @@ final class PodcastControllerTest extends AbstractApiController
         $this->assertCacheHeaders($response);
     }
 
-    public function getOneDataProvider(): array
+    public static function getOneDataProvider(): array
     {
         return [
             [
@@ -70,9 +69,7 @@ final class PodcastControllerTest extends AbstractApiController
         ];
     }
 
-    /**
-     * @dataProvider getListDataProvider
-     */
+    #[DataProvider('getListDataProvider')]
     public function testGetList(
         string $publicExportSlug,
         array $expectedPodcastList,
@@ -92,7 +89,7 @@ final class PodcastControllerTest extends AbstractApiController
         }
     }
 
-    public function getListDataProvider(): array
+    public static function getListDataProvider(): array
     {
         return [
             [
@@ -146,9 +143,7 @@ final class PodcastControllerTest extends AbstractApiController
         ];
     }
 
-    /**
-     * @dataProvider getListNotFoundDataProvider
-     */
+    #[DataProvider('getListNotFoundDataProvider')]
     public function testGetListNotFound(
         string $publicExportSlug,
     ): void {
@@ -159,7 +154,7 @@ final class PodcastControllerTest extends AbstractApiController
         $this->assertCacheHeaders($response);
     }
 
-    public function getListNotFoundDataProvider(): array
+    public static function getListNotFoundDataProvider(): array
     {
         return [
             [
@@ -168,9 +163,7 @@ final class PodcastControllerTest extends AbstractApiController
         ];
     }
 
-    /**
-     * @dataProvider getListInvalidApiParamsDataProvider
-     */
+    #[DataProvider('getListInvalidApiParamsDataProvider')]
     public function testListInvalidApiParams(
         string $publicExportSlug,
         array $pubApiParams = [],
@@ -183,7 +176,7 @@ final class PodcastControllerTest extends AbstractApiController
         $this->assertEquals(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
     }
 
-    public function getListInvalidApiParamsDataProvider(): array
+    public static function getListInvalidApiParamsDataProvider(): array
     {
         return [
             [

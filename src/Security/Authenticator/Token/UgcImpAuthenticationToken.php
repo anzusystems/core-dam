@@ -11,10 +11,10 @@ use Symfony\Component\Security\Http\Authenticator\Token\PostAuthenticationToken;
 final class UgcImpAuthenticationToken extends PostAuthenticationToken
 {
     public function __construct(
-        readonly UserInterface $user,
-        readonly string $firewallName,
-        readonly array $roles,
-        readonly private User $originalUser
+        public readonly UserInterface $user,
+        public readonly string $firewallName,
+        public readonly array $roles,
+        private readonly User $originalUser
     ) {
         parent::__construct($user, $firewallName, $roles);
     }

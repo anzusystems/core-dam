@@ -9,7 +9,6 @@ use AnzuSystems\CoreDamBundle\Entity\Podcast;
 use AnzuSystems\CoreDamBundle\Entity\PodcastEpisode;
 use AnzuSystems\CoreDamBundle\Entity\PublicExport;
 use App\App;
-use App\Domain\Asset\AssetPubFacade;
 use App\Domain\PodcastEpisode\PodcastEpisodePubBuilder;
 use App\Model\Domain\PodcastEpisode\PodcastEpisodeLatestPubDecorator;
 use App\Model\Request\ApiPubParams;
@@ -20,7 +19,6 @@ final readonly class PodcastEpisodeRepositoryDecorator
 {
     public function __construct(
         private PodcastEpisodeRepository $podcastEpisodeRepository,
-        private AssetPubFacade $assetPubFacade,
         private PodcastEpisodePubBuilder $podcastEpisodePubBuilder,
     ) {
     }

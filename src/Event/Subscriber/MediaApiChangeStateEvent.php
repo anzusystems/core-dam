@@ -7,13 +7,11 @@ namespace App\Event\Subscriber;
 use AnzuSystems\CoreDamBundle\Entity\ImageFile;
 use AnzuSystems\CoreDamBundle\Event\AssetFileChangeStateEvent;
 use AnzuSystems\CoreDamBundle\Model\Enum\AssetFileProcessStatus;
-use AnzuSystems\CoreDamBundle\Repository\AudioFileRepository;
 use AnzuSystems\CoreDamBundle\Repository\ImageFileRepository;
 use AnzuSystems\CoreDamBundle\Traits\MessageBusAwareTrait;
 use AnzuSystems\SerializerBundle\Exception\SerializerException;
 use App\Domain\AssetMetadata\AssetMetadataManager;
 use App\Domain\Image\MediaApi\ImageFacade;
-use App\Domain\Image\MediaApi\ImageManager;
 use App\Model\Domain\AssetMetadata\MediaApiMetadata;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -22,8 +20,6 @@ final class MediaApiChangeStateEvent implements EventSubscriberInterface
     use MessageBusAwareTrait;
 
     public function __construct(
-        private readonly AudioFileRepository $audioFileRepository,
-        private readonly ImageManager $imageManager,
         private readonly AssetMetadataManager $assetMetadataManager,
         private readonly ImageFileRepository $imageFileRepository,
         private readonly ImageFacade $imageFacade
@@ -66,7 +62,7 @@ final class MediaApiChangeStateEvent implements EventSubscriberInterface
             $imageFile->getAssetAttributes()->getOriginAssetId()
         );
 
-        if ($originAssetFile && $imageFile->getAssetAttributes()->getStatus()->is(AssetFileProcessStatus::Duplicate)) {
+        if ($originAssetFile instanceof ImageFile && $imageFile->getAssetAttributes()->getStatus()->is(AssetFileProcessStatus::Duplicate)) {
             $this->imageFacade->updateFromDuplicate($originAssetFile, $imageFile);
         }
     }

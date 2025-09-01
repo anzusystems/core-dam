@@ -52,7 +52,11 @@ final class UgcAuthenticator extends AbstractUgcAuthenticator
         $plainToken = $this->getPlainAccessTokenFromRequest($request);
 
         try {
-            return $this->jwtUgcConfiguration->parser()->parse($plainToken);
+            $token = $this->jwtUgcConfiguration->parser()->parse($plainToken);
+            if (false === $token instanceof Plain) {
+                throw new AccessDeniedException('Invalid token type');
+            }
+            return $token;
         } catch (Exception $exception) {
             throw new AccessDeniedException($plainToken, $exception);
         }

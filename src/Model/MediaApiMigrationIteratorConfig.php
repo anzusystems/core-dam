@@ -9,7 +9,6 @@ final readonly class MediaApiMigrationIteratorConfig
     public function __construct(
         private ?int $fromId,
         private ?int $toId,
-        private ?string $status,
     ) {
     }
 

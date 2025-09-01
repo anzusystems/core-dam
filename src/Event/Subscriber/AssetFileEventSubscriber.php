@@ -36,25 +36,27 @@ final class AssetFileEventSubscriber implements EventSubscriberInterface
     {
         $assetFile = $event->getAsset();
         if (
-            $assetFile->getAssetAttributes()->getStatus()->is(AssetFileProcessStatus::Processed) &&
-            $assetFile instanceof AudioFile
+            $assetFile instanceof AudioFile &&
+            $assetFile->getAssetAttributes()->getStatus()->is(AssetFileProcessStatus::Processed)
         ) {
             $this->automat->makeAudioPublicUrl($assetFile);
             $this->automat->tryToDistribute($assetFile);
         }
 
         if (
-            $assetFile->getAssetAttributes()->getStatus()->is(AssetFileProcessStatus::Duplicate) &&
             $assetFile instanceof AudioFile &&
-            false === empty($assetFile->getAssetAttributes()->getOriginAssetId())
+            false === empty($assetFile->getAssetAttributes()->getOriginAssetId()) &&
+            $assetFile->getAssetAttributes()->getStatus()->is(AssetFileProcessStatus::Duplicate)
         ) {
             $originAudioFile = $this->audioFileRepository->find($assetFile->getAssetAttributes()->getOriginAssetId());
             if (null === $originAudioFile) {
                 return;
             }
 
-            $this->automat->makeAudioPublicUrl($originAudioFile);
-            $this->automat->tryToDistribute($originAudioFile);
+            if ($originAudioFile instanceof AudioFile) {
+                $this->automat->makeAudioPublicUrl($originAudioFile);
+                $this->automat->tryToDistribute($originAudioFile);
+            }
         }
     }
 }

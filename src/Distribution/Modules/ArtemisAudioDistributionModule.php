@@ -8,6 +8,7 @@ use AnzuSystems\CoreDamBundle\Distribution\AbstractDistributionModule;
 use AnzuSystems\CoreDamBundle\Distribution\CustomDistributionInterface;
 use AnzuSystems\CoreDamBundle\Distribution\DistributionAdapterInterface;
 use AnzuSystems\CoreDamBundle\Distribution\DistributionModuleInterface;
+use AnzuSystems\CoreDamBundle\Entity\AudioFile;
 use AnzuSystems\CoreDamBundle\Entity\Distribution;
 use AnzuSystems\CoreDamBundle\Model\Enum\AssetType;
 use AnzuSystems\CoreDamBundle\Repository\AudioFileRepository;
@@ -16,6 +17,7 @@ use App\Distribution\Modules\Factory\ArtemisAudioDtoFactory;
 use App\Domain\ArtemisAudioDistribution\ArtemisAudioDistributionAdapter;
 use App\Entity\ArtemisAudioDistribution;
 use App\HttpClient\ArtemisClient;
+use RuntimeException;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 final class ArtemisAudioDistributionModule extends AbstractDistributionModule implements DistributionModuleInterface, CustomDistributionInterface
@@ -43,7 +45,7 @@ final class ArtemisAudioDistributionModule extends AbstractDistributionModule im
         }
 
         $mediaDto = $this->artemisAudioDtoFactory->createMediaDto(
-            assetFile: $assetFile,
+            assetFile: $assetFile instanceof AudioFile ? $assetFile : throw new RuntimeException('Invalid audio file type'),
             distribution: $distribution,
         );
 

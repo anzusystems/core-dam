@@ -119,7 +119,8 @@ final class ImageUgcLegacyFacade extends AbstractAssetFileFacade
         $this->accessDenier->denyUnlessGranted(UgcVoter::DAM_UGC_ACCESS, $oldImageFile);
 
         $updatedImage = null;
-        if (false === $onlyUndescribed || $oldImageFile->getAsset()->getAssetFlags()->isNotDescribed()) {
+        if ($oldImageFile instanceof ImageFile &&
+            (false === $onlyUndescribed || $oldImageFile->getAsset()->getAssetFlags()->isNotDescribed())) {
             $updatedImage = $this->imageUgcLegacyManager->updateUgcImage($oldImageFile, $imageUpdateDto, $flush);
         }
 

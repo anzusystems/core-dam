@@ -85,6 +85,40 @@ final readonly class AudioAssetPubBuilder
         return null;
     }
 
+    public function getFreeAudioMedia(
+        AssetSlot $slot,
+        ArtemisAudioDistributionConfiguration $configuration,
+        ?PodcastEpisode $podcastEpisode = null
+    ): ?AudioAssetMediaPubDecorator {
+        $freeSlotAssetFile = $slot->getAudio();
+        if (null === $freeSlotAssetFile) {
+            return null;
+        }
+
+        if (null === $podcastEpisode) {
+            $mainUrl = $this->assetFileRouteRepository->findMainByAssetFile((string) $freeSlotAssetFile->getId());
+            if ($mainUrl) {
+                return AudioAssetMediaPubDecorator::getInstance(
+                    type: $configuration->getAudioFreeSlotName(),
+                    audioFile: $freeSlotAssetFile,
+                    linkUrl: $this->assetFileRouteGenerator->getFullUrl($mainUrl)
+                );
+            }
+
+            return null;
+        }
+
+        if (StringHelper::isNotEmpty($podcastEpisode->getAttributes()->getRssUrl())) {
+            return AudioAssetMediaPubDecorator::getInstance(
+                type: $configuration->getAudioFreeSlotName(),
+                audioFile: $freeSlotAssetFile,
+                linkUrl: $podcastEpisode->getAttributes()->getRssUrl()
+            );
+        }
+
+        return null;
+    }
+
     private function getAudioSlotDecorator(
         AssetSlot $slot,
         ArtemisAudioDistributionConfiguration $configuration,
@@ -126,40 +160,6 @@ final readonly class AudioAssetPubBuilder
                 type: $configuration->getAudioPremiumSlotName(),
                 audioFile: $premiumSlotAssetFile,
                 linkUrl: $this->assetFileRouteGenerator->getFullUrl($mainUrl)
-            );
-        }
-
-        return null;
-    }
-
-    private function getFreeAudioMedia(
-        AssetSlot $slot,
-        ArtemisAudioDistributionConfiguration $configuration,
-        ?PodcastEpisode $podcastEpisode = null
-    ): ?AudioAssetMediaPubDecorator {
-        $freeSlotAssetFile = $slot->getAudio();
-        if (null === $freeSlotAssetFile) {
-            return null;
-        }
-
-        if (null === $podcastEpisode) {
-            $mainUrl = $this->assetFileRouteRepository->findMainByAssetFile((string) $freeSlotAssetFile->getId());
-            if ($mainUrl) {
-                return AudioAssetMediaPubDecorator::getInstance(
-                    type: $configuration->getAudioFreeSlotName(),
-                    audioFile: $freeSlotAssetFile,
-                    linkUrl: $this->assetFileRouteGenerator->getFullUrl($mainUrl)
-                );
-            }
-
-            return null;
-        }
-
-        if (StringHelper::isNotEmpty($podcastEpisode->getAttributes()->getRssUrl())) {
-            return AudioAssetMediaPubDecorator::getInstance(
-                type: $configuration->getAudioFreeSlotName(),
-                audioFile: $freeSlotAssetFile,
-                linkUrl: $podcastEpisode->getAttributes()->getRssUrl()
             );
         }
 

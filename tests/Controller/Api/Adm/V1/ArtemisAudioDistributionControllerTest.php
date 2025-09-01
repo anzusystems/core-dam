@@ -25,6 +25,7 @@ use App\Entity\ArtemisAudioDistribution;
 use App\Model\Dto\Artemis\ArtemisMediaAuthorDto;
 use App\Model\Dto\Artemis\ArtemisMediaTagDto;
 use App\Tests\Controller\Api\AbstractApiController;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\HttpFoundation\Response;
 
 final class ArtemisAudioDistributionControllerTest extends AbstractApiController
@@ -62,9 +63,7 @@ final class ArtemisAudioDistributionControllerTest extends AbstractApiController
         $this->assetFileRouteManager = $this->getService(AssetFileRouteManager::class);
     }
 
-    /**
-     * @dataProvider preparePayloadDataProvider
-     */
+    #[DataProvider('preparePayloadDataProvider')]
     public function testPreparePayload(string $id, array $expectedData): void
     {
         $this->setupAudioData();
@@ -80,7 +79,7 @@ final class ArtemisAudioDistributionControllerTest extends AbstractApiController
         $this->assertEqualsCanonicalizing($expectedData, $data['customData']);
     }
 
-    private function preparePayloadDataProvider(): array
+    public static function preparePayloadDataProvider(): array
     {
         return [
             [

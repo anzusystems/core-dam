@@ -6,6 +6,7 @@ namespace App\Domain\Asset;
 
 use AnzuSystems\CoreDamBundle\Domain\AssetFile\AssetFileFactory;
 use AnzuSystems\CoreDamBundle\Entity\AssetFile;
+use AnzuSystems\CoreDamBundle\Entity\AssetLicence;
 use AnzuSystems\CoreDamBundle\Exception\DomainException;
 use AnzuSystems\CoreDamBundle\Helper\FileNameHelper;
 use AnzuSystems\CoreDamBundle\Repository\AssetLicenceRepository;
@@ -18,6 +19,7 @@ use DateTimeImmutable;
 use DateTimeZone;
 use Doctrine\ORM\NonUniqueResultException;
 use League\Flysystem\FilesystemException;
+use RuntimeException;
 
 final readonly class AssetRtmpFactory
 {
@@ -52,7 +54,7 @@ final readonly class AssetRtmpFactory
         $assetFile = $this->assetFileFactory->createAssetFileForStorage(
             storageName: $rtmpConfig->getStorageName(),
             filePath: $dto->getPath(),
-            licence: $licence
+            licence: $licence instanceof AssetLicence ? $licence : throw new RuntimeException('Invalid licence type')
         );
         $this->setupMetadata($assetFile, $dto);
 
@@ -81,7 +83,9 @@ final readonly class AssetRtmpFactory
 
         $keyword = $this->keywordRepository->find($rtmpConfig->getKeywordId());
         if ($keyword) {
-            $assetFile->getAsset()->getKeywords()->add($keyword);
+            if ($keyword instanceof \AnzuSystems\CoreDamBundle\Entity\Keyword) {
+                $assetFile->getAsset()->getKeywords()->add($keyword);
+            }
         }
     }
 }

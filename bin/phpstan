@@ -1,0 +1,13 @@
+#!/bin/bash
+# Script used to run PSALM check in the application container
+
+PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")"/.. && pwd)"
+
+cd "${PROJECT_ROOT}" || exit 1
+
+if [ -f /.dockerenv ]; then
+    vendor/bin/phpstan analyse
+    exit
+fi
+
+bin/docker-compose exec core-dam bash -c \'bin/phpstan\'

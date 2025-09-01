@@ -12,9 +12,9 @@ abstract class AbstractAssetThumbnailPubDecorator
 
     public static function getInstance(?ImageFile $imageFile): static
     {
-        return (new static())
-            ->setImageFile($imageFile)
-        ;
+        $instance = new static();
+        $instance->setImageFile($imageFile);
+        return $instance;
     }
 
     public function setImageFile(?ImageFile $imageFile): self

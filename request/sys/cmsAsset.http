@@ -1,0 +1,5 @@
+### Create file from path
+GET {{host}}/api/sys/v1/cms/asset?ids=1f055b23-b926-6654-ab23-0154433981cc,1f0663fb-460c-6e5c-9bd5-1da5951939c8,1f05590d-037e-68c8-99f6-93aa6656b734
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{cmsSysUserApiToken}}

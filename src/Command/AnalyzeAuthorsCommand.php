@@ -16,7 +16,6 @@ use Exception;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
-use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -31,8 +30,6 @@ final class AnalyzeAuthorsCommand extends Command
     private const string EXIF_AUTHORS_FILE = 'exif_authors.csv';
     private const string ENTITY_AUTHORS_FILE = 'entity_authors.csv';
     private const string ARG_EXT_SYSTEM_ID = 'extSystemId';
-
-    private QuestionHelper $questionHelper;
 
     public function __construct(
         private readonly AssetFileRepository $assetFileRepository,

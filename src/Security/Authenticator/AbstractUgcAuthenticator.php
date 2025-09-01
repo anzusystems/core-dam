@@ -19,7 +19,7 @@ use Symfony\Component\Security\Http\EntryPoint\AuthenticationEntryPointInterface
 
 abstract class AbstractUgcAuthenticator extends AbstractAuthenticator implements AuthenticationEntryPointInterface
 {
-    public function start(Request $request, AuthenticationException $authException = null): JsonResponse
+    public function start(Request $request, ?AuthenticationException $authException = null): JsonResponse
     {
         return $this->createUnauthorizedResponse();
     }

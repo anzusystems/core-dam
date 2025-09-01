@@ -15,6 +15,7 @@ use App\MediaApiMigrations\PoiToRoiTransformer;
 use App\Model\Domain\Asset\AssetFileMediaApiDecorator;
 use App\Model\Dto\Image\PoiDto;
 use League\Flysystem\FilesystemException;
+use RuntimeException;
 
 final readonly class RoiFactory
 {
@@ -75,6 +76,9 @@ final readonly class RoiFactory
 
         $imageSize = getimagesize($file->getRealPath());
 
+        if (false === $imageSize) {
+            throw new RuntimeException('Unable to get image size');
+        }
         return [$imageSize[0], $imageSize[1]];
     }
 

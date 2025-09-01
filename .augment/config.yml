@@ -1,0 +1,33 @@
+# Augment Configuration for ANZU Core-CMS
+
+project:
+  name: "ANZU Core-CMS"
+  type: "symfony-php"
+
+# Critical rules for agents
+rules:
+  # Use appropriate wrappers for script execution
+  script_wrappers:
+    - "bin/cmd composer *"      # Package management
+    - "bin/cmd bin/console *"   # Symfony console
+    - "bin/cc"                  # Cache clearing
+    - "bin/ecs"                 # Code style
+    - "bin/phpstan"             # Static analysis
+    - "bin/test"                # Tests
+  
+  # Quality tools (all optional - only when requested)
+  quality_tools:
+    - "bin/cc"                  # Only when requested
+    - "bin/ecs"                 # Only when requested
+    - "bin/phpstan"             # Only when requested
+    - "bin/test"                # Only when requested
+
+  # Execution policy
+  execution_policy: "only_when_requested"
+
+# Protected files (never modify directly)
+protected_files:
+  - "composer.lock"
+  - "symfony.lock"
+  - "var/cache/**"
+  - "vendor/**"

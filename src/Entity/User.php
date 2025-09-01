@@ -46,6 +46,9 @@ class User extends DamUser implements
     #[ORM\ManyToMany(targetEntity: PermissionGroup::class, inversedBy: 'users', fetch: App::DOCTRINE_EXTRA_LAZY, indexBy: 'id')]
     #[ORM\JoinTable]
     #[Serialize(handler: EntityIdHandler::class, type: PermissionGroup::class)]
+    /**
+     * @var Collection<string, PermissionGroup>&iterable<PermissionGroup>
+     */
     protected Collection $permissionGroups;
 
     /**
@@ -68,6 +71,7 @@ class User extends DamUser implements
         $this->setUserToExtSystems(new ArrayCollection());
         $this->setLicenceGroups(new ArrayCollection());
         $this->setSelectedLicence(null);
+        $this->permissionGroups = new ArrayCollection();
     }
 
     public function getApiToken(): ?string

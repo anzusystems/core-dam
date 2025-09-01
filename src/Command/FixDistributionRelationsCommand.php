@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Command;
 
+use AnzuSystems\CoreDamBundle\Entity\AssetFile;
 use AnzuSystems\CoreDamBundle\Entity\Distribution;
 use AnzuSystems\CoreDamBundle\Repository\AssetFileRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -43,8 +44,12 @@ final class FixDistributionRelationsCommand extends Command
 
             foreach ($distributions as $distribution) {
                 $assetFile = $this->assetFileRepository->find($distribution->getAssetFileId());
-                $distribution->setAssetFile($assetFile);
-                $distribution->setAsset($assetFile?->getAsset());
+                $distribution->setAssetFile(null);
+
+                if ($assetFile instanceof AssetFile) {
+                    $distribution->setAssetFile($assetFile);
+                    $distribution->setAsset($assetFile->getAsset());
+                }
 
                 $progress->advance();
                 $lastId = $distribution->getId();

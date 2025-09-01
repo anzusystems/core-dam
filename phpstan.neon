@@ -1,0 +1,20 @@
+parameters:
+    tmpDir: var/cache/phpstan
+    level: 5
+    phpVersion: 80400
+    symfony:
+        containerXmlPath: var/cache/dev/App_KernelDevDebugContainer.xml
+    paths:
+        - src
+    excludePaths:
+        - src/MediaApiMigrations
+        - src/Command/ImportDemoImagesCommand.php
+        - src/Migrations
+        - src/Command/TestCommand*
+        - src/Controller/TestController*
+    treatPhpDocTypesAsCertain: false
+    ignoreErrors:
+#        - '#Deprecated in#'
+        - '#Unsafe usage of new static#'
+        - '#Property.*permissionGroups.*type mapping mismatch#'
+

@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace App\Command;
 
 use AnzuSystems\CoreDamBundle\Command\Traits\OutputUtilTrait;
-use App\MediaApiMigrations\ConnectionDecorator;
-use App\MediaApiMigrations\MediaApiPrepareImageDelete;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Statement;
 use Exception;
@@ -27,17 +25,13 @@ final class MediaApiImageDeleteValidate extends Command
 
     public const int LIMIT = 1_000;
 
-    private readonly ConnectionDecorator $damMediaApiMigConnectionDecorator;
     private ?Statement $selectToDeleteStatement = null;
 
     public function __construct(
-        private readonly MediaApiPrepareImageDelete $apiImageDelete,
         private readonly Connection $mediaApiConnection,
-        private readonly Connection $defaultConnection,
         private readonly Connection $damMediaApiMigConnection,
     ) {
         parent::__construct();
-        $this->damMediaApiMigConnectionDecorator = new ConnectionDecorator($damMediaApiMigConnection);
     }
 
     /**

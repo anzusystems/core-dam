@@ -6,7 +6,6 @@ namespace App\Command;
 
 use AnzuSystems\CoreDamBundle\Command\Traits\OutputUtilTrait;
 use App\MediaApiMigrations\ImageMigrationPostProcessor;
-use App\MediaApiMigrations\MediaApiFileCopy;
 use App\MediaApiMigrations\MediaApiMigration;
 use App\MediaApiMigrations\MigrationTableBuilder;
 use App\MediaApiMigrations\UsersMigration;
@@ -30,7 +29,6 @@ final class MediaApiMigrateCommand extends Command
 
     public function __construct(
         private readonly MediaApiMigration $mediaApiMigration,
-        private readonly MediaApiFileCopy $mediaApiFileCopy,
         private readonly MigrationTableBuilder $migrationTableBuilder,
         private readonly UsersMigration $usersMigration,
         private readonly ImageMigrationPostProcessor $postProcessor

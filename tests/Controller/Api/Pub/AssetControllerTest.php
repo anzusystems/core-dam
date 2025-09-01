@@ -14,12 +14,11 @@ use AnzuSystems\CoreDamBundle\Entity\AudioFile;
 use AnzuSystems\CoreDamBundle\Entity\VideoFile;
 use App\Tests\Controller\Api\AbstractApiController;
 use App\Tests\data\Model\ApiClientFirewall;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 final class AssetControllerTest extends AbstractApiController
 {
-    /**
-     * @dataProvider getOneVideoAssetDataProvider
-     */
+    #[DataProvider('getOneVideoAssetDataProvider')]
     public function testGetOneVideoAsset(
         string $publicExportSlug,
         string $audioFileId,
@@ -48,7 +47,7 @@ final class AssetControllerTest extends AbstractApiController
         $this->assertEqualsCanonicalizing($expectedData, $json);
     }
 
-    public function getOneVideoAssetDataProvider(): array {
+    public static function getOneVideoAssetDataProvider(): array {
         return [
             [
                 'publicExportSlug' => 'cms-web',
@@ -107,9 +106,7 @@ final class AssetControllerTest extends AbstractApiController
         ];
     }
 
-    /**
-     * @dataProvider getOneAudioAssetDataProvider
-     */
+    #[DataProvider('getOneAudioAssetDataProvider')]
     public function testGetOneAudioAsset(
         string $publicExportSlug,
         string $audioFileId,
@@ -131,7 +128,7 @@ final class AssetControllerTest extends AbstractApiController
         $this->assertEqualsCanonicalizing($expectedData, $json);
     }
 
-    public function getOneAudioAssetDataProvider(): array
+    public static function getOneAudioAssetDataProvider(): array
     {
         return [
             [

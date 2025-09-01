@@ -30,7 +30,7 @@ final class AssetMetadataManager extends AbstractManager
      * @psalm-suppress InvalidReturnStatement
      * @psalm-suppress InvalidReturnType
      *
-     * @template T
+     * @template T of object
      *
      * @param class-string<T> $className
      *

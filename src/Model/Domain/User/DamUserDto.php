@@ -48,14 +48,14 @@ class DamUserDto extends UserDto
     {
         if ($user instanceof User) {
             /** @psalm-suppress UndefinedMethod */
-            return parent::createFromUser($user)
-                ->setAllowedDistributionServices($user->getAllowedDistributionServices())
-                ->setAdminToExtSystems($user->getAdminToExtSystems())
-                ->setAssetLicences($user->getAssetLicences())
-                ->setUserToExtSystems($user->getUserToExtSystems())
-                ->setLicenceGroups($user->getLicenceGroups())
-                ->setAllowedAssetExternalProviders($user->getAllowedAssetExternalProviders())
-            ;
+            $instance = parent::createFromUser($user);
+            $instance->setAllowedDistributionServices($user->getAllowedDistributionServices());
+            $instance->setAdminToExtSystems($user->getAdminToExtSystems());
+            $instance->setAssetLicences($user->getAssetLicences());
+            $instance->setUserToExtSystems($user->getUserToExtSystems());
+            $instance->setLicenceGroups($user->getLicenceGroups());
+            $instance->setAllowedAssetExternalProviders($user->getAllowedAssetExternalProviders());
+            return $instance;
         }
 
         return parent::createFromUser($user);

@@ -84,6 +84,7 @@ final class ImageController extends AbstractApiController
     {
         $this->denyAccessUnlessGranted(UgcVoter::DAM_UGC_ACCESS, $imageFile);
         if ($imageFile->getAssetAttributes()->getStatus()->is(AssetFileProcessStatus::Duplicate)) {
+            /** @var ImageFile $originAsset */
             $originAsset = $this->imageFileRepository->findProcessedByChecksumAndLicence(
                 checksum: $imageFile->getAssetAttributes()->getChecksum(),
                 licence: $imageFile->getLicence(),

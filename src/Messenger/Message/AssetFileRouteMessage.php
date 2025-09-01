@@ -7,8 +7,8 @@ namespace App\Messenger\Message;
 final readonly class AssetFileRouteMessage
 {
     public function __construct(
-        protected string $assetFileId,
-        protected string $fullUrl,
+        private string $assetFileId,
+        private string $fullUrl,
     ) {
     }
 

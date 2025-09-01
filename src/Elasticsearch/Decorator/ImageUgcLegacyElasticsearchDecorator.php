@@ -62,7 +62,8 @@ final class ImageUgcLegacyElasticsearchDecorator
         AssetLicence $licence,
         ApiUgcLegacyParams $apiUgcLegacyParams,
     ): AssetAdmSearchLicenceCollectionDto {
-        return (new AssetAdmSearchLicenceCollectionDto())
+        $searchDto = new AssetAdmSearchLicenceCollectionDto();
+        $searchDto
             ->setLicences(new ArrayCollection([$licence]))
             ->setType([AssetType::Image->toString()])
             ->setText($apiUgcLegacyParams->getText())
@@ -71,7 +72,9 @@ final class ImageUgcLegacyElasticsearchDecorator
             ->setOffset($apiUgcLegacyParams->getOffset())
             ->setLimit($apiUgcLegacyParams->getLimit())
             ->setCreatedAtFrom($apiUgcLegacyParams->getCreatedAtFrom())
-            ->setCreatedAtUntil($apiUgcLegacyParams->getCreatedAtUntil())
+            ->setCreatedAtUntil($apiUgcLegacyParams->getCreatedAtUntil());
+
+        return $searchDto
         ;
     }
 }

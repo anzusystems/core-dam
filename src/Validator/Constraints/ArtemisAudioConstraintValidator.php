@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Validator\Constraints;
 
+use AnzuSystems\CoreDamBundle\Entity\PodcastEpisode;
 use AnzuSystems\CoreDamBundle\Repository\PodcastEpisodeRepository;
 use App\Entity\ArtemisAudioDistribution;
 use App\Exception\ValidationException;
@@ -34,7 +35,8 @@ final class ArtemisAudioConstraintValidator extends ConstraintValidator
         }
 
         $podcastEpisode = $this->episodeRepository->find($episodeId);
-        if (false === ($podcastEpisode?->getAsset()?->getId() === $value->getAssetId())) {
+        if ($podcastEpisode instanceof PodcastEpisode &&
+            false === ($podcastEpisode->getAsset()?->getId() === $value->getAssetId())) {
             $this->context
                 ->buildViolation(ValidationException::ERROR_FIELD_INVALID)
                 ->atPath('texts.episodeId')

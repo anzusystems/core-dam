@@ -8,8 +8,6 @@ use AnzuSystems\SerializerBundle\Attributes\Serialize;
 
 final class DocumentCsvFile
 {
-    private const string DATETIME_HANDLER = 'Y-m-d H:i:s';
-
     #[Serialize]
     private int $id;
 
