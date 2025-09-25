@@ -1,4 +1,4 @@
-FROM petitpress.azurecr.io/php83:3.1.0-fpm-nginx-vipsffmpeg-xdebug
+FROM petitpress.azurecr.io/php83:3.5.2-fpm-nginx-vipsffmpeg-xdebug
 
 LABEL maintainer="CloudOps Team <it.online@petitpress.sk>"
 #

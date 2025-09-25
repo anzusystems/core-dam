@@ -4,29 +4,29 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9d52b4da635c621f117f3f182aeb4e7f",
+    "content-hash": "eeb88e1e1809d9fd7ed6b8f016758a35",
     "packages": [
         {
             "name": "anzusystems/auth-bundle",
-            "version": "2.2.0",
+            "version": "4.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/anzusystems/auth-bundle.git",
-                "reference": "4e52abe691a669c957a1027fc0515402988a9a2b"
+                "reference": "892289b76f2d9655b28949f85cf2052db7526386"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/anzusystems/auth-bundle/zipball/4e52abe691a669c957a1027fc0515402988a9a2b",
-                "reference": "4e52abe691a669c957a1027fc0515402988a9a2b",
+                "url": "https://api.github.com/repos/anzusystems/auth-bundle/zipball/892289b76f2d9655b28949f85cf2052db7526386",
+                "reference": "892289b76f2d9655b28949f85cf2052db7526386",
                 "shasum": ""
             },
             "require": {
-                "anzusystems/common-bundle": "^7.0|^8.0",
+                "anzusystems/common-bundle": "^8.0|^9.0",
                 "doctrine/common": "^3.3",
                 "ext-json": "*",
                 "ext-redis": "*",
                 "lcobucci/jwt": "^4.2",
-                "php": ">=8.2"
+                "php": ">=8.3"
             },
             "require-dev": {
                 "doctrine/orm": "^2.13|^3.0",
@@ -34,7 +34,7 @@
                 "slevomat/coding-standard": "^8.5",
                 "symfony/test-pack": "^1.0",
                 "symplify/easy-coding-standard": "^11.1",
-                "vimeo/psalm": "^5.0"
+                "vimeo/psalm": "^6.0"
             },
             "type": "symfony-bundle",
             "autoload": {
@@ -60,22 +60,22 @@
             ],
             "support": {
                 "issues": "https://github.com/anzusystems/auth-bundle/issues",
-                "source": "https://github.com/anzusystems/auth-bundle/tree/2.2.0"
+                "source": "https://github.com/anzusystems/auth-bundle/tree/4.1.0"
             },
-            "time": "2024-10-03T07:05:53+00:00"
+            "time": "2025-06-23T06:19:15+00:00"
         },
         {
             "name": "anzusystems/common-bundle",
-            "version": "8.16.0",
+            "version": "9.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/anzusystems/common-bundle.git",
-                "reference": "b0cd508a3728001f43fd8c6c69156dcd9d24e8d0"
+                "reference": "fedc42e14169844045c6f2671e2b3b5fa09c89c0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/anzusystems/common-bundle/zipball/b0cd508a3728001f43fd8c6c69156dcd9d24e8d0",
-                "reference": "b0cd508a3728001f43fd8c6c69156dcd9d24e8d0",
+                "url": "https://api.github.com/repos/anzusystems/common-bundle/zipball/fedc42e14169844045c6f2671e2b3b5fa09c89c0",
+                "reference": "fedc42e14169844045c6f2671e2b3b5fa09c89c0",
                 "shasum": ""
             },
             "require": {
@@ -91,7 +91,7 @@
                 "ext-pcntl": "*",
                 "ext-redis": "*",
                 "ext-zend-opcache": "*",
-                "mongodb/mongodb": "^1.9",
+                "mongodb/mongodb": "^2.0",
                 "monolog/monolog": "^2.0|^3.0",
                 "nelmio/api-doc-bundle": "^4.8",
                 "php": ">=8.3",
@@ -121,7 +121,7 @@
                 "slevomat/coding-standard": "^8.0",
                 "symfony/test-pack": "^1.0",
                 "symplify/easy-coding-standard": "^11.0",
-                "vimeo/psalm": "^5.4"
+                "vimeo/psalm": "^6.10"
             },
             "type": "symfony-bundle",
             "autoload": {
@@ -146,9 +146,9 @@
             ],
             "support": {
                 "issues": "https://github.com/anzusystems/common-bundle/issues",
-                "source": "https://github.com/anzusystems/common-bundle/tree/8.16.0"
+                "source": "https://github.com/anzusystems/common-bundle/tree/9.2.0"
             },
-            "time": "2025-03-14T08:12:41+00:00"
+            "time": "2025-07-04T13:44:08+00:00"
         },
         {
             "name": "anzusystems/contracts",
@@ -210,20 +210,20 @@
         },
         {
             "name": "anzusystems/core-dam-bundle",
-            "version": "1.39.0",
+            "version": "1.40.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/anzusystems/core-dam-bundle.git",
-                "reference": "23642b81cb60925ae20d4bcd93c44279850b8a70"
+                "reference": "050239173e1dca81136a39c33d3638cc5e5c8276"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/anzusystems/core-dam-bundle/zipball/23642b81cb60925ae20d4bcd93c44279850b8a70",
-                "reference": "23642b81cb60925ae20d4bcd93c44279850b8a70",
+                "url": "https://api.github.com/repos/anzusystems/core-dam-bundle/zipball/050239173e1dca81136a39c33d3638cc5e5c8276",
+                "reference": "050239173e1dca81136a39c33d3638cc5e5c8276",
                 "shasum": ""
             },
             "require": {
-                "anzusystems/common-bundle": "8.16",
+                "anzusystems/common-bundle": "^9.2",
                 "doctrine/doctrine-bundle": "^2.12",
                 "doctrine/orm": "^3.1",
                 "elasticsearch/elasticsearch": "^8.6",
@@ -236,12 +236,11 @@
                 "ext-xmlreader": "*",
                 "ext-zend-opcache": "*",
                 "google/apiclient": "^2.12",
-                "google/cloud-pubsub": "^1.39",
                 "html2text/html2text": "^4.3",
                 "jcupitt/vips": "^1.0",
                 "league/flysystem": "^3.7",
                 "league/flysystem-google-cloud-storage": "^3.7",
-                "petitpress/gps-messenger-bundle": "^2.0",
+                "petitpress/gps-messenger-bundle": "^3.2",
                 "php": ">=8.3",
                 "php-ffmpeg/php-ffmpeg": "^1.0",
                 "phpexiftool/exiftool": "^10.16",
@@ -298,9 +297,9 @@
             "description": "Dam core bundle",
             "support": {
                 "issues": "https://github.com/anzusystems/core-dam-bundle/issues",
-                "source": "https://github.com/anzusystems/core-dam-bundle/tree/1.39.0"
+                "source": "https://github.com/anzusystems/core-dam-bundle/tree/1.40.0"
             },
-            "time": "2025-09-01T13:33:47+00:00"
+            "time": "2025-09-22T11:47:24+00:00"
         },
         {
             "name": "anzusystems/serializer-bundle",
@@ -2097,27 +2096,27 @@
         },
         {
             "name": "google/cloud-pubsub",
-            "version": "v1.51.0",
+            "version": "v2.13.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/google-cloud-php-pubsub.git",
-                "reference": "d95e3989f1bfe9a3d982df369a761ae3a9ad6aff"
+                "reference": "d94822ea91bc85f69859f9d6093316411a892d35"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/google-cloud-php-pubsub/zipball/d95e3989f1bfe9a3d982df369a761ae3a9ad6aff",
-                "reference": "d95e3989f1bfe9a3d982df369a761ae3a9ad6aff",
+                "url": "https://api.github.com/repos/googleapis/google-cloud-php-pubsub/zipball/d94822ea91bc85f69859f9d6093316411a892d35",
+                "reference": "d94822ea91bc85f69859f9d6093316411a892d35",
                 "shasum": ""
             },
             "require": {
-                "google/cloud-core": "^1.53",
-                "google/gax": "^1.26.0",
-                "php": ">=7.4"
+                "google/cloud-core": "^1.57",
+                "google/gax": "^1.36.0",
+                "php": "^8.1"
             },
             "require-dev": {
                 "erusev/parsedown": "^1.6",
                 "flix-tech/avro-php": "^5.0.0",
-                "phpdocumentor/reflection": "^5.3.3",
+                "phpdocumentor/reflection": "^5.3.3||^6.0",
                 "phpdocumentor/reflection-docblock": "^5.3",
                 "phpspec/prophecy-phpunit": "^2.0",
                 "phpunit/phpunit": "^9.0",
@@ -2148,9 +2147,9 @@
             ],
             "description": "Cloud PubSub Client for PHP",
             "support": {
-                "source": "https://github.com/googleapis/google-cloud-php-pubsub/tree/v1.51.0"
+                "source": "https://github.com/googleapis/google-cloud-php-pubsub/tree/v2.13.2"
             },
-            "time": "2024-01-26T20:27:24+00:00"
+            "time": "2025-07-18T20:06:03+00:00"
         },
         {
             "name": "google/cloud-storage",
@@ -3365,34 +3364,34 @@
         },
         {
             "name": "mongodb/mongodb",
-            "version": "1.20.0",
+            "version": "2.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mongodb/mongo-php-library.git",
-                "reference": "75da9ea3b63d97b05e0e8648d8c09a17bc54c0b6"
+                "reference": "f399d24905dd42f97dfe0af9706129743ef247ac"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mongodb/mongo-php-library/zipball/75da9ea3b63d97b05e0e8648d8c09a17bc54c0b6",
-                "reference": "75da9ea3b63d97b05e0e8648d8c09a17bc54c0b6",
+                "url": "https://api.github.com/repos/mongodb/mongo-php-library/zipball/f399d24905dd42f97dfe0af9706129743ef247ac",
+                "reference": "f399d24905dd42f97dfe0af9706129743ef247ac",
                 "shasum": ""
             },
             "require": {
                 "composer-runtime-api": "^2.0",
-                "ext-hash": "*",
-                "ext-json": "*",
-                "ext-mongodb": "^1.20.0",
-                "php": "^7.4 || ^8.0",
+                "ext-mongodb": "^2.1",
+                "php": "^8.1",
                 "psr/log": "^1.1.4|^2|^3",
-                "symfony/polyfill-php80": "^1.27",
-                "symfony/polyfill-php81": "^1.27"
+                "symfony/polyfill-php85": "^1.32"
+            },
+            "replace": {
+                "mongodb/builder": "*"
             },
             "require-dev": {
                 "doctrine/coding-standard": "^12.0",
-                "rector/rector": "^1.1",
+                "phpunit/phpunit": "^10.5.35",
+                "rector/rector": "^1.2",
                 "squizlabs/php_codesniffer": "^3.7",
-                "symfony/phpunit-bridge": "^5.2",
-                "vimeo/psalm": "^5.13"
+                "vimeo/psalm": "6.5.*"
             },
             "type": "library",
             "extra": {
@@ -3436,9 +3435,9 @@
             ],
             "support": {
                 "issues": "https://github.com/mongodb/mongo-php-library/issues",
-                "source": "https://github.com/mongodb/mongo-php-library/tree/1.20.0"
+                "source": "https://github.com/mongodb/mongo-php-library/tree/2.1.1"
             },
-            "time": "2024-09-25T12:54:08+00:00"
+            "time": "2025-08-13T20:50:05+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -3971,39 +3970,44 @@
         },
         {
             "name": "petitpress/gps-messenger-bundle",
-            "version": "2.1.0",
+            "version": "3.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/petitpress/gps-messenger-bundle.git",
-                "reference": "c4433e0975dff4bb45dba1f74d65f50a6cfe65a5"
+                "reference": "3c54de4252b10e4028491b76df92979b7877aed2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/petitpress/gps-messenger-bundle/zipball/c4433e0975dff4bb45dba1f74d65f50a6cfe65a5",
-                "reference": "c4433e0975dff4bb45dba1f74d65f50a6cfe65a5",
+                "url": "https://api.github.com/repos/petitpress/gps-messenger-bundle/zipball/3c54de4252b10e4028491b76df92979b7877aed2",
+                "reference": "3c54de4252b10e4028491b76df92979b7877aed2",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
-                "google/cloud-pubsub": "^1.29",
+                "google/cloud-pubsub": "^2.0",
                 "php": ">=8.2",
                 "psr/cache": "^1.0|^2.0|^3.0",
-                "symfony/config": "^5.1|^6.0|^7.0",
-                "symfony/dependency-injection": "^5.1|^6.0|^7.0",
-                "symfony/http-kernel": "^5.1|^6.0|^7.0",
-                "symfony/messenger": "^5.1|^6.0|^7.0",
-                "symfony/options-resolver": "^5.1|^6.0|^7.0"
+                "symfony/config": "^5.4|^6.0|^7.0",
+                "symfony/dependency-injection": "^5.4|^6.0|^7.0",
+                "symfony/http-kernel": "^5.4|^6.0|^7.0",
+                "symfony/messenger": "^5.4|^6.0|^7.0",
+                "symfony/options-resolver": "^5.4|^6.0|^7.0"
             },
             "require-dev": {
+                "phpstan/phpstan": "^2.1",
+                "phpstan/phpstan-deprecation-rules": "^2.0",
+                "phpstan/phpstan-phpunit": "^2.0",
+                "phpstan/phpstan-strict-rules": "^2.0",
+                "phpstan/phpstan-symfony": "^2.0",
                 "phpunit/phpunit": "^9.5",
-                "symfony/yaml": "^5.1|^6.0|^7.0",
+                "symfony/yaml": "^5.4|^6.0|^7.0",
                 "symplify/easy-coding-standard": "^11.1",
-                "vimeo/psalm": "^5.0"
+                "vimeo/psalm": "^6.0"
             },
             "type": "symfony-bundle",
             "autoload": {
                 "psr-4": {
-                    "PetitPress\\GpsMessengerBundle\\": ""
+                    "PetitPress\\GpsMessengerBundle\\": "src"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -4034,9 +4038,9 @@
             ],
             "support": {
                 "issues": "https://github.com/petitpress/gps-messenger-bundle/issues",
-                "source": "https://github.com/petitpress/gps-messenger-bundle/tree/2.1.0"
+                "source": "https://github.com/petitpress/gps-messenger-bundle/tree/3.2.0"
             },
-            "time": "2024-05-23T09:13:26+00:00"
+            "time": "2025-05-12T08:53:13+00:00"
         },
         {
             "name": "php-ffmpeg/php-ffmpeg",
@@ -8636,6 +8640,86 @@
                 }
             ],
             "time": "2025-06-24T13:30:11+00:00"
+        },
+        {
+            "name": "symfony/polyfill-php85",
+            "version": "v1.33.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/polyfill-php85.git",
+                "reference": "d4e5fcd4ab3d998ab16c0db48e6cbb9a01993f91"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/polyfill-php85/zipball/d4e5fcd4ab3d998ab16c0db48e6cbb9a01993f91",
+                "reference": "d4e5fcd4ab3d998ab16c0db48e6cbb9a01993f91",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.2"
+            },
+            "type": "library",
+            "extra": {
+                "thanks": {
+                    "url": "https://github.com/symfony/polyfill",
+                    "name": "symfony/polyfill"
+                }
+            },
+            "autoload": {
+                "files": [
+                    "bootstrap.php"
+                ],
+                "psr-4": {
+                    "Symfony\\Polyfill\\Php85\\": ""
+                },
+                "classmap": [
+                    "Resources/stubs"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Nicolas Grekas",
+                    "email": "p@tchwork.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony polyfill backporting some PHP 8.5+ features to lower PHP versions",
+            "homepage": "https://symfony.com",
+            "keywords": [
+                "compatibility",
+                "polyfill",
+                "portable",
+                "shim"
+            ],
+            "support": {
+                "source": "https://github.com/symfony/polyfill-php85/tree/v1.33.0"
+            },
+            "funding": [
+                {
+                    "url": "https://symfony.com/sponsor",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://github.com/nicolas-grekas",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2025-06-23T16:12:55+00:00"
         },
         {
             "name": "symfony/polyfill-uuid",

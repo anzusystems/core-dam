@@ -17,12 +17,16 @@ return static function (FrameworkConfig $config): void {
     $cachePurge = 'anzu_core_dam_cache_purge';
     $assetChangedSync = 'anzu_core_dam_asset_changed_sync';
     $anzuCoreMediaApiCallback = 'anzu_core_dam_media_api_callback';
+    $coreDamLog = 'core_dam_log';
 
     $messengerConfig = $config->messenger();
     $messengerConfig
         ->transport($cachePurge)
             ->dsn(env('MESSENGER_TRANSPORT_DSN'))
             ->options([
+                'client_config' => [
+                    'credentials' => '%env(json:base64:GOOGLE_PUBSUB_SA_KEY)%',
+                ],
                 'topic' => createBasicTopicConfig($cachePurge, $appName),
                 'subscription' => createBasicSubscriptionConfig($cachePurge, $appName),
             ])
@@ -31,6 +35,9 @@ return static function (FrameworkConfig $config): void {
         ->transport($assetChangedSync)
         ->dsn(env('MESSENGER_TRANSPORT_DSN'))
         ->options([
+            'client_config' => [
+                'credentials' => '%env(json:base64:GOOGLE_PUBSUB_SA_KEY)%',
+            ],
             'topic' => createBasicTopicConfig($assetChangedSync, $appName),
             'subscription' => createBasicSubscriptionConfig($assetChangedSync, $appName),
         ])
@@ -39,9 +46,23 @@ return static function (FrameworkConfig $config): void {
         ->transport($anzuCoreMediaApiCallback)
         ->dsn(env('MESSENGER_TRANSPORT_DSN'))
         ->options([
+            'client_config' => [
+                'credentials' => '%env(json:base64:GOOGLE_PUBSUB_SA_KEY)%',
+            ],
             'topic' => createBasicTopicConfig($anzuCoreMediaApiCallback, $appName),
             'subscription' => createBasicSubscriptionConfig($anzuCoreMediaApiCallback, $appName),
         ])
+    ;
+    $messengerConfig
+        ->transport($coreDamLog)
+            ->dsn(env('MESSENGER_TRANSPORT_DSN'))
+            ->options([
+                'client_config' => [
+                    'credentials' => '%env(json:base64:GOOGLE_PUBSUB_SA_KEY)%',
+                ],
+                'topic' => createBasicTopicConfig($coreDamLog, $appName),
+                'subscription' => createBasicSubscriptionConfig($coreDamLog, $appName),
+            ])
     ;
 
     $messengerConfig

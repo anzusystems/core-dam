@@ -115,7 +115,6 @@ data:
   GCS_DENNIK_SPORT_IMAGE_STORAGE_BUCKET: "#{GCS_DENNIK_SPORT_IMAGE_STORAGE_BUCKET}#"
   GCS_DENNIK_SPORT_DOCUMENT_STORAGE_BUCKET: "#{GCS_DENNIK_SPORT_DOCUMENT_STORAGE_BUCKET}#"
   GCS_DENNIK_SPORT_DOCUMENT_FALLBACK_STORAGE_BUCKET: "#{GCS_DENNIK_SPORT_DOCUMENT_FALLBACK_STORAGE_BUCKET}#"
-  GOOGLE_APPLICATION_CREDENTIALS: "/var/www/html/var/secure/google/pubsub-credentials.json"
   GOOGLE_BUCKET_CREDENTIALS: "/var/www/html/var/secure/google/storage-bucket-credentials.json"
   GOOGLE_FALLBACK_BUCKET_CREDENTIALS: "/var/www/html/var/secure/google/fallback-storage-bucket-credentials.json"
   GOOGLE_GENERAL_PROD_BUCKET_CREDENTIALS: "/var/www/html/var/secure/google/general-production-storage-bucket-credentials.json"
@@ -165,7 +164,7 @@ data:
   SCRAPER_IMAGE_FALLBACK_ENABLED: "#{SCRAPER_IMAGE_FALLBACK_ENABLED}#"
   SECURE_CHANNEL: "#{SECURE_CHANNEL}#"
   SENTRY_PROFILES_SAMPLE_RATE: "#{SENTRY_PROFILES_SAMPLE_RATE}#"
-  SENTRY_RELAY_AUTOSTART_ENABLED: "#{SENTRY_RELAY_AUTOSTART_ENABLED}#"
+  SENTRY_RELAY_AUTOSTART_ENABLED: "true"
   SENTRY_TRACES_SAMPLE_RATE: "#{SENTRY_TRACES_SAMPLE_RATE}#"
   SSO_CLIENT_ID: "#{SSO_CLIENT_ID}#"
   SSO_PUBLIC_CERT_PATH: "/var/www/html/var/secure/sso/central-oauth2-public-key.pem"
@@ -173,7 +172,6 @@ data:
   SUPERVISOR_MESSENGER_LIMIT: "10"
   SUPERVISOR_MESSENGER_NUMPROCS: "1"
   SUPERVISOR_MESSENGER_TIME_LIMIT: "600"
-  PHP_DISABLED_EXTENSIONS: "#{PHP_DISABLED_EXTENSIONS}#"
 ---
 apiVersion: v1
 kind: Secret
@@ -206,6 +204,7 @@ stringData:
   DISTRIBUTION_ARTEMIS_CMS_API_TOKEN: "#{core-dam-distribution-artemis-cms-api-token}#"
   DISTRIBUTION_JW_CMS_SECRET_V2: "#{core-dam-distribution-jw-cms-secret-v2}#"
   ELASTIC_PASSWORD: "#{elasticsearch-user-app-core-dam-pwd}#"
+  GOOGLE_PUBSUB_SA_KEY: "#{anzu-app-pubsub-sa}#"
   HEALTH_CHECK_ACCESS_TOKEN: "#{core-dam-health-check-access-token}#"
   MEDIA_API_TOKEN: "#{core-dam-media-api-token}#"
   NEWRELIC_LICENSE: "#{newrelic-license}#"

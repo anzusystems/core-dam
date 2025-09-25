@@ -314,8 +314,6 @@ spec:
                 path: google/fallback-storage-bucket-credentials.json
               - key: dam-storage-bucket-credentials.json
                 path: google/storage-bucket-credentials.json
-              - key: google-pubsub-credentials.json
-                path: google/pubsub-credentials.json
               - key: dam-youtube-oauth2-credentials.json
                 path: youtube/yt_oauth2_credentials.json
 ---

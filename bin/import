@@ -2,11 +2,12 @@
 
 PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")"/.. && pwd)"
 
-# Find all SQL files matching the pattern
-SQL_DUMP_FILES=($(find "${PROJECT_ROOT}/var/mnt/data" -type f -name "core_dam*.sql.lz4"))
-
 ARGS="--no-drop --no-fixtures $*"
 ELASTIC_REBUILD=true
+SQL_DUMP_FILES=()
+
+# Find all SQL files matching the pattern
+readarray -t SQL_DUMP_FILES < <(find "${PROJECT_ROOT}/var/mnt/data" -type f -name "core_dam*.sql.lz4")
 
 function help() {
     echo -en "$(printf %q "${BASH_SOURCE[0]}") [OPERATION] [OPTIONS]...
