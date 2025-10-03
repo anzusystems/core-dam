@@ -11,6 +11,7 @@ SUPERVISOR_DEFAULT_MESSENGER_NAMES='
     anzu_core_dam_document_file_change_state
     anzu_core_dam_image_file_change_state
     anzu_core_dam_media_api_callback
+    anzu_core_dam_asset_changed_sync
     anzu_core_dam_property_refresh
     anzu_core_dam_asset_copy
     anzu_core_dam_video_file_change_state

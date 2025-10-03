@@ -86,6 +86,7 @@ final readonly class AssetCmsFactory
 
     private function setVideoProperties(AssetCmsSysDto $dto, Asset $asset): void
     {
+        $configuration = $this->configurationProvider->getAssetPubConfiguration();
         $firstEpisode = $asset->getVideoEpisodes()->first();
         if ($firstEpisode instanceof VideoShowEpisode) {
             $dto->setSeriesName(mb_substr($firstEpisode->getVideoShow()->getTexts()->getTitle(), App::ZERO, AssetCmsSysDto::SERIES_NAME_LENGTH));
@@ -103,7 +104,8 @@ final readonly class AssetCmsFactory
 
             $distribution = $this->distributionRepository->findByAsset((string) $asset->getId())
                 ->findFirst(
-                    static fn (mixed $key, Distribution $distribution): bool => $distribution->getStatus()->is(DistributionProcessStatus::Distributed),
+                    static fn (mixed $key, Distribution $distribution): bool => $distribution->getStatus()->is(DistributionProcessStatus::Distributed) &&
+                        in_array($distribution->getDistributionService(), $configuration->getVideoAllowedDistributions(), true),
                 )
             ;
 
