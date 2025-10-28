@@ -3,3 +3,9 @@ GET {{host}}/api/sys/v1/cms/asset?ids=1f055b23-b926-6654-ab23-0154433981cc,1f066
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{cmsSysUserApiToken}}
+
+### Create file from path
+GET {{host}}/api/sys/v1/cms/asset-file?ids=1f0b3173-d5fc-63d8-b19f-0d2aa2eb93d5,1f0b3172-c9d5-6330-9a73-0d2aa2eb93d5
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{cmsSysUserApiToken}}

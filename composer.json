@@ -10,7 +10,7 @@
         "ext-redis": "*",
         "anzusystems/auth-bundle": "^4.1",
         "anzusystems/common-bundle": "^9.2",
-        "anzusystems/core-dam-bundle": "^1.40",
+        "anzusystems/core-dam-bundle": "^1.41.0",
         "doctrine/doctrine-migrations-bundle": "^3.2",
         "league/flysystem-google-cloud-storage": "^3.0",
         "mongodb/mongodb": "^2.0",
