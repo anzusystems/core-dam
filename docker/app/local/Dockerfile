@@ -6,6 +6,9 @@ LABEL maintainer="CloudOps Team <it.online@petitpress.sk>"
 ARG DOCKER_USER_ID
 ARG DOCKER_GROUP_ID
 #
+### Install bcmath extension
+RUN docker-php-ext-install bcmath
+#
 ### Create nonroot user with provided USER_ID and GROUP_ID
 RUN create-user ${DOCKER_USER_ID} ${DOCKER_GROUP_ID}
 #

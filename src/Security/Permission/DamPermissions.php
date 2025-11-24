@@ -16,7 +16,7 @@ final class DamPermissions extends BaseDamPermissions
     // User
     public const string DAM_USER_CREATE = 'dam_user_create';
     public const string DAM_USER_UPDATE = 'dam_user_update';
-    public const string DAM_USER_VIEW = 'dam_user_view';
+    public const string DAM_USER_READ = 'dam_user_read';
 
     // PermissionGroup
     public const string DAM_PERMISSION_GROUP_CREATE = 'dam_permissionGroup_create';
@@ -232,7 +232,7 @@ final class DamPermissions extends BaseDamPermissions
                 ],
             ],
             // User
-            self::DAM_USER_VIEW => [
+            self::DAM_USER_READ => [
                 self::GRANTS => [Grants::GRANT_ALLOW, Grants::GRANT_DENY],
                 self::UI => [
                     self::UI_CATEGORY => UiCategories::CATEGORY_DAM,
@@ -596,7 +596,7 @@ final class DamPermissions extends BaseDamPermissions
             BaseDamPermissions::ALL,
             UiPermissions::ALL,
             [
-                self::DAM_USER_VIEW,
+                self::DAM_USER_READ,
                 self::DAM_USER_CREATE,
                 self::DAM_USER_UPDATE,
                 self::DAM_PERMISSION_GROUP_READ,

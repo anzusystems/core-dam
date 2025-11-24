@@ -73,13 +73,13 @@ anzu_systems_core_dam:
   image_settings:
     crop_allow_map:
       admin_image:
-        crop_allow_list: admin_allow_list
+        crop_allow_list: admin_image
         ext_system_slugs: [ cms ]
-        domain: admin_domain
+        domain: admin_image
       public_image:
-        crop_allow_list: web_allow_list
+        crop_allow_list: public_image
         ext_system_slugs: [ cms ]
-        domain: public_domain
+        domain: public_image
     optimal_resizes: [ 2000, 1000 ]
     enable_crop_cache: true
     color_set:
@@ -104,14 +104,14 @@ anzu_systems_core_dam:
       brown:
         rgb: [154, 0, 5]
     crop_allow_list:
-      admin_allow_list:
+      admin_image:
         quality_whitelist: [ ]
         crops:
           - { width: 300, height: 200, tags: ['roi_example'], title: '3:2' }  # admin roi example 3:2
-          - { width: 0, height: 200, tags: ['list'] }                         # admin DAM listing
+          - { width: 0, height: 200, tags: ['list', 'table'] }                # admin DAM listing
           - { width: 200, height: 200, tags: ['roi_example'], title: '1:1' }  # admin roi example 1:1
           - { width: 1920, height: 0, tags: ['detail'] }                      # admin DAM image crop
-      web_allow_list:
+      public_image:
         quality_whitelist: [ 90 ]
         crops:
           - { width: 800, height: 450 }   # anzu web general
@@ -127,8 +127,8 @@ anzu_systems_core_dam:
         crop_storage_name: 'cms.crop'
         chunk_storage_name: 'cms.image'
         size_limit: '%env(byte_size:APP_CMS_IMAGE_MAX_SIZE)%'
-        public_domain: public_domain
-        admin_domain: admin_domain
+        public_domain: public_image
+        admin_domain: admin_image
         roi_width: 16
         roi_height: 9
         file_slots:
@@ -190,7 +190,7 @@ anzu_systems_core_dam:
         size_limit: '%env(byte_size:APP_CMS_DOCUMENT_MAX_SIZE)%'
         file_slots: ~
   domains:
-    admin_domain:
+    admin_image:
       domain: '%env(resolve:string:DOMAIN_ADMIN_WEB)%'
-    public_domain:
+    public_image:
       domain: '%env(resolve:string:DOMAIN_CMS_WEB)%'

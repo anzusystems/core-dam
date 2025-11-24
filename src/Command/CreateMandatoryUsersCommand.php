@@ -132,7 +132,7 @@ final class CreateMandatoryUsersCommand extends Command
             $adminUser->getPerson()->setFirstName('Admin');
             $adminUser->getPerson()->setLastName('DAM');
             $adminUser->setEnabled(true);
-            $adminUser->setRoles([User::ROLE_ADMIN]);
+            $adminUser->setRoles([User::ROLE_SUPER_ADMIN]);
             $adminUser->setPassword(
                 $this->userPasswordHasher->hashPassword($adminUser, $password)
             );

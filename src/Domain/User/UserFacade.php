@@ -5,9 +5,14 @@ declare(strict_types=1);
 namespace App\Domain\User;
 
 use AnzuSystems\CommonBundle\Exception\ValidationException;
+use AnzuSystems\CommonBundle\Model\User\BaseUserDto;
+use AnzuSystems\CommonBundle\Model\User\UserDto;
 use AnzuSystems\CommonBundle\Validator\Validator;
+use AnzuSystems\SerializerBundle\Exception\SerializerException;
 use App\Entity\User;
 use App\Model\Domain\User\CreateUserDto;
+use App\Model\Domain\User\DamUserDto;
+use App\Model\Domain\User\UpdateCurrentUserDto;
 use App\Model\Domain\User\UpdateUserDto;
 
 /**
@@ -17,40 +22,54 @@ final readonly class UserFacade
 {
     public function __construct(
         private Validator $validator,
-        private UserManager $userManager,
+        private UserManager $manager,
     ) {
     }
 
     /**
-     * Process creating of user from DTO.
-     *
      * @throws ValidationException
      */
-    public function createFromDto(CreateUserDto $createUserDto): User
+    public function updateFromCurrentUserDto(User $user, UpdateCurrentUserDto $currentUserDto): User
     {
-        $this->validator->validate($createUserDto);
+        $this->validator->validate($currentUserDto);
 
-        return $this->userManager->createFromDto($createUserDto);
+        return $this->manager->updateFromCurrentUserDto($user, $currentUserDto);
     }
 
     /**
-     * Process updating of user from DTO.
-     *
      * @throws ValidationException
      */
-    public function updateFromDto(User $user, UpdateUserDto $updateUserDto): User
+    public function updateFromDamUserDto(User $user, DamUserDto $userDto): User
     {
-        $this->validator->validate($updateUserDto);
-        $this->userManager->updateFromDto($user, $updateUserDto);
+        $this->validator->validate($userDto);
+        $this->manager->updateFromDamUserDto($user, $userDto);
 
         return $user;
     }
 
     /**
-     * Process deletion of user.
+     * @throws ValidationException
      */
-    public function delete(User $user): void
+    public function updateFromBaseUserDto(User $user, BaseUserDto $baseUserDto): User
     {
-        $this->userManager->delete($user);
+        $this->validator->validate($baseUserDto);
+        $this->manager->updateBaseAnzuUser($user, $baseUserDto);
+
+        return $user;
+    }
+
+    /**
+     * Process creation of User.
+     *
+     * @throws ValidationException
+     */
+    public function createUser(UserDto $userDto): User
+    {
+        $this->validator->validate($userDto);
+
+        $user = new User();
+        $this->manager->createAnzuUser($user, $userDto);
+
+        return $user;
     }
 }
