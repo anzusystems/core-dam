@@ -25,6 +25,9 @@ final class AssetCmsSysDto
     private Uuid $assetId;
 
     #[Serialize]
+    private ?Uuid $seriesId = null;
+
+    #[Serialize]
     private AssetType $assetType = AssetType::Default;
 
     #[Serialize]
@@ -214,6 +217,18 @@ final class AssetCmsSysDto
     public function setEpisodeNumber(?int $episodeNumber): self
     {
         $this->episodeNumber = $episodeNumber;
+
+        return $this;
+    }
+
+    public function getSeriesId(): ?Uuid
+    {
+        return $this->seriesId;
+    }
+
+    public function setSeriesId(?Uuid $seriesId): self
+    {
+        $this->seriesId = $seriesId;
 
         return $this;
     }

@@ -61,11 +61,15 @@ final readonly class AssetCmsFactory
         $firstEpisode = $asset->getEpisodes()->first();
         $firstEpisode = $firstEpisode instanceof PodcastEpisode ? $firstEpisode : null;
         if ($firstEpisode instanceof PodcastEpisode) {
+            $podcastId = $firstEpisode->getPodcast()->getId();
+            if (is_string($podcastId)) {
+                $dto->setSeriesId(Uuid::fromString($podcastId));
+            }
             $dto->setSeriesName(mb_substr($firstEpisode->getPodcast()->getTexts()->getTitle(), App::ZERO, AssetCmsSysDto::SERIES_NAME_LENGTH));
             $dto->setEpisodeName(mb_substr($firstEpisode->getTexts()->getTitle(), App::ZERO, AssetCmsSysDto::EPISODE_NAME_LENGTH));
             $dto->setEpisodeNumber($firstEpisode->getAttributes()->getEpisodeNumber());
 
-            $imagePreviewId = $firstEpisode->getImagePreview()?->getImageFile()?->getId() ?? $firstEpisode->getPodcast()->getImagePreview()?->getImageFile()?->getId();
+            $imagePreviewId = $firstEpisode->getPodcast()->getAltImage()?->getImageFile()?->getId() ?? $firstEpisode->getPodcast()->getImagePreview()?->getImageFile()?->getId();
             if ($imagePreviewId) {
                 $dto->setImageFileId(Uuid::fromString($imagePreviewId));
             }
@@ -89,6 +93,10 @@ final readonly class AssetCmsFactory
         $configuration = $this->configurationProvider->getAssetPubConfiguration();
         $firstEpisode = $asset->getVideoEpisodes()->first();
         if ($firstEpisode instanceof VideoShowEpisode) {
+            $videoShowId = $firstEpisode->getVideoShow()->getId();
+            if (is_string($videoShowId)) {
+                $dto->setSeriesId(Uuid::fromString($videoShowId));
+            }
             $dto->setSeriesName(mb_substr($firstEpisode->getVideoShow()->getTexts()->getTitle(), App::ZERO, AssetCmsSysDto::SERIES_NAME_LENGTH));
             $dto->setEpisodeName(mb_substr($firstEpisode->getTexts()->getTitle(), App::ZERO, AssetCmsSysDto::EPISODE_NAME_LENGTH));
         }
