@@ -8,12 +8,10 @@ use AnzuSystems\AuthBundle\Contracts\AnzuAuthUserInterface;
 use AnzuSystems\AuthBundle\Contracts\ApiTokenUserInterface;
 use AnzuSystems\Contracts\Entity\Interfaces\TimeTrackingInterface;
 use AnzuSystems\Contracts\Entity\Interfaces\UserTrackingInterface;
-use AnzuSystems\Contracts\Entity\Traits\TimeTrackingTrait;
 use AnzuSystems\CoreDamBundle\App;
 use AnzuSystems\CoreDamBundle\Entity\AssetLicence;
 use AnzuSystems\CoreDamBundle\Entity\DamUser;
 use AnzuSystems\CoreDamBundle\Entity\PermissionGroup;
-use AnzuSystems\CoreDamBundle\Entity\Traits\UserTrackingTrait;
 use AnzuSystems\SerializerBundle\Attributes\Serialize;
 use AnzuSystems\SerializerBundle\Handler\Handlers\EntityIdHandler;
 use App\Repository\UserRepository;
@@ -32,9 +30,6 @@ class User extends DamUser implements
     UserTrackingInterface,
     TimeTrackingInterface
 {
-    use UserTrackingTrait;
-    use TimeTrackingTrait;
-
     public const ID_ANONYMOUS = 1;
     public const ID_CONSOLE = 2;
     public const ID_ADMIN = 3;

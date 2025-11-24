@@ -15,6 +15,7 @@ anzu_systems_core_dam:
   settings:
     not_found_image_id: 'c41ca3a7-af73-46ee-a517-5f3748815c01' # todo
     api_domain: '%env(resolve:string:DOMAIN_CORE_DAM_API)%'
+    redirect_domain: ''
     elastic_index_prefix: '%env(resolve:string:ELASTIC_INDEX_PREFIX)%'
     elastic_language_dictionaries: ['sk']
     distribution_auth_redirect_url: ''
@@ -29,6 +30,7 @@ anzu_systems_core_dam:
     cache_redis: CacheRedis
     unsplash_api_client_host: 'https://api.unsplash.com'
     jw_player_api_client_host: 'https://api.jwplayer.com'
+    jw_player_cdn_api_client_host: 'https://cdn.jwplayer.com'
     limited_asset_licence_files_count: 100
     image_chunk_config:
       min_size: '%env(byte_size:APP_SIZE_MIN_CHUNK_SIZE)%'

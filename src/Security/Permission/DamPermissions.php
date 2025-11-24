@@ -8,27 +8,27 @@ use AnzuSystems\CoreDamBundle\Security\Permission\DamPermissions as BaseDamPermi
 
 final class DamPermissions extends BaseDamPermissions
 {
-    public const GRANTS = 'grants';
-    public const UI = 'ui';
-    public const UI_CATEGORY = 'category';
-    public const UI_GROUP = 'group';
+    public const string GRANTS = 'grants';
+    public const string UI = 'ui';
+    public const string UI_CATEGORY = 'category';
+    public const string UI_GROUP = 'group';
 
     // User
-    public const DAM_USER_CREATE = 'dam_user_create';
-    public const DAM_USER_UPDATE = 'dam_user_update';
-    public const DAM_USER_VIEW = 'dam_user_view';
+    public const string DAM_USER_CREATE = 'dam_user_create';
+    public const string DAM_USER_UPDATE = 'dam_user_update';
+    public const string DAM_USER_VIEW = 'dam_user_view';
 
     // PermissionGroup
-    public const DAM_PERMISSION_GROUP_CREATE = 'dam_permissionGroup_create';
-    public const DAM_PERMISSION_GROUP_UPDATE = 'dam_permissionGroup_update';
-    public const DAM_PERMISSION_GROUP_VIEW = 'dam_permissionGroup_view';
-    public const DAM_PERMISSION_GROUP_DELETE = 'dam_permissionGroup_delete';
+    public const string DAM_PERMISSION_GROUP_CREATE = 'dam_permissionGroup_create';
+    public const string DAM_PERMISSION_GROUP_UPDATE = 'dam_permissionGroup_update';
+    public const string DAM_PERMISSION_GROUP_READ = 'dam_permissionGroup_view';
+    public const string DAM_PERMISSION_GROUP_DELETE = 'dam_permissionGroup_delete';
 
     public static function allDetail(): array
     {
         return [
             // Asset
-            BaseDamPermissions::DAM_ASSET_VIEW => [
+            BaseDamPermissions::DAM_ASSET_READ => [
                 self::GRANTS => [Grants::GRANT_ALLOW, Grants::GRANT_DENY],
                 self::UI => [
                     self::UI_CATEGORY => UiCategories::CATEGORY_DAM,
@@ -57,7 +57,7 @@ final class DamPermissions extends BaseDamPermissions
                 ],
             ],
             // Video
-            BaseDamPermissions::DAM_VIDEO_VIEW => [
+            BaseDamPermissions::DAM_VIDEO_READ => [
                 self::GRANTS => [Grants::GRANT_ALLOW, Grants::GRANT_DENY],
                 self::UI => [
                     self::UI_CATEGORY => UiCategories::CATEGORY_DAM,
@@ -86,7 +86,7 @@ final class DamPermissions extends BaseDamPermissions
                 ],
             ],
             // Audio
-            BaseDamPermissions::DAM_AUDIO_VIEW => [
+            BaseDamPermissions::DAM_AUDIO_READ => [
                 self::GRANTS => [Grants::GRANT_ALLOW, Grants::GRANT_DENY],
                 self::UI => [
                     self::UI_CATEGORY => UiCategories::CATEGORY_DAM,
@@ -115,7 +115,7 @@ final class DamPermissions extends BaseDamPermissions
                 ],
             ],
             // CustomForm
-            BaseDamPermissions::DAM_CUSTOM_FORM_VIEW => [
+            BaseDamPermissions::DAM_CUSTOM_FORM_READ => [
                 self::GRANTS => [Grants::GRANT_ALLOW, Grants::GRANT_DENY],
                 self::UI => [
                     self::UI_CATEGORY => UiCategories::CATEGORY_DAM,
@@ -145,7 +145,7 @@ final class DamPermissions extends BaseDamPermissions
                 ],
             ],
             // Document
-            BaseDamPermissions::DAM_DOCUMENT_VIEW => [
+            BaseDamPermissions::DAM_DOCUMENT_READ => [
                 self::GRANTS => [Grants::GRANT_ALLOW, Grants::GRANT_DENY],
                 self::UI => [
                     self::UI_CATEGORY => UiCategories::CATEGORY_DAM,
@@ -174,7 +174,7 @@ final class DamPermissions extends BaseDamPermissions
                 ],
             ],
             // Image
-            BaseDamPermissions::DAM_IMAGE_VIEW => [
+            BaseDamPermissions::DAM_IMAGE_READ => [
                 self::GRANTS => [Grants::GRANT_ALLOW, Grants::GRANT_DENY],
                 self::UI => [
                     self::UI_CATEGORY => UiCategories::CATEGORY_DAM,
@@ -203,7 +203,7 @@ final class DamPermissions extends BaseDamPermissions
                 ],
             ],
             // RegionOfInterest
-            BaseDamPermissions::DAM_REGION_OF_INTEREST_VIEW => [
+            BaseDamPermissions::DAM_REGION_OF_INTEREST_READ => [
                 self::GRANTS => [Grants::GRANT_ALLOW, Grants::GRANT_DENY],
                 self::UI => [
                     self::UI_CATEGORY => UiCategories::CATEGORY_DAM,
@@ -254,7 +254,7 @@ final class DamPermissions extends BaseDamPermissions
                 ],
             ],
             // PermissionGroup
-            self::DAM_PERMISSION_GROUP_VIEW => [
+            self::DAM_PERMISSION_GROUP_READ => [
                 self::GRANTS => [Grants::GRANT_ALLOW, Grants::GRANT_DENY],
                 self::UI => [
                     self::UI_CATEGORY => UiCategories::CATEGORY_DAM,
@@ -283,7 +283,7 @@ final class DamPermissions extends BaseDamPermissions
                 ],
             ],
             // AssetLicence
-            self::DAM_ASSET_LICENCE_VIEW => [
+            self::DAM_ASSET_LICENCE_READ => [
                 self::GRANTS => [Grants::GRANT_ALLOW, Grants::GRANT_DENY],
                 self::UI => [
                     self::UI_CATEGORY => UiCategories::CATEGORY_DAM,
@@ -312,7 +312,7 @@ final class DamPermissions extends BaseDamPermissions
                 ],
             ],
             // ExtSystem
-            self::DAM_EXT_SYSTEM_VIEW => [
+            self::DAM_EXT_SYSTEM_READ => [
                 self::GRANTS => [Grants::GRANT_ALLOW, Grants::GRANT_DENY],
                 self::UI => [
                     self::UI_CATEGORY => UiCategories::CATEGORY_DAM,
@@ -334,7 +334,7 @@ final class DamPermissions extends BaseDamPermissions
                 ],
             ],
             // Author
-            self::DAM_AUTHOR_VIEW => [
+            self::DAM_AUTHOR_READ => [
                 self::GRANTS => [Grants::GRANT_ALLOW, Grants::GRANT_DENY],
                 self::UI => [
                     self::UI_CATEGORY => UiCategories::CATEGORY_DAM,
@@ -363,7 +363,7 @@ final class DamPermissions extends BaseDamPermissions
                 ],
             ],
             // Keyword
-            self::DAM_KEYWORD_VIEW => [
+            self::DAM_KEYWORD_READ => [
                 self::GRANTS => [Grants::GRANT_ALLOW, Grants::GRANT_DENY],
                 self::UI => [
                     self::UI_CATEGORY => UiCategories::CATEGORY_DAM,
@@ -392,7 +392,7 @@ final class DamPermissions extends BaseDamPermissions
                 ],
             ],
             // Podcast
-            self::DAM_PODCAST_VIEW => [
+            self::DAM_PODCAST_READ => [
                 self::GRANTS => [Grants::GRANT_ALLOW, Grants::GRANT_DENY],
                 self::UI => [
                     self::UI_CATEGORY => UiCategories::CATEGORY_DAM,
@@ -421,7 +421,7 @@ final class DamPermissions extends BaseDamPermissions
                 ],
             ],
             // Podcast Episode
-            self::DAM_PODCAST_EPISODE_VIEW => [
+            self::DAM_PODCAST_EPISODE_READ => [
                 self::GRANTS => [Grants::GRANT_ALLOW, Grants::GRANT_DENY],
                 self::UI => [
                     self::UI_CATEGORY => UiCategories::CATEGORY_DAM,
@@ -450,7 +450,7 @@ final class DamPermissions extends BaseDamPermissions
                 ],
             ],
             // Distribution Category
-            self::DAM_DISTRIBUTION_CATEGORY_VIEW => [
+            self::DAM_DISTRIBUTION_CATEGORY_READ => [
                 self::GRANTS => [Grants::GRANT_ALLOW, Grants::GRANT_DENY],
                 self::UI => [
                     self::UI_CATEGORY => UiCategories::CATEGORY_DAM,
@@ -479,7 +479,7 @@ final class DamPermissions extends BaseDamPermissions
                 ],
             ],
             // Distribution Category Select
-            self::DAM_DISTRIBUTION_CATEGORY_SELECT_VIEW => [
+            self::DAM_DISTRIBUTION_CATEGORY_SELECT_READ => [
                 self::GRANTS => [Grants::GRANT_ALLOW, Grants::GRANT_DENY],
                 self::UI => [
                     self::UI_CATEGORY => UiCategories::CATEGORY_DAM,
@@ -599,7 +599,7 @@ final class DamPermissions extends BaseDamPermissions
                 self::DAM_USER_VIEW,
                 self::DAM_USER_CREATE,
                 self::DAM_USER_UPDATE,
-                self::DAM_PERMISSION_GROUP_VIEW,
+                self::DAM_PERMISSION_GROUP_READ,
                 self::DAM_PERMISSION_GROUP_CREATE,
                 self::DAM_PERMISSION_GROUP_UPDATE,
                 self::DAM_PERMISSION_GROUP_DELETE,
