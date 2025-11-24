@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use Doctrine\Common\Cache\Cache;
-use Doctrine\Common\Cache\Psr6\DoctrineProvider;
 use Redis;
 
 return static function (ContainerConfigurator $configurator): void {
@@ -69,11 +67,5 @@ return static function (ContainerConfigurator $configurator): void {
             env('int:REDIS_PORT'),
         ])
         ->call('select', [0])
-    ;
-
-    $services
-        ->set(Cache::class)
-        ->factory([DoctrineProvider::class, 'wrap'])
-        ->arg('$pool', service('doctrine.redis_cache_pool'))
     ;
 };

@@ -6,8 +6,6 @@ namespace App\Entity;
 
 use AnzuSystems\AuthBundle\Contracts\AnzuAuthUserInterface;
 use AnzuSystems\AuthBundle\Contracts\ApiTokenUserInterface;
-use AnzuSystems\Contracts\Entity\Interfaces\TimeTrackingInterface;
-use AnzuSystems\Contracts\Entity\Interfaces\UserTrackingInterface;
 use AnzuSystems\CoreDamBundle\App;
 use AnzuSystems\CoreDamBundle\Entity\AssetLicence;
 use AnzuSystems\CoreDamBundle\Entity\DamUser;
@@ -22,18 +20,17 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
+#[ORM\Table(name: 'user')]
 #[ORM\UniqueConstraint(name: 'UNIQ_email', fields: ['email'])]
 class User extends DamUser implements
     AnzuAuthUserInterface,
     PasswordAuthenticatedUserInterface,
-    ApiTokenUserInterface,
-    UserTrackingInterface,
-    TimeTrackingInterface
+    ApiTokenUserInterface
 {
-    public const ID_ANONYMOUS = 1;
-    public const ID_CONSOLE = 2;
-    public const ID_ADMIN = 3;
-    public const ID_BASIC_USER = 4;
+    public const int ID_ANONYMOUS = 1;
+    public const int ID_CONSOLE = 2;
+    public const int ID_ADMIN = 3;
+    public const int ID_BASIC_USER = 4;
 
     /**
      * Authorization password for system users.

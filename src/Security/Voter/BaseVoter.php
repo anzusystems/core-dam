@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Security\Voter;
 
-use AnzuSystems\CoreDamBundle\Security\Voter\AbstractVoter;
+use AnzuSystems\CommonBundle\Security\Voter\AbstractVoter;
 use App\Security\Permission\DamPermissions;
 use App\Security\Permission\UiPermissions;
 

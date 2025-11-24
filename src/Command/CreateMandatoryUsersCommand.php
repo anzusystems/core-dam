@@ -10,7 +10,7 @@ use AnzuSystems\Contracts\Entity\AnzuUser;
 use App\Domain\User\UserManager;
 use App\Entity\User;
 use Doctrine\ORM\Id\AssignedGenerator;
-use Doctrine\ORM\Mapping\ClassMetadataInfo;
+use Doctrine\ORM\Mapping\ClassMetadata;
 use Exception;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -56,7 +56,7 @@ final class CreateMandatoryUsersCommand extends Command
 
         $userClassMetadata = $this->userManager->getEntityManager()->getClassMetadata(User::class);
         $userClassMetadata->setIdGenerator(new AssignedGenerator());
-        $userClassMetadata->setIdGeneratorType(ClassMetadataInfo::GENERATOR_TYPE_NONE);
+        $userClassMetadata->setIdGeneratorType(ClassMetadata::GENERATOR_TYPE_NONE);
 
         $anonymousUser = $this->userManager->getEntityManager()->find(User::class, $anonymousUserId);
         if ($anonymousUser instanceof AnzuUser) {
