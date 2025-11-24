@@ -6,21 +6,18 @@
         "php": ">=8.2",
         "ext-ctype": "*",
         "ext-iconv": "*",
-        "ext-redis": "^5.3",
-        "anzusystems/auth-bundle": "^1.1",
-        "anzusystems/core-dam-bundle": "^1.1",
-        "doctrine/doctrine-migrations-bundle": "^3.2",
-        "doctrine/orm": "2.13.1",
-        "petitpress/gps-messenger-bundle": "^1.1",
-        "symfony/asset": "6.3.*",
-        "symfony/debug-bundle": "^6.3",
+        "ext-redis": "*",
+        "anzusystems/auth-bundle": "^4.1",
+        "anzusystems/core-dam-bundle": "^1.41.0",
+        "symfony/asset": "7.4.*",
+        "symfony/debug-bundle": "^7.4",
         "symfony/flex": "^2.2",
-        "symfony/twig-bundle": "6.3.*"
+        "symfony/twig-bundle": "7.4.*"
     },
     "require-dev": {
-        "symfony/stopwatch": "6.3.*",
-        "symfony/var-dumper": "6.3.*",
-        "symfony/web-profiler-bundle": "6.3.*"
+        "symfony/stopwatch": "7.4.*",
+        "symfony/var-dumper": "7.4.*",
+        "symfony/web-profiler-bundle": "7.4.*"
     },
     "config": {
         "allow-plugins": {
@@ -63,7 +60,7 @@
     "extra": {
         "symfony": {
             "allow-contrib": false,
-            "require": "6.3.*"
+            "require": "7.4.*"
         },
         "runtime": {
             "use_putenv": true
