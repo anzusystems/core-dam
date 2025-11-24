@@ -22,15 +22,31 @@ Arguments:
 - `--build` - Build all images to run fresh docker containers
 - `-d` - Run docker containers in the detached mode as background processes
 
-## 3. Build the application
+### 3. Add local domain to hosts
+
+Add this entry to your hosts:
+
+    127.0.0.1   core-dam.anzusystems.local
+    127.0.0.1   image.anzusystemsdata.local
+    127.0.0.1   admin-image.anzusystemsdata.local
+
+- Linux/Mac location:
+
+  `/etc/hosts`
+
+- Windows location
+
+  `C:\Windows\System32\drivers\etc\hosts`
+
+## 4. Build the application
 
 Rebuild app from ground up:
 
     bin/build
 
-## 4. Open your application
+## 5. Open your application
 
-Open http://core-dam.anzusystems.localhost in your browser.
+Open http://core-dam.anzusystems.local in your browser.
 
 # Scripts
 

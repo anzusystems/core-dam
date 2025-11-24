@@ -1,5 +1,5 @@
 #!/bin/bash
-# Script used to clear all cache on local environment
+# Script used to run cache clear in the application container
 
 PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")"/.. && pwd)"
 ARGS="$*"
@@ -9,7 +9,7 @@ cd "${PROJECT_ROOT}" || exit 1
 
 function help() {
     echo -en "$(printf %q "${BASH_SOURCE[0]}") [OPERATION] [OPTIONS]
-    \nBash script used to run the cache clear in docker.
+    \nBash script used to run cache clear in the application container.
 
     Options:
         --no-autoload Do not run dump-autoload, only clear cache folder and redis

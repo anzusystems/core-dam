@@ -8,11 +8,11 @@ services:
       context: .
       dockerfile: ./docker/app/local/Dockerfile
     environment:
-      - VIRTUAL_HOST=core-dam.anzusystems.localhost,image.anzusystemsdata.localhost,admin-image.anzusystemsdata.localhost
+      - VIRTUAL_HOST=core-dam.anzusystems.local,image.anzusystemsdata.local,admin-image.anzusystemsdata.local
       - VIRTUAL_PORT=${NGINX_PORT:-8130}
       - NGINX_PORT=${NGINX_PORT:-8130}
     external_links:
-      - local-proxy:core-dam.anzusystems.localhost
+      - local-proxy:core-dam.anzusystems.local
     env_file:
       - .env.docker.dist
       - .env.docker.local
@@ -36,7 +36,7 @@ services:
       context: .
       dockerfile: ./docker/app-cron/local/Dockerfile
     external_links:
-      - local-proxy:core-dam.anzusystems.localhost
+      - local-proxy:core-dam.anzusystems.local
     env_file:
       - .env.docker.dist
       - .env.docker.local
@@ -47,7 +47,7 @@ services:
       - anzusystems_network
 
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:8.8.1
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.15.0
     environment:
       - cluster.routing.allocation.disk.threshold_enabled=false
       - discovery.type=single-node
@@ -64,7 +64,7 @@ services:
       - elasticsearch_data:/usr/share/elasticsearch/data:cached
     ports:
       - ${ELASTICSEARCH_DOCKER_PORT:-9225}:9200
-    hostname: elasticsearch-core
+    hostname: elasticsearch
     networks:
       - anzusystems_network
 
@@ -80,12 +80,12 @@ services:
       - mysql_data:/var/lib/mysql:cached
     ports:
       - ${MYSQL_DOCKER_PORT:-3353}:3306
-    hostname: mysql-core
+    hostname: mysql
     networks:
       - anzusystems_network
 
   mongo:
-    image: mongo:5.0
+    image: mongo:7.0
     command: ${MONGO_LOGAPPEND:-} ${MONGO_NOTABLESCAN:-}
     env_file:
       - .env.docker.dist
@@ -94,7 +94,7 @@ services:
       - mongo_data:/data/db:cached
     ports:
       - ${MONGO_DOCKER_PORT:-27517}:27017
-    hostname: mongo-core
+    hostname: mongo
     networks:
       - anzusystems_network
 
@@ -108,12 +108,12 @@ services:
       - anzusystems_network
 
   redis:
-    image: redis:6.2
+    image: redis:7.2
     volumes:
       - redis_data:/data:cached
     ports:
       - ${REDIS_DOCKER_PORT:-6571}:6379
-    hostname: redis-core
+    hostname: redis
     networks:
       - anzusystems_network
 
