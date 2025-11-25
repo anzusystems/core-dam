@@ -8,11 +8,11 @@ services:
       context: .
       dockerfile: ./docker/app/local/Dockerfile
     environment:
-      - VIRTUAL_HOST=core-dam.anzusystems.local,image.anzusystemsdata.local,admin-image.anzusystemsdata.local
+      - VIRTUAL_HOST=core-dam.anzusystems.localhost,image.anzusystemsdata.localhost,admin-image.anzusystemsdata.localhost
       - VIRTUAL_PORT=${NGINX_PORT:-8130}
       - NGINX_PORT=${NGINX_PORT:-8130}
     external_links:
-      - local-proxy:core-dam.anzusystems.local
+      - local-proxy:core-dam.anzusystems.localhost
     env_file:
       - .env.docker.dist
       - .env.docker.local
@@ -36,7 +36,7 @@ services:
       context: .
       dockerfile: ./docker/app-cron/local/Dockerfile
     external_links:
-      - local-proxy:core-dam.anzusystems.local
+      - local-proxy:core-dam.anzusystems.localhost
     env_file:
       - .env.docker.dist
       - .env.docker.local
