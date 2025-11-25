@@ -26,9 +26,9 @@ Arguments:
 
 Add this entry to your hosts:
 
-    127.0.0.1   core-dam.anzusystems.local
-    127.0.0.1   image.anzusystemsdata.local
-    127.0.0.1   admin-image.anzusystemsdata.local
+    127.0.0.1   core-dam.anzusystems.localhost
+    127.0.0.1   image.anzusystemsdata.localhost
+    127.0.0.1   admin-image.anzusystemsdata.localhost
 
 - Linux/Mac location:
 
@@ -46,7 +46,7 @@ Rebuild app from ground up:
 
 ## 5. Open your application
 
-Open http://core-dam.anzusystems.local in your browser.
+Open http://core-dam.anzusystems.localhost in your browser.
 
 # Scripts
 
