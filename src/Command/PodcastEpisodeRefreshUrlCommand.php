@@ -15,10 +15,9 @@ use AnzuSystems\CoreDamBundle\Entity\AssetSlot;
 use AnzuSystems\CoreDamBundle\Entity\Podcast;
 use AnzuSystems\CoreDamBundle\Model\Dto\Podcast\PodcastImportIteratorDto;
 use AnzuSystems\CoreDamBundle\Model\ValueObject\PodcastSynchronizerPointer;
-use AnzuSystems\CoreDamBundle\Repository\DistributionRepository;
 use AnzuSystems\CoreDamBundle\Repository\PodcastEpisodeRepository;
 use App\Configuration\ConfigurationProvider;
-use App\Model\Configuration\ArtemisAudioDistributionConfiguration;
+use App\Model\Configuration\CmsAudioProcessedAutomatConfiguration;
 use SplFileObject;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -41,7 +40,6 @@ final class PodcastEpisodeRefreshUrlCommand extends Command
         'episode_title',
         'episode_id',
         'audio_id',
-        'artemis_distribution_id',
         'rss_url',
         'new_url',
     ];
@@ -51,7 +49,6 @@ final class PodcastEpisodeRefreshUrlCommand extends Command
         private readonly PodcastImportIterator $importIterator,
         private readonly PodcastEpisodeRepository $podcastEpisodeRepository,
         private readonly ConfigurationProvider $configurationProvider,
-        private readonly DistributionRepository $distributionRepository,
     ) {
         parent::__construct();
     }
@@ -97,7 +94,7 @@ final class PodcastEpisodeRefreshUrlCommand extends Command
     private function syncUrl(
         PodcastImportIteratorDto $item,
         SplFileObject $csv,
-        ArtemisAudioDistributionConfiguration $configuration,
+        CmsAudioProcessedAutomatConfiguration $configuration,
         bool $persist,
     ): void {
         $rssUrl = $item->getItem()->getEnclosure()->getUrl();
@@ -118,22 +115,12 @@ final class PodcastEpisodeRefreshUrlCommand extends Command
             fn (int $index, AssetSlot $slot): bool => $slot->getName() === $configuration->getAudioFreeSlotName()
         );
 
-        // TODO
-//        $artemisDistribution = $freeAudio
-//            ? $this->distributionRepository->findByAssetFileAndDistributionService(
-//                $freeAudio->getId(),
-//                self::ARTEMIS_PODCAST_CMS
-//            )
-//            : null
-//        ;
-
         $csv->fputcsv([
             $item->getPodcast()->getTexts()->getTitle(),
             $item->getPodcast()->getId(),
             $podcastEpisode->getTexts()->getTitle(),
             $podcastEpisode->getId(),
             $freeAudio?->getAudio()?->getId(),
-            $artemisDistribution?->getExtId(),
             $rssUrl,
             $item->getItem()->getEnclosure()->getUrl(),
         ]);

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Event\Subscriber;
+namespace App\Event\Listener;
 
 use AnzuSystems\CoreDamBundle\Entity\ImageFile;
 use AnzuSystems\CoreDamBundle\Event\AssetFileChangeStateEvent;
@@ -13,9 +13,10 @@ use AnzuSystems\SerializerBundle\Exception\SerializerException;
 use App\Domain\AssetMetadata\AssetMetadataManager;
 use App\Domain\Image\MediaApi\ImageFacade;
 use App\Model\Domain\AssetMetadata\MediaApiMetadata;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 
-final class MediaApiChangeStateEvent implements EventSubscriberInterface
+#[AsEventListener(event: AssetFileChangeStateEvent::class)]
+final class MediaApiChangeStateEventListener
 {
     use MessageBusAwareTrait;
 
@@ -26,17 +27,10 @@ final class MediaApiChangeStateEvent implements EventSubscriberInterface
     ) {
     }
 
-    public static function getSubscribedEvents(): array
-    {
-        return [
-            AssetFileChangeStateEvent::class => 'onAssetChangeState',
-        ];
-    }
-
     /**
      * @throws SerializerException
      */
-    public function onAssetChangeState(AssetFileChangeStateEvent $event): void
+    public function __invoke(AssetFileChangeStateEvent $event): void
     {
         $imageFile = $event->getAsset();
         if (false === ($imageFile instanceof ImageFile)) {

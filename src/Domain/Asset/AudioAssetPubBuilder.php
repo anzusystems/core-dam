@@ -12,7 +12,7 @@ use AnzuSystems\CoreDamBundle\Entity\PodcastEpisode;
 use AnzuSystems\CoreDamBundle\Helper\StringHelper;
 use AnzuSystems\CoreDamBundle\Repository\AssetFileRouteRepository;
 use App\Configuration\ConfigurationProvider;
-use App\Model\Configuration\ArtemisAudioDistributionConfiguration;
+use App\Model\Configuration\CmsAudioProcessedAutomatConfiguration;
 use App\Model\Domain\Asset\AudioAssetMediaPubDecorator;
 use App\Model\Domain\Asset\AudioAssetPubDecorator;
 use App\Model\Enum\GateStatus;
@@ -70,7 +70,7 @@ final readonly class AudioAssetPubBuilder
     }
 
     public function getBonusAudioMedia(
-        ArtemisAudioDistributionConfiguration $configuration,
+        CmsAudioProcessedAutomatConfiguration $configuration,
         PodcastEpisode $podcastEpisode
     ): ?AudioAssetMediaPubDecorator {
         if (StringHelper::isNotEmpty($configuration->getAudioBonusSlotName())
@@ -87,7 +87,7 @@ final readonly class AudioAssetPubBuilder
 
     public function getFreeAudioMedia(
         AssetSlot $slot,
-        ArtemisAudioDistributionConfiguration $configuration,
+        CmsAudioProcessedAutomatConfiguration $configuration,
         ?PodcastEpisode $podcastEpisode = null
     ): ?AudioAssetMediaPubDecorator {
         $freeSlotAssetFile = $slot->getAudio();
@@ -121,10 +121,9 @@ final readonly class AudioAssetPubBuilder
 
     private function getAudioSlotDecorator(
         AssetSlot $slot,
-        ArtemisAudioDistributionConfiguration $configuration,
+        CmsAudioProcessedAutomatConfiguration $configuration,
         ?PodcastEpisode $podcastEpisode = null,
     ): ?AudioAssetMediaPubDecorator {
-        // todo artemis configuration remove!
         if ($slot->getName() === $configuration->getAudioPremiumSlotName()) {
             return $this->getPremiumAudioMedia($slot, $configuration);
         }
@@ -144,7 +143,7 @@ final readonly class AudioAssetPubBuilder
 
     private function getPremiumAudioMedia(
         AssetSlot $slot,
-        ArtemisAudioDistributionConfiguration $configuration,
+        CmsAudioProcessedAutomatConfiguration $configuration,
     ): ?AudioAssetMediaPubDecorator {
         if ($this->gateStatusResolver->getLockStatus()->isNot(GateStatus::Unlocked)) {
             return null;

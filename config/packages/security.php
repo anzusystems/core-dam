@@ -29,9 +29,8 @@ return static function (SecurityConfig $config): void {
         // UGC hierarchy
         ->roleHierarchy(User::ROLE_UGC, [AnzuUser::ROLE_USER])
         // SYS hierarchy
-        ->roleHierarchy(User::ROLE_SYS_API, [User::ROLE_SYS_JOB_API, User::ROLE_SYS_ARTEMIS_API])
+        ->roleHierarchy(User::ROLE_SYS_API, [User::ROLE_SYS_JOB_API])
         ->roleHierarchy(User::ROLE_SYS_JOB_API, null)
-        ->roleHierarchy(User::ROLE_SYS_ARTEMIS_API, null)
         // Base user ROLE
         ->roleHierarchy(AnzuUser::ROLE_USER, null)
     ;
