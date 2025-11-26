@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\DependencyInjection;
 
-use App\Model\Configuration\CmsAudioProcessedAutomatConfiguration;
 use App\Model\Configuration\AssetPubConfiguration;
+use App\Model\Configuration\CmsAudioProcessedAutomatConfiguration;
 use App\Model\Configuration\MediaApiSyncConfiguration;
 use App\Model\Configuration\RtmpConfiguration;
 use Symfony\Component\Config\Definition\Builder\NodeDefinition;

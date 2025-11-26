@@ -12,7 +12,6 @@ use AnzuSystems\SerializerBundle\Exception\SerializerException;
 use App\Exception\MediaApiClientException;
 use App\Model\Domain\Asset\AssetFileMediaApiCallbackDecorator;
 use JsonException;
-use Psr\Log\LoggerAwareInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\HttpClient\HttpClientInterface;

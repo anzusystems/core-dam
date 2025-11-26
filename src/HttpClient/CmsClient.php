@@ -12,7 +12,6 @@ use App\Model\Domain\Asset\AssetCmsSysDto;
 use App\Model\Domain\Image\CmsImageUsageListDto;
 use Doctrine\Common\Collections\Collection;
 use JsonException;
-use Psr\Log\LoggerAwareInterface;
 use RuntimeException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

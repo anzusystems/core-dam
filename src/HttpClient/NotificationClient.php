@@ -7,7 +7,6 @@ namespace App\HttpClient;
 use AnzuSystems\CommonBundle\Model\HttpClient\HttpClientResponse;
 use AnzuSystems\CommonBundle\Traits\LoggerAwareRequest;
 use AnzuSystems\CommonBundle\Traits\SerializerAwareTrait;
-use Psr\Log\LoggerAwareInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
