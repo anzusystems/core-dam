@@ -33,7 +33,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 final class PodcastEpisodeRefreshUrlCommand extends Command
 {
     private const string PODCAST_EPISODE_LINKS_CSV = 'podcast_episode_links.csv';
-    private const string ARTEMIS_PODCAST_CMS = 'artemis_podcast_cms';
     private const string PERSIST = 'persist';
 
     private const array CSV_FIELDS = [
@@ -119,13 +118,14 @@ final class PodcastEpisodeRefreshUrlCommand extends Command
             fn (int $index, AssetSlot $slot): bool => $slot->getName() === $configuration->getAudioFreeSlotName()
         );
 
-        $artemisDistribution = $freeAudio
-            ? $this->distributionRepository->findByAssetFileAndDistributionService(
-                $freeAudio->getId(),
-                self::ARTEMIS_PODCAST_CMS
-            )
-            : null
-        ;
+        // TODO
+//        $artemisDistribution = $freeAudio
+//            ? $this->distributionRepository->findByAssetFileAndDistributionService(
+//                $freeAudio->getId(),
+//                self::ARTEMIS_PODCAST_CMS
+//            )
+//            : null
+//        ;
 
         $csv->fputcsv([
             $item->getPodcast()->getTexts()->getTitle(),

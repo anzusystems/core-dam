@@ -31,8 +31,6 @@ return static function (ContainerConfigurator $configurator): void {
         ->factory(service(RssPodcastMock::class));
     $services->set(HttpClientInterface::class . ' $client', MockHttpClient::class)
         ->factory(service(BaseClient::class));
-    $services->set(HttpClientInterface::class . ' $artemisApiClient', MockHttpClient::class)
-        ->factory(service(ArtemisClientMock::class));
     $services->set(HttpClientInterface::class . ' $anzuCmsApiClient', MockHttpClient::class)
         ->factory(service(CmsClientMock::class));
 

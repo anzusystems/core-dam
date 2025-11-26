@@ -14,10 +14,6 @@ return static function (FrameworkConfig $config): void {
             ->maxDuration(30)
             ->timeout(30)
     ;
-    $httpClient->scopedClient('artemis.api_client')
-        ->baseUri(env('DISTRIBUTION_ARTEMIS_CMS_ENDPOINT'))
-        ->header('token', env('DISTRIBUTION_ARTEMIS_CMS_API_TOKEN'))
-    ;
     $httpClient->scopedClient('mediaapi.api_client')
         ->baseUri(env('MEDIA_API_HOST'))
         ->authBearer(env('MEDIA_API_TOKEN')->string())
@@ -36,7 +32,6 @@ return static function (FrameworkConfig $config): void {
         ->header('Accept', 'application/json')
         ->header('Content-type', 'application/json')
     ;
-
     $httpClient->scopedClient('cloudFlare.api_client')
         ->baseUri(env('CLOUD_FLARE_API_HOST'))
         ->authBearer(env('CLOUD_FLARE_API_TOKEN')->string())

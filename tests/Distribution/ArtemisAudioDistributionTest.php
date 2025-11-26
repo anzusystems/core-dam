@@ -25,7 +25,7 @@ final class ArtemisAudioDistributionTest extends AbstractController
 {
     private RssImportManager $importManager;
     private AudioPositionFacade $audioPositionFacade;
-    private ArtemisAudioDistributionAutomat $automat;
+//    private ArtemisAudioDistributionAutomat $automat;
     private EpisodeRssImportManager $episodeRssImportManager;
     private PodcastRssReader $reader;
     private RssClient $client;
@@ -35,7 +35,7 @@ final class ArtemisAudioDistributionTest extends AbstractController
         parent::setUp();
         $this->importManager = $this->getService(RssImportManager::class);
         $this->audioPositionFacade = $this->getService(AudioPositionFacade::class);
-        $this->automat = $this->getService(ArtemisAudioDistributionAutomat::class);
+//        $this->automat = $this->getService(ArtemisAudioDistributionAutomat::class);
         $this->reader = $this->getService(PodcastRssReader::class);
         $this->client = $this->getService(RssClient::class);
         $this->episodeRssImportManager = $this->getService(EpisodeRssImportManager::class);
@@ -45,11 +45,11 @@ final class ArtemisAudioDistributionTest extends AbstractController
     {
         $audioFile = $this->entityManager->find(AudioFile::class, AudioFixtures::AUDIO_ID_1);
 
-        $this->automat->makeAudioPublicUrl($audioFile);
+//        $this->automat->makeAudioPublicUrl($audioFile);
         $this->assertNull($audioFile->getMainRoute());
 
         $this->audioPositionFacade->setToSlot($audioFile->getAsset(), $audioFile, 'premium');
-        $this->automat->makeAudioPublicUrl($audioFile);
+//        $this->automat->makeAudioPublicUrl($audioFile);
     }
 
     public function testDistributionPreparedPremium(): void

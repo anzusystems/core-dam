@@ -124,6 +124,7 @@ final readonly class AudioAssetPubBuilder
         ArtemisAudioDistributionConfiguration $configuration,
         ?PodcastEpisode $podcastEpisode = null,
     ): ?AudioAssetMediaPubDecorator {
+        // todo artemis configuration remove!
         if ($slot->getName() === $configuration->getAudioPremiumSlotName()) {
             return $this->getPremiumAudioMedia($slot, $configuration);
         }

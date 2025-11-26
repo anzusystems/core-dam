@@ -81,19 +81,20 @@ final class ArtemisAudioDistributionAutomat extends AbstractManager
         foreach ($audioFile->getAsset()->getEpisodes() as $episode) {
             $this->activateEpisodeForPublicExport($episode);
 
-            $distribution = $this->repository->findByEpisodeAndAsset(
-                (string) $audioFile->getAsset()->getId(),
-                (string) $episode->getId(),
-                self::ARTEMIS_AUDIO_DISTRIBUTION_SERVICE
-            );
-
-            if (null === $distribution) {
-                $this->tryCreateNewDistribution($episode, $audioFile);
-            }
-
-            if ($distribution instanceof ArtemisAudioDistribution) {
-                $this->tryRedistribute($distribution, $audioFile);
-            }
+            // todo
+//            $distribution = $this->repository->findByEpisodeAndAsset(
+//                (string) $audioFile->getAsset()->getId(),
+//                (string) $episode->getId(),
+//                self::ARTEMIS_AUDIO_DISTRIBUTION_SERVICE
+//            );
+//
+//            if (null === $distribution) {
+//                $this->tryCreateNewDistribution($episode, $audioFile);
+//            }
+//
+//            if ($distribution instanceof ArtemisAudioDistribution) {
+//                $this->tryRedistribute($distribution, $audioFile);
+//            }
         }
     }
 
@@ -127,24 +128,25 @@ final class ArtemisAudioDistributionAutomat extends AbstractManager
                 $this->tryMakePublic($premiumVersion->getAudio());
             }
 
-            $artemisAudioDistribution = $this->factory->createFromAudioAndEpisode(
-                $audioFile,
-                $episode,
-                self::ARTEMIS_AUDIO_DISTRIBUTION_SERVICE
-            );
+            // todo
+//            $artemisAudioDistribution = $this->factory->createFromAudioAndEpisode(
+//                $audioFile,
+//                $episode,
+//                self::ARTEMIS_AUDIO_DISTRIBUTION_SERVICE
+//            );
 
-            $jwDistribution = $this->prepareJwDistribution($artemisAudioDistribution, $audioFile);
-            $this->artemisAudioDistributionManager->create($artemisAudioDistribution, false);
-
-            if ($jwDistribution) {
-                $artemisAudioDistribution->addBlockedBy($jwDistribution);
-                $this->artemisAudioDistributionManager->flush();
-                $this->distributionBroker->startDistribution($jwDistribution);
-
-                return;
-            }
-            $this->artemisAudioDistributionManager->flush();
-            $this->distributionBroker->startDistribution($artemisAudioDistribution);
+//            $jwDistribution = $this->prepareJwDistribution($artemisAudioDistribution, $audioFile);
+//            $this->artemisAudioDistributionManager->create($artemisAudioDistribution, false);
+//
+//            if ($jwDistribution) {
+//                $artemisAudioDistribution->addBlockedBy($jwDistribution);
+//                $this->artemisAudioDistributionManager->flush();
+//                $this->distributionBroker->startDistribution($jwDistribution);
+//
+//                return;
+//            }
+//            $this->artemisAudioDistributionManager->flush();
+//            $this->distributionBroker->startDistribution($artemisAudioDistribution);
         }
     }
 
