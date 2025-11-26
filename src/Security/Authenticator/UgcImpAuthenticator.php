@@ -49,7 +49,8 @@ final class UgcImpAuthenticator extends AbstractUgcAuthenticator
 
         return new Passport(
             new UserBadge((string) $credentialsToken->claims()->get('sub'), $userProvider),
-            new CustomCredentials($credentialsChecker, $credentialsToken)
+            /** @phpstan-ignore-next-line argument.type */
+            new CustomCredentials($credentialsChecker, $credentialsToken),
         );
     }
 
