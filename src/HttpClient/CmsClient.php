@@ -19,7 +19,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Uid\Uuid;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
-final class CmsClient implements LoggerAwareInterface
+final class CmsClient
 {
     use LoggerAwareRequest;
     use SerializerAwareTrait;

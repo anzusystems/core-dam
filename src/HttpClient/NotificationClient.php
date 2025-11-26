@@ -11,7 +11,7 @@ use Psr\Log\LoggerAwareInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
-final class NotificationClient implements LoggerAwareInterface
+final class NotificationClient
 {
     use LoggerAwareRequest;
     use SerializerAwareTrait;

@@ -12,7 +12,7 @@ use Psr\Log\LoggerAwareInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
-final class CloudFlareClient implements LoggerAwareInterface
+final class CloudFlareClient
 {
     use LoggerAwareRequest;
     use SerializerAwareTrait;
