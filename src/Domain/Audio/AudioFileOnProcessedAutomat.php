@@ -133,7 +133,7 @@ final class AudioFileOnProcessedAutomat extends AbstractManager
             try {
                 $this->assetFileRouteFacade->makePublicFromDto($audioFile, new AssetFileRouteAdmCreateDto());
             } catch (Throwable $exception) {
-                $this->logger->error(self::class, 'Make public audio link failed', $exception);
+                $this->logger->error(self::class, 'Make public audio link failed', exception: $exception);
             }
         }
     }

@@ -11,8 +11,9 @@ use AnzuSystems\CoreDamBundle\Event\AssetFileRouteEvent;
 use AnzuSystems\CoreDamBundle\Event\Dispatcher\AssetChangedEventDispatcher;
 use AnzuSystems\CoreDamBundle\Repository\AudioFileRepository;
 use AnzuSystems\CoreDamBundle\Traits\MessageBusAwareTrait;
+use App\Cache\AssetFileCachePurger;
+use App\Cache\CacheCdnPurger;
 use App\Configuration\ConfigurationProvider;
-use App\Messenger\Message\AssetFileRouteMessage;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\Messenger\Exception\ExceptionInterface;
 
@@ -25,6 +26,8 @@ final class AssetFileRouteEventListener
         private readonly ConfigurationProvider $configurationProvider,
         private readonly AssetChangedEventDispatcher $assetMetadataBulkEventDispatcher,
         private readonly AudioFileRepository $audioFileRepository,
+        private readonly AssetFileCachePurger $assetFileCachePurger,
+        private readonly CacheCdnPurger $cacheCdnPurger,
     ) {
     }
 
@@ -33,10 +36,8 @@ final class AssetFileRouteEventListener
      */
     public function __invoke(AssetFileRouteEvent $event): void
     {
-        $this->messageBus->dispatch(new AssetFileRouteMessage(
-            assetFileId: $event->getAssetFileId(),
-            fullUrl: $event->getFullUrl()
-        ));
+        $this->assetFileCachePurger->purge($event->getAssetType(), $event->getAssetFileId());
+        $this->cacheCdnPurger->addUrl($event->getFullUrl());
 
         $this->dispatchAssetChangedEvent($event);
     }
@@ -60,6 +61,7 @@ final class AssetFileRouteEventListener
             )
         ;
 
+        // dispatch to CORE CMS
         $this->assetMetadataBulkEventDispatcher->dispatchAssetChangedEvent($freeAssets);
     }
 }

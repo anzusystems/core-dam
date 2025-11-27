@@ -7,17 +7,21 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 use AnzuSystems\CommonBundle\Messenger\Middleware\ContextIdentityMiddleware;
 use App\Messenger\Message\AssetChangedMessage;
 use App\Messenger\Message\AssetFileRouteMessage;
+use App\Messenger\Message\CacheCdnPurgeMessage;
+use App\Messenger\Message\CacheProxyPurgeMessage;
 use App\Messenger\Message\CdnPurgeMessage;
 use App\Messenger\Message\ImageCachePurgeMessage;
 use App\Messenger\Message\MediaApiCallbackMessage;
+use App\Messenger\Serializer\AnzuMessengerSerializer;
 use Symfony\Config\FrameworkConfig;
 
 return static function (FrameworkConfig $config): void {
     $appName = 'core_dam';
-    $cachePurge = 'anzu_core_dam_cache_purge';
     $assetChangedSync = 'anzu_core_dam_asset_changed_sync';
     $anzuCoreMediaApiCallback = 'anzu_core_dam_media_api_callback';
     $coreDamLog = 'core_dam_log';
+    $cachePurge = 'purger_proxy_purge';
+    $cacheCdnPurge = 'purger_cdn_proxy_purge';
 
     $messengerConfig = $config->messenger();
     $messengerConfig
@@ -64,6 +68,22 @@ return static function (FrameworkConfig $config): void {
                 'subscription' => createBasicSubscriptionConfig($coreDamLog, $appName),
             ])
     ;
+    $messengerConfig
+        ->transport($cachePurge)
+        ->dsn(env('MESSENGER_TRANSPORT_DSN'))
+        ->options([
+            'topic' => createBasicTopicConfig($cachePurge, $appName),
+        ])
+        ->serializer(AnzuMessengerSerializer::class)
+    ;
+    $messengerConfig
+        ->transport($cacheCdnPurge)
+        ->dsn(env('MESSENGER_TRANSPORT_DSN'))
+        ->options([
+            'topic' => createBasicTopicConfig($cacheCdnPurge, $appName),
+        ])
+        ->serializer(AnzuMessengerSerializer::class)
+    ;
 
     $messengerConfig
         ->bus('messenger.bus.default')
@@ -88,6 +108,14 @@ return static function (FrameworkConfig $config): void {
     $messengerConfig
         ->routing(AssetChangedMessage::class)
         ->senders([$assetChangedSync])
+    ;
+    $messengerConfig
+        ->routing(CacheProxyPurgeMessage::class)
+        ->senders([$cachePurge])
+    ;
+    $messengerConfig
+        ->routing(CacheCdnPurgeMessage::class)
+        ->senders([$cacheCdnPurge])
     ;
 };
 

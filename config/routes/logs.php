@@ -9,9 +9,9 @@ use Symfony\Component\HttpFoundation\Request;
 
 return static function (RoutingConfigurator $routes): void {
     $routes
-        ->add('anzu_common.logs.app_list', '/api/adm/v1/log/app')
-            ->methods([Request::METHOD_GET])
-            ->controller([LogController::class, 'getAppLogs'])
+        ->add('anzu_common.logs.journal_list', '/api/adm/v1/log/app')
+        ->methods([Request::METHOD_GET])
+        ->controller([LogController::class, 'getJournalLogs'])
     ;
 
     $routes
@@ -21,9 +21,9 @@ return static function (RoutingConfigurator $routes): void {
     ;
 
     $routes
-        ->add('anzu_common.logs.app_get_one', '/api/adm/v1/log/app/{id}')
-            ->methods([Request::METHOD_GET])
-            ->controller([LogController::class, 'getOneAppLog'])
+        ->add('anzu_common.logs.journal_get_one', '/api/adm/v1/log/app/{id}')
+        ->methods([Request::METHOD_GET])
+        ->controller([LogController::class, 'getOneJournalLog'])
     ;
 
     $routes

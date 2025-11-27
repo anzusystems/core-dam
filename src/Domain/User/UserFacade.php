@@ -101,7 +101,7 @@ final class UserFacade
             $ssoUserDto = $this->OAuth2HttpClient->getSsoUserInfoByEmail($userDto->getEmail());
             $userDto->setId((int) $ssoUserDto->getId());
         } catch (Throwable $e) {
-            $this->damLogger->error('User', 'Can\'t get user ID by email ' . $userDto->getEmail(), $e);
+            $this->damLogger->error('User', 'Can\'t get user ID by email ' . $userDto->getEmail(), exception: $e);
 
             return;
         }
