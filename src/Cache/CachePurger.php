@@ -72,6 +72,7 @@ final readonly class CachePurger
         }
         if ($this->debugEnabled) {
             $this->damLogger->info('Cache Proxy purge', 'purge xkeys', [
+                'enabled' => $this->cacheProxyPurgeEnabled ? 'true' : 'false',
                 'url' => $purgeMessage->getUrl(),
                 'xkey' => $purgeMessage->getXKey(),
             ]);

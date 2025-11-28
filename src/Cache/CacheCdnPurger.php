@@ -127,6 +127,7 @@ final class CacheCdnPurger
         }
         if ($this->debugEnabled) {
             $this->damLogger->info('CDN purge', 'Purge CDN urls', [
+                'enabled' => $this->cdnPurgeEnabled ? 'true' : 'false',
                 'purgeUrls' => $purgeMessage->getPurgeUrls(),
                 'warmupUrls' => $purgeMessage->getWarmupUrls(),
                 'purgeBotCache' => $purgeMessage->isPurgeBotCache(),
