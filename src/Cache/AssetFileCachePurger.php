@@ -18,5 +18,8 @@ final readonly class AssetFileCachePurger
     {
         $this->cachePurger->addTag(AssetFileCacheManager::getAssetFileXKey($assetId), hard: true);
         $this->cachePurger->addTag(AssetFileCacheManager::getAssetFileXKeyPrefixed($assetType, $assetId), hard: true);
+        if ($assetType->is(AssetType::Audio)) {
+            $this->cachePurger->addTag(AssetFileCacheManager::getAssetTypeXKey(AssetType::Audio), hard: true);
+        }
     }
 }
