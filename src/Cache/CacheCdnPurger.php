@@ -67,6 +67,10 @@ final class CacheCdnPurger
     {
         $urls = $this->purgeCacheUrlContainer->getUrls();
 
+        if (empty($urls)) {
+            return;
+        }
+
         count($urls) > self::MAX_CDN_PATHS
             ? $this->dispatchInBatch($urls)
             : $this->dispatchPurgeCacheUrlContainer($urls)
