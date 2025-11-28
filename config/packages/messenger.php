@@ -6,11 +6,8 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use AnzuSystems\CommonBundle\Messenger\Middleware\ContextIdentityMiddleware;
 use App\Messenger\Message\AssetChangedMessage;
-use App\Messenger\Message\AssetFileRouteMessage;
 use App\Messenger\Message\CacheCdnPurgeMessage;
 use App\Messenger\Message\CacheProxyPurgeMessage;
-use App\Messenger\Message\CdnPurgeMessage;
-use App\Messenger\Message\ImageCachePurgeMessage;
 use App\Messenger\Message\MediaApiCallbackMessage;
 use App\Messenger\Serializer\AnzuMessengerSerializer;
 use Symfony\Config\FrameworkConfig;
@@ -24,17 +21,6 @@ return static function (FrameworkConfig $config): void {
     $cacheCdnPurge = 'purger_cdn_proxy_purge';
 
     $messengerConfig = $config->messenger();
-    $messengerConfig
-        ->transport($cachePurge)
-            ->dsn(env('MESSENGER_TRANSPORT_DSN'))
-            ->options([
-                'client_config' => [
-                    'credentials' => '%env(json:base64:GOOGLE_PUBSUB_SA_KEY)%',
-                ],
-                'topic' => createBasicTopicConfig($cachePurge, $appName),
-                'subscription' => createBasicSubscriptionConfig($cachePurge, $appName),
-            ])
-    ;
     $messengerConfig
         ->transport($assetChangedSync)
         ->dsn(env('MESSENGER_TRANSPORT_DSN'))
@@ -88,18 +74,6 @@ return static function (FrameworkConfig $config): void {
     $messengerConfig
         ->bus('messenger.bus.default')
             ->middleware(ContextIdentityMiddleware::class)
-    ;
-    $messengerConfig
-        ->routing(AssetFileRouteMessage::class)
-        ->senders([$cachePurge])
-    ;
-    $messengerConfig
-        ->routing(CdnPurgeMessage::class)
-        ->senders([$cachePurge])
-    ;
-    $messengerConfig
-        ->routing(ImageCachePurgeMessage::class)
-        ->senders([$cachePurge])
     ;
     $messengerConfig
         ->routing(MediaApiCallbackMessage::class)
