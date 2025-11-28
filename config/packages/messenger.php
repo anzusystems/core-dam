@@ -58,6 +58,9 @@ return static function (FrameworkConfig $config): void {
         ->transport($cachePurge)
         ->dsn(env('MESSENGER_TRANSPORT_DSN'))
         ->options([
+            'client_config' => [
+                'credentials' => '%env(json:base64:GOOGLE_PUBSUB_SA_KEY)%',
+            ],
             'topic' => createBasicTopicConfig($cachePurge, $appName),
         ])
         ->serializer(AnzuMessengerSerializer::class)
@@ -66,6 +69,9 @@ return static function (FrameworkConfig $config): void {
         ->transport($cacheCdnPurge)
         ->dsn(env('MESSENGER_TRANSPORT_DSN'))
         ->options([
+            'client_config' => [
+                'credentials' => '%env(json:base64:GOOGLE_PUBSUB_SA_KEY)%',
+            ],
             'topic' => createBasicTopicConfig($cacheCdnPurge, $appName),
         ])
         ->serializer(AnzuMessengerSerializer::class)
