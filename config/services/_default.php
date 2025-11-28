@@ -23,8 +23,6 @@ return static function (ContainerConfigurator $configurator): void {
             ->bind('$rtmp', param('anzu_systems.core_dam.rtmp'))
             ->bind('$privateUgcCert', env('AUTH_UGC_JWT_PRIVATE_CERT')->default('empty_string')->base64())
             ->bind('$cachePurgeUrl', env('CORE_DAM_CACHE_PURGE_URL')->default('empty_string'))
-            ->bind('$cacheProxyPurgeEnabled', env('bool:CORE_DAM_CACHE_PROXY_PURGE_ENABLED'))
-            ->bind('$cdnPurgeEnabled', env('bool:CORE_DAM_CDN_PURGE_ENABLED'))
             ->bind('$exifCommonMetadata', param('anzu_systems.dam_bundle.common_metadata'))
             ->bind('$exifImageMetadata', param('anzu_systems.dam_bundle.image_metadata'))
             ->bind('$zoneId', env('CLOUD_FLARE_API_ZONE')->default('empty_string'))
