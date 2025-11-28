@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7442639c8cd856356bd6afaf891de7fd",
+    "content-hash": "70289ca8a4a90ad51deafe35a89492f5",
     "packages": [
         {
             "name": "anzusystems/anzutap-bundle",
@@ -294,12 +294,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/anzusystems/core-dam-bundle.git",
-                "reference": "78db2ccf391fd4b83568e96adf7be3dbefef6654"
+                "reference": "49336064eae1a4209a0bdc32a361f6190db7a363"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/anzusystems/core-dam-bundle/zipball/78db2ccf391fd4b83568e96adf7be3dbefef6654",
-                "reference": "78db2ccf391fd4b83568e96adf7be3dbefef6654",
+                "url": "https://api.github.com/repos/anzusystems/core-dam-bundle/zipball/49336064eae1a4209a0bdc32a361f6190db7a363",
+                "reference": "49336064eae1a4209a0bdc32a361f6190db7a363",
                 "shasum": ""
             },
             "require": {
@@ -380,7 +380,7 @@
                 "issues": "https://github.com/anzusystems/core-dam-bundle/issues",
                 "source": "https://github.com/anzusystems/core-dam-bundle/tree/feature/updates"
             },
-            "time": "2025-11-26T12:35:02+00:00"
+            "time": "2025-11-27T18:33:13+00:00"
         },
         {
             "name": "anzusystems/serializer-bundle",
@@ -13727,7 +13727,7 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=8.3",
+        "php": ">=8.4",
         "ext-ctype": "*",
         "ext-fileinfo": "*",
         "ext-iconv": "*",
