@@ -5,6 +5,7 @@ anzu_systems_core_dam:
       max_age: '%env(int:DOMAIN_ADMIN_IMAGE_MAX_AGE)%'
       cache_ttl: '%env(int:DOMAIN_ADMIN_IMAGE_CACHE_TTL)%'
       public: '%env(bool:DOMAIN_ADMIN_IMAGE_PUBLIC)%'
+      must_revalidate: '%env(bool:DOMAIN_ADMIN_IMAGE_MUST_REVALIDATE)%'
     public_image:
       domain: '%env(resolve:string:DOMAIN_PUBLIC_IMAGE)%'
       max_age: '%env(int:DOMAIN_PUBLIC_IMAGE_MAX_AGE)%'
