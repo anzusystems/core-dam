@@ -55,7 +55,7 @@ final class AssetController extends AbstractApiPubController
         }
 
         return $this->okCachedResponse(
-            data: $this->assetPubFacade->decorateAsset($asset),
+            data: $this->assetPubFacade->decorateAsset($asset, $publicExport),
             cacheSettings: new CacheSettings()
         );
     }

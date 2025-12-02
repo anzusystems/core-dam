@@ -9,6 +9,7 @@ use AnzuSystems\CoreDamBundle\Entity\Asset;
 use AnzuSystems\CoreDamBundle\Entity\AssetSlot;
 use AnzuSystems\CoreDamBundle\Entity\AudioFile;
 use AnzuSystems\CoreDamBundle\Entity\PodcastEpisode;
+use AnzuSystems\CoreDamBundle\Entity\PublicExport;
 use AnzuSystems\CoreDamBundle\Helper\StringHelper;
 use AnzuSystems\CoreDamBundle\Repository\AssetFileRouteRepository;
 use App\Configuration\ConfigurationProvider;
@@ -28,7 +29,7 @@ final readonly class AudioAssetPubBuilder
     ) {
     }
 
-    public function getAudioDecorator(Asset $asset): ?AudioAssetPubDecorator
+    public function getAudioDecorator(Asset $asset, PublicExport $publicExport): ?AudioAssetPubDecorator
     {
         $configuration = $this->configurationProvider->getAudioDistribution();
         $assetPubConfiguration = $this->configurationProvider->getAssetPubConfiguration();
@@ -65,7 +66,8 @@ final readonly class AudioAssetPubBuilder
             $audioFile,
             array_values($media),
             $assetPubConfiguration->getMetadataTitle(),
-            $podcastEpisode
+            $publicExport,
+            $podcastEpisode,
         );
     }
 
