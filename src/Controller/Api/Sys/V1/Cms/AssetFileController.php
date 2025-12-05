@@ -35,7 +35,7 @@ final class AssetFileController extends AbstractApiController
         }
 
         return $this->okResponse(
-            (new ApiResponseList())
+            new ApiResponseList()
                 ->setData(
                     $assets->map(
                         fn (AssetFile $assetFile): AssetFileCmsSysDecorator => AssetFileCmsSysDecorator::getInstance($assetFile),

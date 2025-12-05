@@ -37,7 +37,7 @@ final class AssetController extends AbstractApiController
         }
 
         return $this->okResponse(
-            (new ApiResponseList())
+            new ApiResponseList()
                 ->setData(
                     $assets->map(
                         fn (Asset $asset): AssetCmsSysDto => $this->assetCmsFactory->create($asset),
