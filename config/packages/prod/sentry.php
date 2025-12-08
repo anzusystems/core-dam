@@ -8,10 +8,10 @@ use AnzuSystems\CommonBundle\Exception\ValidationException;
 use AnzuSystems\CoreDamBundle\Exception\InvalidCropException;
 use AnzuSystems\CoreDamBundle\Exception\RemoteProcessingWaitingException;
 use App\Exception\PubNotFoundHttpException;
-use Symfony\Component\Finder\Exception\AccessDeniedException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Exception\MethodNotAllowedException;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Config\SentryConfig;
 
 return static function (SentryConfig $config): void {
