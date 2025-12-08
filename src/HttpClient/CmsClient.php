@@ -12,14 +12,13 @@ use App\Model\Domain\Asset\AssetCmsSysDto;
 use App\Model\Domain\Image\CmsImageUsageListDto;
 use Doctrine\Common\Collections\Collection;
 use JsonException;
-use Psr\Log\LoggerAwareInterface;
 use RuntimeException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Uid\Uuid;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
-final class CmsClient implements LoggerAwareInterface
+final class CmsClient
 {
     use LoggerAwareRequest;
     use SerializerAwareTrait;

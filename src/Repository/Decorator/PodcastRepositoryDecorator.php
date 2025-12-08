@@ -29,7 +29,10 @@ final readonly class PodcastRepositoryDecorator
 
         return (new ApiInfiniteResponseList())
             ->setData($data->map(
-                fn (Podcast $podcast): PodcastPubDecorator => PodcastPubDecorator::getInstance($podcast)
+                fn (Podcast $podcast): PodcastPubDecorator => PodcastPubDecorator::getInstance(
+                    podcast: $podcast,
+                    publicExport: $publicExport
+                )
             )->slice(App::ZERO, $apiParams->getLimit()))
             ->setHasNextPage(count($data) > $apiParams->getLimit())
         ;

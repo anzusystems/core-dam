@@ -107,7 +107,7 @@ anzu_systems_core_dam:
           - { width: 0, height: 200, tags: [ 'list' ] }                         # admin DAM listing
           - { width: 160, height: 90, tags: [ 'table' ] }                      # admin DAM listing for table
           - { width: 200, height: 200, tags: [ 'roi_example' ], title: '1:1' }  # admin roi example 1:1
-          - { width: 1920, height: 0, tags: [ 'detail', 'artemis_distribution', 'cache_purge' ] }
+          - { width: 1920, height: 0, tags: [ 'detail', 'cache_purge' ] }
           - { width: 1920, height: 1080, tags: [ 'youtube_distribution', 'jw_distribution'] }
           - { width: 0, height: 600 }        # UGC DAM image preview
           - { width: 500, height: 281 }      # UGC DAM image preview after upload# admin DAM image crop
@@ -150,6 +150,7 @@ anzu_systems_core_dam:
           - { width: 600, height: 450 }   # web gallery
           - { width: 614, height: 345, tags: ['video_thumbnail'], title: 'small' }   # Video player
           - { width: 1000, height: 563, tags: ['video_thumbnail'], title: 'medium' }   # Video player
+          - { width: 500, height: 281 }   # forum subscribed email - blog images
       public_dennik_sport_image:
         quality_whitelist: [ 90 ]
         crops:

@@ -16,4 +16,5 @@ return [
     Symfony\Bundle\TwigBundle\TwigBundle::class => ['all' => true],
     Symfony\Bundle\WebProfilerBundle\WebProfilerBundle::class => ['dev' => true, 'test' => true],
     Sentry\SentryBundle\SentryBundle::class => ['prod' => true],
+    AnzuSystems\AnzutapBundle\AnzuSystemsAnzutapBundle::class => ['all' => true],
 ];

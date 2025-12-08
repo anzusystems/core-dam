@@ -13,7 +13,7 @@ final class AssetFileMediaApiCallbackDecorator
 
     public static function getInstance(AssetFile $assetFile): self
     {
-        return (new self())
+        return new self()
             ->setAssetFile($assetFile);
     }
 

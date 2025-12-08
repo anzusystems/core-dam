@@ -38,7 +38,6 @@ class User extends DamUser implements
      */
     public const string ROLE_DAM_ADMIN = 'ROLE_DAM_ADMIN';
     public const string ROLE_SYS_JOB_API = 'ROLE_SYS_JOB_API';
-    public const string ROLE_SYS_ARTEMIS_API = 'ROLE_SYS_ARTEMIS_API';
     public const string ROLE_SYS_MEDIAAPI_API = 'ROLE_SYS_MEDIAAPI_API';
     public const string ROLE_SYS_COPY_IMAGE_API = 'ROLE_SYS_COPY_IMAGE_API';
     public const string ROLE_SYS_API = 'ROLE_SYS_API';

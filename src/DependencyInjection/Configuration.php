@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace App\DependencyInjection;
 
-use AnzuSystems\CoreDamBundle\DependencyInjection\Configuration as BaseConfiguration;
-use App\Model\Configuration\ArtemisAudioDistributionConfiguration;
-use App\Model\Configuration\ArtemisVideoDistributionConfiguration;
 use App\Model\Configuration\AssetPubConfiguration;
+use App\Model\Configuration\CmsAudioProcessedAutomatConfiguration;
 use App\Model\Configuration\MediaApiSyncConfiguration;
 use App\Model\Configuration\RtmpConfiguration;
 use Symfony\Component\Config\Definition\Builder\NodeDefinition;
@@ -23,7 +21,6 @@ class Configuration implements ConfigurationInterface
             ->children()
                 ->append($this->getMediaApiConfigurationSection())
                 ->append($this->getAudioDistributionSection())
-                ->append($this->getVideoDistributionSection())
                 ->append($this->getRtmpConfigurationSection())
                 ->append($this->getAssetPubSection())
             ->end();
@@ -52,27 +49,11 @@ class Configuration implements ConfigurationInterface
 
     private function getAudioDistributionSection(): NodeDefinition
     {
-        return (new TreeBuilder('artemis_audio_distribution'))->getRootNode()
+        return (new TreeBuilder('cms_audio_processed_automat'))->getRootNode()
             ->children()
-                ->scalarNode(ArtemisAudioDistributionConfiguration::AUDIO_FREE_SLOT_NAME_KEY)->isRequired()->end()
-                ->scalarNode(ArtemisAudioDistributionConfiguration::AUDIO_PREMIUM_SLOT_NAME_KEY)->isRequired()->end()
-                ->scalarNode(ArtemisAudioDistributionConfiguration::AUDIO_BONUS_SLOT_NAME_KEY)->isRequired()->end()
-                ->integerNode(ArtemisAudioDistributionConfiguration::DEFAULT_RUBRIC_ID)->isRequired()->end()
-                ->booleanNode(ArtemisAudioDistributionConfiguration::RSS_JW_DISTRIBUTE)->isRequired()->end()
-                ->append(BaseConfiguration::addTextMapperConfiguration(
-                    ArtemisAudioDistributionConfiguration::CUSTOM_DATA_TO_DISTRIBUTION_MAP
-                ))
-            ->end();
-    }
-
-    private function getVideoDistributionSection(): NodeDefinition
-    {
-        return (new TreeBuilder('artemis_video_distribution'))->getRootNode()
-            ->children()
-            ->integerNode(ArtemisVideoDistributionConfiguration::DEFAULT_RUBRIC_ID)->isRequired()->end()
-            ->append(BaseConfiguration::addTextMapperConfiguration(
-                ArtemisVideoDistributionConfiguration::CUSTOM_DATA_TO_DISTRIBUTION_MAP
-            ))
+                ->scalarNode(CmsAudioProcessedAutomatConfiguration::AUDIO_FREE_SLOT_NAME_KEY)->isRequired()->end()
+                ->scalarNode(CmsAudioProcessedAutomatConfiguration::AUDIO_PREMIUM_SLOT_NAME_KEY)->isRequired()->end()
+                ->scalarNode(CmsAudioProcessedAutomatConfiguration::AUDIO_BONUS_SLOT_NAME_KEY)->isRequired()->end()
             ->end();
     }
 

@@ -22,6 +22,103 @@ function help() {
     \n"
 }
 
+function elastic_snapshot_restore() {
+    ELASTIC_SNAPSHOT_REPO="elasticsearch-production-backup-s3-bucket"
+    ELASTIC_PREFIX="${ELASTIC_PREFIX:-cms}"
+    ELASTIC_HOST=$(echo "${ELASTIC_HOSTS:-"[\"http://elasticsearch-anzu:9200\"]"}" | tr -d '[]" ' | cut -d',' -f1)
+    ELASTIC_AUTH_ARGS=("-u" "${ELASTIC_AUTH_USERNAME}:${ELASTIC_AUTH_PASSWORD}")
+    ELASTIC_RESTORE_MAX_WAIT=900       # 15 minutes max wait
+    ELASTIC_RESTORE_CHECK_INTERVAL=10  # Check every 10 seconds
+
+    echo "[INFO] Fetching second latest snapshot from repository: ${ELASTIC_SNAPSHOT_REPO}"
+    ELASTIC_SNAPSHOT=$( \
+        curl -s "${ELASTIC_AUTH_ARGS[@]}" \
+            "${ELASTIC_HOST}/_snapshot/${ELASTIC_SNAPSHOT_REPO}/_all?sort=start_time&order=desc" |
+        grep -o '"snapshot":"[^"]*"' | cut -d'"' -f4 | head -2 | tail -1 \
+    )
+    if [ -z "${ELASTIC_SNAPSHOT}" ]; then
+        echo "[ERROR] No snapshot found in repository: ${ELASTIC_SNAPSHOT_REPO}"
+        return
+    fi
+    echo "[INFO] Selected snapshot: ${ELASTIC_SNAPSHOT}"
+
+    echo "[INFO] Deleting existing indices with prefix ${ELASTIC_PREFIX}_*"
+    curl -s "${ELASTIC_AUTH_ARGS[@]}" -X DELETE "${ELASTIC_HOST}/${ELASTIC_PREFIX}_*" >/dev/null 2>&1 #;
+    sleep 5
+
+    echo "[INFO] Restoring cms_* prefixed indexes"
+    RESTORE_JSON="{
+        \"indices\": \"cms_*\",
+        \"ignore_unavailable\": true,
+        \"include_global_state\": false,
+        \"index_settings\": {
+            \"index.number_of_replicas\": 0
+        }
+    }"
+    if [ "${ELASTIC_PREFIX}" != "cms" ]; then
+        echo "[INFO] Renaming to ${ELASTIC_PREFIX}_* prefix"
+        RESTORE_JSON="{
+            \"indices\": \"cms_*\",
+            \"ignore_unavailable\": true,
+            \"include_global_state\": false,
+            \"rename_pattern\": \"cms_(.*)\",
+            \"rename_replacement\": \"${ELASTIC_PREFIX}_\$1\",
+            \"index_settings\": {
+                \"index.number_of_replicas\": 0
+            }
+        }"
+    fi
+
+    echo "[INFO] Initiating snapshot restore..."
+    RESTORE_RESPONSE=$( \
+        curl -s -w "\n%{http_code}" "${ELASTIC_AUTH_ARGS[@]}" \
+            -X POST "${ELASTIC_HOST}/_snapshot/${ELASTIC_SNAPSHOT_REPO}/${ELASTIC_SNAPSHOT}/_restore?wait_for_completion=false" \
+            -H 'Content-Type: application/json' \
+            -d "${RESTORE_JSON}" \
+    )
+    HTTP_CODE=$(echo "${RESTORE_RESPONSE}" | tail -n1)
+
+    if [ "${HTTP_CODE}" != "200" ]; then
+        RESPONSE_BODY=$(echo "${RESTORE_RESPONSE}" | head -n-1)
+        echo "[ERROR] Failed to initiate restore. HTTP code: ${HTTP_CODE}"
+        echo "[ERROR] Response: ${RESPONSE_BODY}"
+        return
+    fi
+
+    echo "[INFO] Waiting for restore to complete (max ${ELASTIC_RESTORE_MAX_WAIT}s)..."
+    HAS_SEEN_RESTORE=0
+    ELAPSED=0
+    while [ ${ELAPSED} -lt ${ELASTIC_RESTORE_MAX_WAIT} ]; do
+        RECOVERY_STATUS=$(curl -s "${ELASTIC_AUTH_ARGS[@]}" "${ELASTIC_HOST}/_cat/recovery/${ELASTIC_PREFIX}_*?h=index,type,stage&s=index" 2>/dev/null)
+        RESTORING_COUNT=$(echo "${RECOVERY_STATUS}" | grep -v "done" | grep -c "snapshot")
+
+        if [ "${HAS_SEEN_RESTORE}" -eq 0 ] && [ "${RESTORING_COUNT}" -eq 0 ]; then
+            echo "[INFO] Waiting for snapshot restore to start..."
+            sleep 1
+            ELAPSED=$((ELAPSED + 1))
+            continue
+        fi
+        if [ "${HAS_SEEN_RESTORE}" -eq 0 ] && [ "${RESTORING_COUNT}" -gt 0 ]; then
+            echo "[INFO] Snapshot restore started"
+            HAS_SEEN_RESTORE=1
+        fi
+        if [ "${HAS_SEEN_RESTORE}" -eq 1 ] && [ "${RESTORING_COUNT}" -eq 0 ]; then
+            echo "[INFO] Snapshot restore completed successfully"
+            break
+        fi
+
+        RESTORING_INDICES=$(echo "${RECOVERY_STATUS}" | grep -v "done" | grep "snapshot" | awk '{print $1}' | sort -u | tr '\n' ', ' | sed 's/,$//')
+        echo "[INFO] Elastic snapshot restore in progress (${RESTORING_COUNT} index(es)): ${RESTORING_INDICES}"
+        sleep ${ELASTIC_RESTORE_CHECK_INTERVAL}
+        ELAPSED=$((ELAPSED + ELASTIC_RESTORE_CHECK_INTERVAL))
+
+        if [ ${ELAPSED} -ge ${ELASTIC_RESTORE_MAX_WAIT} ]; then
+            echo "[ERROR] Restore operation timed out after ${ELASTIC_RESTORE_MAX_WAIT} seconds"
+            return
+        fi
+    done
+}
+
 # Go through all command line arguments and setup variables accordingly
 while [ "$#" -gt 0 ]; do
     case $1 in
@@ -57,9 +154,12 @@ if ${USER_SYNC_BASE}; then
 fi
 
 if ${ELASTIC_REBUILD}; then
+    echo "[INFO] Dropping, restoring and rebuilding all elasticsearch indexes"
+    elastic_snapshot_restore
+
     echo "[INFO] Run elastic rebuild"
     bin/console anzu:elastic:rebuild keyword
     bin/console anzu:elastic:rebuild author
     bin/console anzu:elastic:rebuild distribution
-    bin/console anzu:elastic:rebuild asset
+    bin/console anzu:elastic:rebuild asset --no-drop --since="1 week"
 fi

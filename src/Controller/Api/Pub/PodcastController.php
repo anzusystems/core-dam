@@ -49,11 +49,16 @@ final class PodcastController extends AbstractApiPubController
     #[OAResponse(PodcastPubDecorator::class)]
     public function getOne(string $slug, string $podcastId): JsonResponse
     {
+        $publicExport = $this->getPublicExportBySlug($slug);
+
         return $this->okCachedResponse(
-            data: PodcastPubDecorator::getInstance($this->getPodcast(
-                publicExport: $this->getPublicExportBySlug($slug),
-                podcastId: $podcastId,
-            )),
+            data: PodcastPubDecorator::getInstance(
+                podcast: $this->getPodcast(
+                    publicExport: $publicExport,
+                    podcastId: $podcastId,
+                ),
+                publicExport: $publicExport
+            ),
             cacheSettings: new CacheSettings()
         );
     }

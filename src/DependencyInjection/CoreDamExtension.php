@@ -18,8 +18,7 @@ final class CoreDamExtension extends Extension
         $configuration = new Configuration();
         $processed = $this->processConfiguration($configuration, $configs);
 
-        $container->setParameter('anzu_systems.core_dam.artemis_audio_distribution', $processed['artemis_audio_distribution']);
-        $container->setParameter('anzu_systems.core_dam.artemis_video_distribution', $processed['artemis_video_distribution']);
+        $container->setParameter('anzu_systems.core_dam.audio_processed_automat_configuration', $processed['cms_audio_processed_automat']);
         $container->setParameter('anzu_systems.core_dam.asset_pub_configuration', $processed['asset_pub_configuration']);
         $container->setParameter('anzu_systems.core_dam.media_api_configuration', $processed['media_api']);
         $container->setParameter('anzu_systems.core_dam.rtmp', $processed['rtmp']);

@@ -145,6 +145,7 @@ final class AssetControllerTest extends AbstractApiController
                         'episode' => PodcastEpisodeFixtures::EPISODE_1_ID,
                         'episodeTitle' => 'Episode 1',
                         'episodeDescription' => 'Episode 1 description',
+                        'exportData' => []
                     ],
                     'media' => [
                         [

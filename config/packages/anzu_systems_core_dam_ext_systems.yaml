@@ -68,7 +68,7 @@ anzu_systems_core_dam:
         chunk_storage_name: 'cms.audio'
         size_limit: '%env(byte_size:APP_CMS_AUDIO_MAX_SIZE)%'
         distribution:
-          distribution_services: [ jw_cms, artemis_podcast_cms ]
+          distribution_services: [ jw_cms ]
           distribution_requirements:
             jw_cms:
               title: 'JW Player Audio'
@@ -94,30 +94,6 @@ anzu_systems_core_dam:
               category_select:
                 enabled: true
                 required: false
-            artemis_podcast_cms:
-              title: 'Artemis Podcasty'
-              blocked_by: [ jw_cms ]
-              strategy: none
-              distribution_metadata_map:
-                title:
-                  source_property_path: 'metadata.customData[title]'
-                  destination_property_path: 'texts.title'
-                  normalizers:
-                    - { type: string, options: {  length: 200, empty_string: true } }
-                description:
-                  source_property_path: 'metadata.customData[description]'
-                  destination_property_path: 'texts.description'
-                  normalizers:
-                    - { type: string, options: { empty_string: true } }
-                keywords:
-                  source_property_path: 'keywords_as_string_array'
-                  destination_property_path: 'texts.keywords'
-                authors:
-                  source_property_path: 'authors_as_string_array'
-                  destination_property_path: 'texts.authors'
-              category_select:
-                enabled: true
-                required: true
         file_slots:
           default: free
           slots: [ free, premium, bonus, long ]
@@ -174,29 +150,8 @@ anzu_systems_core_dam:
         size_limit: '%env(byte_size:APP_CMS_VIDEO_MAX_SIZE)%'
         file_slots: ~
         distribution:
-          distribution_services: [ youtube_cms_main, jw_cms, artemis_video_cms ]
+          distribution_services: [ youtube_cms_main, jw_cms ]
           distribution_requirements:
-            youtube_cms_fici:
-              title: 'YouTube Fici'
-              blocked_by: [ ]
-              strategy: none
-              distribution_metadata_map:
-                title:
-                  source_property_path: 'metadata.customData[title]'
-                  destination_property_path: 'texts.title'
-                  normalizers:
-                    - { type: string, options: { empty_string: true } }
-                description:
-                  source_property_path: 'metadata.customData[description]'
-                  destination_property_path: 'texts.description'
-                  normalizers:
-                    - { type: string, options: { empty_string: true } }
-                keywords:
-                  source_property_path: 'keywords_as_string_array'
-                  destination_property_path: 'texts.keywords'
-              category_select:
-                enabled: true
-                required: false
             youtube_cms_main:
               title: 'YouTube'
               blocked_by: []
@@ -242,30 +197,6 @@ anzu_systems_core_dam:
               category_select:
                 enabled: true
                 required: false
-            artemis_video_cms:
-              title: 'Artemis'
-              blocked_by: [youtube_cms_main, jw_cms]
-              strategy: at_least_one # none, one_from_type, wait_for_all
-              distribution_metadata_map:
-                title:
-                  source_property_path: 'metadata.customData[title]'
-                  destination_property_path: 'texts.title'
-                  normalizers:
-                    - { type: string, options: { empty_string: true } }
-                description:
-                  source_property_path: 'metadata.customData[description]'
-                  destination_property_path: 'texts.description'
-                  normalizers:
-                    - { type: string, options: { empty_string: true } }
-                keywords:
-                  source_property_path: 'keywords_as_string_array'
-                  destination_property_path: 'texts.keywords'
-                authors:
-                  source_property_path: 'authors_as_string_array'
-                  destination_property_path: 'texts.authors'
-              category_select:
-                enabled: true
-                required: true
       document:
         enabled: true
         title: ['customData:title']

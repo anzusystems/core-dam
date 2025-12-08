@@ -29,11 +29,10 @@ return static function (SecurityConfig $config): void {
         // UGC hierarchy
         ->roleHierarchy(User::ROLE_UGC, [AnzuUser::ROLE_USER])
         // SYS hierarchy
-        ->roleHierarchy(User::ROLE_SYS_API, [User::ROLE_SYS_JOB_API, User::ROLE_SYS_ARTEMIS_API])
-        ->roleHierarchy(User::ROLE_SYS_JOB_API, null)
-        ->roleHierarchy(User::ROLE_SYS_ARTEMIS_API, null)
+        ->roleHierarchy(User::ROLE_SYS_API, [User::ROLE_SYS_JOB_API])
+        ->roleHierarchy(User::ROLE_SYS_JOB_API, [])
         // Base user ROLE
-        ->roleHierarchy(AnzuUser::ROLE_USER, null)
+        ->roleHierarchy(AnzuUser::ROLE_USER, [])
     ;
     $config->passwordHasher(User::class, 'auto');
     $config

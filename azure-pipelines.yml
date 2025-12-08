@@ -38,8 +38,8 @@ resources:
 extends:
   template: composer-ci.yaml@templates
   parameters:
-    containerDockerImageVersion: php83
-    containerDockerImagePhp83: petitpress.azurecr.io/php83:3.5.2
+    containerDockerImageVersion: php84
+    containerDockerImagePhp84: petitpress.azurecr.io/php84:1.5.2
     containerDockerImageVariant: cli-ci-node-vipsffmpeg-xdebug
     mysqlDockerDatabaseName: $(MYSQL_DATABASE_NAME)
     mysqlDockerRootPassword: $(MYSQL_DATABASE_PASSWORD)

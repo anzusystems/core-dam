@@ -1,0 +1,5 @@
+### Create file from path
+GET {{host}}/api/sys/v1/cms/podcast/1edc17e7-d704-628c-8d2d-3126b6164b0b
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{cmsSysUserApiToken}}

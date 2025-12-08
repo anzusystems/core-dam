@@ -21,16 +21,17 @@ use App\Entity\User;
 use App\Exception\PubNotFoundHttpException;
 use Symfony\Bundle\FrameworkBundle\Command\AssetsInstallCommand;
 use Symfony\Bundle\FrameworkBundle\Command\CacheWarmupCommand;
-use Symfony\Component\Finder\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use Symfony\Component\Messenger\Command\ConsumeMessagesCommand;
+use Symfony\Component\Routing\Exception\MethodNotAllowedException;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Config\AnzuSystemsCommonConfig;
 
 return static function (AnzuSystemsCommonConfig $config): void {
     $config->jobs()
-        ->batchSize(env('ANZU_JOBS_BATCH_SIZE')->int())
         ->maxExecTime(env('ANZU_JOBS_MAX_EXEC_TIME')->int())
         ->maxMemory(env('byte_size:ANZU_JOBS_MAX_MEMORY')->int())
         ->noJobIdleTime(env('ANZU_JOBS_NO_JOB_IDLE_TIME')->int())
@@ -54,7 +55,7 @@ return static function (AnzuSystemsCommonConfig $config): void {
             ->enabled(true)
             ->mysqlTableName('_doctrine_migration_versions')
             ->mongoCollections([
-                'anzu_mongo_app_log_collection',
+                'anzu_mongo_journal_log_collection',
                 'anzu_mongo_audit_log_collection',
             ])
             ->modules([
@@ -90,24 +91,26 @@ return static function (AnzuSystemsCommonConfig $config): void {
     ;
     $logsConfig
         ->app()
-            ->mongo()
-                ->uri(env('ANZU_MONGODB_APP_LOG_URI'))
-                ->username(env('ANZU_MONGODB_APP_LOG_USERNAME'))
-                ->password(env('ANZU_MONGODB_APP_LOG_PASSWORD'))
-                ->database(env('ANZU_MONGODB_APP_LOG_DB'))
-                ->ssl(env('ANZU_MONGODB_APP_LOG_SSL')->bool())
-                ->collection('appLogs')
-    ;
-    $logsConfig
-        ->app()
             ->ignoredExceptions([
                 AccessDeniedException::class,
+                UnauthorizedHttpException::class,
                 NotFoundHttpException::class,
                 ResourceNotFoundException::class,
                 ValidationException::class,
                 PubNotFoundHttpException::class,
                 RemoteProcessingWaitingException::class,
+                MethodNotAllowedException::class,
             ])
+    ;
+    $logsConfig
+        ->journal()
+            ->mongo()
+            ->uri(env('ANZU_MONGODB_APP_LOG_URI'))
+            ->username(env('ANZU_MONGODB_APP_LOG_USERNAME'))
+            ->password(env('ANZU_MONGODB_APP_LOG_PASSWORD'))
+            ->database(env('ANZU_MONGODB_APP_LOG_DB'))
+            ->ssl(env('ANZU_MONGODB_APP_LOG_SSL')->bool())
+            ->collection('appLogs')
     ;
     $logsConfig
         ->audit()

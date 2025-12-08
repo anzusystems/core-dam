@@ -63,7 +63,8 @@ final class PodcastControllerTest extends AbstractApiController
                                 'title' => 'large'
                             ]
                         ]
-                    ]
+                    ],
+                    'exportData' => []
                 ]
             ]
         ];

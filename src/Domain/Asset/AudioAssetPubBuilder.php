@@ -9,10 +9,11 @@ use AnzuSystems\CoreDamBundle\Entity\Asset;
 use AnzuSystems\CoreDamBundle\Entity\AssetSlot;
 use AnzuSystems\CoreDamBundle\Entity\AudioFile;
 use AnzuSystems\CoreDamBundle\Entity\PodcastEpisode;
+use AnzuSystems\CoreDamBundle\Entity\PublicExport;
 use AnzuSystems\CoreDamBundle\Helper\StringHelper;
 use AnzuSystems\CoreDamBundle\Repository\AssetFileRouteRepository;
 use App\Configuration\ConfigurationProvider;
-use App\Model\Configuration\ArtemisAudioDistributionConfiguration;
+use App\Model\Configuration\CmsAudioProcessedAutomatConfiguration;
 use App\Model\Domain\Asset\AudioAssetMediaPubDecorator;
 use App\Model\Domain\Asset\AudioAssetPubDecorator;
 use App\Model\Enum\GateStatus;
@@ -28,7 +29,7 @@ final readonly class AudioAssetPubBuilder
     ) {
     }
 
-    public function getAudioDecorator(Asset $asset): ?AudioAssetPubDecorator
+    public function getAudioDecorator(Asset $asset, PublicExport $publicExport): ?AudioAssetPubDecorator
     {
         $configuration = $this->configurationProvider->getAudioDistribution();
         $assetPubConfiguration = $this->configurationProvider->getAssetPubConfiguration();
@@ -65,12 +66,13 @@ final readonly class AudioAssetPubBuilder
             $audioFile,
             array_values($media),
             $assetPubConfiguration->getMetadataTitle(),
-            $podcastEpisode
+            $publicExport,
+            $podcastEpisode,
         );
     }
 
     public function getBonusAudioMedia(
-        ArtemisAudioDistributionConfiguration $configuration,
+        CmsAudioProcessedAutomatConfiguration $configuration,
         PodcastEpisode $podcastEpisode
     ): ?AudioAssetMediaPubDecorator {
         if (StringHelper::isNotEmpty($configuration->getAudioBonusSlotName())
@@ -87,7 +89,7 @@ final readonly class AudioAssetPubBuilder
 
     public function getFreeAudioMedia(
         AssetSlot $slot,
-        ArtemisAudioDistributionConfiguration $configuration,
+        CmsAudioProcessedAutomatConfiguration $configuration,
         ?PodcastEpisode $podcastEpisode = null
     ): ?AudioAssetMediaPubDecorator {
         $freeSlotAssetFile = $slot->getAudio();
@@ -121,7 +123,7 @@ final readonly class AudioAssetPubBuilder
 
     private function getAudioSlotDecorator(
         AssetSlot $slot,
-        ArtemisAudioDistributionConfiguration $configuration,
+        CmsAudioProcessedAutomatConfiguration $configuration,
         ?PodcastEpisode $podcastEpisode = null,
     ): ?AudioAssetMediaPubDecorator {
         if ($slot->getName() === $configuration->getAudioPremiumSlotName()) {
@@ -143,7 +145,7 @@ final readonly class AudioAssetPubBuilder
 
     private function getPremiumAudioMedia(
         AssetSlot $slot,
-        ArtemisAudioDistributionConfiguration $configuration,
+        CmsAudioProcessedAutomatConfiguration $configuration,
     ): ?AudioAssetMediaPubDecorator {
         if ($this->gateStatusResolver->getLockStatus()->isNot(GateStatus::Unlocked)) {
             return null;

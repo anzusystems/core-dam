@@ -19,25 +19,6 @@ anzu_systems_core_dam:
               ext_id: '%env(string:DISTRIBUTION_DEV_YOUTUBE_CMS_MAIN_EXT_ID)%'
               distribution_data: '%env(json:DISTRIBUTION_DEV_YOUTUBE_CMS_MAIN_DISTRIBUTION_DATA)%'
           icon_path: '%env(string:DISTRIBUTION_YOUTUBE_CMS_MAIN_ICON_PATH)%'
-      youtube_cms_fici:
-          type: youtubeDistribution
-          title: Youtube Fičí
-          module: AnzuSystems\CoreDamBundle\Distribution\Modules\YoutubeDistributionModule
-          auth_redirect_url: '%env(resolve:string:DISTRIBUTION_YOUTUBE_CMS_FICI_REDIRECT_URL)%'
-          required_auth: true
-          options:
-             oauth_credentials: '%env(resolve:string:DISTRIBUTION_YOUTUBE_CMS_FICI_OAUTH_CREDENTIALS)%'
-             channel_id: '%env(resolve:string:DISTRIBUTION_YOUTUBE_CMS_FICI_CHANNEL_ID)%'
-             region_code: 'SK'
-             redirect_uri: '%env(resolve:string:DISTRIBUTION_YOUTUBE_REDIRECT_URI)%'
-             default_language: 'sk'
-          use_mock: '%env(bool:DISTRIBUTION_DEV_YOUTUBE_CMS_FICI_MOCK)%'
-          mock_options:
-              sleep: '%env(int:DISTRIBUTION_DEV_YOUTUBE_CMS_FICI_SLEEP)%'
-              fail_reason: '%env(string:DISTRIBUTION_DEV_YOUTUBE_CMS_FICI_FAIL_REASON)%'
-              ext_id: '%env(string:DISTRIBUTION_DEV_YOUTUBE_CMS_FICI_EXT_ID)%'
-              distribution_data: '%env(json:DISTRIBUTION_DEV_YOUTUBE_CMS_FICI_DISTRIBUTION_DATA)%'
-          icon_path: '%env(string:DISTRIBUTION_YOUTUBE_CMS_FICI_ICON_PATH)%'
       jw_cms:
           type: jwDistribution
           title: JwVideo
