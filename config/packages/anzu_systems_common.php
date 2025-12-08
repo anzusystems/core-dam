@@ -26,6 +26,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use Symfony\Component\Messenger\Command\ConsumeMessagesCommand;
+use Symfony\Component\Routing\Exception\MethodNotAllowedException;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Symfony\Config\AnzuSystemsCommonConfig;
 
@@ -98,6 +99,7 @@ return static function (AnzuSystemsCommonConfig $config): void {
                 ValidationException::class,
                 PubNotFoundHttpException::class,
                 RemoteProcessingWaitingException::class,
+                MethodNotAllowedException::class,
             ])
     ;
     $logsConfig

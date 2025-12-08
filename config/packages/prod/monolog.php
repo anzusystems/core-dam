@@ -14,5 +14,6 @@ return static function (MonologConfig $config): void {
         ->type('sentry')
         ->hubId(HubInterface::class)
         ->level(LogLevel::WARNING)
+        ->fillExtraContext(true)
     ;
 };

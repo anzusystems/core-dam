@@ -28,6 +28,7 @@ return static function (ContainerConfigurator $configurator): void {
             Redis::OPT_PREFIX,
             'core_dam_' . env('APP_ENV')->string() . '_',
         ])
+        ->lazy()
     ;
 
     $services
@@ -43,6 +44,7 @@ return static function (ContainerConfigurator $configurator): void {
             Redis::OPT_PREFIX,
             'core_dam_cache_' . env('APP_ENV')->string() . '_' . env('APP_VERSION')->string() . '_',
         ])
+        ->lazy()
     ;
 
     $services
@@ -58,6 +60,7 @@ return static function (ContainerConfigurator $configurator): void {
             Redis::OPT_PREFIX,
             'core_dam_cache_' . env('APP_ENV')->string() . '_',
         ])
+        ->lazy()
     ;
 
     $services
@@ -67,5 +70,6 @@ return static function (ContainerConfigurator $configurator): void {
             env('REDIS_PORT')->int(),
         ])
         ->call('select', [0])
+        ->lazy()
     ;
 };

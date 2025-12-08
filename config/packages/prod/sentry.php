@@ -10,6 +10,7 @@ use AnzuSystems\CoreDamBundle\Exception\RemoteProcessingWaitingException;
 use App\Exception\PubNotFoundHttpException;
 use Symfony\Component\Finder\Exception\AccessDeniedException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Routing\Exception\MethodNotAllowedException;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Symfony\Config\SentryConfig;
 
@@ -32,6 +33,7 @@ return static function (SentryConfig $config): void {
               PubNotFoundHttpException::class,
               InvalidCropException::class,
               RemoteProcessingWaitingException::class,
+              MethodNotAllowedException::class,
           ])
     ;
 

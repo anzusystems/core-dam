@@ -150,6 +150,7 @@ anzu_systems_core_dam:
           - { width: 600, height: 450 }   # web gallery
           - { width: 614, height: 345, tags: ['video_thumbnail'], title: 'small' }   # Video player
           - { width: 1000, height: 563, tags: ['video_thumbnail'], title: 'medium' }   # Video player
+          - { width: 500, height: 281 }   # forum subscribed email - blog images
       public_dennik_sport_image:
         quality_whitelist: [ 90 ]
         crops:
