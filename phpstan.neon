@@ -12,6 +12,7 @@ parameters:
         - src/Migrations
         - src/Command/TestCommand*
         - src/Controller/TestController*
+        - src/DependencyInjection/Configuration.php
     treatPhpDocTypesAsCertain: false
     ignoreErrors:
 #        - '#Deprecated in#'
