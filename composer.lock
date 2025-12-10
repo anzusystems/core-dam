@@ -146,16 +146,16 @@
         },
         {
             "name": "anzusystems/common-bundle",
-            "version": "10.4.0",
+            "version": "10.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/anzusystems/common-bundle.git",
-                "reference": "e7b7b512554562fda364164be1e9cfdd1afd99d7"
+                "reference": "3560ed38c1dcf761e96ec51e367d86176d9b4d7f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/anzusystems/common-bundle/zipball/e7b7b512554562fda364164be1e9cfdd1afd99d7",
-                "reference": "e7b7b512554562fda364164be1e9cfdd1afd99d7",
+                "url": "https://api.github.com/repos/anzusystems/common-bundle/zipball/3560ed38c1dcf761e96ec51e367d86176d9b4d7f",
+                "reference": "3560ed38c1dcf761e96ec51e367d86176d9b4d7f",
                 "shasum": ""
             },
             "require": {
@@ -227,9 +227,9 @@
             ],
             "support": {
                 "issues": "https://github.com/anzusystems/common-bundle/issues",
-                "source": "https://github.com/anzusystems/common-bundle/tree/10.4.0"
+                "source": "https://github.com/anzusystems/common-bundle/tree/10.4.1"
             },
-            "time": "2025-12-10T07:46:43+00:00"
+            "time": "2025-12-10T12:22:07+00:00"
         },
         {
             "name": "anzusystems/contracts",
@@ -295,17 +295,17 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/anzusystems/core-dam-bundle.git",
-                "reference": "61f322960ef82327daecb6ee07f9b5e49af720f3"
+                "reference": "f502ad07ffe3c8a5d6696043740131d95750623c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/anzusystems/core-dam-bundle/zipball/61f322960ef82327daecb6ee07f9b5e49af720f3",
-                "reference": "61f322960ef82327daecb6ee07f9b5e49af720f3",
+                "url": "https://api.github.com/repos/anzusystems/core-dam-bundle/zipball/f502ad07ffe3c8a5d6696043740131d95750623c",
+                "reference": "f502ad07ffe3c8a5d6696043740131d95750623c",
                 "shasum": ""
             },
             "require": {
                 "anzusystems/anzutap-bundle": "^0.10",
-                "anzusystems/common-bundle": "^10.4.0",
+                "anzusystems/common-bundle": "^10.4",
                 "doctrine/doctrine-bundle": "^2.12",
                 "doctrine/orm": "^3.1",
                 "elasticsearch/elasticsearch": "^8.6",
@@ -383,7 +383,7 @@
                 "issues": "https://github.com/anzusystems/core-dam-bundle/issues",
                 "source": "https://github.com/anzusystems/core-dam-bundle/tree/feature/updates_and_fixes_adm"
             },
-            "time": "2025-12-10T07:54:06+00:00"
+            "time": "2025-12-10T12:28:47+00:00"
         },
         {
             "name": "anzusystems/serializer-bundle",
