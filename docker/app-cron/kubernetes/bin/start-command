@@ -27,11 +27,11 @@ tail-cmd -s 1 -f "\
 " &
 
 echo "[INFO] Setup crontab"
+DOCKER_CRONTAB_FILE="docker/crontab/crontab"
 if [ -f "docker/crontab/crontab_${DEPLOY_ENV}" ]; then
-    su -c "crontab docker/crontab/crontab_${DEPLOY_ENV}" user
-else
-    su -c "crontab docker/crontab/crontab" user
+    DOCKER_CRONTAB_FILE="docker/crontab/crontab_${DEPLOY_ENV}"
 fi
+su -c "crontab ${DOCKER_CRONTAB_FILE}" user
 
 echo "[INFO] Composer install"
 su --preserve-environment -c "composer -n install --no-scripts --no-dev 2>&1" user

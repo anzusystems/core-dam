@@ -12,12 +12,11 @@ tail-cmd -f "\
 " &
 
 if ${ENABLE_AUTOMATIC_CRON_STARTUP}; then
-    echo "[INFO] Setup crontab"
+    DOCKER_CRONTAB_FILE="docker/crontab/crontab"
     if [ -f "docker/crontab/crontab_local" ]; then
-        su -c "crontab docker/crontab/crontab_local" user
-    else
-        su -c "crontab docker/crontab/crontab" user
+        DOCKER_CRONTAB_FILE="docker/crontab/crontab_local"
     fi
+    su -c "crontab ${DOCKER_CRONTAB_FILE}" user
 fi
 
 echo "[INFO] Starting supervisor"

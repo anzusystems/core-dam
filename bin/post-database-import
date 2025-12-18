@@ -24,7 +24,7 @@ function help() {
 
 function elastic_snapshot_restore() {
     ELASTIC_SNAPSHOT_REPO="elasticsearch-production-backup-s3-bucket"
-    ELASTIC_PREFIX="${ELASTIC_PREFIX:-cms}"
+    ELASTIC_PREFIX="${ELASTIC_PREFIX:-core_dam}"
     ELASTIC_HOST=$(echo "${ELASTIC_HOSTS:-"[\"http://elasticsearch-anzu:9200\"]"}" | tr -d '[]" ' | cut -d',' -f1)
     ELASTIC_AUTH_ARGS=("-u" "${ELASTIC_AUTH_USERNAME}:${ELASTIC_AUTH_PASSWORD}")
     ELASTIC_RESTORE_MAX_WAIT=900       # 15 minutes max wait
@@ -46,22 +46,22 @@ function elastic_snapshot_restore() {
     curl -s "${ELASTIC_AUTH_ARGS[@]}" -X DELETE "${ELASTIC_HOST}/${ELASTIC_PREFIX}_*" >/dev/null 2>&1 #;
     sleep 5
 
-    echo "[INFO] Restoring cms_* prefixed indexes"
+    echo "[INFO] Restoring core_dam_* prefixed indexes"
     RESTORE_JSON="{
-        \"indices\": \"cms_*\",
+        \"indices\": \"core_dam_*\",
         \"ignore_unavailable\": true,
         \"include_global_state\": false,
         \"index_settings\": {
             \"index.number_of_replicas\": 0
         }
     }"
-    if [ "${ELASTIC_PREFIX}" != "cms" ]; then
+    if [ "${ELASTIC_PREFIX}" != "core_dam" ]; then
         echo "[INFO] Renaming to ${ELASTIC_PREFIX}_* prefix"
         RESTORE_JSON="{
-            \"indices\": \"cms_*\",
+            \"indices\": \"core_dam_*\",
             \"ignore_unavailable\": true,
             \"include_global_state\": false,
-            \"rename_pattern\": \"cms_(.*)\",
+            \"rename_pattern\": \"core_dam_(.*)\",
             \"rename_replacement\": \"${ELASTIC_PREFIX}_\$1\",
             \"index_settings\": {
                 \"index.number_of_replicas\": 0
@@ -148,6 +148,9 @@ if [ -n "${ELASTIC_REBUILD_ARG}" ] || [ -n "${USER_SYNC_BASE_ARG}" ] ; then
     USER_SYNC_BASE=${USER_SYNC_BASE_ARG:-false}
 fi
 
+echo "[INFO] Disable crons in crontab"
+crontab -r
+
 if ${USER_SYNC_BASE}; then
     echo "[INFO] Run anzu user sync"
     bin/console anzusystems:user:sync-base --file="${USER_SYNC_DATA_FILE_PATH:-/var/tmp/users.json}"
@@ -163,3 +166,10 @@ if ${ELASTIC_REBUILD}; then
     bin/console anzu:elastic:rebuild distribution
     bin/console anzu:elastic:rebuild asset --no-drop --since="1 week"
 fi
+
+echo "[INFO] Setup crontab"
+DOCKER_CRONTAB_FILE="docker/crontab/crontab"
+if [ -f "docker/crontab/crontab_${DEPLOY_ENV}" ]; then
+    DOCKER_CRONTAB_FILE="docker/crontab/crontab_${DEPLOY_ENV}"
+fi
+crontab "${DOCKER_CRONTAB_FILE}"
