@@ -62,6 +62,7 @@ anzu_systems_core_dam:
           - { width: 300, height: 0 }     # web article detail image set (automatic height)
           - { width: 288, height: 0 }     # web article detail image set (automatic height)
           - { width: 1200, height: 800 }  # web article detail fullscreen
+          - { width: 1920, height: 1080 } # web article hero image fullscreen
           - { width: 1200, height: 630 }  # meta og:image
           - { width: 972, height: 648 }   # web list article image set
           - { width: 660, height: 440 }   # web list article image set, article detail lead-image
@@ -129,6 +130,7 @@ anzu_systems_core_dam:
           - { width: 300, height: 0 }     # web article detail image set (automatic height)
           - { width: 288, height: 0 }     # web article detail image set (automatic height)
           - { width: 1200, height: 800 }  # web article detail fullscreen
+          - { width: 1920, height: 1080 } # web article hero image fullscreen
           - { width: 1200, height: 630 }  # meta og:image
           - { width: 972, height: 648 }   # web list article image set
           - { width: 660, height: 440 }   # web list article image set, article detail lead-image
