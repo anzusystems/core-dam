@@ -26,25 +26,43 @@ function elastic_snapshot_restore() {
     ELASTIC_SNAPSHOT_REPO="elasticsearch-production-backup-s3-bucket"
     ELASTIC_PREFIX="${ELASTIC_PREFIX:-core_dam}"
     ELASTIC_HOST=$(echo "${ELASTIC_HOSTS:-"[\"http://elasticsearch-anzu:9200\"]"}" | tr -d '[]" ' | cut -d',' -f1)
-    ELASTIC_AUTH_ARGS=("-u" "${ELASTIC_AUTH_USERNAME}:${ELASTIC_AUTH_PASSWORD}")
+    ELASTIC_AUTH_ARGS=("-u" "${ELASTIC_USERNAME}:${ELASTIC_PASSWORD}")
     ELASTIC_RESTORE_MAX_WAIT=900       # 15 minutes max wait
     ELASTIC_RESTORE_CHECK_INTERVAL=10  # Check every 10 seconds
 
     echo "[INFO] Fetching second latest snapshot from repository: ${ELASTIC_SNAPSHOT_REPO}"
-    ELASTIC_SNAPSHOT=$( \
-        curl -s "${ELASTIC_AUTH_ARGS[@]}" \
-            "${ELASTIC_HOST}/_snapshot/${ELASTIC_SNAPSHOT_REPO}/_all?sort=start_time&order=desc" |
-        grep -o '"snapshot":"[^"]*"' | cut -d'"' -f4 | head -2 | tail -1 \
-    )
+    for i in {1..5}; do
+        ELASTIC_SNAPSHOT=$( \
+            curl -s "${ELASTIC_AUTH_ARGS[@]}" \
+                "${ELASTIC_HOST}/_snapshot/${ELASTIC_SNAPSHOT_REPO}/_all?sort=start_time&order=desc" |
+            grep -o '"snapshot":"[^"]*"' | cut -d'"' -f4 | head -2 | tail -1 \
+        )
+        if [ -n "${ELASTIC_SNAPSHOT}" ]; then
+           break
+        fi
+        echo "[WARN] No snapshot found (attempt ${i}/5), retrying in 10s..."
+        sleep 10
+    done
     if [ -z "${ELASTIC_SNAPSHOT}" ]; then
         echo "[ERROR] No snapshot found in repository: ${ELASTIC_SNAPSHOT_REPO}"
         return
     fi
     echo "[INFO] Selected snapshot: ${ELASTIC_SNAPSHOT}"
 
-    echo "[INFO] Deleting existing indices with prefix ${ELASTIC_PREFIX}_*"
-    curl -s "${ELASTIC_AUTH_ARGS[@]}" -X DELETE "${ELASTIC_HOST}/${ELASTIC_PREFIX}_*" >/dev/null 2>&1 #;
-    sleep 5
+    echo "[INFO] Force deleting existing indices with prefix ${ELASTIC_PREFIX}_*"
+    curl -s "${ELASTIC_AUTH_ARGS[@]}" -X POST "${ELASTIC_HOST}/${ELASTIC_PREFIX}_*/_close?ignore_unavailable=true" >/dev/null 2>&1
+    sleep 2
+    curl -s "${ELASTIC_AUTH_ARGS[@]}" -X DELETE "${ELASTIC_HOST}/${ELASTIC_PREFIX}_*?ignore_unavailable=true&allow_no_indices=true&expand_wildcards=all" >/dev/null 2>&1 #;
+    sleep 3
+    readarray -t REMAINING_INDICES < <(curl -s "${ELASTIC_AUTH_ARGS[@]}" "${ELASTIC_HOST}/_cat/indices/${ELASTIC_PREFIX}_*?h=index" 2>/dev/null)
+    if [ ${#REMAINING_INDICES[@]} -gt 0 ]; then
+        echo "[WARN] Force deleting ${#REMAINING_INDICES[@]} remaining indices individually..."
+        for index in "${REMAINING_INDICES[@]}"; do
+            curl -s "${ELASTIC_AUTH_ARGS[@]}" -X DELETE "${ELASTIC_HOST}/${index}?ignore_unavailable=true" >/dev/null 2>&1 #;
+        done
+        sleep 2
+    fi
+    echo "[INFO] Index deletion completed"
 
     echo "[INFO] Restoring core_dam_* prefixed indexes"
     RESTORE_JSON="{
