@@ -26,11 +26,11 @@ anzu_systems_core_dam:
     crop_allow_map:
       admin_image:
         crop_allow_list: admin_image
-        ext_system_slugs: [tools, blog, cms, pressNews, people, scraper, dennik_sport ]
+        ext_system_slugs: [tools, blog, cms, pressNews, people, scraper, dennik_sport, eu_brief ]
         domain: admin_image
       public_image:
         crop_allow_list: public_image
-        ext_system_slugs: [ cms, people, scraper ]
+        ext_system_slugs: [ cms, people, scraper, eu_brief ]
         domain: public_image
       public_dennik_sport_image:
         crop_allow_list: public_image

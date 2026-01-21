@@ -202,3 +202,35 @@ anzu_systems_core_dam:
                 client: 'anzu.google_storage.env_fallback_client'
                 bucket: '%env(string:GCS_DENNIK_SPORT_DOCUMENT_FALLBACK_STORAGE_BUCKET)%'
                 prefix: 'documents'
+        eu_brief.image_fallback:
+            adapter: 'gcloud'
+            options:
+                client: 'anzu.google_storage.env_fallback_client'
+                bucket: '%env(string:GCS_EU_BRIEF_IMAGE_FALLBACK_STORAGE_BUCKET)%'
+                prefix: 'images'
+        eu_brief.image:
+            adapter: 'local'
+            fallback_enabled: '%env(bool:EU_BRIEF_IMAGE_FALLBACK_ENABLED)%'
+            fallback_storage: eu_brief.image_fallback
+            options:
+                directory: '%kernel.project_dir%/var/mnt/data/eu_brief_image'
+        eu_brief.crop:
+            adapter: 'local'
+            options:
+                directory: '%kernel.project_dir%/var/mnt/data/eu_brief_image_crop'
+        eu_brief.chunk:
+            adapter: 'local'
+            options:
+                directory: '%kernel.project_dir%/var/mnt/data/eu_brief_chunk'
+        eu_brief.document:
+            adapter: 'local'
+            fallback_enabled: '%env(bool:EU_BRIEF_DOCUMENT_FALLBACK_ENABLED)%'
+            fallback_storage: eu_brief.document_fallback
+            options:
+                directory: '%kernel.project_dir%/var/mnt/data/eu_brief_document'
+        eu_brief.document_fallback:
+            adapter: 'gcloud'
+            options:
+                client: 'anzu.google_storage.env_fallback_client'
+                bucket: '%env(string:GCS_EU_BRIEF_DOCUMENT_FALLBACK_STORAGE_BUCKET)%'
+                prefix: 'documents'
