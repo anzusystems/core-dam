@@ -106,7 +106,7 @@ final class Version20260121122700 extends AbstractMigration
     {
         return [
             [
-                'name' => 'Description',
+                'name' => 'Popis',
                 'property' => 'description',
                 'exif_autocomplete' => '["Description", "ImageDescription", "Title", "Subject"]',
                 'position' => 0,
@@ -126,7 +126,7 @@ final class Version20260121122700 extends AbstractMigration
     {
         return [
             [
-                'name' => 'Title',
+                'name' => 'Titulok',
                 'property' => 'title',
                 'exif_autocomplete' => '["Title", "Subject"]',
                 'position' => 0,
@@ -140,7 +140,7 @@ final class Version20260121122700 extends AbstractMigration
                 'attributes_readonly' => 0,
             ],
             [
-                'name' => 'Description',
+                'name' => 'Popis',
                 'property' => 'description',
                 'exif_autocomplete' => '["Description", "ImageDescription"]',
                 'position' => 1,
