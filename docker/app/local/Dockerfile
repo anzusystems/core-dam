@@ -1,4 +1,4 @@
-FROM petitpress.azurecr.io/php84:1.5.2-fpm-nginx-vipsffmpeg-xdebug
+FROM petitpress.azurecr.io/php84:1.8.0-fpm-nginx-vipsffmpeg-xdebug
 
 LABEL maintainer="CloudOps Team <it.online@petitpress.sk>"
 #
@@ -18,10 +18,7 @@ RUN fix-user ${DOCKER_USER} user ${DOCKER_USER_ID} ${DOCKER_GROUP_ID}
 USER user
 RUN mkdir -p ~/.ssh && \
     chmod 700 ~/.ssh && \
-    ssh-keyscan -t rsa,dsa \
-        git.smeonline.sk \
-        gitlab.smeonline.sk \
-        ssh.dev.azure.com  2>&1 >> ~/.ssh/known_hosts
+    ssh-keyscan -t rsa ssh.dev.azure.com 2>&1 >> ~/.ssh/known_hosts
 #
 ### Start
 CMD ["start-command"]

@@ -83,15 +83,14 @@ spec:
               readOnly: true
           livenessProbe:
             exec:
-              command:
-                - cat
-                - /var/run/crond.pid
+              command: ["/bin/bash", "-c", "cat /var/run/crond.pid"]
             initialDelaySeconds: 10
             periodSeconds: 10
+            timeoutSeconds: 5
         - name: anzu-dam-asset-file-clear-log
           image: busybox
-          command: [ "/bin/sh", "-c" ]
-          args: [ "/var/www/html/var/log/tail-cmd -f /var/www/html/var/log/anzu_dam_asset_file_clear.log" ]
+          command: ["/bin/sh", "-c"]
+          args: ["/var/www/html/var/log/tail-cmd -f /var/www/html/var/log/anzu_dam_asset_file_clear.log"]
           resources:
             limits:
               cpu: 5m
@@ -104,8 +103,8 @@ spec:
               mountPath: /var/www/html/var/log
         - name: anzu-dam-asset-clear-log
           image: busybox
-          command: [ "/bin/sh", "-c" ]
-          args: [ "/var/www/html/var/log/tail-cmd -f /var/www/html/var/log/anzu_dam_asset_clear.log" ]
+          command: ["/bin/sh", "-c"]
+          args: ["/var/www/html/var/log/tail-cmd -f /var/www/html/var/log/anzu_dam_asset_clear.log"]
           resources:
             limits:
               cpu: 5m
