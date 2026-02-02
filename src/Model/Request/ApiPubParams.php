@@ -17,7 +17,7 @@ final readonly class ApiPubParams
     /**
      * @var list<int>
      */
-    public const array ALLOWED_LIMITS = [10, 20, 50];
+    public const array ALLOWED_LIMITS = [1, 10, 20, 50];
 
     private const string PAGE = 'page';
     private const string EXCLUDE_IDS = 'excludeIds';
