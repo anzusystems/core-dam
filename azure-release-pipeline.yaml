@@ -129,7 +129,7 @@ extends:
   template: composer-release-k8s.yaml@templates
   parameters:
     containerDockerImageVersion: php84
-    containerDockerImagePhp84: petitpress.azurecr.io/php84:1.8.0
+    containerDockerImagePhp84: petitpress.azurecr.io/php84:1.9.0
     containerDockerImageVariant: cli-ci-node-vipsffmpeg-xdebug
     releaseType: ${{ parameters.releaseType }}
     version: ${{ parameters.version }}
