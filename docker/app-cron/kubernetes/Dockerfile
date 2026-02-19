@@ -1,4 +1,4 @@
-FROM petitpress.azurecr.io/php84:1.9.0-cli-vipsffmpeg
+FROM petitpress.azurecr.io/php84:1.9.1-cli-vipsffmpeg
 
 LABEL maintainer="CloudOps Team <it.online@petitpress.sk>"
 #

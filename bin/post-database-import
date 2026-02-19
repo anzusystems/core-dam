@@ -24,6 +24,7 @@ function help() {
 
 function elastic_snapshot_restore() {
     ELASTIC_SNAPSHOT_REPO="elasticsearch-production-backup-s3-bucket"
+    ELASTIC_SNAPSHOT_INDEX_PREFIX="core_dam"
     ELASTIC_PREFIX="${ELASTIC_PREFIX:-core_dam}"
     ELASTIC_HOST=$(echo "${ELASTIC_HOSTS:-"[\"http://elasticsearch-anzu:9200\"]"}" | tr -d '[]" ' | cut -d',' -f1)
     ELASTIC_AUTH_ARGS=("-u" "${ELASTIC_USERNAME}:${ELASTIC_PASSWORD}")
@@ -64,22 +65,22 @@ function elastic_snapshot_restore() {
     fi
     echo "[INFO] Index deletion completed"
 
-    echo "[INFO] Restoring core_dam_* prefixed indexes"
+    echo "[INFO] Restoring ${ELASTIC_SNAPSHOT_INDEX_PREFIX}_* prefixed indexes"
     RESTORE_JSON="{
-        \"indices\": \"core_dam_*\",
+        \"indices\": \"${ELASTIC_SNAPSHOT_INDEX_PREFIX}_*\",
         \"ignore_unavailable\": true,
         \"include_global_state\": false,
         \"index_settings\": {
             \"index.number_of_replicas\": 0
         }
     }"
-    if [ "${ELASTIC_PREFIX}" != "core_dam" ]; then
+    if [ "${ELASTIC_PREFIX}" != "${ELASTIC_SNAPSHOT_INDEX_PREFIX}" ]; then
         echo "[INFO] Renaming to ${ELASTIC_PREFIX}_* prefix"
         RESTORE_JSON="{
-            \"indices\": \"core_dam_*\",
+            \"indices\": \"${ELASTIC_SNAPSHOT_INDEX_PREFIX}_*\",
             \"ignore_unavailable\": true,
             \"include_global_state\": false,
-            \"rename_pattern\": \"core_dam_(.*)\",
+            \"rename_pattern\": \"${ELASTIC_SNAPSHOT_INDEX_PREFIX}_(.*)\",
             \"rename_replacement\": \"${ELASTIC_PREFIX}_\$1\",
             \"index_settings\": {
                 \"index.number_of_replicas\": 0
@@ -103,35 +104,45 @@ function elastic_snapshot_restore() {
         return
     fi
 
+    echo "[INFO] Querying expected indices from snapshot..."
+    SNAPSHOT_INDICES_JSON=$( \
+        curl -s "${ELASTIC_AUTH_ARGS[@]}" \
+            -X GET "${ELASTIC_HOST}/_snapshot/${ELASTIC_SNAPSHOT_REPO}/${ELASTIC_SNAPSHOT}" 2>/dev/null \
+    )
+    EXPECTED_COUNT=$(echo "${SNAPSHOT_INDICES_JSON}" | grep -o '"indices":\[[^]]*\]' | grep -o "\"${ELASTIC_SNAPSHOT_INDEX_PREFIX}_[^\"]*\"" | wc -l)
+    if [ "${EXPECTED_COUNT}" -eq 0 ]; then
+        echo "[ERROR] Could not determine expected index count from snapshot, or no ${ELASTIC_SNAPSHOT_INDEX_PREFIX}_* indices found"
+        return
+    fi
+    echo "[INFO] Expecting ${EXPECTED_COUNT} index(es) to be restored from snapshot"
+
     echo "[INFO] Waiting for restore to complete (max ${ELASTIC_RESTORE_MAX_WAIT}s)..."
-    HAS_SEEN_RESTORE=0
     ELAPSED=0
     while [ ${ELAPSED} -lt ${ELASTIC_RESTORE_MAX_WAIT} ]; do
-        RECOVERY_STATUS=$(curl -s "${ELASTIC_AUTH_ARGS[@]}" "${ELASTIC_HOST}/_cat/recovery/${ELASTIC_PREFIX}_*?h=index,type,stage&s=index" 2>/dev/null)
-        RESTORING_COUNT=$(echo "${RECOVERY_STATUS}" | grep -v "done" | grep -c "snapshot")
+        RECOVERY_STATUS=$(curl -s "${ELASTIC_AUTH_ARGS[@]}" "${ELASTIC_HOST}/_cat/recovery/${ELASTIC_PREFIX}_*?h=index,type,stage,snapshot&s=index" 2>/dev/null)
+        ACTUAL_RECOVERY=$(echo "${RECOVERY_STATUS}" | grep "${ELASTIC_SNAPSHOT}" || true)
+        RESTORING_COUNT=$(echo "${ACTUAL_RECOVERY}" | grep -v "done" | grep -c "snapshot" || true)
+        DONE_COUNT=$(echo "${ACTUAL_RECOVERY}" | grep "done" | grep -c "snapshot" || true)
 
-        if [ "${HAS_SEEN_RESTORE}" -eq 0 ] && [ "${RESTORING_COUNT}" -eq 0 ]; then
-            echo "[INFO] Waiting for snapshot restore to start..."
+        if [ "${DONE_COUNT}" -ge "${EXPECTED_COUNT}" ] && [ "${RESTORING_COUNT}" -eq 0 ]; then
+            echo "[INFO] Snapshot restore completed successfully (${DONE_COUNT}/${EXPECTED_COUNT} indices done)"
+            break
+        fi
+
+        if [ "${DONE_COUNT}" -eq 0 ] && [ "${RESTORING_COUNT}" -eq 0 ]; then
+            echo "[INFO] Waiting for snapshot restore to start... (${ELAPSED}s elapsed)"
             sleep 1
             ELAPSED=$((ELAPSED + 1))
             continue
         fi
-        if [ "${HAS_SEEN_RESTORE}" -eq 0 ] && [ "${RESTORING_COUNT}" -gt 0 ]; then
-            echo "[INFO] Snapshot restore started"
-            HAS_SEEN_RESTORE=1
-        fi
-        if [ "${HAS_SEEN_RESTORE}" -eq 1 ] && [ "${RESTORING_COUNT}" -eq 0 ]; then
-            echo "[INFO] Snapshot restore completed successfully"
-            break
-        fi
 
-        RESTORING_INDICES=$(echo "${RECOVERY_STATUS}" | grep -v "done" | grep "snapshot" | awk '{print $1}' | sort -u | tr '\n' ', ' | sed 's/,$//')
-        echo "[INFO] Elastic snapshot restore in progress (${RESTORING_COUNT} index(es)): ${RESTORING_INDICES}"
+        RESTORING_INDICES=$(echo "${ACTUAL_RECOVERY}" | grep -v "done" | grep "snapshot" | awk '{print $1}' | sort -u | tr '\n' ', ' | sed 's/,$//')
+        echo "[INFO] Elastic snapshot restore in progress (${DONE_COUNT}/${EXPECTED_COUNT} done, ${RESTORING_COUNT} restoring): ${RESTORING_INDICES}"
         sleep ${ELASTIC_RESTORE_CHECK_INTERVAL}
         ELAPSED=$((ELAPSED + ELASTIC_RESTORE_CHECK_INTERVAL))
 
         if [ ${ELAPSED} -ge ${ELASTIC_RESTORE_MAX_WAIT} ]; then
-            echo "[ERROR] Restore operation timed out after ${ELASTIC_RESTORE_MAX_WAIT} seconds"
+            echo "[ERROR] Restore operation timed out after ${ELASTIC_RESTORE_MAX_WAIT} seconds (${DONE_COUNT}/${EXPECTED_COUNT} done)"
             return
         fi
     done
