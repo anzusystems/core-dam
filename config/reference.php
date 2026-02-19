@@ -1963,7 +1963,7 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
  *         auth_redirect_query_url_allowed_pattern: scalar|null,
  *         oauth2?: array{
  *             user_repository_service_id?: scalar|null, // Default: ""
- *             state_token_salt?: scalar|null, // Default: "c59de328c991e74dd67d5f15b76a2a31ddf992489d3774b1f99414dce80cba1d"
+ *             state_token_salt?: scalar|null, // Default: "d64d7904375706ffa95f171feb3193e2916f5b96af381c6a16c47904c05c98b7"
  *             state_token_enabled?: bool, // Default: true
  *             authorize_url?: scalar|null, // Default: ""
  *             access_token_url?: scalar|null, // Default: ""
