@@ -7,6 +7,7 @@ namespace App\Serializer\Handler\Handlers;
 use AnzuSystems\AuthBundle\Exception\UnsuccessfulAccessTokenRequestException;
 use AnzuSystems\AuthBundle\Exception\UnsuccessfulUserInfoRequestException;
 use AnzuSystems\AuthBundle\HttpClient\OAuth2HttpClient;
+use AnzuSystems\AuthBundle\Model\SsoUserDto;
 use AnzuSystems\Contracts\Entity\AnzuUser;
 use AnzuSystems\SerializerBundle\Context\SerializationContext;
 use AnzuSystems\SerializerBundle\Exception\SerializerException;
@@ -17,6 +18,7 @@ use App\Entity\User;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 final class SsoUserInitializerCollectionHandler extends AbstractHandler
 {
@@ -24,6 +26,10 @@ final class SsoUserInitializerCollectionHandler extends AbstractHandler
         private readonly OAuth2HttpClient $OAuth2HttpClient,
         private readonly UserRepository $userRepository,
         private readonly UgcUserManager $userManager,
+        #[Autowire(param: 'kernel.environment')]
+        private readonly string $appEnv = 'prod',
+        #[Autowire(env: 'AUTH_OAUTH2_USER_INFO_URL')]
+        private readonly string $userInfoUrl = '',
     ) {
     }
 
@@ -63,7 +69,7 @@ final class SsoUserInitializerCollectionHandler extends AbstractHandler
                     $updatedSome = true;
                 }
                 if (null === $user) {
-                    $ssoUserInfo = $this->OAuth2HttpClient->getSsoUserInfo((string) $id);
+                    $ssoUserInfo = $this->resolveSsoUserInfo((string) $id);
                     $user = $this->userManager->createFromSsoUserInfo($ssoUserInfo);
                     $updatedSome = true;
                 }
@@ -77,5 +83,20 @@ final class SsoUserInitializerCollectionHandler extends AbstractHandler
         }
 
         throw new SerializerException('Unsupported value for ' . self::class . '::' . __FUNCTION__);
+    }
+
+    /**
+     * On local development + when AUTH_OAUTH2_USER_INFO_URL is empty,
+     * creates a dummy user instead of calling the central service.
+     */
+    private function resolveSsoUserInfo(string $id): SsoUserDto
+    {
+        if ('dev' === $this->appEnv && empty($this->userInfoUrl)) {
+            return (new SsoUserDto())
+                ->setId($id)
+                ->setEmail($id . '@ugc.local');
+        }
+
+        return $this->OAuth2HttpClient->getSsoUserInfo($id);
     }
 }
