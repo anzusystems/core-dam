@@ -43,6 +43,18 @@ final class ImageController extends AbstractApiController
     }
 
     /**
+     * Get one image.
+     */
+    #[Route(path: '/{image}', name: 'get_one', methods: [Request::METHOD_GET])]
+    #[OAParameterPath('image'), OAResponse(ImageFileAdmDetailDto::class)]
+    public function getOne(ImageFile $image): JsonResponse
+    {
+        $this->denyAccessUnlessGranted(UgcVoter::DAM_UGC_ACCESS, $image);
+
+        return $this->okResponse(ImageFileAdmDetailDto::getInstance($image));
+    }
+
+    /**
      * Create an image with specific licence
      *
      * @throws ValidationException
