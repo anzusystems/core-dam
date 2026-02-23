@@ -22,6 +22,14 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
+/**
+ * @todo This class is copied from \AnzuSystems\CoreDamBundle\Domain\AssetMetadata\AssetMetadataBulkFacade
+ *       and modified to support UgcVoter in `checkPermissions()` method.
+ *
+ *       This should be updated in the `core-dam-bundle` so this duplication can be removed.
+ *       For example, by making `checkPermissions` protected to allow extending the facade and overriding
+ *       only the permission checks, or by abstracting the permission strategy.
+ */
 final class AssetMetadataBulkUgcFacade
 {
     use ValidatorAwareTrait;
