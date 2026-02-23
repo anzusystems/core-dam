@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Api\Sys\V1;
 
 use AnzuSystems\CommonBundle\Controller\AbstractJobController;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 #[Route(path: '/job', name: 'sys_job_v1_')]
 final class JobController extends AbstractJobController

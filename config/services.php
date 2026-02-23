@@ -14,6 +14,10 @@ return static function (ContainerConfigurator $configurator): void {
 
     $configurator->import('services/');
 
+    if ('dev' === $configurator->env()) {
+        $configurator->import('services_dev.php');
+    }
+
     if ('test' === $configurator->env()) {
         $configurator->import('services_test.php');
     }

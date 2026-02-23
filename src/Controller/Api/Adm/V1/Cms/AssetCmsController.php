@@ -14,7 +14,7 @@ use App\Model\Domain\Asset\AssetCmsSysDto;
 use OpenApi\Attributes as OA;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Requirement\Requirement;
 
 #[Route('/cms/asset', 'adm_asset_v1_cms_')]

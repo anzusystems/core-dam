@@ -24,7 +24,7 @@ use League\Flysystem\FilesystemException;
 use OpenApi\Attributes as OA;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 #[OA\Tag('Mediaapi Image')]
 #[Route('/mediaapi/image', 'sys_mediaapi_image')]

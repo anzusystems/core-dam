@@ -6,8 +6,6 @@ namespace App\Serializer\Handler\Handlers;
 
 use AnzuSystems\AuthBundle\Exception\UnsuccessfulAccessTokenRequestException;
 use AnzuSystems\AuthBundle\Exception\UnsuccessfulUserInfoRequestException;
-use AnzuSystems\AuthBundle\HttpClient\OAuth2HttpClient;
-use AnzuSystems\AuthBundle\Model\SsoUserDto;
 use AnzuSystems\Contracts\Entity\AnzuUser;
 use AnzuSystems\SerializerBundle\Context\SerializationContext;
 use AnzuSystems\SerializerBundle\Exception\SerializerException;
@@ -15,21 +13,17 @@ use AnzuSystems\SerializerBundle\Handler\Handlers\AbstractHandler;
 use AnzuSystems\SerializerBundle\Metadata\Metadata;
 use App\Domain\User\UgcUserManager;
 use App\Entity\User;
+use App\HttpClient\Sso\SsoUserClientInterface;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 final class SsoUserInitializerCollectionHandler extends AbstractHandler
 {
     public function __construct(
-        private readonly OAuth2HttpClient $OAuth2HttpClient,
+        private readonly SsoUserClientInterface $ssoUserClient,
         private readonly UserRepository $userRepository,
         private readonly UgcUserManager $userManager,
-        #[Autowire(param: 'kernel.environment')]
-        private readonly string $appEnv = 'prod',
-        #[Autowire(env: 'AUTH_OAUTH2_USER_INFO_URL')]
-        private readonly string $userInfoUrl = '',
     ) {
     }
 
@@ -69,8 +63,9 @@ final class SsoUserInitializerCollectionHandler extends AbstractHandler
                     $updatedSome = true;
                 }
                 if (null === $user) {
-                    $ssoUserInfo = $this->resolveSsoUserInfo((string) $id);
-                    $user = $this->userManager->createFromSsoUserInfo($ssoUserInfo);
+                    $user = $this->userManager->createFromSsoUserInfo(
+                        $this->ssoUserClient->getSsoUserInfo((string) $id)
+                    );
                     $updatedSome = true;
                 }
                 $users->add($user);
@@ -83,20 +78,5 @@ final class SsoUserInitializerCollectionHandler extends AbstractHandler
         }
 
         throw new SerializerException('Unsupported value for ' . self::class . '::' . __FUNCTION__);
-    }
-
-    /**
-     * On local development + when AUTH_OAUTH2_USER_INFO_URL is empty,
-     * creates a dummy user instead of calling the central service.
-     */
-    private function resolveSsoUserInfo(string $id): SsoUserDto
-    {
-        if ('dev' === $this->appEnv && empty($this->userInfoUrl)) {
-            return (new SsoUserDto())
-                ->setId($id)
-                ->setEmail($id . '@ugc.local');
-        }
-
-        return $this->OAuth2HttpClient->getSsoUserInfo($id);
     }
 }
