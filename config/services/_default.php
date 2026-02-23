@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
+use App\HttpClient\Sso\DefaultSsoUserClient;
+use App\HttpClient\Sso\SsoUserClientInterface;
 use Symfony\Component\Uid\Command\GenerateUuidCommand;
 
 return static function (ContainerConfigurator $configurator): void {
@@ -31,11 +33,13 @@ return static function (ContainerConfigurator $configurator): void {
     $services
         ->load('App\\', param('kernel.project_dir') . '/src/*')
         ->exclude([
-            param('kernel.project_dir') . '/src/{Entity,Migrations,Model,Tests}',
+            param('kernel.project_dir') . '/src/{Dev,Entity,Migrations,Model,Tests}',
             param('kernel.project_dir') . '/src/ApiFilter',
             param('kernel.project_dir') . '/src/Kernel.php',
         ])
     ;
+
+    $services->alias(SsoUserClientInterface::class, DefaultSsoUserClient::class);
 
     $services->set(GenerateUuidCommand::class);
 };
