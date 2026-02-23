@@ -14,7 +14,6 @@ use AnzuSystems\CommonBundle\Model\OpenApi\Response\OAResponseValidation;
 use AnzuSystems\Contracts\Exception\AppReadOnlyModeException;
 use AnzuSystems\CoreDamBundle\App;
 use AnzuSystems\CoreDamBundle\Controller\Api\AbstractApiController;
-use AnzuSystems\CoreDamBundle\Domain\Asset\AssetFacade;
 use AnzuSystems\CoreDamBundle\Elasticsearch\Decorator\AssetAdmElasticsearchDecorator;
 use AnzuSystems\CoreDamBundle\Elasticsearch\SearchDto\AssetAdmSearchLicenceCollectionDto;
 use AnzuSystems\CoreDamBundle\Entity\Asset;
@@ -48,7 +47,6 @@ final class AssetController extends AbstractApiController
     private const int IDS_LIMIT = 50;
 
     public function __construct(
-        private readonly AssetFacade $assetFacade,
         private readonly AssetAdmElasticsearchDecorator $elasticSearch,
         private readonly AssetMetadataBulkUgcFacade $assetMetadataBulkUgcFacade,
         private readonly AssetAdmRepositoryDecorator $admRepositoryDecorator,
