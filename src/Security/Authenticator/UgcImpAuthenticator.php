@@ -92,7 +92,7 @@ final class UgcImpAuthenticator extends AbstractUgcAuthenticator
         }
 
         $grantForUgcImp = $this->originalUser->getResolvedPermissions()[DamPermissions::DAM_USER_UGC_IMPERSONATE] ?? null;
-        $hasPermission = $this->originalUser->hasRole(User::ROLE_ADMIN) || Grant::ALLOW === $grantForUgcImp;
+        $hasPermission = $this->originalUser->hasRole(User::ROLE_SUPER_ADMIN) || Grant::ALLOW === $grantForUgcImp;
         if ($hasPermission && $this->originalUser->isEnabled()) {
             return true;
         }

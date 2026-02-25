@@ -6,6 +6,7 @@ namespace App\Request\ValueResolver;
 
 use AnzuSystems\CoreDamBundle\Entity\ExtSystem;
 use AnzuSystems\CoreDamBundle\Repository\AssetLicenceRepository;
+use App\App;
 use App\Model\Attributes\AssetLicenceByBlogIdParam;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Exception\ORMException;
@@ -18,8 +19,6 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 #[AutoconfigureTag(name: 'controller.argument_value_resolver', attributes: ['priority' => 200])]
 final readonly class AssetLicenceByBlogIdValueResolver implements ValueResolverInterface
 {
-    private const int BLOG_EXT_SYSTEM_ID = 4;
-
     public function __construct(
         private AssetLicenceRepository $assetLicenceRepo,
         private EntityManagerInterface $entityManager,
@@ -42,7 +41,7 @@ final readonly class AssetLicenceByBlogIdValueResolver implements ValueResolverI
         }
 
         /** @var ExtSystem $extSystem */
-        $extSystem = $this->entityManager->getReference(ExtSystem::class, self::BLOG_EXT_SYSTEM_ID);
+        $extSystem = $this->entityManager->getReference(ExtSystem::class, App::BLOG_EXT_SYSTEM_ID);
         $licence = $this->assetLicenceRepo->findOneByExtSystemAndExtId($extSystem, (string) $blogId);
         if (null === $licence) {
             throw new NotFoundHttpException();

@@ -1,0 +1,134 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Controller\Api\Ugc\V1;
+
+use AnzuSystems\CommonBundle\Exception\ValidationException;
+use AnzuSystems\CommonBundle\Helper\CollectionHelper;
+use AnzuSystems\CommonBundle\Log\Helper\AuditLogResourceHelper;
+use AnzuSystems\CommonBundle\Model\Attributes\ArrayStringParam;
+use AnzuSystems\CommonBundle\Model\OpenApi\Parameter\OAParameterPath;
+use AnzuSystems\CommonBundle\Model\OpenApi\Response\OAResponse;
+use AnzuSystems\CommonBundle\Model\OpenApi\Response\OAResponseValidation;
+use AnzuSystems\Contracts\Exception\AppReadOnlyModeException;
+use AnzuSystems\CoreDamBundle\App;
+use AnzuSystems\CoreDamBundle\Controller\Api\AbstractApiController;
+use AnzuSystems\CoreDamBundle\Elasticsearch\Decorator\AssetAdmElasticsearchDecorator;
+use AnzuSystems\CoreDamBundle\Elasticsearch\SearchDto\AssetAdmSearchLicenceCollectionDto;
+use AnzuSystems\CoreDamBundle\Entity\Asset;
+use AnzuSystems\CoreDamBundle\Entity\AssetFile;
+use AnzuSystems\CoreDamBundle\Entity\AssetLicence;
+use AnzuSystems\CoreDamBundle\Model\Attributes\SerializeIterableParam;
+use AnzuSystems\CoreDamBundle\Model\Dto\Asset\AssetAdmDetailDto;
+use AnzuSystems\CoreDamBundle\Model\Dto\Asset\AssetAdmListDto;
+use AnzuSystems\CoreDamBundle\Model\Dto\Asset\FormProvidableMetadataBulkUpdateDto;
+use AnzuSystems\CoreDamBundle\Model\OpenApi\Request\OARequest;
+use AnzuSystems\CoreDamBundle\Repository\Decorator\AssetAdmRepositoryDecorator;
+use AnzuSystems\SerializerBundle\Attributes\SerializeParam;
+use AnzuSystems\SerializerBundle\Exception\SerializerException;
+use App\Domain\AssetMetadata\AssetMetadataBulkUgcFacade;
+use App\Security\Voter\UgcVoter;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\NonUniqueResultException;
+use Elastic\Elasticsearch\Exception\ElasticsearchException;
+use OpenApi\Attributes as OA;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Attribute\AsController;
+use Symfony\Component\Routing\Attribute\Route;
+
+#[AsController]
+#[Route(path: '/asset', name: 'ugc_asset_v1_')]
+#[OA\Tag('Asset')]
+final class AssetController extends AbstractApiController
+{
+    private const int IDS_LIMIT = 50;
+
+    public function __construct(
+        private readonly AssetAdmElasticsearchDecorator $elasticSearch,
+        private readonly AssetMetadataBulkUgcFacade $assetMetadataBulkUgcFacade,
+        private readonly AssetAdmRepositoryDecorator $admRepositoryDecorator,
+    ) {
+    }
+
+    /**
+     * @throws SerializerException
+     * @throws ValidationException
+     * @throws AppReadOnlyModeException
+     * @throws ElasticsearchException
+     */
+    #[Route('/licence/{assetLicence}/search', name: 'search_by_licence', methods: [Request::METHOD_GET])]
+    #[OAParameterPath('search', description: 'Searched asset.'), OAResponse([AssetAdmListDto::class])]
+    public function searchByLicence(AssetLicence $assetLicence, #[SerializeParam] AssetAdmSearchLicenceCollectionDto $searchDto): JsonResponse
+    {
+        App::throwOnReadOnlyMode();
+        $this->denyAccessUnlessGranted(UgcVoter::DAM_UGC_ACCESS, $assetLicence);
+        $searchDto->setLicences(new ArrayCollection([$assetLicence]));
+
+        return $this->okResponse(
+            $this->elasticSearch->searchInfiniteList($searchDto)
+        );
+    }
+
+    #[Route('/licence/{assetLicence}/ids/{ids}', name: 'get_by_licence_and_ids', methods: [Request::METHOD_GET])]
+    public function getByLicenceAndIds(
+        AssetLicence $assetLicence,
+        #[ArrayStringParam(itemsLimit: self::IDS_LIMIT)]
+        array $ids,
+    ): JsonResponse {
+        $this->denyAccessUnlessGranted(UgcVoter::DAM_UGC_ACCESS, $assetLicence);
+
+        return $this->okResponse(
+            $this->admRepositoryDecorator->findByLicenceAndIds($assetLicence, $ids)
+        );
+    }
+
+    /**
+     * Get one item.
+     */
+    #[Route(path: '/{asset}', name: 'get_one', methods: [Request::METHOD_GET])]
+    #[OAResponse(AssetAdmDetailDto::class)]
+    public function getOne(Asset $asset): JsonResponse
+    {
+        $this->denyAccessUnlessGranted(UgcVoter::DAM_UGC_ACCESS, $asset);
+
+        return $this->okResponse(AssetAdmDetailDto::getInstance($asset));
+    }
+
+    /**
+     * Get one item.
+     */
+    #[Route(path: '/asset-file/{assetFile}', name: 'get_one_by_file', methods: [Request::METHOD_GET])]
+    #[OAResponse(AssetAdmDetailDto::class)]
+    public function getOneByAssetFile(AssetFile $assetFile): JsonResponse
+    {
+        $this->denyAccessUnlessGranted(UgcVoter::DAM_UGC_ACCESS, $assetFile->getAsset());
+
+        return $this->okResponse(AssetAdmDetailDto::getInstance($assetFile->getAsset()));
+    }
+
+    /**
+     * Patch bulk of assets
+     *
+     * @throws ValidationException
+     * @throws NonUniqueResultException
+     * @throws AppReadOnlyModeException
+     */
+    #[Route(path: '/metadata-bulk-update', name: 'metadata_bulk_update', methods: [Request::METHOD_PATCH])]
+    #[OARequest([FormProvidableMetadataBulkUpdateDto::class]), OAResponse([FormProvidableMetadataBulkUpdateDto::class]), OAResponseValidation]
+    public function metadataBulkUpdate(Request $request, #[SerializeIterableParam(type: FormProvidableMetadataBulkUpdateDto::class)] Collection $list): JsonResponse
+    {
+        App::throwOnReadOnlyMode();
+        AuditLogResourceHelper::setResource(
+            request: $request,
+            resourceName: Asset::getResourceName(),
+            resourceId: CollectionHelper::traversableToIds($list, static fn (FormProvidableMetadataBulkUpdateDto $dto): string => (string) $dto->getAsset()->getId()),
+        );
+
+        return $this->okResponse(
+            $this->assetMetadataBulkUgcFacade->bulkUpdate($list)
+        );
+    }
+}

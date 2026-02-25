@@ -18,4 +18,6 @@ final class App extends AnzuApp
     public const string DATE_TIME_ZONE = 'Europe/Bratislava';
 
     public const string FETCH_EXTRA_LAZY = 'EXTRA_LAZY';
+
+    public const int BLOG_EXT_SYSTEM_ID = 4;
 }

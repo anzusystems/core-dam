@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
+use App\Dev\DevSsoUserClient;
+use App\HttpClient\Sso\SsoUserClientInterface;
 use App\Security\Util\JwtUgcUtil;
 use App\Tests\ApiClient;
 use App\Tests\HttpClient\BaseClient;
@@ -31,6 +33,9 @@ return static function (ContainerConfigurator $configurator): void {
         ->factory(service(BaseClient::class));
     $services->set(HttpClientInterface::class . ' $anzuCmsApiClient', MockHttpClient::class)
         ->factory(service(CmsClientMock::class));
+
+    $services->set(DevSsoUserClient::class);
+    $services->alias(SsoUserClientInterface::class, DevSsoUserClient::class);
 
     $services->set(ApiClient::class);
     $services->get(JwtUgcUtil::class)->public();
