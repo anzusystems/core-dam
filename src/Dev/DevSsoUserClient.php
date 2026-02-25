@@ -23,7 +23,7 @@ final class DevSsoUserClient implements SsoUserClientInterface
         if (empty($this->userInfoUrl)) {
             return (new SsoUserDto())
                 ->setId($id)
-                ->setEmail($id . '@ugc.local');
+                ->setEmail('e2etesting+central' . $id . '@petitpress.sk');
         }
 
         return $this->defaultClient->getSsoUserInfo($id);
