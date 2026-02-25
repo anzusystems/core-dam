@@ -107,6 +107,7 @@ spec:
               port: healthcheck
               path: /status-nginx
             periodSeconds: 5
+            timeoutSeconds: 5
         - name: container-stop-log
           image: busybox
           command: ["/bin/sh", "-c"]

@@ -19,11 +19,11 @@ parameters:
   - name: changelog
     displayName: Changelog
     type: string
-    default: ' '
+    default: " "
   - name: releaseType
     displayName: Release type
     type: string
-    default: 'hotfix'
+    default: "hotfix"
     values:
       - hotfix
       - release
@@ -42,7 +42,7 @@ parameters:
   - name: environment
     displayName: Environment
     type: string
-    default: 'devel'
+    default: "devel"
     values:
       - devel
       - stage
@@ -50,72 +50,72 @@ parameters:
 
 # Setup variables
 variables:
-  - group: 'core-dam-${{ parameters.environment }}'
-  - group: 'core-dam-${{ parameters.environment }}-secrets'
+  - group: "core-dam-${{ parameters.environment }}"
+  - group: "core-dam-${{ parameters.environment }}-secrets"
   # Application project name
   - name: APP_NAME
-    value: 'core-dam'
+    value: "core-dam"
   # Pipeline name shortcuts
   - ${{ if eq(parameters.releaseType, 'release') }}:
     - name: SHORT_RELEASE_TYPE
-      value: 'R'
+      value: "R"
   - ${{ if eq(parameters.releaseType, 'hotfix') }}:
     - name: SHORT_RELEASE_TYPE
-      value: 'H'
+      value: "H"
   - ${{ if parameters.runDeployment }}:
     - name: ENVIRONMENT_TAG
-      value: '_${{ parameters.environment }}'
+      value: "_${{ parameters.environment }}"
   - ${{ if not(parameters.runDeployment) }}:
     - name: ENVIRONMENT_TAG
-      value: ''
+      value: ""
   # Deploy environment
   - name: DEPLOY_ENV
-    value: '${{ parameters.environment }}'
+    value: "${{ parameters.environment }}"
   # Application version
   - name: VERSION
-    value: '${{ parameters.version }}'
+    value: "${{ parameters.version }}"
   # Application container registry image repository
   - name: APP_DOCKER_IMAGE_REPOSITORY
-    value: 'anzu-$(APP_NAME)'
+    value: "anzu-$(APP_NAME)"
   # Cron container registry image repository
   - name: CRON_DOCKER_IMAGE_REPOSITORY
-    value: 'anzu-$(APP_NAME)-cron'
+    value: "anzu-$(APP_NAME)-cron"
   # Application dockerfile location
   - name: APP_DOCKERFILE
-    value: '$(Build.SourcesDirectory)/docker/app/kubernetes/Dockerfile'
+    value: "$(Build.SourcesDirectory)/docker/app/kubernetes/Dockerfile"
   # Cron dockerfile location
   - name: CRON_DOCKERFILE
-    value: '$(Build.SourcesDirectory)/docker/app-cron/kubernetes/Dockerfile'
+    value: "$(Build.SourcesDirectory)/docker/app-cron/kubernetes/Dockerfile"
   # Kubernetes configuration manifest filename
   - name: CONFIGURATION_MANIFEST_FILE_NAME
-    value: 'configuration.yaml'
+    value: "configuration.yaml"
   # Kubernetes migration job name
   - name: JOB_MIGRATIONS_NAME
-    value: '$(APP_NAME)-migrations'
+    value: "$(APP_NAME)-migrations"
   # Kubernetes migration job manifest filename
   - name: JOB_MIGRATIONS_MANIFEST_FILE_NAME
-    value: 'migrations-job.yaml'
+    value: "migrations-job.yaml"
   # Kubernetes migration job execution timeout in seconds
   - name: JOB_EXECUTION_TIMEOUT_SECONDS
-    value: '$(JOB_MIGRATIONS_EXECUTION_TIMEOUT_SECONDS)'
+    value: "$(JOB_MIGRATIONS_EXECUTION_TIMEOUT_SECONDS)"
   # Kubernetes application deployment name
   - name: APP_KUBERNETES_DEPLOYMENT_NAME
-    value: '$(APP_NAME)'
+    value: "$(APP_NAME)"
   # Kubernetes cron deployment name
   - name: CRON_KUBERNETES_DEPLOYMENT_NAME
-    value: '$(APP_NAME)-cron'
+    value: "$(APP_NAME)-cron"
   # Kubernetes messenger deployment name
   - name: MESSENGER_KUBERNETES_DEPLOYMENT_NAME
-    value: '$(APP_NAME)-messenger'
+    value: "$(APP_NAME)-messenger"
   # Kubernetes messenger deployment manifest filename
   - name: MESSENGER_MANIFEST_FILE_NAME
-    value: 'messenger-deployment.yaml'
-  # Kubernetes service connection name
-  - name: KUBERNETES_SERVICE_CONNECTION_NAME
-    value: '$(DEPLOYMENT_KUBERNETES_NAMESPACE)-${{ parameters.environment }}'
+    value: "messenger-deployment.yaml"
   # Kubernetes namespace
   - name: KUBERNETES_NAMESPACE
-    value: '$(DEPLOYMENT_KUBERNETES_NAMESPACE)'
+    value: "dam"
+  # Kubernetes service connection name
+  - name: KUBERNETES_SERVICE_CONNECTION_NAME
+    value: "dam-${{ parameters.environment }}"
 
 # Checkout azure ci template repository
 resources:
@@ -129,7 +129,7 @@ extends:
   template: composer-release-k8s.yaml@templates
   parameters:
     containerDockerImageVersion: php84
-    containerDockerImagePhp84: petitpress.azurecr.io/php84:1.5.2
+    containerDockerImagePhp84: petitpress.azurecr.io/php84:1.9.1
     containerDockerImageVariant: cli-ci-node-vipsffmpeg-xdebug
     releaseType: ${{ parameters.releaseType }}
     version: ${{ parameters.version }}

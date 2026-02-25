@@ -8,23 +8,23 @@ trigger: none
 
 variables:
   # Common mysql connection configuration
-  MYSQL_DATABASE_NAME: 'core_dam'
-  MYSQL_DATABASE_PASSWORD: 'root'
+  MYSQL_DATABASE_NAME: "core_dam"
+  MYSQL_DATABASE_PASSWORD: "root"
   # Common redis connection configuration
-  REDIS_HOST: 'redis'
-  REDIS_PORT: '6379'
+  REDIS_HOST: "redis"
+  REDIS_PORT: "6379"
   # Common mongo connection configuration
-  MONGO_HOST: 'mongodb://mongo:27017'
+  MONGO_HOST: "mongodb://mongo:27017"
   # Application specific environment variables (see .env file on which variables are overwritten)
-  APP_ENV: 'test'
-  DB_CORE_DAM_URL: 'mysql://root:$(MYSQL_DATABASE_PASSWORD)@mysql:3306/$(MYSQL_DATABASE_NAME)?serverVersion=8.0'
-  PHP_MEMORY_LIMIT: '512M'
-  REDIS_DB: '11'
-  REDIS_CACHE_HOST: '$(REDIS_HOST)'
-  REDIS_CACHE_PORT: '$(REDIS_PORT)'
-  REDIS_CACHE_DB: '11'
-  ANZU_MONGODB_APP_LOG_URI: '$(MONGO_HOST)'
-  ANZU_MONGODB_AUDIT_LOG_URI: '$(MONGO_HOST)'
+  APP_ENV: "test"
+  DB_CORE_DAM_URL: "mysql://root:$(MYSQL_DATABASE_PASSWORD)@mysql:3306/$(MYSQL_DATABASE_NAME)?serverVersion=8.0"
+  PHP_MEMORY_LIMIT: "512M"
+  REDIS_DB: "11"
+  REDIS_CACHE_HOST: "$(REDIS_HOST)"
+  REDIS_CACHE_PORT: "$(REDIS_PORT)"
+  REDIS_CACHE_DB: "11"
+  ANZU_MONGODB_APP_LOG_URI: "$(MONGO_HOST)"
+  ANZU_MONGODB_AUDIT_LOG_URI: "$(MONGO_HOST)"
   ELASTIC_HOSTS: '["http://elasticsearch:9200"]'
   PHPUNIT_EXECUTABLE_PATH: "vendor/bin/phpunit"
 
@@ -39,7 +39,7 @@ extends:
   template: composer-ci.yaml@templates
   parameters:
     containerDockerImageVersion: php84
-    containerDockerImagePhp84: petitpress.azurecr.io/php84:1.5.2
+    containerDockerImagePhp84: petitpress.azurecr.io/php84:1.9.1
     containerDockerImageVariant: cli-ci-node-vipsffmpeg-xdebug
     mysqlDockerDatabaseName: $(MYSQL_DATABASE_NAME)
     mysqlDockerRootPassword: $(MYSQL_DATABASE_PASSWORD)
