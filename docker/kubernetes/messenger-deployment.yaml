@@ -93,6 +93,7 @@ spec:
                 - /var/run/supervisor/supervisord.pid
             initialDelaySeconds: 10
             periodSeconds: 10
+            timeoutSeconds: 5
         - name: container-stop-log
           image: busybox
           command: ["/bin/sh", "-c"]
@@ -109,8 +110,8 @@ spec:
               mountPath: /var/www/html/var/log
         - name: messenger-anzu-core-dam-asset-change-state-log
           image: busybox
-          command: [ "/bin/sh", "-c" ]
-          args: [ "/var/www/html/var/log/tail-cmd -f /var/www/html/var/log/messenger_anzu_core_dam_asset_change_state.log" ]
+          command: ["/bin/sh", "-c"]
+          args: ["/var/www/html/var/log/tail-cmd -f /var/www/html/var/log/messenger_anzu_core_dam_asset_change_state.log"]
           resources:
             limits:
               cpu: 5m
@@ -123,8 +124,8 @@ spec:
               mountPath: /var/www/html/var/log
         - name: messenger-anzu-core-dam-asset-file-metadata-process-log
           image: busybox
-          command: [ "/bin/sh", "-c" ]
-          args: [ "/var/www/html/var/log/tail-cmd -f /var/www/html/var/log/messenger_anzu_core_dam_asset_file_metadata_process.log" ]
+          command: ["/bin/sh", "-c"]
+          args: ["/var/www/html/var/log/tail-cmd -f /var/www/html/var/log/messenger_anzu_core_dam_asset_file_metadata_process.log"]
           resources:
             limits:
               cpu: 5m
@@ -137,8 +138,8 @@ spec:
               mountPath: /var/www/html/var/log
         - name: messenger-anzu-core-audio-file-change-state-log
           image: busybox
-          command: [ "/bin/sh", "-c" ]
-          args: [ "/var/www/html/var/log/tail-cmd -f /var/www/html/var/log/messenger_anzu_core_dam_audio_file_change_state.log" ]
+          command: ["/bin/sh", "-c"]
+          args: ["/var/www/html/var/log/tail-cmd -f /var/www/html/var/log/messenger_anzu_core_dam_audio_file_change_state.log"]
           resources:
             limits:
               cpu: 5m
@@ -151,8 +152,8 @@ spec:
               mountPath: /var/www/html/var/log
         - name: messenger-anzu-core-dam-distribution-log
           image: busybox
-          command: [ "/bin/sh", "-c" ]
-          args: [ "/var/www/html/var/log/tail-cmd -f /var/www/html/var/log/messenger_anzu_core_dam_distribution.log" ]
+          command: ["/bin/sh", "-c"]
+          args: ["/var/www/html/var/log/tail-cmd -f /var/www/html/var/log/messenger_anzu_core_dam_distribution.log"]
           resources:
             limits:
               cpu: 5m
@@ -249,8 +250,8 @@ spec:
               mountPath: /var/www/html/var/log
         - name: messenger-anzu-core-dam-asset-copy-log
           image: busybox
-          command: [ "/bin/sh", "-c" ]
-          args: [ "/var/www/html/var/log/tail-cmd -f /var/www/html/var/log/messenger_anzu_core_dam_asset_copy.log" ]
+          command: ["/bin/sh", "-c"]
+          args: ["/var/www/html/var/log/tail-cmd -f /var/www/html/var/log/messenger_anzu_core_dam_asset_copy.log"]
           resources:
             limits:
               cpu: 5m
