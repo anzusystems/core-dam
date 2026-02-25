@@ -4,6 +4,9 @@
 
 request/http-client.private.env.json
 
+# Config reference file
+/config/reference.php
+
 # Cache, session files, logs and secure files
 /config/secrets/prod/prod.decrypt.private.php
 /var/cache/*
