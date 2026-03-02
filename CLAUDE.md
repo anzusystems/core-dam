@@ -151,3 +151,18 @@ Follow the template in `.augment/rules/entity-crud-creation.md`. Required files:
 9. URL factory (`tests/data/UrlFactory/Api/Adm/{Name}Url.php`)
 10. Controller test (`tests/Controller/Api/Adm/V1/{Name}ControllerTest.php` or matching domain path)
 11. Generate and run migration
+
+## Anzu Ecosystem & Related Projects
+
+This project is part of the Anzu microservice ecosystem. Multiple projects share bundles and libraries.
+
+### Path Conventions
+| Type | Host path pattern | This project's instances |
+|------|-------------------|------------------------|
+| Symfony apps | `/home/tomas/Projects/anzu/{app-name}/` | `core-dam` |
+| Bundles (source, editable) | `/home/tomas/Projects/anzusystems/{bundle-name}/` | `core-dam-bundle`, `common-bundle` |
+| Vue admin frontends | `/home/tomas/Projects/anzusystems/{admin-name}/` | `admin-dam` |
+| Common admin lib | `/home/tomas/Projects/anzusystems/common-admin/` | Shared TS types/components |
+
+### Bundle Editing Rule
+Bundle source directories are Docker volume-mounted into `vendor/anzusystems/{bundle-name}/` (configured in `docker-compose.override.yml`). **Always edit at the source path (`/home/tomas/Projects/anzusystems/{bundle-name}/`), never in `vendor/`.**

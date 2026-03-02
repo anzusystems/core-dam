@@ -12,11 +12,13 @@ use AnzuSystems\CoreDamBundle\Entity\JobImageCopy;
 use AnzuSystems\CoreDamBundle\Model\Dto\Job\JobImageCopyResultDto;
 use AnzuSystems\CoreDamBundle\Model\Dto\Job\JobImageCopyResultItemDto;
 use AnzuSystems\CoreDamBundle\Model\Enum\AssetFileProcessStatus;
+use AnzuSystems\CoreDamBundle\Model\Enum\AssetType;
 use AnzuSystems\CoreDamBundle\Repository\AssetRepository;
 use App\Domain\Asset\AssetCmsFactory;
 use App\HttpClient\CmsClient;
 use App\Model\Domain\Asset\AssetCmsSysDto;
 use App\Model\Domain\Image\CmsImageUsageDto;
+use App\Model\Domain\Image\ImageCmsSysDto;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Uid\Uuid;
@@ -45,9 +47,42 @@ abstract readonly class AbstractExtSystemCallback implements ExtSystemCallbackIn
      */
     public function notifyAssetsChanged(Collection $collection): void
     {
-        $this->cmsClient->notifyAssetChanged(
+        $audioVideoAssets = $collection->filter(
+            static fn (Asset $asset): bool => $asset->getAssetType()->is(AssetType::Audio)
+                || $asset->getAssetType()->is(AssetType::Video)
+        );
+
+        if (false === $audioVideoAssets->isEmpty()) {
+            $this->cmsClient->notifyAssetChanged(
+                $audioVideoAssets->map(
+                    fn (Asset $asset): AssetCmsSysDto => $this->assetCmsFactory->create($asset)
+                )
+            );
+        }
+
+        $imageFiles = $collection->filter(
+            static fn (Asset $asset): bool => $asset->getAssetType()->is(AssetType::Image)
+        )->map(
+            static fn (Asset $asset): ?ImageFile => $asset->getMainFile() instanceof ImageFile ? $asset->getMainFile() : null
+        )->filter(
+            static fn (?ImageFile $imageFile): bool => null !== $imageFile
+        );
+
+        if (false === $imageFiles->isEmpty()) {
+            $this->notifyImagesChanged($imageFiles);
+        }
+    }
+
+    /**
+     * @param Collection<array-key, ImageFile> $collection
+     */
+    public function notifyImagesChanged(Collection $collection): void
+    {
+        $this->cmsClient->notifyImageChanged(
             $collection->map(
-                fn (Asset $asset): AssetCmsSysDto => $this->assetCmsFactory->create($asset)
+                static fn (ImageFile $imageFile): ImageCmsSysDto => new ImageCmsSysDto()
+                    ->setDamId(Uuid::fromString((string) $imageFile->getId()))
+                    ->setInternal($imageFile->getFlags()->isInternal())
             )
         );
     }
