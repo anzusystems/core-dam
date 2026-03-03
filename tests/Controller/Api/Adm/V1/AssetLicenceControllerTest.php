@@ -23,7 +23,7 @@ final class AssetLicenceControllerTest extends AbstractApiController
             'extSystem' => 4,
             'internalRule' => [
                 'active' => true,
-                'markAsInternalSince' => '2024-06-01T00:00:00+00:00',
+                'markAsInternalSince' => '2024-06-01T00:00:00.000000Z',
             ],
             'internalRuleAuthors' => [AuthorFixtures::AUTHOR_1],
             'internalRuleUsers' => [UserFixtures::USER_ONE_SSO_ID],
@@ -44,6 +44,7 @@ final class AssetLicenceControllerTest extends AbstractApiController
         $licenceId = AssetLicenceFixtures::BLOG_ONE_LICENCE_ID;
 
         $response = $client->put(AssetLicenceAdmUrl::updateLicence($licenceId), [
+            'id' => $licenceId,
             'name' => 'Anzulák: Blog plný radosti',
             'extId' => (string) AssetLicenceFixtures::BLOG_ONE_EXT_ID,
             'extSystem' => 4,
@@ -73,6 +74,7 @@ final class AssetLicenceControllerTest extends AbstractApiController
 
         // First set some authors and users
         $client->put(AssetLicenceAdmUrl::updateLicence($licenceId), [
+            'id' => $licenceId,
             'name' => 'Anzulák: Blog plný radosti',
             'extId' => (string) AssetLicenceFixtures::BLOG_ONE_EXT_ID,
             'extSystem' => 4,
@@ -83,6 +85,7 @@ final class AssetLicenceControllerTest extends AbstractApiController
 
         // Now clear them
         $response = $client->put(AssetLicenceAdmUrl::updateLicence($licenceId), [
+            'id' => $licenceId,
             'name' => 'Anzulák: Blog plný radosti',
             'extId' => (string) AssetLicenceFixtures::BLOG_ONE_EXT_ID,
             'extSystem' => 4,
