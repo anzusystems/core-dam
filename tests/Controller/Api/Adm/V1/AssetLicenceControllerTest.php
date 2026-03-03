@@ -20,7 +20,7 @@ final class AssetLicenceControllerTest extends AbstractApiController
         $response = $client->post(AssetLicenceAdmUrl::createLicence(), [
             'name' => 'Test Internal Rule Licence',
             'extId' => '999',
-            'extSystem' => 4,
+            'extSystem' => App::BLOG_EXT_SYSTEM_ID,
             'internalRule' => [
                 'active' => true,
                 'markAsInternalSince' => '2024-06-01T00:00:00.000000Z',
@@ -47,7 +47,7 @@ final class AssetLicenceControllerTest extends AbstractApiController
             'id' => $licenceId,
             'name' => 'Anzulák: Blog plný radosti',
             'extId' => (string) AssetLicenceFixtures::BLOG_ONE_EXT_ID,
-            'extSystem' => 4,
+            'extSystem' => App::BLOG_EXT_SYSTEM_ID,
             'internalRule' => [
                 'active' => true,
                 'markAsInternalSince' => null,
@@ -77,7 +77,7 @@ final class AssetLicenceControllerTest extends AbstractApiController
             'id' => $licenceId,
             'name' => 'Anzulák: Blog plný radosti',
             'extId' => (string) AssetLicenceFixtures::BLOG_ONE_EXT_ID,
-            'extSystem' => 4,
+            'extSystem' => App::BLOG_EXT_SYSTEM_ID,
             'internalRule' => ['active' => true],
             'internalRuleAuthors' => [AuthorFixtures::AUTHOR_1],
             'internalRuleUsers' => [UserFixtures::USER_ONE_SSO_ID],
@@ -88,7 +88,7 @@ final class AssetLicenceControllerTest extends AbstractApiController
             'id' => $licenceId,
             'name' => 'Anzulák: Blog plný radosti',
             'extId' => (string) AssetLicenceFixtures::BLOG_ONE_EXT_ID,
-            'extSystem' => 4,
+            'extSystem' => App::BLOG_EXT_SYSTEM_ID,
             'internalRule' => ['active' => false],
             'internalRuleAuthors' => [],
             'internalRuleUsers' => [],
@@ -125,7 +125,7 @@ final class AssetLicenceControllerTest extends AbstractApiController
         $response = $client->post(AssetLicenceAdmUrl::createLicence(), [
             'name' => 'Test Default Internal Rule',
             'extId' => '998',
-            'extSystem' => 4,
+            'extSystem' => App::BLOG_EXT_SYSTEM_ID,
         ]);
 
         $json = $this->assertResponseAndGetJsonContent($response, Response::HTTP_CREATED);
@@ -151,7 +151,7 @@ final class AssetLicenceControllerTest extends AbstractApiController
         $response = $client->post(AssetLicenceAdmUrl::createLicence(), [
             'name' => 'Unauthenticated Licence',
             'extId' => '997',
-            'extSystem' => 4,
+            'extSystem' => App::BLOG_EXT_SYSTEM_ID,
         ]);
 
         $this->assertSame(Response::HTTP_UNAUTHORIZED, $response->getStatusCode());
