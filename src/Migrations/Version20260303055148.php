@@ -36,10 +36,11 @@ final class Version20260303055148 extends AbstractMigration
         $this->addSql(
             'CREATE TABLE job_asset_file_reprocess_internal_flag
                 (
+                    id                INT NOT NULL,
                     target_licence_id INT NOT NULL,
                     process_from      DATETIME DEFAULT NULL,
                     bulk_size         INT NOT NULL,
-                    id                INT NOT NULL,
+                    process_until     DATETIME DEFAULT NULL,
                     PRIMARY KEY (id)
                 ) DEFAULT CHARACTER SET utf8mb4
                   COLLATE `utf8mb4_unicode_ci`'
@@ -47,10 +48,11 @@ final class Version20260303055148 extends AbstractMigration
         $this->addSql(
             'CREATE TABLE job_synchronize_image_changed
                 (
+                    id                INT NOT NULL,
                     target_licence_id INT NOT NULL,
                     process_from      DATETIME DEFAULT NULL,
                     bulk_size         INT NOT NULL,
-                    id                INT NOT NULL,
+                    process_until     DATETIME DEFAULT NULL,
                     PRIMARY KEY (id)
                 ) DEFAULT CHARACTER SET utf8mb4
                   COLLATE `utf8mb4_unicode_ci`'
