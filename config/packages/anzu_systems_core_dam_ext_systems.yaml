@@ -222,6 +222,7 @@ anzu_systems_core_dam:
             OwnerName: ~
     blog:
       id: 4
+      notifications_enabled: false
       image:
         enabled: true
         public_domain: public_image

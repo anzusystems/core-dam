@@ -27,6 +27,7 @@ abstract readonly class AbstractExtSystemCallback implements ExtSystemCallbackIn
 {
     public const string CMS_SLUG = 'cms';
     public const string DAILY_SPORT_SLUG = 'dennik_sport';
+    public const string EU_BRIEF_SLUG = 'eu_brief';
 
     public function __construct(
         private AssetRepository $assetRepository,
