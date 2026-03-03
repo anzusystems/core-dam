@@ -11,6 +11,7 @@ use AnzuSystems\SerializerBundle\Exception\SerializerException;
 use App\Model\Domain\Asset\AssetCmsSysDto;
 use App\Model\Domain\Image\CmsImageUsageListDto;
 use App\Model\Domain\Image\ImageCmsSysDto;
+use App\Util\ExtSystemLinkGuard;
 use Doctrine\Common\Collections\Collection;
 use JsonException;
 use RuntimeException;
@@ -31,6 +32,7 @@ final class CmsClient
 
     public function __construct(
         private readonly HttpClientInterface $anzuCmsApiClient,
+        private readonly ExtSystemLinkGuard $extSystemLinkGuard,
     ) {
     }
 
@@ -39,6 +41,10 @@ final class CmsClient
      */
     public function getImageUsage(array $damIds): CmsImageUsageListDto
     {
+        if ($this->extSystemLinkGuard->isCmsReadDisabled()) {
+            return new CmsImageUsageListDto();
+        }
+
         $result = $this->loggedRequest(
             client: $this->anzuCmsApiClient,
             message: '[Anzu CMS] get image usage',
@@ -63,6 +69,10 @@ final class CmsClient
      */
     public function notifyFinishedJobImageCopy(JobImageCopyResultDto $dto): void
     {
+        if ($this->extSystemLinkGuard->isCmsWriteDisabled()) {
+            return;
+        }
+
         /** @var array $data */
         $data = $this->serializer->toArray($dto);
         $result = $this->loggedRequest(
@@ -86,6 +96,10 @@ final class CmsClient
      */
     public function notifyAssetChanged(Collection $dtoList): void
     {
+        if ($this->extSystemLinkGuard->isCmsWriteDisabled()) {
+            return;
+        }
+
         /** @var array $data */
         $data = $this->serializer->toArray($dtoList);
         $result = $this->loggedRequest(
@@ -113,6 +127,10 @@ final class CmsClient
      */
     public function notifyImageChanged(Collection $dtoList): void
     {
+        if ($this->extSystemLinkGuard->isCmsWriteDisabled()) {
+            return;
+        }
+
         /** @var array $data */
         $data = $this->serializer->toArray($dtoList);
         $result = $this->loggedRequest(

@@ -11,6 +11,7 @@ use AnzuSystems\CoreDamBundle\Logger\DamLogger;
 use AnzuSystems\SerializerBundle\Exception\SerializerException;
 use App\Exception\MediaApiClientException;
 use App\Model\Domain\Asset\AssetFileMediaApiCallbackDecorator;
+use App\Util\ExtSystemLinkGuard;
 use JsonException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,6 +25,7 @@ final class MediaApiClient
     public function __construct(
         private readonly HttpClientInterface $mediaapiApiClient,
         private readonly DamLogger $damLogger,
+        private readonly ExtSystemLinkGuard $extSystemLinkGuard,
     ) {
     }
 
@@ -34,6 +36,10 @@ final class MediaApiClient
      */
     public function sendImageChangeState(ImageFile $imageFile): void
     {
+        if ($this->extSystemLinkGuard->isMediaApiWriteDisabled()) {
+            return;
+        }
+
         /** @var array $array */
         $array = $this->serializer->toArray(
             AssetFileMediaApiCallbackDecorator::getInstance($imageFile)

@@ -14,6 +14,11 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 class Configuration implements ConfigurationInterface
 {
+    public const string CMS_READ_DISABLED = 'cms_read_disabled';
+    public const string CMS_WRITE_DISABLED = 'cms_write_disabled';
+    public const string MEDIA_API_WRITE_DISABLED = 'media_api_write_disabled';
+    public const bool DEFAULT_DISABLED = false;
+
     public function getConfigTreeBuilder(): TreeBuilder
     {
         $treeBuilder = new TreeBuilder('core_dam');
@@ -23,6 +28,7 @@ class Configuration implements ConfigurationInterface
                 ->append($this->getAudioDistributionSection())
                 ->append($this->getRtmpConfigurationSection())
                 ->append($this->getAssetPubSection())
+                ->append($this->getExtSystemsSection())
             ->end();
 
         return $treeBuilder;
@@ -66,6 +72,16 @@ class Configuration implements ConfigurationInterface
                     ->defaultValue([])
                     ->scalarPrototype()->end()
                 ->end()
+            ->end();
+    }
+
+    private function getExtSystemsSection(): NodeDefinition
+    {
+        return (new TreeBuilder('ext_systems'))->getRootNode()
+            ->children()
+                ->booleanNode(self::CMS_READ_DISABLED)->defaultFalse()->end()
+                ->booleanNode(self::CMS_WRITE_DISABLED)->defaultFalse()->end()
+                ->booleanNode(self::MEDIA_API_WRITE_DISABLED)->defaultFalse()->end()
             ->end();
     }
 }
