@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use App\Model\UgcCookieConfiguration;
+use App\Security\JWT\Signer\Key\EmptyInMemory;
 use Lcobucci\Clock\SystemClock;
 use Lcobucci\JWT\Configuration;
 use Lcobucci\JWT\Signer\Ecdsa\Sha256;
@@ -26,10 +27,6 @@ return static function (ContainerConfigurator $configurator): void {
     ;
 
     $services
-        ->set('anzu.security.ugc.signer', Sha256::class)
-        ->factory([Sha256::class, 'create'])
-    ;
-    $services
         ->set('anzu.security.ugc.verification_key', InMemory::class)
         ->factory([InMemory::class, 'base64Encoded'])
         ->arg('$contents', env('AUTH_UGC_JWT_PUBLIC_CERT'))
@@ -37,14 +34,14 @@ return static function (ContainerConfigurator $configurator): void {
     $services
         ->set(Configuration::class . ' $jwtUgcConfiguration', Configuration::class)
         ->factory([Configuration::class, 'forAsymmetricSigner'])
-        ->arg('$signer', service('anzu.security.ugc.signer'))
-        ->arg('$signingKey', inline_service()->factory([InMemory::class, 'empty']))
+        ->arg('$signer', inline_service(Sha256::class))
+        ->arg('$signingKey', inline_service(EmptyInMemory::class))
         ->arg('$verificationKey', service('anzu.security.ugc.verification_key'))
         ->call('setValidationConstraints', [
             inline_service(PermittedFor::class)
                 ->arg('$audience', 'sme_web'),
             inline_service(SignedWith::class)
-                ->arg('$signer', service('anzu.security.ugc.signer'))
+                ->arg('$signer', inline_service(Sha256::class))
                 ->arg('$key', service('anzu.security.ugc.verification_key')),
             inline_service(LooseValidAt::class)
                 ->arg('$clock', inline_service()->factory([SystemClock::class, 'fromUTC']))
@@ -58,14 +55,14 @@ return static function (ContainerConfigurator $configurator): void {
     $services
         ->set(Configuration::class . ' $jwtUgcImpConfiguration', Configuration::class)
         ->factory([Configuration::class, 'forAsymmetricSigner'])
-        ->arg('$signer', service('anzu.security.ugc.signer'))
-        ->arg('$signingKey', inline_service()->factory([InMemory::class, 'empty']))
+        ->arg('$signer', inline_service(Sha256::class))
+        ->arg('$signingKey', inline_service(EmptyInMemory::class))
         ->arg('$verificationKey', service('anzu.security.ugc_imp.verification_key'))
         ->call('setValidationConstraints', [
             inline_service(PermittedFor::class)
                 ->arg('$audience', 'sme_web_imp'),
             inline_service(SignedWith::class)
-                ->arg('$signer', service('anzu.security.ugc.signer'))
+                ->arg('$signer', inline_service(Sha256::class))
                 ->arg('$key', service('anzu.security.ugc_imp.verification_key')),
             inline_service(LooseValidAt::class)
                 ->arg('$clock', inline_service()->factory([SystemClock::class, 'fromUTC']))

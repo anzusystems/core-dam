@@ -24,56 +24,46 @@ return static function (FrameworkConfig $config): void {
     $messengerConfig
         ->transport($assetChangedSync)
         ->dsn(env('MESSENGER_TRANSPORT_DSN'))
-        ->options([
-            'client_config' => [
-                'credentials' => '%env(json:base64:GOOGLE_PUBSUB_SA_KEY)%',
-            ],
-            'topic' => createBasicTopicConfig($assetChangedSync, $appName),
-            'subscription' => createBasicSubscriptionConfig($assetChangedSync, $appName),
+        ->option('client_config', [
+            'credentials' => '%env(json:base64:GOOGLE_PUBSUB_SA_KEY)%',
         ])
+        ->option('topic', createBasicTopicConfig($assetChangedSync, $appName))
+        ->option('subscription', createBasicSubscriptionConfig($assetChangedSync, $appName))
     ;
     $messengerConfig
         ->transport($anzuCoreMediaApiCallback)
         ->dsn(env('MESSENGER_TRANSPORT_DSN'))
-        ->options([
-            'client_config' => [
-                'credentials' => '%env(json:base64:GOOGLE_PUBSUB_SA_KEY)%',
-            ],
-            'topic' => createBasicTopicConfig($anzuCoreMediaApiCallback, $appName),
-            'subscription' => createBasicSubscriptionConfig($anzuCoreMediaApiCallback, $appName),
+        ->option('client_config', [
+            'credentials' => '%env(json:base64:GOOGLE_PUBSUB_SA_KEY)%',
         ])
+        ->option('topic', createBasicTopicConfig($anzuCoreMediaApiCallback, $appName))
+        ->option('subscription', createBasicSubscriptionConfig($anzuCoreMediaApiCallback, $appName))
     ;
     $messengerConfig
         ->transport($coreDamLog)
             ->dsn(env('MESSENGER_TRANSPORT_DSN'))
-            ->options([
-                'client_config' => [
-                    'credentials' => '%env(json:base64:GOOGLE_PUBSUB_SA_KEY)%',
-                ],
-                'topic' => createBasicTopicConfig($coreDamLog, $appName),
-                'subscription' => createBasicSubscriptionConfig($coreDamLog, $appName),
+            ->option('client_config', [
+                'credentials' => '%env(json:base64:GOOGLE_PUBSUB_SA_KEY)%',
             ])
+            ->option('topic', createBasicTopicConfig($coreDamLog, $appName))
+            ->option('subscription', createBasicSubscriptionConfig($coreDamLog, $appName))
     ;
     $messengerConfig
         ->transport($cachePurge)
         ->dsn(env('MESSENGER_TRANSPORT_DSN'))
-        ->options([
-            'client_config' => [
-                'credentials' => '%env(json:base64:GOOGLE_PUBSUB_SA_KEY)%',
-            ],
-            'topic' => createBasicTopicConfig($cachePurge, $appName),
+        ->option('client_config', [
+            'credentials' => '%env(json:base64:GOOGLE_PUBSUB_SA_KEY)%',
         ])
+        ->option('topic', createBasicTopicConfig($cachePurge, $appName))
         ->serializer(AnzuMessengerSerializer::class)
     ;
     $messengerConfig
         ->transport($cacheCdnPurge)
         ->dsn(env('MESSENGER_TRANSPORT_DSN'))
-        ->options([
-            'client_config' => [
-                'credentials' => '%env(json:base64:GOOGLE_PUBSUB_SA_KEY)%',
-            ],
-            'topic' => createBasicTopicConfig($cacheCdnPurge, $appName),
+        ->option('client_config', [
+            'credentials' => '%env(json:base64:GOOGLE_PUBSUB_SA_KEY)%',
         ])
+        ->option('topic', createBasicTopicConfig($cacheCdnPurge, $appName))
         ->serializer(AnzuMessengerSerializer::class)
     ;
 
