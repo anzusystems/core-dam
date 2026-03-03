@@ -8,7 +8,7 @@ use App\Entity\User;
 use DateTimeImmutable;
 use Lcobucci\JWT\Configuration;
 use Lcobucci\JWT\Signer\Key\InMemory;
-use Lcobucci\JWT\Token\Plain;
+use Lcobucci\JWT\UnencryptedToken;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 final readonly class JwtUgcUtil
@@ -22,7 +22,7 @@ final readonly class JwtUgcUtil
     /**
      * @throws AccessDeniedException
      */
-    public function createForUser(User $user): Plain
+    public function createForUser(User $user): UnencryptedToken
     {
         if (empty($this->privateUgcCert)) {
             throw new AccessDeniedException('Missing private certificate to sign a token');
