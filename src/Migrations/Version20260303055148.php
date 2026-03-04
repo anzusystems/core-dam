@@ -82,26 +82,30 @@ final class Version20260303055148 extends AbstractMigration
                 ADD CONSTRAINT FK_27D078B5BF396750 FOREIGN KEY (id) REFERENCES job (id) ON DELETE CASCADE'
         );
         $this->addSql(
-            'CREATE INDEX IDX_licence_created_at ON asset (licence_id, created_at)'
-        );
-        $this->addSql(
-            'ALTER TABLE asset_file
-                ADD flags_internal          TINYINT DEFAULT 1 NOT NULL,
-                ADD flags_override_internal TINYINT DEFAULT 0 NOT NULL'
-        );
-        $this->addSql(
-            'CREATE INDEX IDX_licence_created_at ON asset_file (licence_id, created_at)'
-        );
-        $this->addSql(
             'ALTER TABLE asset_licence
                 ADD internal_rule_active                 TINYINT  DEFAULT 0 NOT NULL,
                 ADD internal_rule_mark_as_internal_since DATETIME DEFAULT NULL'
+        );
+
+        $this->addSql(
+            'ALTER TABLE asset_file
+                ADD flags_internal          TINYINT DEFAULT 1 NOT NULL,
+                ADD flags_override_internal TINYINT DEFAULT 0 NOT NULL,
+                ALGORITHM=INSTANT'
+        );
+        $this->addSql(
+            'ALTER TABLE asset ADD INDEX IDX_licence_created_at (licence_id, created_at), ALGORITHM=INPLACE, LOCK=NONE'
+        );
+        $this->addSql(
+            'ALTER TABLE asset_file ADD INDEX IDX_licence_created_at (licence_id, created_at), ALGORITHM=INPLACE, LOCK=NONE'
         );
     }
 
     public function down(Schema $schema): void
     {
-        // this down() migration is auto-generated, please modify it to your needs
+        $this->addSql('DROP INDEX IDX_licence_created_at ON asset_file');
+        $this->addSql('DROP INDEX IDX_licence_created_at ON asset');
+        $this->addSql('ALTER TABLE asset_file DROP flags_internal, DROP flags_override_internal');
         $this->addSql('ALTER TABLE asset_licence_internal_rule_author DROP FOREIGN KEY FK_D2EC290BE00EE493');
         $this->addSql('ALTER TABLE asset_licence_internal_rule_author DROP FOREIGN KEY FK_D2EC290BF675F31B');
         $this->addSql('ALTER TABLE asset_licence_internal_rule_user DROP FOREIGN KEY FK_B2C0485BE00EE493');
@@ -112,10 +116,6 @@ final class Version20260303055148 extends AbstractMigration
         $this->addSql('DROP TABLE asset_licence_internal_rule_user');
         $this->addSql('DROP TABLE job_asset_file_reprocess_internal_flag');
         $this->addSql('DROP TABLE job_synchronize_image_changed');
-        $this->addSql('DROP INDEX IDX_licence_created_at ON asset');
-        $this->addSql('DROP INDEX IDX_licence_created_at ON asset_file');
-        $this->addSql('ALTER TABLE asset_file DROP flags_internal, DROP flags_override_internal');
         $this->addSql('ALTER TABLE asset_licence DROP internal_rule_active, DROP internal_rule_mark_as_internal_since');
-        $this->addSql('ALTER TABLE audio_file ADD audio_public_link_path VARCHAR(255) DEFAULT \'\', ADD audio_public_link_slug VARCHAR(128) DEFAULT \'\', ADD audio_public_link_is_public TINYINT DEFAULT 0');
     }
 }
