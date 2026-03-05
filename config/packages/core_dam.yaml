@@ -15,3 +15,7 @@ core_dam:
     audio_free_slot_name: 'free'
     audio_premium_slot_name: 'premium'
     audio_bonus_slot_name: 'bonus'
+  ext_systems:
+    cms_read_disabled: '%env(bool:EXT_SYSTEM_CMS_READ_DISABLED)%'
+    cms_write_disabled: '%env(bool:EXT_SYSTEM_CMS_WRITE_DISABLED)%'
+    media_api_write_disabled: '%env(bool:EXT_SYSTEM_MEDIA_API_WRITE_DISABLED)%'

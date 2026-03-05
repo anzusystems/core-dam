@@ -22,5 +22,6 @@ final class CoreDamExtension extends Extension
         $container->setParameter('anzu_systems.core_dam.asset_pub_configuration', $processed['asset_pub_configuration']);
         $container->setParameter('anzu_systems.core_dam.media_api_configuration', $processed['media_api']);
         $container->setParameter('anzu_systems.core_dam.rtmp', $processed['rtmp']);
+        $container->setParameter('anzu_systems.core_dam.ext_systems_configuration', $processed['ext_systems']);
     }
 }

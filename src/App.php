@@ -12,6 +12,7 @@ use AnzuSystems\Contracts\AnzuApp;
 final class App extends AnzuApp
 {
     public const int ZERO = 0;
+    public const string EMPTY_STRING = '';
     public const string SYSTEM = 'weather';
     public const string ENTITY_NAMESPACE = __NAMESPACE__ . '\Entity';
     public const string JSON_TYPE = 'json';

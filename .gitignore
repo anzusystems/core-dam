@@ -59,6 +59,11 @@ src/Controller/Api/Adm/V1/TestController.php
 .docker-compose-host
 docker-compose.override.yml
 
+# Local dev overrides
+composer.local.json
+symfony.local.lock
+composer.local.lock
+
 ###> symfony/framework-bundle ###
 /.env.local
 /.env.local.php
