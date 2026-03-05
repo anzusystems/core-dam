@@ -89,7 +89,7 @@ final class Version20260303055148 extends AbstractMigration
 
         $this->addSql(
             'ALTER TABLE asset_file
-                ADD flags_internal          TINYINT DEFAULT 1 NOT NULL,
+                ADD flags_internal          TINYINT DEFAULT 0 NOT NULL,
                 ADD flags_override_internal TINYINT DEFAULT 0 NOT NULL,
                 ALGORITHM=INSTANT'
         );
