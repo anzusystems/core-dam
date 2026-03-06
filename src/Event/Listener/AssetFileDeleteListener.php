@@ -29,7 +29,7 @@ final class AssetFileDeleteListener
         $assetFile = $event->getAssetFile();
 
         // todo validate sotuont
-        $this->imageCachePurger->purge($assetFile->getAssetType(), (string) $assetFile->getId());
+        $this->imageCachePurger->purge($assetFile->getAssetType(), $event->getDeleteId());
 
         // purga all image routes
         if ($assetFile instanceof ImageFile) {
