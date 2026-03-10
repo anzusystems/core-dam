@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e572b344ae18f93501c7e8f99aab2fb8",
+    "content-hash": "1c85f9ccc8094385d8adb23e2f043704",
     "packages": [
         {
             "name": "anzusystems/anzutap-bundle",
@@ -290,16 +290,16 @@
         },
         {
             "name": "anzusystems/core-dam-bundle",
-            "version": "1.43.0",
+            "version": "dev-feature/+84809/rework_author_optim_processing",
             "source": {
                 "type": "git",
                 "url": "https://github.com/anzusystems/core-dam-bundle.git",
-                "reference": "384a5e72287da76b800dab93f15d4587d0849f51"
+                "reference": "128581de7f64728957481af8b640be4a28d11281"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/anzusystems/core-dam-bundle/zipball/384a5e72287da76b800dab93f15d4587d0849f51",
-                "reference": "384a5e72287da76b800dab93f15d4587d0849f51",
+                "url": "https://api.github.com/repos/anzusystems/core-dam-bundle/zipball/128581de7f64728957481af8b640be4a28d11281",
+                "reference": "128581de7f64728957481af8b640be4a28d11281",
                 "shasum": ""
             },
             "require": {
@@ -381,9 +381,9 @@
             "description": "Dam core bundle",
             "support": {
                 "issues": "https://github.com/anzusystems/core-dam-bundle/issues",
-                "source": "https://github.com/anzusystems/core-dam-bundle/tree/1.43.0"
+                "source": "https://github.com/anzusystems/core-dam-bundle/tree/feature/#84809/rework_author_optim_processing"
             },
-            "time": "2026-03-05T15:43:34+00:00"
+            "time": "2026-03-10T08:36:39+00:00"
         },
         {
             "name": "anzusystems/serializer-bundle",
@@ -13773,7 +13773,9 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": {},
+    "stability-flags": {
+        "anzusystems/core-dam-bundle": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {

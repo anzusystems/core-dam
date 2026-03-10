@@ -10,7 +10,7 @@
         "ext-redis": "*",
         "ext-zend-opcache": "*",
         "anzusystems/auth-bundle": "^5.0",
-        "anzusystems/core-dam-bundle": "^1.43.0",
+        "anzusystems/core-dam-bundle": "dev-feature/+84809/rework_author_optim_processing",
         "doctrine/doctrine-bundle": "^3.0",
         "doctrine/doctrine-migrations-bundle": "^3.2",
         "league/flysystem-google-cloud-storage": "^3.0",
