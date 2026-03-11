@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e6546a9b6f6850ca1d54a60a3193d330",
+    "content-hash": "57da4d2e82a2006f83acdbd67fe2af09",
     "packages": [
         {
             "name": "anzusystems/anzutap-bundle",
@@ -290,16 +290,16 @@
         },
         {
             "name": "anzusystems/core-dam-bundle",
-            "version": "1.45.0",
+            "version": "dev-main",
             "source": {
                 "type": "git",
                 "url": "https://github.com/anzusystems/core-dam-bundle.git",
-                "reference": "3c74a59e14688a6803d49dabf3864ea1dd2f72da"
+                "reference": "933cb0b947eebaa589bacdcd08fe0e9a60930eb4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/anzusystems/core-dam-bundle/zipball/3c74a59e14688a6803d49dabf3864ea1dd2f72da",
-                "reference": "3c74a59e14688a6803d49dabf3864ea1dd2f72da",
+                "url": "https://api.github.com/repos/anzusystems/core-dam-bundle/zipball/933cb0b947eebaa589bacdcd08fe0e9a60930eb4",
+                "reference": "933cb0b947eebaa589bacdcd08fe0e9a60930eb4",
                 "shasum": ""
             },
             "require": {
@@ -368,6 +368,7 @@
                 "symfony/test-pack": "^1.0",
                 "symplify/easy-coding-standard": "^12.1"
             },
+            "default-branch": true,
             "type": "symfony-bundle",
             "autoload": {
                 "psr-4": {
@@ -381,9 +382,9 @@
             "description": "Dam core bundle",
             "support": {
                 "issues": "https://github.com/anzusystems/core-dam-bundle/issues",
-                "source": "https://github.com/anzusystems/core-dam-bundle/tree/1.45.0"
+                "source": "https://github.com/anzusystems/core-dam-bundle/tree/main"
             },
-            "time": "2026-03-11T10:57:55+00:00"
+            "time": "2026-03-11T11:32:55+00:00"
         },
         {
             "name": "anzusystems/serializer-bundle",
@@ -13773,7 +13774,9 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": {},
+    "stability-flags": {
+        "anzusystems/core-dam-bundle": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
