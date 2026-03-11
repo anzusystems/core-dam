@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "57da4d2e82a2006f83acdbd67fe2af09",
+    "content-hash": "85b4f7f990d02decf571147c923eef7d",
     "packages": [
         {
             "name": "anzusystems/anzutap-bundle",
@@ -290,7 +290,7 @@
         },
         {
             "name": "anzusystems/core-dam-bundle",
-            "version": "dev-main",
+            "version": "1.45.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/anzusystems/core-dam-bundle.git",
@@ -368,7 +368,6 @@
                 "symfony/test-pack": "^1.0",
                 "symplify/easy-coding-standard": "^12.1"
             },
-            "default-branch": true,
             "type": "symfony-bundle",
             "autoload": {
                 "psr-4": {
@@ -382,7 +381,7 @@
             "description": "Dam core bundle",
             "support": {
                 "issues": "https://github.com/anzusystems/core-dam-bundle/issues",
-                "source": "https://github.com/anzusystems/core-dam-bundle/tree/main"
+                "source": "https://github.com/anzusystems/core-dam-bundle/tree/1.45.1"
             },
             "time": "2026-03-11T11:55:18+00:00"
         },
@@ -13774,9 +13773,7 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": {
-        "anzusystems/core-dam-bundle": 20
-    },
+    "stability-flags": {},
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
