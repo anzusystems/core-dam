@@ -1,0 +1,260 @@
+#!/bin/bash
+# Sync the local core-dam-bundle source into vendor/anzusystems/core-dam-bundle.
+#
+# Runs ON THE HOST (not inside the container). Use this when Composer's
+# symlink: true gets in the way: IDE indexing, deploy-shape verification,
+# isolated test runs.
+#
+# Modes:
+#   one-shot (default) — mirror once and exit.
+#   watch (--watch / -w) — mirror once, then keep listening for filesystem
+#                          events in SOURCE_DIR and re-sync on every change
+#                          (debounced). Cache clear is OFF by default in watch
+#                          mode (it's slow); enable per-sync clear with
+#                          --cache-clear-every-sync.
+#
+# Transport: rsync if available (delta), otherwise GNU tar pipe (full mirror).
+# Watch mode requires inotifywait (apt: inotify-tools).
+#
+# Excluded: vendor/, var/, tests/, .git/, IDE / editor metadata.
+
+set -e
+
+PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")"/.. && pwd)"
+cd "${PROJECT_ROOT}" || exit 1
+
+SOURCE_DIR="${BUNDLE_SRC:-/home/work/projects/anzusystems/core-dam-bundle}"
+TARGET_DIR="${PROJECT_ROOT}/vendor/anzusystems/core-dam-bundle"
+
+DRY_RUN=false
+CLEAR_CACHE=true
+WATCH=false
+WATCH_CLEAR_CACHE=false
+DEBOUNCE_SECONDS=2
+
+EXCLUDES_TOPLEVEL=(
+    .git
+    .github
+    .idea
+    .vscode
+    vendor
+    var
+    tests
+    node_modules
+)
+EXCLUDES_GLOB=(
+    '*.swp'
+    '.DS_Store'
+)
+
+function help() {
+    echo -en "$(printf %q "${BASH_SOURCE[0]}") [OPTIONS]
+    \nMirror core-dam-bundle source into vendor/ (host-side).
+
+    Options:
+        -n, --dry-run               Show what would change, don't write anything.
+                                    Ignored in watch mode.
+        --no-cache-clear            Skip the post-sync 'bin/cc --no-autoload' step.
+        -w, --watch                 Stay running. Watch SOURCE_DIR with inotify
+                                    and re-sync on every change (debounced).
+        --debounce SECONDS          Coalesce events within this window into a
+                                    single sync. Default: ${DEBOUNCE_SECONDS}.
+        --cache-clear-every-sync    In watch mode, also run cache clear after
+                                    every sync. Off by default (slow).
+        -h, --help                  Show this help.
+
+    Environment:
+        BUNDLE_SRC                  Override the bundle source path
+                                    (default: ${SOURCE_DIR}).
+
+    Examples:
+        $(printf %q "${BASH_SOURCE[0]}")
+        $(printf %q "${BASH_SOURCE[0]}") --dry-run
+        $(printf %q "${BASH_SOURCE[0]}") --watch
+        $(printf %q "${BASH_SOURCE[0]}") --watch --debounce 1
+        nohup $(printf %q "${BASH_SOURCE[0]}") --watch >/tmp/sync-bundle.log 2>&1 &
+    \n"
+}
+
+while [ "$#" -gt 0 ]; do
+    case $1 in
+    -n|--dry-run) DRY_RUN=true; shift; continue ;;
+    --no-cache-clear) CLEAR_CACHE=false; shift; continue ;;
+    -w|--watch) WATCH=true; shift; continue ;;
+    --debounce)
+        if [ -z "${2:-}" ]; then echo "[ERROR] --debounce needs a value." >&2; exit 1; fi
+        DEBOUNCE_SECONDS="$2"; shift 2; continue
+        ;;
+    --cache-clear-every-sync) WATCH_CLEAR_CACHE=true; shift; continue ;;
+    -h|--help) help; exit 0 ;;
+    *) echo "[WARN] Unknown command line switch: $1" >&2; help; exit 1 ;;
+    esac
+done
+
+if [ -f /.dockerenv ]; then
+    echo "[ERROR] bin/sync-bundle is a host-side script. Run it from your host shell, not inside the container." >&2
+    exit 1
+fi
+
+if [ ! -d "${SOURCE_DIR}" ]; then
+    echo "[ERROR] Bundle source not found at ${SOURCE_DIR}." >&2
+    echo "[HINT] Override the location: BUNDLE_SRC=/path/to/core-dam-bundle bin/sync-bundle" >&2
+    exit 1
+fi
+
+# Replace the Composer-created symlink (broken from host) with a real directory
+# so the mirror lands in a known shape. Done once up front, before any sync run.
+if [ -L "${TARGET_DIR}" ]; then
+    echo "[INFO] Removing existing symlink at ${TARGET_DIR}"
+    if ! ${DRY_RUN}; then
+        rm "${TARGET_DIR}"
+    fi
+fi
+if ! ${DRY_RUN}; then
+    mkdir -p "${TARGET_DIR}"
+fi
+
+sync_with_rsync() {
+    local flags=(-a --delete --info=stats1)
+    if ${DRY_RUN}; then
+        flags+=(--dry-run --itemize-changes)
+    fi
+
+    local excludes=()
+    local item
+    for item in "${EXCLUDES_TOPLEVEL[@]}"; do
+        excludes+=("--exclude=/${item}")
+    done
+    for item in "${EXCLUDES_GLOB[@]}"; do
+        excludes+=("--exclude=${item}")
+    done
+
+    rsync "${flags[@]}" "${excludes[@]}" "${SOURCE_DIR}/" "${TARGET_DIR}/"
+}
+
+sync_with_tar() {
+    local excludes=()
+    local item
+    for item in "${EXCLUDES_TOPLEVEL[@]}"; do
+        excludes+=("--exclude=./${item}")
+    done
+    for item in "${EXCLUDES_GLOB[@]}"; do
+        excludes+=("--exclude=${item}")
+    done
+
+    if ${DRY_RUN}; then
+        tar -cf /dev/null -v "${excludes[@]}" -C "${SOURCE_DIR}" . 2>&1 | head -50 | sed 's/^/  /'
+        echo "[INFO] (dry-run) target ${TARGET_DIR} would be wiped before extraction."
+        return
+    fi
+
+    find "${TARGET_DIR}" -mindepth 1 -delete
+    tar -cf - "${excludes[@]}" -C "${SOURCE_DIR}" . | tar -xf - -C "${TARGET_DIR}"
+}
+
+do_sync() {
+    if command -v rsync >/dev/null 2>&1; then
+        sync_with_rsync
+    else
+        sync_with_tar
+    fi
+}
+
+do_cache_clear() {
+    echo "[INFO] Clearing cache (bin/cc --no-autoload)"
+    bin/cc --no-autoload
+}
+
+# Build inotifywait --exclude regex (POSIX ERE) from EXCLUDES_TOPLEVEL + EXCLUDES_GLOB.
+# Matches: SOURCE_DIR/<topdir>/... OR any path ending with one of the glob suffixes.
+build_inotify_exclude_regex() {
+    local parts=()
+    local item
+    for item in "${EXCLUDES_TOPLEVEL[@]}"; do
+        parts+=("${item}")
+    done
+    local toplevel_alt
+    toplevel_alt=$(IFS='|'; echo "${parts[*]}")
+
+    # Anchor topdir excludes at SOURCE_DIR.
+    local anchored="^${SOURCE_DIR}/(${toplevel_alt})(/|$)"
+
+    # Suffix excludes for IDE/editor crud anywhere in the tree.
+    local suffix='(\.swp|\.DS_Store)$'
+
+    echo "(${anchored})|(${suffix})"
+}
+
+run_watch_mode() {
+    if ! command -v inotifywait >/dev/null 2>&1; then
+        echo "[ERROR] --watch requires inotifywait (package: inotify-tools)." >&2
+        echo "[HINT] Install it: sudo apt-get install inotify-tools" >&2
+        exit 1
+    fi
+
+    if ${DRY_RUN}; then
+        echo "[ERROR] --dry-run and --watch are mutually exclusive." >&2
+        exit 1
+    fi
+
+    local exclude_re
+    exclude_re=$(build_inotify_exclude_regex)
+
+    echo "[INFO] Initial sync."
+    do_sync
+    if ${CLEAR_CACHE}; then
+        do_cache_clear
+    fi
+
+    echo "[INFO] Watching ${SOURCE_DIR} (debounce=${DEBOUNCE_SECONDS}s, exclude='${exclude_re}'). Ctrl+C to stop."
+
+    # Trap so the inotifywait pipe partner exits cleanly on signals.
+    trap 'echo; echo "[INFO] Stopping watch."; exit 0' INT TERM
+
+    # inotifywait monitor; for each event line, drain further events within
+    # DEBOUNCE_SECONDS, then trigger one sync. Coalescing avoids re-syncing
+    # mid-rename / mid-save bursts.
+    inotifywait -m -r -q \
+        --format '%w%f %e' \
+        -e modify -e create -e delete -e moved_to -e moved_from -e attrib \
+        --exclude "${exclude_re}" \
+        "${SOURCE_DIR}" |
+    while IFS= read -r evt; do
+        # Drain follow-up events for the debounce window.
+        while IFS= read -r -t "${DEBOUNCE_SECONDS}" _drain; do
+            :
+        done
+
+        echo "[INFO] $(date '+%H:%M:%S') change detected (last: ${evt}); syncing."
+        do_sync
+        if ${WATCH_CLEAR_CACHE}; then
+            do_cache_clear
+        fi
+    done
+}
+
+if ${WATCH}; then
+    run_watch_mode
+    exit 0
+fi
+
+# One-shot mode.
+echo "[INFO] Syncing ${SOURCE_DIR}/ → ${TARGET_DIR}/"
+if command -v rsync >/dev/null 2>&1; then
+    echo "[INFO] Transport: rsync"
+    sync_with_rsync
+else
+    echo "[HINT] rsync not found — using tar fallback. Install rsync for faster repeated syncs."
+    sync_with_tar
+fi
+
+if ${DRY_RUN}; then
+    echo "[INFO] (dry-run) skipping cache clear."
+    exit 0
+fi
+
+if ${CLEAR_CACHE}; then
+    do_cache_clear
+else
+    echo "[INFO] --no-cache-clear set, skipping bin/cc."
+fi
