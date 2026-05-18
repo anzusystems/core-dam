@@ -2,6 +2,13 @@
     "type": "project",
     "license": "Apache-2.0",
     "prefer-stable": true,
+    "repositories": [
+        {
+            "type": "path",
+            "url": "/var/www/html/lib-core-dam-bundle",
+            "options": { "symlink": true }
+        }
+    ],
     "require": {
         "php": ">=8.4",
         "ext-ctype": "*",
@@ -10,7 +17,7 @@
         "ext-redis": "*",
         "ext-zend-opcache": "*",
         "anzusystems/auth-bundle": "^5.0",
-        "anzusystems/core-dam-bundle": "^1.45",
+        "anzusystems/core-dam-bundle": "dev-feature/84735-synthetic-audio as 1.45.x-dev",
         "doctrine/doctrine-bundle": "^3.0",
         "doctrine/doctrine-migrations-bundle": "^3.2",
         "league/flysystem-google-cloud-storage": "^3.0",

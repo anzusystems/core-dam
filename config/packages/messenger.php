@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use AnzuSystems\CommonBundle\Messenger\Middleware\ContextIdentityMiddleware;
+use AnzuSystems\CoreDamBundle\Messenger\Message\JobAudioNarrationMessage;
 use App\Messenger\Message\AssetChangedMessage;
 use App\Messenger\Message\CacheCdnPurgeMessage;
 use App\Messenger\Message\CacheProxyPurgeMessage;
@@ -19,6 +20,9 @@ return static function (FrameworkConfig $config): void {
     $coreDamLog = 'core_dam_log';
     $cachePurge = 'purger_proxy_purge';
     $cacheCdnPurge = 'purger_cdn_proxy_purge';
+    // TTS transport — routes JobAudioNarrationMessage to a dedicated Pub/Sub topic.
+    // TODO T9.5: Create the anzu_core_dam_tts Pub/Sub topic + subscription in infra before enabling in prod.
+    $damTts = 'anzu_core_dam_tts';
 
     $messengerConfig = $config->messenger();
     $messengerConfig
@@ -41,12 +45,12 @@ return static function (FrameworkConfig $config): void {
     ;
     $messengerConfig
         ->transport($coreDamLog)
-            ->dsn(env('MESSENGER_TRANSPORT_DSN'))
-            ->option('client_config', [
-                'credentials' => '%env(json:base64:GOOGLE_PUBSUB_SA_KEY)%',
-            ])
-            ->option('topic', createBasicTopicConfig($coreDamLog, $appName))
-            ->option('subscription', createBasicSubscriptionConfig($coreDamLog, $appName))
+        ->dsn(env('MESSENGER_TRANSPORT_DSN'))
+        ->option('client_config', [
+            'credentials' => '%env(json:base64:GOOGLE_PUBSUB_SA_KEY)%',
+        ])
+        ->option('topic', createBasicTopicConfig($coreDamLog, $appName))
+        ->option('subscription', createBasicSubscriptionConfig($coreDamLog, $appName))
     ;
     $messengerConfig
         ->transport($cachePurge)
@@ -66,10 +70,22 @@ return static function (FrameworkConfig $config): void {
         ->option('topic', createBasicTopicConfig($cacheCdnPurge, $appName))
         ->serializer(AnzuMessengerSerializer::class)
     ;
+    // TTS transport: routes JobAudioNarrationMessage to a dedicated Pub/Sub topic.
+    // MESSENGER_TRANSPORT_DSN_DAM_TTS must be set (in dev: same value as MESSENGER_TRANSPORT_DSN;
+    // in prod: a dedicated DSN once T9.5 provisions the anzu_core_dam_tts topic/subscription).
+    $messengerConfig
+        ->transport($damTts)
+        ->dsn(env('MESSENGER_TRANSPORT_DSN_DAM_TTS'))
+        ->option('client_config', [
+            'credentials' => '%env(json:base64:GOOGLE_PUBSUB_SA_KEY)%',
+        ])
+        ->option('topic', createBasicTopicConfig($damTts, $appName))
+        ->option('subscription', createBasicSubscriptionConfig($damTts, $appName))
+    ;
 
     $messengerConfig
         ->bus('messenger.bus.default')
-            ->middleware(ContextIdentityMiddleware::class)
+        ->middleware(ContextIdentityMiddleware::class)
     ;
     $messengerConfig
         ->routing(MediaApiCallbackMessage::class)
@@ -86,6 +102,10 @@ return static function (FrameworkConfig $config): void {
     $messengerConfig
         ->routing(CacheCdnPurgeMessage::class)
         ->senders([$cacheCdnPurge])
+    ;
+    $messengerConfig
+        ->routing(JobAudioNarrationMessage::class)
+        ->senders([$damTts])
     ;
 };
 

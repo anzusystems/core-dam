@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "85b4f7f990d02decf571147c923eef7d",
+    "content-hash": "8f5a94b236c4002b87bc84269ec8771c",
     "packages": [
         {
             "name": "anzusystems/anzutap-bundle",
@@ -290,17 +290,11 @@
         },
         {
             "name": "anzusystems/core-dam-bundle",
-            "version": "1.45.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/anzusystems/core-dam-bundle.git",
-                "reference": "e680292e5002157b2b5ffe8e77530464ffa897f1"
-            },
+            "version": "dev-feature/84735-synthetic-audio",
             "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/anzusystems/core-dam-bundle/zipball/e680292e5002157b2b5ffe8e77530464ffa897f1",
-                "reference": "e680292e5002157b2b5ffe8e77530464ffa897f1",
-                "shasum": ""
+                "type": "path",
+                "url": "/var/www/html/lib-core-dam-bundle",
+                "reference": "e680292e5002157b2b5ffe8e77530464ffa897f1"
             },
             "require": {
                 "anzusystems/anzutap-bundle": "^0.12",
@@ -374,16 +368,20 @@
                     "AnzuSystems\\CoreDamBundle\\": "src"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "autoload-dev": {
+                "psr-4": {
+                    "AnzuSystems\\CoreDamBundle\\Tests\\": "tests",
+                    "AnzuSystems\\CoreDamBundle\\Tests\\Data\\": "tests/data"
+                }
+            },
             "license": [
                 "Apache-2.0"
             ],
             "description": "Dam core bundle",
-            "support": {
-                "issues": "https://github.com/anzusystems/core-dam-bundle/issues",
-                "source": "https://github.com/anzusystems/core-dam-bundle/tree/1.45.1"
-            },
-            "time": "2026-03-11T11:55:18+00:00"
+            "transport-options": {
+                "symlink": true,
+                "relative": false
+            }
         },
         {
             "name": "anzusystems/serializer-bundle",
@@ -13771,9 +13769,18 @@
             "time": "2025-12-08T11:19:18+00:00"
         }
     ],
-    "aliases": [],
+    "aliases": [
+        {
+            "package": "anzusystems/core-dam-bundle",
+            "version": "dev-feature/84735-synthetic-audio",
+            "alias": "1.45.x-dev",
+            "alias_normalized": "1.45.9999999.9999999-dev"
+        }
+    ],
     "minimum-stability": "dev",
-    "stability-flags": {},
+    "stability-flags": {
+        "anzusystems/core-dam-bundle": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {

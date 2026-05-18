@@ -152,6 +152,26 @@ anzu_systems_common:
         create:
         delete:
         ui:
+      dam_ttsVoiceFamily:
+        read:
+        create:
+        update:
+        delete:
+      dam_ttsVoice:
+        read:
+        create:
+        update:
+        delete:
+      dam_ttsAudio:
+        read:
+        unpublish:
+        regenerate:
+        cancelRegenerate:
+        replaceUpload:
+        toggleRecommendedPodcast:
+        synthesize:
+        sysDispatch:
+        sysToggleRecommendedPodcast:
     translation:
       roles:
         ROLE_USER:
@@ -203,6 +223,45 @@ anzu_systems_common:
         ugcImpersonate:
           en: UGC Impersonate
           sk: UGC Impersonaluj
+        write:
+          en: Write
+          sk: Zapis
+        run:
+          en: Run
+          sk: Spusti
+        cancel:
+          en: Cancel
+          sk: Zruš
+        unpublish:
+          en: Unpublish
+          sk: Zrušiť publikovanie
+        toggle:
+          en: Toggle
+          sk: Prepnúť
+        manual:
+          en: Manual
+          sk: Manuálne
+        regenerate:
+          en: Regenerate
+          sk: Regenerovať
+        cancelRegenerate:
+          en: Cancel regenerate
+          sk: Zrušiť regeneráciu
+        replaceUpload:
+          en: Replace with upload
+          sk: Nahradiť nahrávkou
+        toggleRecommendedPodcast:
+          en: Toggle recommended podcast
+          sk: Prepnúť odporúčaný podcast
+        synthesize:
+          en: Synthesize
+          sk: Syntetizovať
+        sysDispatch:
+          en: System dispatch
+          sk: Systémové odoslanie
+        sysToggleRecommendedPodcast:
+          en: System toggle recommended podcast
+          sk: Systémové prepnutie odporúčaného podcastu
       subjects:
         dam_asset:
           en: Asset
@@ -282,3 +341,12 @@ anzu_systems_common:
         dam_job:
           en: Job
           sk: Job
+        dam_ttsVoiceFamily:
+          en: TTS Voice Family
+          sk: TTS Hlasová rodina
+        dam_ttsVoice:
+          en: TTS Voice
+          sk: TTS Hlas
+        dam_ttsAudio:
+          en: TTS Audio
+          sk: TTS Audio

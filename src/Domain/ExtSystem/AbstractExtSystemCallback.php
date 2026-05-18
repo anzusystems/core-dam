@@ -26,6 +26,7 @@ use Symfony\Component\Uid\Uuid;
 abstract readonly class AbstractExtSystemCallback implements ExtSystemCallbackInterface
 {
     public const string CMS_SLUG = 'cms';
+    public const string CMS_TTS_SLUG = 'cms_tts';
     public const string DAILY_SPORT_SLUG = 'dennik_sport';
     public const string EU_BRIEF_SLUG = 'eu_brief';
 

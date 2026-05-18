@@ -60,6 +60,35 @@ final class AssetCmsSysDto
     #[Serialize]
     private bool $playable = false;
 
+    // TTS-specific optional fields (populated only for TTS-generated audio assets).
+
+    #[Serialize]
+    private bool $generated = false;
+
+    #[Serialize]
+    private ?string $voiceFamilySlug = null;
+
+    #[Serialize]
+    private ?string $extResourceName = null;
+
+    #[Serialize]
+    private ?string $extId = null;
+
+    #[Serialize]
+    private ?string $extVersion = null;
+
+    #[Serialize]
+    private bool $includeInRecommendedPodcast = false;
+
+    #[Serialize]
+    private ?DateTimeImmutable $lastRegeneratedAt = null;
+
+    #[Serialize]
+    private ?string $previewMediaUrl = null;
+
+    #[Serialize]
+    private ?int $licenceId = null;
+
     public function __construct()
     {
         $this->setAssetId(new NilUuid());
@@ -229,6 +258,114 @@ final class AssetCmsSysDto
     public function setSeriesId(?Uuid $seriesId): self
     {
         $this->seriesId = $seriesId;
+
+        return $this;
+    }
+
+    public function isGenerated(): bool
+    {
+        return $this->generated;
+    }
+
+    public function setGenerated(bool $generated): self
+    {
+        $this->generated = $generated;
+
+        return $this;
+    }
+
+    public function getVoiceFamilySlug(): ?string
+    {
+        return $this->voiceFamilySlug;
+    }
+
+    public function setVoiceFamilySlug(?string $voiceFamilySlug): self
+    {
+        $this->voiceFamilySlug = $voiceFamilySlug;
+
+        return $this;
+    }
+
+    public function getExtResourceName(): ?string
+    {
+        return $this->extResourceName;
+    }
+
+    public function setExtResourceName(?string $extResourceName): self
+    {
+        $this->extResourceName = $extResourceName;
+
+        return $this;
+    }
+
+    public function getExtId(): ?string
+    {
+        return $this->extId;
+    }
+
+    public function setExtId(?string $extId): self
+    {
+        $this->extId = $extId;
+
+        return $this;
+    }
+
+    public function getExtVersion(): ?string
+    {
+        return $this->extVersion;
+    }
+
+    public function setExtVersion(?string $extVersion): self
+    {
+        $this->extVersion = $extVersion;
+
+        return $this;
+    }
+
+    public function isIncludeInRecommendedPodcast(): bool
+    {
+        return $this->includeInRecommendedPodcast;
+    }
+
+    public function setIncludeInRecommendedPodcast(bool $includeInRecommendedPodcast): self
+    {
+        $this->includeInRecommendedPodcast = $includeInRecommendedPodcast;
+
+        return $this;
+    }
+
+    public function getLastRegeneratedAt(): ?DateTimeImmutable
+    {
+        return $this->lastRegeneratedAt;
+    }
+
+    public function setLastRegeneratedAt(?DateTimeImmutable $lastRegeneratedAt): self
+    {
+        $this->lastRegeneratedAt = $lastRegeneratedAt;
+
+        return $this;
+    }
+
+    public function getPreviewMediaUrl(): ?string
+    {
+        return $this->previewMediaUrl;
+    }
+
+    public function setPreviewMediaUrl(?string $previewMediaUrl): self
+    {
+        $this->previewMediaUrl = $previewMediaUrl;
+
+        return $this;
+    }
+
+    public function getLicenceId(): ?int
+    {
+        return $this->licenceId;
+    }
+
+    public function setLicenceId(?int $licenceId): self
+    {
+        $this->licenceId = $licenceId;
 
         return $this;
     }

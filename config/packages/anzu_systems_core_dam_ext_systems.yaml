@@ -2,6 +2,10 @@ anzu_systems_core_dam:
   ext_systems:
     cms:
       id: 1
+      tts:
+        elevenlabs_api_key: '%env(default::ELEVENLABS_API_KEY)%'
+        google_credentials_path: '%env(default::GOOGLE_TTS_CREDENTIALS_PATH)%'
+        language_code: '%env(default:tts_default_language_code:CMS_TTS_LANGUAGE_CODE)%'
       asset_external_providers:
         unsplash_cms:
           title: Unsplash
@@ -220,6 +224,34 @@ anzu_systems_core_dam:
             Owners: ','
             Creator: ','
             OwnerName: ~
+    cms_tts:
+      # Dedicated TTS audio ext-system — owns VoiceFamily + Asset for synthetic narration.
+      # ext_system row + asset_licence + 2 podcasts are seeded by Version20260513121408_tts_seed.
+      # Only `audio` is enabled; image/video/document are not produced by TTS.
+      id: 15
+      tts:
+        elevenlabs_api_key: '%env(default::ELEVENLABS_API_KEY)%'
+        google_credentials_path: '%env(default::GOOGLE_TTS_CREDENTIALS_PATH)%'
+        language_code: '%env(default:tts_default_language_code:CMS_TTS_LANGUAGE_CODE)%'
+      audio:
+        enabled: true
+        title: [ 'customData:title' ]
+        custom_metadata_pinned_amount: 1
+        public_domain_name: '%env(resolve:string:DOMAIN_PUBLIC_AUDIO)%'
+        storage_name: 'cms.audio'
+        public_storage: 'cms.public_audio'
+        chunk_storage_name: 'cms.audio'
+        size_limit: '%env(byte_size:APP_CMS_AUDIO_MAX_SIZE)%'
+        keywords:
+          enabled: false
+          required: false
+        authors:
+          enabled: false
+          required: false
+        file_slots:
+          # `premium` = master (TTS_MASTER_SLOT_NAME); `free` = preview clip (TTS_PREVIEW_SLOT_NAME).
+          default: premium
+          slots: [ premium, free ]
     blog:
       id: 4
       image:

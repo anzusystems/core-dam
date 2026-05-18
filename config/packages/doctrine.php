@@ -41,10 +41,10 @@ return static function (DoctrineConfig $config): void {
     ;
     $ormDefaultEntityManagerConfig
         ->mapping('AnzuSystemsCoreDamBundle')
-        ->isBundle(true)
+        ->isBundle(false)
         ->type('attribute')
-        ->dir('Entity')
-        ->prefix('AnzuSystems\CoreDamBundle\Entity')
+        ->dir(param('kernel.project_dir') . '/vendor/anzusystems/core-dam-bundle/src')
+        ->prefix('AnzuSystems\CoreDamBundle')
         ->alias('AnzuSystems\CoreDamBundle')
     ;
     $ormDefaultEntityManagerConfig

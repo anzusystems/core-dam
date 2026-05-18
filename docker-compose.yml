@@ -25,6 +25,7 @@ services:
       - .:/var/www/html:cached
       - ${HOME}/workspace/docker/shared/scraper/image:/var/www/html/var/mnt/data/ext_scraper:cached
       - ./tests/coverage:/opt/phpstorm-coverage:cached
+      - /home/work/projects/anzusystems/core-dam-bundle:/var/www/html/lib-core-dam-bundle:cached
     ports:
       - ${NGINX_PORT:-8130}:${NGINX_PORT:-8130}
     hostname: core-dam
